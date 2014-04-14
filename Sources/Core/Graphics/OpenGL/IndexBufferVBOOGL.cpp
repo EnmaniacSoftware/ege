@@ -1,6 +1,5 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
-#include "Core/Debug/Interface/EngineInfo.h"
 #include "EGEOpenGL.h"
 #include "EGEDebug.h"
 #include "EGEMath.h"
@@ -135,7 +134,7 @@ void* IndexBufferVBO::lock(u32 offset, u32 count)
           OGL_CHECK();
 
           // update engine info
-          ENGINE_INFO(VBOBufferDataCalls++);
+          //ENGINE_INFO(VBOBufferDataCalls++);
         }
 
         // map the buffer
@@ -192,7 +191,7 @@ void IndexBufferVBO::unlock(void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferDataCalls++);
+      //ENGINE_INFO(VBOBufferDataCalls++);
     }
 
     // check if entire buffer was locked
@@ -203,7 +202,7 @@ void IndexBufferVBO::unlock(void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferDataCalls++);
+     // ENGINE_INFO(VBOBufferDataCalls++);
     }
     else
     {
@@ -212,7 +211,7 @@ void IndexBufferVBO::unlock(void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferSubDataCalls++);
+      //ENGINE_INFO(VBOBufferSubDataCalls++);
     }
   }
   else
@@ -249,7 +248,7 @@ bool IndexBufferVBO::reallocateBuffer(u32 count)
     OGL_CHECK();
 
     // update engine info
-    ENGINE_INFO(VBOBufferDataCalls++);
+    //ENGINE_INFO(VBOBufferDataCalls++);
 
     // allocate enough space in shadow buffer if required
     if (NULL != m_shadowBuffer)

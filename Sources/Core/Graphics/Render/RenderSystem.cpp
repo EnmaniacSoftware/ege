@@ -7,6 +7,7 @@
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
+#include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
@@ -68,6 +69,13 @@ EGEResult RenderSystem::construct()
     // error!
     egeCritical(KRenderSystemDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
     return EGE_ERROR;
+  }
+
+  // add render system statistics component
+  if (EGE_SUCCESS != addComponent(ege_new RenderSystemStatistics(app())))
+  {
+    // error!
+    return EGE_ERROR_NO_MEMORY;
   }
 
   // set state
@@ -356,12 +364,6 @@ const Matrix4f& RenderSystem::viewMatrix() const
   return m_viewMatrix; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::resetStats()
-{
-  m_batchCount  = 0;
-  m_vertexCount = 0;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
 {
   Rectf out;
@@ -540,16 +542,6 @@ void RenderSystem::setTextureAddressingModeT(TextureAddressingMode mode)
 void RenderSystem::setTextureMipMapping(bool set)
 {
   m_textureMipMapping = set;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::batchCount() const 
-{ 
-  return m_batchCount; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::vertexCount() const 
-{ 
-  return m_vertexCount; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PRenderTarget RenderSystem::currentRenderTarget() const 

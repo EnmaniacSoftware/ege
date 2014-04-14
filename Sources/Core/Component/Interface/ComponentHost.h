@@ -2,6 +2,7 @@
 #define EGE_CORE_COMPONENTS_COMPONENTHOST_H
 
 /*! Component host is container for another components.
+ *  @note This class in not thread safe.
  */
 
 #include "EGE.h"
@@ -34,6 +35,19 @@ class ComponentHost
      *  @return List of all attached components of the given type.
      */
     List<PComponent> components(u32 type) const;
+    /*! Returns first component of the given type. 
+     *  @param  type  Component type to return.
+     *  @return First component of given type found.
+     *  @note This is convinience method.
+     */
+    PComponent component(u32 type) const;
+    /*! Returns component with a given name. 
+     *  @param  name  Name of the component to return.
+     *  @return First component of with a given name found.
+     *  @note This is convinience method.
+     */
+    PComponent component(const String& name) const;
+
     /*! Removes given component. 
      *  @param  component Component to remove.
      */

@@ -1,6 +1,7 @@
 #include "Core/Graphics/OpenGL/Implementation/Fixed/RenderSystemFixedOGL.h"
 #include "Core/Graphics/OpenGL/Implementation/VertexArrayObject.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
@@ -210,6 +211,8 @@ PProgram RenderSystemFixedOGL::createProgram(const String& name, const List<PSha
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
+  RenderSystemFrameStatisticData& statisticsData = ege_cast<RenderSystemStatistics*>(this->component(EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS))->currentRecord();
+
   // set component being rendered
   setActiveRenderComponent(component);
 
@@ -270,10 +273,12 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     // NOTE: change to modelview after material is applied as it may change current matrix mode
     setMatrixMode(GL_MODELVIEW);
 
-    u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
+    // determine number of vertices to render
+    const u32 vertexCount = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
-    m_vertexCount += value;
-    m_batchCount++;
+    // update statistics
+    statisticsData.vertexCount += vertexCount;
+    statisticsData.batchCount++;
 
     // set model-view matrix
     glLoadMatrixf(m_viewMatrix.multiply(modelMatrix).data);
@@ -284,10 +289,10 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     {
       // render only if there is anything to render
       glDrawElements(mapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), mapIndexSize(indexBuffer->size()), indexBuffer->offset());
-      OGL_CHECK();
+      OGL_CHECK()
 
-      // update engine info
-      //ENGINE_INFO(drawElementsCalls++);
+      // update statistics
+      statisticsData.drawElementsCalls++;
     }
     else
     {
@@ -295,8 +300,8 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
       glDrawArrays(mapPrimitiveType(component->primitiveType()), 0, vertexBuffer->vertexCount());
       OGL_CHECK()
 
-      // update engine info
-      //ENGINE_INFO(drawArraysCalls++);
+      // update statistics
+      statisticsData.drawArraysCalls++;
     }
 
     if (NULL != vao)

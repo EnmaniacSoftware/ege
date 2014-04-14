@@ -12,12 +12,18 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Component, PComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Component : public Object, public ComponentHost
+class Component : public Object
+                , public ComponentHost
 {
   public:
 
     Component(Application* app, u32 uid, const String& name);
     virtual ~Component();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Gets component name. */
     const String& name() const;

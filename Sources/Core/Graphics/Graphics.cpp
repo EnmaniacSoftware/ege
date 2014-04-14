@@ -103,6 +103,9 @@ void Graphics::render()
     return;
   }
 
+  // emit
+  emit renderStart();
+
   // go thru all elements
   for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
@@ -126,6 +129,9 @@ void Graphics::render()
   // show what has been rendered in render window
   PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
   window->showFrameBuffer();
+
+  // emit
+  emit renderEnd();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Graphics::registerRenderTarget(PRenderTarget target)

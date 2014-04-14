@@ -9,6 +9,7 @@
 #include "EGEList.h"
 #include "EGEMap.h"
 #include "EGERenderComponent.h"
+#include "EGEComponent.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Interface/Renderer.h"
 #include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
@@ -28,6 +29,7 @@ EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystem : public Object
+                   , public ComponentHost
                    , public IRenderer
                    , public IComponentRenderer
                    , public IHardwareResourceProvider
@@ -71,9 +73,6 @@ class RenderSystem : public Object
      *  @param  viewport  Viewport to set.
      */
     virtual void setViewport(const PViewport& viewport);
-
-    /*! Resets statistics. */
-    void resetStats();
 
     /*! Sets texture minifying function filter. 
      *  @param  filter  Texture minifying filter to set.
@@ -132,10 +131,6 @@ class RenderSystem : public Object
     Matrix4f m_projectionMatrix;
     /*! View matrix. */
     Matrix4f m_viewMatrix;
-    /*! Number of batches rendered. */
-    u32 m_batchCount;
-    /*! Number of vertices rendered. */
-    u32 m_vertexCount;
     /*! Map of list of rendering queues sorted by hash value. */
     RenderQueueMap m_renderQueues;            
     /*! Texture minifying function filter. */
@@ -194,10 +189,6 @@ class RenderSystem : public Object
     const Matrix4f& viewMatrix() const override;
     /*! @see IRenderer::setProjectionMatrix. */
     void setProjectionMatrix(const Matrix4f& matrix) override;
-    /*! @see IRenderer::batchCount. */
-    u32 batchCount() const override;
-    /*! @see IRenderer::vertexCount. */
-    u32 vertexCount() const override;
 
     /*! @see IHardwareResourceProvider::requestCreateTexture2D. */
     u32 requestCreateTexture2D(const String& name, const PImage& image) override;

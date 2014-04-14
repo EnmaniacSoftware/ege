@@ -16,7 +16,6 @@
 #include "Core/Audio/AudioManager.h"
 #include "Core/Audio/Null/AudioManagerNull.h"
 #include "Core/Graphics/Image/ImageLoader.h"
-#include "Core/Debug/Interface/EngineInfo.h"
 #include "EGEDebug.h"
 #include "EGEDeviceServices.h"
 #include "EGEPurchaseServices.h"
@@ -61,11 +60,8 @@ Application::Application() : IEventListener(),
                              m_language("en"),
                              m_updateInterval(0LL),
                              m_renderInterval(0LL),
-                             m_state(STATE_INVALID), 
-                             m_fps(0), 
-                             m_rendersCount()
+                             m_state(STATE_INVALID)
 {
-  ege_connect(this, frameEnd, &EngineInfo::Instance(), EngineInfo::onReset);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Application::~Application()
@@ -288,7 +284,6 @@ EGEResult Application::construct(const Dictionary& params)
     m_audioManager = ege_new AudioManagerOpenAL(this);
   #endif // EGE_PLATFORM_IOS
 #else
-  egeDebug(KApplicationDebugName) << "WOOOHOOOO!!!!";
   m_audioManager = ege_new AudioManagerAirplay(this);
 #endif // EGE_AUDIO_NULL
 
@@ -389,35 +384,11 @@ void Application::update(const Time& time)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Application::render()
 {
-  // get current time
-  Time time(Timer::GetMicroseconds());
-
-  // check if 1 second hasnt passed yet
-  if (time - m_fpsCountStartTime < Time(1.0f))
-  {
-    // new render
-    ++m_rendersCount;
-  }
-  else
-  {
-    // store FPS indication
-    m_fps = m_rendersCount;
-
-    // reset renders count
-    m_rendersCount = 0;
-
-    // reset time stamp
-    m_fpsCountStartTime = time;
-  }
-
   if (STATE_RUNNING == m_state)
   {
     // do render
     graphics()->render();
   }
-
-  // store render duration
-  m_lastFrameRenderDuration.fromMicroseconds(Timer::GetMicroseconds() - time.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Application::run()

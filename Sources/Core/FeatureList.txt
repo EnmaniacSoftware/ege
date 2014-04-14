@@ -3,4 +3,3 @@ This is list of the feature list defines:
 EGE_FEATURE_DEBUG - general debugging
 EGE_FEATURE_MEMORY_DEBUG - memory debugging
 EGE_FEATURE_OPENGL_DEBUG - OpenGL debugging
-EGE_FEATURE_ENGINE_INFO - engine info available

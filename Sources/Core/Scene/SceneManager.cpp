@@ -112,12 +112,12 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   //// update auto uniform data source
   //m_pcAutoUniformDataSource->setCamera( pcCamera );
   
-  renderSystem->resetStats();
+  //renderSystem->resetStats();
 
   renderSystem->flush();
 
-  viewport->setVertexCount(renderer->vertexCount());
-  viewport->setBatchCount(renderer->batchCount());
+  //viewport->setVertexCount(renderer->vertexCount());
+  //viewport->setBatchCount(renderer->batchCount());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::update(const Time& time)

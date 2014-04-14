@@ -39,10 +39,6 @@ class IRenderer
      *  @param  matrix  Project matrix.
      */
     virtual void setProjectionMatrix(const Matrix4f& matrix) = 0;
-    /*! Returns number of batches rendered last frame. */
-    virtual u32 batchCount() const = 0;
-    /*! Returns number of vertices rendered last frame. */
-    virtual u32 vertexCount() const = 0;
     /*! Returns current render target. */
     virtual PRenderTarget currentRenderTarget() const = 0;
 };

@@ -40,6 +40,10 @@ class Graphics : public Object
      *  @param renderTarget Render target for which the rendering was done.
      */
     Signal1<PRenderTarget> postRender;
+    /*! Signal emitted before rendering starts. */
+    Signal0<> renderStart;
+    /*! Signal emitted after rendering ends. */
+    Signal0<> renderEnd;
 
   public:
 

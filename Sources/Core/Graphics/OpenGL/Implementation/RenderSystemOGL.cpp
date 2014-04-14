@@ -569,7 +569,7 @@ void RenderSystemOGL::createAndSetupVAOs()
     for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)
     {
       // create vao
-      PVertexArrayObject vao = new VertexArrayObject(app(), component->name() + String::Format("-vao-%1", pass));
+      PVertexArrayObject vao = ege_new VertexArrayObject(app(), component->name() + String::Format("-vao-%1", pass));
       if ((NULL == vao) || (EGE_SUCCESS != component->addComponent(vao)))
       {
         // error!

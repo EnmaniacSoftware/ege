@@ -3,10 +3,12 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Component::Component(Application* app, u32 uid, const String& name) : Object(app, uid),
-                                                                      ComponentHost()
+EGE_DEFINE_NEW_OPERATORS(Component)
+EGE_DEFINE_DELETE_OPERATORS(Component)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Component::Component(Application* app, u32 uid, const String& name) : Object(app, uid)
+                                                                    , m_name(name)
 {
-  m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Component::~Component()

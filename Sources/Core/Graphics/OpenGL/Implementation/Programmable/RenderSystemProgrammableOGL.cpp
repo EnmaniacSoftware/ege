@@ -3,6 +3,7 @@
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/OpenGL/ShaderOGL.h"
 #include "Core/Graphics/OpenGL/ProgramOGL.h"
+#include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
@@ -202,6 +203,8 @@ PProgram RenderSystemProgrammableOGL::createProgram(const String& name, const Li
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& component, const Matrix4f& modelMatrix)
 {
+  RenderSystemFrameStatisticData& statisticsData = ege_cast<RenderSystemStatistics*>(this->component(EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS))->currentRecord();
+
   // set component being rendered
   setActiveRenderComponent(component);
 
@@ -271,20 +274,22 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
       vao->bind();
     }
 
-    u32 value = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
+    // determine number of vertices to render
+    const u32 vertexCount = (0 < indexBuffer->indexCount()) ? indexBuffer->indexCount() : vertexBuffer->vertexCount();
 
-    m_vertexCount += value;
-    m_batchCount++;
+    // update statistics
+    statisticsData.vertexCount += vertexCount;
+    statisticsData.batchCount++;
 
     // check if INDICIES are to be used
     if (0 < indexBuffer->indexCount())
     {
       // render only if there is anything to render
       glDrawElements(mapPrimitiveType(component->primitiveType()), indexBuffer->indexCount(), mapIndexSize(indexBuffer->size()), indexBuffer->offset());
-      OGL_CHECK();
+      OGL_CHECK()
 
-      // update engine info
-      //ENGINE_INFO(drawElementsCalls++);
+      // update statistics
+      statisticsData.drawElementsCalls++;
     }
     else
     {
@@ -292,8 +297,8 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
       glDrawArrays(mapPrimitiveType(component->primitiveType()), 0, vertexBuffer->vertexCount());
       OGL_CHECK()
 
-      // update engine info
-      //ENGINE_INFO(drawArraysCalls++);
+      // update statistics
+      statisticsData.drawArraysCalls++;
     }
 
     if (NULL != vao)

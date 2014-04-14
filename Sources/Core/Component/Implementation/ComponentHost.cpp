@@ -50,6 +50,32 @@ List<PComponent> ComponentHost::components(u32 type) const
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PComponent ComponentHost::component(u32 type) const
+{
+  List<PComponent> list;
+  m_pool.values(type, list);
+
+  return list.first(NULL);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PComponent ComponentHost::component(const String& name) const
+{
+  PComponent component;
+
+  // go thru all registered components
+  for (MultiMap<u32, PComponent>::const_iterator it = m_pool.begin(); (it != m_pool.end()) && (NULL == component); ++it)
+  {
+    const PComponent& current = it->second;
+    if (current->name() == name)
+    {
+      // found
+      component = current;
+    }
+  }
+
+  return component;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ComponentHost::removeComponent(const PComponent& component)
 {
   m_pool.removeByValue(component);

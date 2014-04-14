@@ -65,7 +65,6 @@
     <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\EngineInfo.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp" />
     <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
     <ClCompile Include="..\..\Sources\Core\Directory\Implementation\Directory.cpp" />
@@ -113,6 +112,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderComponent.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderQueueFactory.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderSystem.cpp" />
@@ -277,7 +277,6 @@
     <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
-    <ClInclude Include="..\..\Sources\Core\Debug\Interface\EngineInfo.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
@@ -314,6 +313,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h" />
@@ -749,7 +749,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_RENDERING_OPENGL_FIXED;EGE_PHYSICS_NULL;EGE_RESOURCEMANAGER_MULTI_THREAD;EGE_IMAGEMANAGER_SINGLE_THREAD;EGE_FEATURE_OPENGL_DEBUG;EGE_XML_TINYXML;EGE_AUDIO_OPENAL;EGE_RANDOM_STDC;EGE_THREAD_PTHREAD;TIXML_USE_STL;WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\Sqlite 3.8.3.1</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MinimalRebuild>false</MinimalRebuild>

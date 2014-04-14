@@ -126,8 +126,6 @@ class Application : public IEventListener
 
     /*! Returns last frame update duration. */
     const Time& lastFrameUpdateDuration() const;
-    /*! Returns last frame render duration. */
-    const Time& lastFrameRenderDuration() const;
 
   protected:
 
@@ -190,8 +188,6 @@ class Application : public IEventListener
     String m_language;
     /*! Last frame update duration. */
     Time m_lastFrameUpdateDuration;
-    /*! Last frame render duration. */
-    Time m_lastFrameRenderDuration;
     /*! Time at which last update was done. */
     Time m_lastUpdateTime;
     /*! Time interval between updates. */
@@ -202,12 +198,6 @@ class Application : public IEventListener
     Time m_updateAccumulator;
     /*! Current state. */
     State m_state;
-    /*! Current FPS indication. */
-    s32 m_fps;
-    /*! Number of frames rendering within current count interval. */
-    s32 m_rendersCount;
-    /*! Time at which last FPS count started. */
-    Time m_fpsCountStartTime;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline Graphics* Application::graphics() const 
@@ -295,19 +285,9 @@ inline Application::State Application::state() const
   return m_state; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline s32 Application::fps() const 
-{ 
-  return m_fps; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline const Time& Application::lastFrameUpdateDuration() const
 {
   return m_lastFrameUpdateDuration;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline const Time& Application::lastFrameRenderDuration() const
-{
-  return m_lastFrameRenderDuration;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

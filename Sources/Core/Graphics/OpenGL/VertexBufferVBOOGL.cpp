@@ -1,6 +1,5 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
 #include "Core/Data/DataBuffer.h"
-#include "Core/Debug/Interface/EngineInfo.h"
 #include "EGEOpenGL.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
@@ -142,7 +141,7 @@ void* VertexBufferVBO::lock(u32 offset, u32 count)
           OGL_CHECK();
 
           // update engine info
-          ENGINE_INFO(VBOBufferDataCalls++);
+          //ENGINE_INFO(VBOBufferDataCalls++);
         }
 
         // map the buffer
@@ -206,7 +205,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferDataCalls++);
+      //ENGINE_INFO(VBOBufferDataCalls++);
 	  }
 
     // check if entire buffer was locked
@@ -217,7 +216,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferDataCalls++);
+      //ENGINE_INFO(VBOBufferDataCalls++);
     }
     else
     {
@@ -226,7 +225,7 @@ void VertexBufferVBO::unlock(const void* data)
       OGL_CHECK();
 
       // update engine info
-      ENGINE_INFO(VBOBufferSubDataCalls++);
+      //ENGINE_INFO(VBOBufferSubDataCalls++);
     }
   }
   else
@@ -263,7 +262,7 @@ bool VertexBufferVBO::reallocateBuffer(u32 count)
     OGL_CHECK();
 
     // update engine info
-    ENGINE_INFO(VBOBufferDataCalls++);
+    //ENGINE_INFO(VBOBufferDataCalls++);
 
     // allocate enough space in shadow buffer if required
     if (NULL != m_shadowBuffer)
