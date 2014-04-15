@@ -34,6 +34,9 @@
     <Filter Include="Tests\Services">
       <UniqueIdentifier>{8c9b99cc-3fed-4d51-bdc3-130f1e7e55a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Timer">
+      <UniqueIdentifier>{f8ec26f0-7cf1-4ab7-a778-c7dfe62bcf96}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -119,6 +122,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp">
       <Filter>Tests\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\Tests\Unittest\TimerTest.cpp">
+      <Filter>Tests\Timer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
