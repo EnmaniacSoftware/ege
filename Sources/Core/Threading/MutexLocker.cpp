@@ -5,14 +5,14 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MutexLocker::MutexLocker(PMutex mutex, bool debug) : m_mutex(mutex),
+MutexLocker::MutexLocker(PMutex& mutex, bool debug) : m_mutex(mutex),
                                                      m_debug(debug)
 {
   if (NULL != m_mutex)
   {
     if (m_debug)
     {
-      Debug::PrintWithArgs("Locking %p %d at thread %d", m_mutex.object(), m_mutex->referenceCount(), Thread::CurrentId());
+      Debug::PrintWithArgs("Locking   %p %d at thread %d", m_mutex.object(), m_mutex->referenceCount(), Thread::CurrentId());
     }
 
     m_mutex->lock();

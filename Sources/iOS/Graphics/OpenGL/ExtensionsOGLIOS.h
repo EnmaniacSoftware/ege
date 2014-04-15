@@ -45,6 +45,7 @@ typedef void (GL_APIENTRYP PFNGLBINDFRAMEBUFFERPROC) (GLenum target, GLuint fram
 typedef GLenum (GL_APIENTRYP PFNGLCHECKFRAMEBUFFERSTATUSPROC) (GLenum target);
 typedef void (GL_APIENTRYP PFNGLFRAMEBUFFERTEXTURE2DPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
 typedef GLvoid (GL_APIENTRYP PFNGLRENDERBUFFERSTORAGEPROC) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+typedef void (GL_APIENTRYP PFNGLGENERATEMIPMAPPROC) (GLenum target);
 
 extern PFNGLGENFRAMEBUFFERSPROC glGenFramebuffers;
 extern PFNGLDELETEFRAMEBUFFERSPROC glDeleteFramebuffers;

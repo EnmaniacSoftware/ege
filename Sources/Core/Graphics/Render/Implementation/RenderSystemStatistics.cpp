@@ -106,8 +106,8 @@ void RenderSystemStatistics::dumpDataToFile()
   File file(m_logFileName);
   if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
   {
-    DataBuffer buffer(buffer.string().toAscii(), buffer.string().length());
-    file.write(buffer);
+    DataBuffer dataBuffer(buffer.string().toAscii(), buffer.string().length());
+    file.write(dataBuffer);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -37,7 +37,6 @@
 		4514712718C5231900AAC617 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3218C5231800AAC617 /* Node.cpp */; };
 		4514712818C5231900AAC617 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3718C5231800AAC617 /* Console.cpp */; };
 		4514712918C5231900AAC617 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3818C5231800AAC617 /* Debug.cpp */; };
-		4514712A18C5231900AAC617 /* EngineInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3918C5231800AAC617 /* EngineInfo.cpp */; };
 		4514712B18C5231900AAC617 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3A18C5231800AAC617 /* Logger.cpp */; };
 		4514712E18C5231900AAC617 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F4518C5231800AAC617 /* Device.cpp */; };
 		4514712F18C5231900AAC617 /* Directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F4918C5231800AAC617 /* Directory.cpp */; };
@@ -160,7 +159,6 @@
 		451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C618C5231900AAC617 /* WaitCondition.cpp */; };
 		451471CA18C5231900AAC617 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C918C5231900AAC617 /* Time.cpp */; };
 		451471CB18C5231900AAC617 /* TimeLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470CB18C5231900AAC617 /* TimeLine.cpp */; };
-		451471CC18C5231900AAC617 /* Timer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470CD18C5231900AAC617 /* Timer.cpp */; };
 		451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D018C5231900AAC617 /* ByteOrder.cpp */; };
 		451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D218C5231900AAC617 /* CommandLineParser.cpp */; };
 		451471CF18C5231900AAC617 /* Dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D518C5231900AAC617 /* Dialog.cpp */; };
@@ -203,7 +201,8 @@
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
 		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
-		4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514722218C5236200AAC617 /* TimerIOS_p.mm */; };
+		453B563818FDD505004E21D0 /* TimerIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 453B563718FDD505004E21D0 /* TimerIOS.mm */; };
+		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
 		4558971618C548FC002C4C8B /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558970818C54679002C4C8B /* libsqlite3.a */; };
 		4558971B18C548FC002C4C8B /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971718C548FC002C4C8B /* libjpeglib.a */; };
 		4558971C18C548FC002C4C8B /* libpnglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971818C548FC002C4C8B /* libpnglib.a */; };
@@ -455,11 +454,9 @@
 		45146F3418C5231800AAC617 /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		45146F3718C5231800AAC617 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		45146F3818C5231800AAC617 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
-		45146F3918C5231800AAC617 /* EngineInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineInfo.cpp; sourceTree = "<group>"; };
 		45146F3A18C5231800AAC617 /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
 		45146F3C18C5231800AAC617 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		45146F3D18C5231800AAC617 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
-		45146F3E18C5231800AAC617 /* EngineInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineInfo.h; sourceTree = "<group>"; };
 		45146F3F18C5231800AAC617 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
 		45146F4518C5231800AAC617 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Device.cpp; sourceTree = "<group>"; };
 		45146F4618C5231800AAC617 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
@@ -740,8 +737,6 @@
 		451470CA18C5231900AAC617 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
 		451470CB18C5231900AAC617 /* TimeLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLine.cpp; sourceTree = "<group>"; };
 		451470CC18C5231900AAC617 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
-		451470CD18C5231900AAC617 /* Timer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Timer.cpp; sourceTree = "<group>"; };
-		451470CE18C5231900AAC617 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		451470D018C5231900AAC617 /* ByteOrder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ByteOrder.cpp; sourceTree = "<group>"; };
 		451470D118C5231900AAC617 /* ByteOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteOrder.h; sourceTree = "<group>"; };
 		451470D218C5231900AAC617 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
@@ -819,9 +814,11 @@
 		4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
 		4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
-		4514722118C5236200AAC617 /* TimerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerIOS_p.h; sourceTree = "<group>"; };
-		4514722218C5236200AAC617 /* TimerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS_p.mm; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
+		453B563718FDD505004E21D0 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
+		453B563A18FDD548004E21D0 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		453B563B18FDD5A1004E21D0 /* RenderSystemStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemStatistics.h; sourceTree = "<group>"; };
+		453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemStatistics.cpp; sourceTree = "<group>"; };
 		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
 		4558970918C54686002C4C8B /* pnglib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pnglib.xcodeproj; path = ../../External/PNGLib/pnglib.xcodeproj; sourceTree = "<group>"; };
 		4558971318C54848002C4C8B /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../External/Zlib/zlib.xcodeproj; sourceTree = "<group>"; };
@@ -1306,7 +1303,6 @@
 			children = (
 				45146F3718C5231800AAC617 /* Console.cpp */,
 				45146F3818C5231800AAC617 /* Debug.cpp */,
-				45146F3918C5231800AAC617 /* EngineInfo.cpp */,
 				45146F3A18C5231800AAC617 /* Logger.cpp */,
 			);
 			path = Implementation;
@@ -1317,7 +1313,6 @@
 			children = (
 				45146F3C18C5231800AAC617 /* Console.h */,
 				45146F3D18C5231800AAC617 /* Debug.h */,
-				45146F3E18C5231800AAC617 /* EngineInfo.h */,
 				45146F3F18C5231800AAC617 /* Logger.h */,
 			);
 			path = Interface;
@@ -1540,6 +1535,8 @@
 			isa = PBXGroup;
 			children = (
 				45146FAD18C5231900AAC617 /* BatchedRenderQueue.cpp */,
+				453B563B18FDD5A1004E21D0 /* RenderSystemStatistics.h */,
+				453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */,
 				45146FAE18C5231900AAC617 /* BatchedRenderQueue.h */,
 				45146FAF18C5231900AAC617 /* ComponentRenderer.h */,
 				45146FB018C5231900AAC617 /* RenderComponent.cpp */,
@@ -1965,12 +1962,11 @@
 		451470C818C5231900AAC617 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
+				453B563918FDD548004E21D0 /* Interface */,
 				451470C918C5231900AAC617 /* Time.cpp */,
 				451470CA18C5231900AAC617 /* Time.h */,
 				451470CB18C5231900AAC617 /* TimeLine.cpp */,
 				451470CC18C5231900AAC617 /* TimeLine.h */,
-				451470CD18C5231900AAC617 /* Timer.cpp */,
-				451470CE18C5231900AAC617 /* Timer.h */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -2263,8 +2259,7 @@
 		4514722018C5236200AAC617 /* Timer */ = {
 			isa = PBXGroup;
 			children = (
-				4514722118C5236200AAC617 /* TimerIOS_p.h */,
-				4514722218C5236200AAC617 /* TimerIOS_p.mm */,
+				453B563618FDD505004E21D0 /* Implementation */,
 			);
 			path = Timer;
 			sourceTree = "<group>";
@@ -2299,6 +2294,22 @@
 				45340CA918C65AB200ECC3B8 /* libzlib.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		453B563618FDD505004E21D0 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				453B563718FDD505004E21D0 /* TimerIOS.mm */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		453B563918FDD548004E21D0 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				453B563A18FDD548004E21D0 /* Timer.h */,
+			);
+			path = Interface;
 			sourceTree = "<group>";
 		};
 		4558970418C54679002C4C8B /* Products */ = {
@@ -2599,7 +2610,6 @@
 				4514712718C5231900AAC617 /* Node.cpp in Sources */,
 				4514712818C5231900AAC617 /* Console.cpp in Sources */,
 				4514712918C5231900AAC617 /* Debug.cpp in Sources */,
-				4514712A18C5231900AAC617 /* EngineInfo.cpp in Sources */,
 				4514712B18C5231900AAC617 /* Logger.cpp in Sources */,
 				4514712E18C5231900AAC617 /* Device.cpp in Sources */,
 				4514712F18C5231900AAC617 /* Directory.cpp in Sources */,
@@ -2722,7 +2732,6 @@
 				451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */,
 				451471CA18C5231900AAC617 /* Time.cpp in Sources */,
 				451471CB18C5231900AAC617 /* TimeLine.cpp in Sources */,
-				451471CC18C5231900AAC617 /* Timer.cpp in Sources */,
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
 				451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */,
 				451471CF18C5231900AAC617 /* Dialog.cpp in Sources */,
@@ -2765,7 +2774,6 @@
 				4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */,
 				4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */,
 				4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */,
-				4514723D18C5236200AAC617 /* TimerIOS_p.mm in Sources */,
 				457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */,
 				457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */,
 				45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */,
@@ -2794,6 +2802,8 @@
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,
 				455A2FFC18F48D9D00CD9581 /* VertexBufferVAOGL.cpp in Sources */,
 				455A2FFD18F48D9D00CD9581 /* VertexBufferVBOOGL.cpp in Sources */,
+				453B563818FDD505004E21D0 /* TimerIOS.mm in Sources */,
+				453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2862,9 +2872,8 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					EGE_FEATURE_DEBUG,
 					EGE_FEATURE_MEMORY_DEBUG,
-					EGE_FEATURE_ENGINE_INFO,
 					EGE_IMAGEMANAGER_SINGLE_THREAD,
-					EGE_RESOURCEMANAGER_SINGLE_THREAD,
+					EGE_RESOURCEMANAGER_MULTI_THREAD,
 					EGE_PHYSICS_NULL,
 					EGE_RENDERING_OPENGL_FIXED,
 					EGE_THREAD_PTHREAD,

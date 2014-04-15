@@ -3,8 +3,8 @@
 #include "Core/Application/Application.h"
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #include "Core/Resource/MultiThread/ResourceManagerWorkThread.h"
-#include <EGEGraphics.h>
-#include <EGEDebug.h>
+#include "EGEGraphics.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -14,7 +14,7 @@ class MutexLocker
 {
   public:
 
-    MutexLocker(PMutex mutex, bool debug = false);
+    MutexLocker(PMutex& mutex, bool debug = false);
    ~MutexLocker();
 
   private:

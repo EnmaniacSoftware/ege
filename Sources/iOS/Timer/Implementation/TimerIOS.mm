@@ -1,5 +1,6 @@
 #include "Core/Timer/Interface/Timer.h"
 #include "EGEMath.h"
+#include <mach/mach_time.h>
 
 EGE_NAMESPACE
 

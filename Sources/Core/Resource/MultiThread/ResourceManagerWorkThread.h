@@ -6,7 +6,7 @@
 /*! Resource manager's working thread responsible for processing of loading/unloading queues. 
  */
 
-#include <EGEThread.h>
+#include "EGEThread.h"
 
 EGE_NAMESPACE_BEGIN
 
