@@ -157,8 +157,6 @@
 		451471C718C5231900AAC617 /* WaitCondition_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C218C5231900AAC617 /* WaitCondition_p.cpp */; };
 		451471C818C5231900AAC617 /* Thread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C418C5231900AAC617 /* Thread.cpp */; };
 		451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C618C5231900AAC617 /* WaitCondition.cpp */; };
-		451471CA18C5231900AAC617 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470C918C5231900AAC617 /* Time.cpp */; };
-		451471CB18C5231900AAC617 /* TimeLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470CB18C5231900AAC617 /* TimeLine.cpp */; };
 		451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D018C5231900AAC617 /* ByteOrder.cpp */; };
 		451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D218C5231900AAC617 /* CommandLineParser.cpp */; };
 		451471CF18C5231900AAC617 /* Dialog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470D518C5231900AAC617 /* Dialog.cpp */; };
@@ -201,7 +199,6 @@
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
 		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
-		453B563818FDD505004E21D0 /* TimerIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 453B563718FDD505004E21D0 /* TimerIOS.mm */; };
 		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
 		4558971618C548FC002C4C8B /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558970818C54679002C4C8B /* libsqlite3.a */; };
 		4558971B18C548FC002C4C8B /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971718C548FC002C4C8B /* libjpeglib.a */; };
@@ -224,6 +221,9 @@
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
+		458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79718FF1F0E00333B67 /* Time.cpp */; };
+		458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79818FF1F0E00333B67 /* TimeLine.cpp */; };
+		458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 458AA7A918FF1F3100333B67 /* TimerIOS.mm */; };
 		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
 		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
 		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
@@ -733,10 +733,6 @@
 		451470C518C5231900AAC617 /* Thread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Thread.h; sourceTree = "<group>"; };
 		451470C618C5231900AAC617 /* WaitCondition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaitCondition.cpp; sourceTree = "<group>"; };
 		451470C718C5231900AAC617 /* WaitCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaitCondition.h; sourceTree = "<group>"; };
-		451470C918C5231900AAC617 /* Time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Time.cpp; sourceTree = "<group>"; };
-		451470CA18C5231900AAC617 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
-		451470CB18C5231900AAC617 /* TimeLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLine.cpp; sourceTree = "<group>"; };
-		451470CC18C5231900AAC617 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
 		451470D018C5231900AAC617 /* ByteOrder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ByteOrder.cpp; sourceTree = "<group>"; };
 		451470D118C5231900AAC617 /* ByteOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ByteOrder.h; sourceTree = "<group>"; };
 		451470D218C5231900AAC617 /* CommandLineParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CommandLineParser.cpp; sourceTree = "<group>"; };
@@ -815,8 +811,6 @@
 		4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
-		453B563718FDD505004E21D0 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
-		453B563A18FDD548004E21D0 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		453B563B18FDD5A1004E21D0 /* RenderSystemStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemStatistics.h; sourceTree = "<group>"; };
 		453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemStatistics.cpp; sourceTree = "<group>"; };
 		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
@@ -862,6 +856,12 @@
 		457A67C218C7DB220004D38F /* EGEDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDatabase.h; path = ../../Sources/EGEDatabase.h; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		458AA79718FF1F0E00333B67 /* Time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Time.cpp; sourceTree = "<group>"; };
+		458AA79818FF1F0E00333B67 /* TimeLine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeLine.cpp; sourceTree = "<group>"; };
+		458AA79A18FF1F0E00333B67 /* Time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Time.h; sourceTree = "<group>"; };
+		458AA79B18FF1F0E00333B67 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
+		458AA79C18FF1F0E00333B67 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		458AA7A918FF1F3100333B67 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
 		45BDD99E18CA6FBA004B33E3 /* SqlQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlQuery.h; sourceTree = "<group>"; };
 		45BDD99F18CA6FBA004B33E3 /* SqlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResult.h; sourceTree = "<group>"; };
 		45BDD9A518CA6FD7004B33E3 /* SqlResultSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResultSqlite.h; sourceTree = "<group>"; };
@@ -1052,7 +1052,7 @@
 				451470AA18C5231900AAC617 /* Signal */,
 				451470AE18C5231900AAC617 /* String */,
 				451470B818C5231900AAC617 /* Threading */,
-				451470C818C5231900AAC617 /* Timer */,
+				458AA79518FF1F0E00333B67 /* Time */,
 				451470CF18C5231900AAC617 /* Tools */,
 				451470D418C5231900AAC617 /* UI */,
 				451470EF18C5231900AAC617 /* Version */,
@@ -1959,18 +1959,6 @@
 			path = PThread;
 			sourceTree = "<group>";
 		};
-		451470C818C5231900AAC617 /* Timer */ = {
-			isa = PBXGroup;
-			children = (
-				453B563918FDD548004E21D0 /* Interface */,
-				451470C918C5231900AAC617 /* Time.cpp */,
-				451470CA18C5231900AAC617 /* Time.h */,
-				451470CB18C5231900AAC617 /* TimeLine.cpp */,
-				451470CC18C5231900AAC617 /* TimeLine.h */,
-			);
-			path = Timer;
-			sourceTree = "<group>";
-		};
 		451470CF18C5231900AAC617 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -2101,7 +2089,7 @@
 				4514721118C5236200AAC617 /* Services */,
 				4514721C18C5236200AAC617 /* String */,
 				4514721E18C5236200AAC617 /* Threading */,
-				4514722018C5236200AAC617 /* Timer */,
+				458AA7A718FF1F3100333B67 /* Time */,
 			);
 			name = iOS;
 			path = ../../Sources/iOS;
@@ -2256,14 +2244,6 @@
 			path = Threading;
 			sourceTree = "<group>";
 		};
-		4514722018C5236200AAC617 /* Timer */ = {
-			isa = PBXGroup;
-			children = (
-				453B563618FDD505004E21D0 /* Implementation */,
-			);
-			path = Timer;
-			sourceTree = "<group>";
-		};
 		45340C9518C65AB200ECC3B8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2294,22 +2274,6 @@
 				45340CA918C65AB200ECC3B8 /* libzlib.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		453B563618FDD505004E21D0 /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
-				453B563718FDD505004E21D0 /* TimerIOS.mm */,
-			);
-			path = Implementation;
-			sourceTree = "<group>";
-		};
-		453B563918FDD548004E21D0 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				453B563A18FDD548004E21D0 /* Timer.h */,
-			);
-			path = Interface;
 			sourceTree = "<group>";
 		};
 		4558970418C54679002C4C8B /* Products */ = {
@@ -2419,6 +2383,50 @@
 				45877DA816F09F5B00B4252B /* Foundation.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		458AA79518FF1F0E00333B67 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				458AA79618FF1F0E00333B67 /* Implementation */,
+				458AA79918FF1F0E00333B67 /* Interface */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
+		458AA79618FF1F0E00333B67 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				458AA79718FF1F0E00333B67 /* Time.cpp */,
+				458AA79818FF1F0E00333B67 /* TimeLine.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		458AA79918FF1F0E00333B67 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				458AA79A18FF1F0E00333B67 /* Time.h */,
+				458AA79B18FF1F0E00333B67 /* TimeLine.h */,
+				458AA79C18FF1F0E00333B67 /* Timer.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		458AA7A718FF1F3100333B67 /* Time */ = {
+			isa = PBXGroup;
+			children = (
+				458AA7A818FF1F3100333B67 /* Implementation */,
+			);
+			path = Time;
+			sourceTree = "<group>";
+		};
+		458AA7A818FF1F3100333B67 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				458AA7A918FF1F3100333B67 /* TimerIOS.mm */,
+			);
+			path = Implementation;
 			sourceTree = "<group>";
 		};
 		45C3AD2218CDF4380009ABA3 /* Implementation */ = {
@@ -2730,8 +2738,6 @@
 				451471C718C5231900AAC617 /* WaitCondition_p.cpp in Sources */,
 				451471C818C5231900AAC617 /* Thread.cpp in Sources */,
 				451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */,
-				451471CA18C5231900AAC617 /* Time.cpp in Sources */,
-				451471CB18C5231900AAC617 /* TimeLine.cpp in Sources */,
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
 				451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */,
 				451471CF18C5231900AAC617 /* Dialog.cpp in Sources */,
@@ -2802,8 +2808,10 @@
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,
 				455A2FFC18F48D9D00CD9581 /* VertexBufferVAOGL.cpp in Sources */,
 				455A2FFD18F48D9D00CD9581 /* VertexBufferVBOOGL.cpp in Sources */,
-				453B563818FDD505004E21D0 /* TimerIOS.mm in Sources */,
 				453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */,
+				458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */,
+				458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */,
+				458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
