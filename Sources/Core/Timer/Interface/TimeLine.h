@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_TIMELINE_H
-#define EGE_CORE_TIMELINE_H
+#ifndef EGE_CORE_TIME_TIMELINE_H
+#define EGE_CORE_TIME_TIMELINE_H
 
 #include "EGE.h"
 #include "EGETime.h"
@@ -8,6 +8,13 @@
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available direction values. */
+enum TimeLineDirection
+{
+  TLD_FORWARD,              /*!< Forward direction. */
+  TLD_BACKWARD,             /*!< Backward direction. */ 
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(TimeLine, PTimeLine)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +40,7 @@ class TimeLine : public Object
   public signals:
 
     /*! Signal emitted when frame changes. 
-     *  @param s32 Frame to which change occured. 
+     *  @param  Frame to which change occured. 
      */
     Signal1<s32> frameChanged;
     /*! Signal emitted when time line reaches the end and does not loop. */
@@ -41,20 +48,30 @@ class TimeLine : public Object
 
   public:
 
+    /*! Updates objects. 
+     *  @param  time  Time increment by which update object.
+     */
+    void update(const Time& time);
     /*! Resets time line. */
     void reset();
-    /*! Updates objects. */
-    void update(const Time& time);
     /*! Returns current state. */
-    State state() const { return m_state; }
+    State state() const;
 
-    /*! Sets duration. */
+    /*! Sets duration. 
+     *  @param  time  Time line duration to set.
+     */
     void setDuration(const Time& time);
-    /*! Sets start frame. */
+    /*! Sets start frame. 
+     *  @param  frame Start frame index.
+     */
     void setStartFrame(s32 frame);
-    /*! Sets end frame. */
+    /*! Sets end frame. 
+     *  @param  frame End frame index.
+     */
     void setEndFrame(s32 frame);
-    /*! Sets loop count. */
+    /*! Sets loop count. 
+     *  @param  count Number of loop to perform.
+     */
     void setLoopCount(s32 count);
 
   public slots:
@@ -66,7 +83,9 @@ class TimeLine : public Object
 
   private:
 
-    /*! Returns frame corresponding to given time. */
+    /*! Returns frame corresponding to given time. 
+     *  @param  time  Time for which calculation is to be performed.
+     */
     s32 frameForTime(const Time& time) const;
 
   private:
@@ -82,7 +101,7 @@ class TimeLine : public Object
     /*! Current state. */
     State m_state;
     /*! Direction. */
-    EGETimeLine::Direction m_direction;
+    TimeLineDirection m_direction;
     /*! Time passes since start. */
     Time m_timePassed;
     /*! Last notified frame. */
@@ -94,4 +113,4 @@ class TimeLine : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_TIMELINE_H
+#endif // EGE_CORE_TIME_TIMELINE_H

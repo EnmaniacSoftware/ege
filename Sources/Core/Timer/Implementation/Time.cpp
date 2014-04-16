@@ -1,6 +1,6 @@
-#include "Core/Timer/Time.h"
+#include "Core/Timer/Interface/Time.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Time::Time() : m_time(0)
@@ -19,40 +19,34 @@ Time::Time(float32 seconds) : m_time(static_cast<s64>(seconds * 1000000LL))
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Time Time::FromSeconds(float32 seconds)
+bool Time::operator > (const Time& other) const
 {
-  Time time(seconds);
-  return time;
+  return m_time > other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator > (const Time& time) const
+bool Time::operator >= (const Time& other) const
 {
-  return m_time > time.m_time;
+  return m_time >= other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator >= (const Time& time) const
+bool Time::operator < (const Time& other) const
 {
-  return m_time >= time.m_time;
+  return m_time < other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator < (const Time& time) const
+bool Time::operator <= (const Time& other) const
 {
-  return m_time < time.m_time;
+  return m_time <= other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator <= (const Time& time) const
+bool Time::operator == (const Time& other)
 {
-  return m_time <= time.m_time;
+  return m_time == other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator == (const Time& time)
+bool Time::operator != (const Time& other)
 {
-  return m_time == time.m_time;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Time::operator != (const Time& time)
-{
-  return m_time != time.m_time;
+  return m_time != other.m_time;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Time& Time::operator = (float32 seconds)
@@ -67,23 +61,23 @@ Time& Time::operator = (s64 microseconds)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Time& Time::operator += (const Time& time)
+Time& Time::operator += (const Time& other)
 {
-  m_time += time.m_time;
+  m_time += other.m_time;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Time& Time::operator -= (const Time& time)
+Time& Time::operator -= (const Time& other)
 {
-  m_time -= time.m_time;
+  m_time -= other.m_time;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Time& Time::operator = (const Time& time)
+Time& Time::operator = (const Time& other)
 {
-  if (this != &time)
+  if (this != &other)
   {
-    m_time = time.m_time;
+    m_time = other.m_time;
   }
   
   return *this;
@@ -124,5 +118,3 @@ float32 Time::minutes() const
   return m_time / 60000000.0f;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

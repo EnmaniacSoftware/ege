@@ -1,19 +1,19 @@
-#include "Core/Timer/TimeLine.h"
+#include "Core/Timer/Interface/TimeLine.h"
 #include "EGEMath.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(TimeLine)
 EGE_DEFINE_DELETE_OPERATORS(TimeLine)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TimeLine::TimeLine(Application* app) : Object(app), 
-                                       m_duration(1.0f), 
-                                       m_startFrame(0), 
-                                       m_endFrame(0), 
-                                       m_loopCount(1), 
-                                       m_state(STATE_IDLE), 
-                                       m_direction(EGETimeLine::DIRECTION_FORWARD)
+TimeLine::TimeLine(Application* app) : Object(app) 
+                                     , m_duration(1.0f) 
+                                     , m_startFrame(0) 
+                                     , m_endFrame(0)
+                                     , m_loopCount(1) 
+                                     , m_state(STATE_IDLE) 
+                                     , m_direction(TLD_FORWARD)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,6 +71,7 @@ void TimeLine::update(const Time& time)
   // check if running
   if (STATE_RUNNING == state())
   {
+    // update time
     m_timePassed += time;
 
     // get frame for current time
@@ -109,13 +110,16 @@ void TimeLine::update(const Time& time)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 TimeLine::frameForTime(const Time& time) const
 {
-  if (EGETimeLine::DIRECTION_FORWARD == m_direction)
+  if (TLD_FORWARD == m_direction)
   {
-      return m_startFrame + (s32) ((m_endFrame - m_startFrame) * time.seconds() / m_duration.seconds());
+    return m_startFrame + static_cast<s32>((m_endFrame - m_startFrame) * time.seconds() / m_duration.seconds());
   }
 
-  return m_startFrame + (s32) Math::Ceil((m_endFrame - m_startFrame) * time.seconds() / m_duration.seconds());
+  return m_startFrame + static_cast<s32>(Math::Ceil((m_endFrame - m_startFrame) * time.seconds() / m_duration.seconds()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
+TimeLine::State TimeLine::state() const 
+{ 
+  return m_state; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

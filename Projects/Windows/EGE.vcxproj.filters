@@ -334,6 +334,9 @@
     <Filter Include="Core\Timer\Interface">
       <UniqueIdentifier>{c51cd860-3d61-4b33-b419-d74ce2054f4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Timer\Implementation">
+      <UniqueIdentifier>{c0fb9124-d2e6-4551-8718-768fe5de1013}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -530,9 +533,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp">
-      <Filter>Core\Timer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp">
       <Filter>Core\Resource</Filter>
@@ -786,9 +786,6 @@
     <ClCompile Include="..\..\Sources\Core\String\StringBuffer.cpp">
       <Filter>Core\String</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp">
-      <Filter>Core\Timer</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
       <Filter>Win32\Threading</Filter>
     </ClCompile>
@@ -987,6 +984,12 @@
     <ClCompile Include="..\..\Sources\Win32\Timer\Implementation\TimerWin32.cpp">
       <Filter>Win32\Timer\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\Time.cpp">
+      <Filter>Core\Timer\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\TimeLine.cpp">
+      <Filter>Core\Timer\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
@@ -1072,9 +1075,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h">
       <Filter>Core\String\Stl</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\Time.h">
-      <Filter>Core\Timer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h">
       <Filter>Core</Filter>
@@ -1273,9 +1273,6 @@
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h">
       <Filter>Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h">
-      <Filter>Core\Timer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGETimeline.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h">
@@ -1852,6 +1849,12 @@
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h">
+      <Filter>Core\Timer\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Time.h">
+      <Filter>Core\Timer\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\TimeLine.h">
       <Filter>Core\Timer\Interface</Filter>
     </ClInclude>
   </ItemGroup>

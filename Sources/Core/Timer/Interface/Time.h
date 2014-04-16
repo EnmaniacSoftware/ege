@@ -1,11 +1,10 @@
-#ifndef EGE_CORE_TIME_H
-#define EGE_CORE_TIME_H
+#ifndef EGE_CORE_TIME_TIME_H
+#define EGE_CORE_TIME_TIME_H
 
-/** 
-  This class encapsulates time duration.
-*/
+/*! This class encapsulates time duration.
+ */
 
-#include "EGETypes.h"
+#include "EGE.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -20,25 +19,23 @@ class Time
     Time(const Time& time);
     Time(float32 seconds);
 
-  public:
+  operators:
   
-    /*! Returns Time object from given seconds. */
-    static Time FromSeconds(float32 seconds);
-
-  public:
-  
-    bool operator > (const Time& time) const;
-    bool operator >= (const Time& time) const;
-    bool operator < (const Time& time) const;
-    bool operator <= (const Time& time) const;
-    bool operator == (const Time& time);
-    bool operator != (const Time& time);
+    bool operator > (const Time& other) const;
+    bool operator >= (const Time& other) const;
+    bool operator < (const Time& other) const;
+    bool operator <= (const Time& other) const;
+    bool operator == (const Time& other);
+    bool operator != (const Time& other);
   
     Time& operator = (float32 seconds);
-    Time& operator = (const Time& time);
+    Time& operator = (const Time& other);
     Time& operator = (s64 microseconds);
-    Time& operator += (const Time& time);
-    Time& operator -= (const Time& time);
+    
+    Time& operator += (const Time& other);
+    Time& operator -= (const Time& other);
+
+  public:
 
     /*! Sets time from given microseconds. */
     void fromMicroseconds(s64 microseconds);
@@ -62,22 +59,22 @@ class Time
     s64 m_time;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Time operator+(const Time& left, const Time& right)
+inline Time operator + (const Time& left, const Time& right)
 {
   return Time(left.microseconds() + right.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Time operator-(const Time& left, const Time& right)
+inline Time operator - (const Time& left, const Time& right)
 {
   return Time(left.microseconds() - right.microseconds());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Time operator/(const Time& left, float32 factor)
+inline Time operator / (const Time& left, float32 factor)
 {
   return Time(left.seconds() / factor);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Time operator*(const Time& left, float32 factor)
+inline Time operator * (const Time& left, float32 factor)
 {
   return Time(left.seconds() * factor);
 }
@@ -91,4 +88,4 @@ inline Debug operator << (Debug debug, const Time& obj)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_TIME_H
+#endif // EGE_CORE_TIME_TIME_H

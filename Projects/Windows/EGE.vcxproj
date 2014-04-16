@@ -204,8 +204,8 @@
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Thread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\WaitCondition.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Timer\Time.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Timer\TimeLine.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\Time.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\TimeLine.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
@@ -396,8 +396,9 @@
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Thread.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\WaitCondition.h" />
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Time.h" />
+    <ClInclude Include="..\..\Sources\Core\Timer\Interface\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\TimeLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />
@@ -533,7 +534,6 @@
     <ClInclude Include="..\..\Sources\Core\Signal\Signal.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\String.h" />
     <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\Time.h" />
     <ClInclude Include="..\..\Sources\EGE.h" />
     <ClInclude Include="..\..\Sources\EGEApplication.h" />
     <ClInclude Include="..\..\Sources\EGEColor.h" />
