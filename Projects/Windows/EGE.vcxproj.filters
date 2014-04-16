@@ -43,9 +43,6 @@
     <Filter Include="Core\String\Stl">
       <UniqueIdentifier>{49a4fa9e-ed2c-404a-9e7e-6e479528e8df}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Timer">
-      <UniqueIdentifier>{ad5cfeb5-a084-4758-9a07-2fd50430209f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\XML">
       <UniqueIdentifier>{544e98df-3ece-4500-a86c-f5e560734d1b}</UniqueIdentifier>
     </Filter>
@@ -66,9 +63,6 @@
     </Filter>
     <Filter Include="Win32\Memory">
       <UniqueIdentifier>{4d261eae-d14d-4643-998e-af9f1ed671b8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Win32\Timer">
-      <UniqueIdentifier>{07d6b3c7-c933-4e30-ad93-e2d000239f48}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Device">
       <UniqueIdentifier>{5232082b-8e65-44fe-8361-051d6d53f025}</UniqueIdentifier>
@@ -328,14 +322,20 @@
     <Filter Include="Core\Graphics\OpenGL\Implementation\Programmable">
       <UniqueIdentifier>{556a8f30-7c6a-41e1-bd70-3c9da5a7ef5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Timer\Implementation">
-      <UniqueIdentifier>{2d7ff17f-8e0f-44d2-82d5-3235c1e0237f}</UniqueIdentifier>
+    <Filter Include="Core\Time">
+      <UniqueIdentifier>{d0bb7c6e-6bbe-4031-930d-560a9e5eed7b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Timer\Interface">
-      <UniqueIdentifier>{c51cd860-3d61-4b33-b419-d74ce2054f4f}</UniqueIdentifier>
+    <Filter Include="Core\Time\Implementation">
+      <UniqueIdentifier>{e887b2b8-56b3-462e-8db4-8c5b92a7c6ed}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Timer\Implementation">
-      <UniqueIdentifier>{c0fb9124-d2e6-4551-8718-768fe5de1013}</UniqueIdentifier>
+    <Filter Include="Core\Time\Interface">
+      <UniqueIdentifier>{e0220215-3a19-4749-8410-8c99d009b00d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Time">
+      <UniqueIdentifier>{f13a5efc-f9d5-48c7-8ef8-2056a9a637fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Time\Implementation">
+      <UniqueIdentifier>{1b603444-51d9-4a71-a2e3-88c73bcb4250}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -981,14 +981,14 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Timer\Implementation\TimerWin32.cpp">
-      <Filter>Win32\Timer\Implementation</Filter>
+    <ClCompile Include="..\..\Sources\Core\Time\Implementation\Time.cpp">
+      <Filter>Core\Time\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\Time.cpp">
-      <Filter>Core\Timer\Implementation</Filter>
+    <ClCompile Include="..\..\Sources\Core\Time\Implementation\TimeLine.cpp">
+      <Filter>Core\Time\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\TimeLine.cpp">
-      <Filter>Core\Timer\Implementation</Filter>
+    <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp">
+      <Filter>Win32\Time\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1848,14 +1848,14 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.h">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h">
-      <Filter>Core\Timer\Interface</Filter>
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\Time.h">
+      <Filter>Core\Time\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Time.h">
-      <Filter>Core\Timer\Interface</Filter>
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\TimeLine.h">
+      <Filter>Core\Time\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\TimeLine.h">
-      <Filter>Core\Timer\Interface</Filter>
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\Timer.h">
+      <Filter>Core\Time\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

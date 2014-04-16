@@ -1,4 +1,4 @@
-#include "Core/Timer/Interface/Time.h"
+#include "Core/Time/Interface/Time.h"
 
 EGE_NAMESPACE
 

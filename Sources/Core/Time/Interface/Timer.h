@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_TIMER_TIMER_H
-#define EGE_CORE_TIMER_TIMER_H
+#ifndef EGE_CORE_TIME_TIMER_H
+#define EGE_CORE_TIME_TIMER_H
 
 /*! Class allowing retrival of time stamps since system start-up. 
  */
@@ -26,4 +26,4 @@ class Timer
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_TIMER_TIMER_H
+#endif // EGE_CORE_TIME_TIMER_H

@@ -204,8 +204,8 @@
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Thread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\WaitCondition.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\Time.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Timer\Implementation\TimeLine.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Time\Implementation\Time.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Time\Implementation\TimeLine.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp" />
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp" />
     <ClCompile Include="..\..\Sources\Core\UI\Dialog.cpp" />
@@ -238,7 +238,7 @@
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\PurchaseServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Timer\Implementation\TimerWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
@@ -396,9 +396,9 @@
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\WaitCondition_p.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Thread.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\WaitCondition.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Time.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\TimeLine.h" />
-    <ClInclude Include="..\..\Sources\Core\Timer\Interface\Timer.h" />
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\Time.h" />
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\TimeLine.h" />
+    <ClInclude Include="..\..\Sources\Core\Time\Interface\Timer.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h" />
     <ClInclude Include="..\..\Sources\Core\UI\Dialog.h" />

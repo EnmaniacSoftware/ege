@@ -1,4 +1,4 @@
-#include "Core/Timer/Interface/Timer.h"
+#include "Core/Time/Interface/Timer.h"
 #include "EGEMath.h"
 #include <windows.h>
 
