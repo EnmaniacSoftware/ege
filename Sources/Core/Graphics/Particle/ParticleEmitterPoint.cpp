@@ -126,7 +126,7 @@ void ParticleEmitterPoint::initializeParticle(s32 index)
 
 	// calculate the particles life span using the life span and variance passed in
 	particleData.timeLeft = m_particleLifeSpan + m_particleLifeSpanVariance * Math::Random()(-1.0f, 1.0f);
-	particleData.timeLeft.fromMicroseconds(Math::Max(0LL, particleData.timeLeft.microseconds()));
+	particleData.timeLeft = Math::Max(0LL, particleData.timeLeft.microseconds());
   if (0 < particleData.timeLeft.microseconds())
   {
     inverseLifeTimeSeconds = 1.0f / particleData.timeLeft.seconds();

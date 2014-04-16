@@ -41,7 +41,7 @@ EGEResult ApplicationPrivate::run()
     }
 
     // store this loop start time
-    startTime.fromMicroseconds(Timer::GetMicroseconds());
+    startTime = Timer::GetMicroseconds();
 
     // send begin of frame signal
     emit d_func()->frameBegin();
@@ -56,7 +56,7 @@ EGEResult ApplicationPrivate::run()
     emit d_func()->frameEnd();
 
     // stat this loop end time
-    endTime.fromMicroseconds(Timer::GetMicroseconds());
+    endTime = Timer::GetMicroseconds();
 
     // give some time for OS
     yieldTime = d_func()->m_renderInterval - (endTime - startTime);

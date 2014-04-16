@@ -15,8 +15,8 @@ class Time
   public:
 
     Time();
-    Time(s64 microseconds);
     Time(const Time& time);
+    Time(s64 microseconds);
     Time(float32 seconds);
 
   operators:
@@ -25,11 +25,11 @@ class Time
     bool operator >= (const Time& other) const;
     bool operator < (const Time& other) const;
     bool operator <= (const Time& other) const;
-    bool operator == (const Time& other);
-    bool operator != (const Time& other);
+    bool operator == (const Time& other) const;
+    bool operator != (const Time& other) const;
   
-    Time& operator = (float32 seconds);
     Time& operator = (const Time& other);
+    Time& operator = (float32 seconds);
     Time& operator = (s64 microseconds);
     
     Time& operator += (const Time& other);
@@ -37,12 +37,8 @@ class Time
 
   public:
 
-    /*! Sets time from given microseconds. */
-    void fromMicroseconds(s64 microseconds);
     /*! Sets time from given miliseconds. */
     void fromMiliseconds(s64 miliseconds);
-    /*! Sets time from given seconds. */
-    void fromSeconds(float32 seconds);
 
     /*! Returns time duration in microseconds. */
     s64 microseconds() const;

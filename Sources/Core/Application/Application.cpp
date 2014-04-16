@@ -374,7 +374,7 @@ void Application::update()
   }
 
   // store update duration
-  m_lastFrameUpdateDuration.fromMicroseconds(Timer::GetMicroseconds() - m_lastUpdateTime.microseconds());
+  m_lastFrameUpdateDuration = Timer::GetMicroseconds() - m_lastUpdateTime.microseconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Application::update(const Time& time)
@@ -396,7 +396,7 @@ EGEResult Application::run()
   // initialize update timer (to smooth out first update)
   if (0 == m_lastUpdateTime.microseconds())
   {
-    m_lastUpdateTime.fromMicroseconds(Timer::GetMicroseconds());
+    m_lastUpdateTime = Timer::GetMicroseconds();
 
     // set state
     m_state = STATE_RUNNING;

@@ -52,8 +52,6 @@ class TimeLine : public Object
      *  @param  time  Time increment by which update object.
      */
     void update(const Time& time);
-    /*! Resets time line. */
-    void reset();
     /*! Returns current state. */
     State state() const;
 
