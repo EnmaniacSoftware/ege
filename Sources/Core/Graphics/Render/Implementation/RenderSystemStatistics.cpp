@@ -4,9 +4,31 @@
 #include "EGEFile.h"
 #include "EGEStringBuffer.h"
 #include "EGETimer.h"
+#include "EGEGraphics.h"
 
 EGE_NAMESPACE
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function returning literal for given render primitive type. */
+const char* PrimitiveTypeName(s32 primitiveType)
+{
+  switch (primitiveType)
+  {
+    case EGEGraphics::RPT_TRIANGLES:        return "RPT_TRIANGLES";
+    case EGEGraphics::RPT_TRIANGLE_STRIPS:  return "RPT_TRIANGLE_STRIPS";
+    case EGEGraphics::RPT_TRIANGLE_FAN:     return "RPT_TRIANGLE_FAN";
+    case EGEGraphics::RPT_LINES:            return "RPT_LINES";
+    case EGEGraphics::RPT_LINE_LOOP:        return "RPT_LINE_LOOP";
+    case EGEGraphics::RPT_POINTS:           return "RPT_POINTS";
+  
+    default:
+
+      EGE_ASSERT_X(false, "Unhandled primitive type!");
+      break;
+  }
+
+  return "UNKNOWN";
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystemStatistics::RenderSystemStatistics(Application* app, const String& logFileName, u32 recordsCount) 
 : Component(app, EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS, "rs-statistics")
@@ -52,7 +74,7 @@ const RenderSystemContinuousStatisticData& RenderSystemStatistics::continuousDat
 void RenderSystemStatistics::onRenderStart()
 {
   // clean up data
-  EGE_MEMSET(&currentRecord(), 0, sizeof (RenderSystemFrameStatisticData));
+  clearCurrentRecord();
 
   // store render start time
   currentRecord().renderDuration = Timer::GetMicroseconds();
@@ -90,24 +112,55 @@ void RenderSystemStatistics::dumpDataToFile()
   StringBuffer buffer;
 
   // go thru all records backwards
-  for (s32 i = static_cast<s32>(m_currentIndex); i != static_cast<s32>(m_currentIndex); --i)
+  for (s32 i = 0; i < static_cast<s32>(m_records.size()); ++i)
   {
-    const s32 index = (0 > i) ? static_cast<s32>(m_records.size() - 1) : i;
+    const s32 index = (0 <= (m_currentIndex - i - 1)) ? static_cast<s32>(m_records.size() - 1) : (m_currentIndex - i - 1);
 
     const RenderSystemFrameStatisticData& data = m_records[index];
 
-    buffer << "-- START RECORD ---\n";
-    buffer << "Render time      : " << data.renderDuration << "microsec\n";
+    buffer << "-- START RECORD\n";
+    buffer << "Render time      : " << data.renderDuration << " msec\n";
     buffer << "DrawElementsCalls: " << data.drawElementsCalls << "\n";
     buffer << "DrawArraysCalls  : " << data.drawArraysCalls << "\n";
-    buffer << "-- END RECORD ---\n";
+    buffer << "Batch Count      : " << data.batchCount << "\n";
+    buffer << "Vertex Count     : " << data.vertexCount << "\n";
+
+    buffer << "Render queues: " << data.queues.size() << "\n";
+    for (DynamicArray<RenderSystemRenderQueueData>::const_iterator it = data.queues.begin(); it != data.queues.end(); ++it)
+    {
+      const RenderSystemRenderQueueData& queueData = *it;
+
+      buffer << " Hash: "<< queueData.hash << " Priority: " << queueData.priority << " Primitive: " << PrimitiveTypeName(queueData.primitiveType) 
+             << " Batch Count: " << queueData.batchCount << " Indexed Batch Count: " << queueData.indexedBatchCount << " Vertex Count: " 
+             << queueData.vertexCount << "\n";
+    }
+
+    buffer << "-- END RECORD\n\n";
   }
 
+  // write to file
   File file(m_logFileName);
   if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
   {
     DataBuffer dataBuffer(buffer.string().toAscii(), buffer.string().length());
     file.write(dataBuffer);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderSystemStatistics::clearCurrentRecord()
+{
+  RenderSystemFrameStatisticData& record = currentRecord();
+
+  record.drawElementsCalls = 0;
+  record.drawArraysCalls   = 0;
+  record.renderDuration    = 0;
+  record.batchCount        = 0;
+  record.vertexCount       = 0;
+
+  const s32 KRenderQueuesReservedItemCount = 100;
+  EGE_ASSERT_X(KRenderQueuesReservedItemCount >= record.queues.size(), "Increase reserve value!");
+
+  record.queues.clear();
+  record.queues.reserve(KRenderQueuesReservedItemCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

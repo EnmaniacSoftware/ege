@@ -279,6 +279,8 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     // update statistics
     statisticsData.vertexCount += vertexCount;
     statisticsData.batchCount++;
+    statisticsData.queues.rbegin()->indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
+    statisticsData.queues.rbegin()->vertexCount += vertexCount;
 
     // set model-view matrix
     glLoadMatrixf(m_viewMatrix.multiply(modelMatrix).data);

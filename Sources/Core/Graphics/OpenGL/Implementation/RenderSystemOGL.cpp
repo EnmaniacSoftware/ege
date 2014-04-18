@@ -9,6 +9,7 @@
 #include "Core/Graphics/OpenGL/RenderTextureCopyOGL.h"
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
+#include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
 #include "EGEApplication.h"
 #include "EGEGraphics.h"
 #include "EGETimer.h"
@@ -77,6 +78,8 @@ void RenderSystemOGL::setViewport(const PViewport& viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemOGL::flush()
 {
+  RenderSystemFrameStatisticData& statisticsData = ege_cast<RenderSystemStatistics*>(this->component(EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS))->currentRecord();
+
   // go thru all render queues
   for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = m_renderQueues.begin(); itQueue != m_renderQueues.end(); ++itQueue)
   {
@@ -86,6 +89,18 @@ void RenderSystemOGL::flush()
     {
       egeWarning(KOpenGLDebugName) << "Possible batch optimization. Hash:" << itQueue->first;
     }
+
+    // update statistics
+    // NOTE: this appends new render queue data object to the pool. This object will be used while processing all render queues below to aggregate all 
+    //       individual information.
+    RenderSystemRenderQueueData queueData;
+    queueData.hash              = itQueue->first;
+    queueData.primitiveType     = queueData.hash & 0xff;
+    queueData.priority          = queueData.hash >> 8;
+    queueData.batchCount        = queueList.size();
+    queueData.vertexCount       = 0;
+    queueData.indexedBatchCount = 0;
+    statisticsData.queues.push_back(queueData);
 
     // render queue list
     for (List<PRenderQueue>::const_iterator it = queueList.begin(); it != queueList.end(); ++it)

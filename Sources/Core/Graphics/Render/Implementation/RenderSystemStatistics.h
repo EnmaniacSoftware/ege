@@ -14,18 +14,32 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Render queue data struct. */
+struct RenderSystemRenderQueueData
+{
+  s32 priority;
+  s32 primitiveType;
+  u32 hash;
+  u32 batchCount;           /*!< Number of seperate render queues bound to this hash value. */
+  u32 vertexCount;          /*!< Number of vertices rendered by all rendered queues bound to this hash value. */
+  u32 indexedBatchCount;    /*!< Number of indexed batches only. */
+};
+
 /*! Statistics data structure for a single frame. */
 struct RenderSystemFrameStatisticData
 {
  // u32 m_VBOBufferDataCalls;     /*!< Number of glBufferData calls in current frame. */
  // u32 m_VBOBufferSubDataCalls;  /*!< Number of glBufferSubData calls in current frame. */
-  u32 drawElementsCalls;      /*!< Number of glDrawElements calls in current frame. */
-  u32 drawArraysCalls;        /*!< Number of glDrawArrays calls in current frame. */
+  
+  u32 drawElementsCalls;                              /*!< Number of glDrawElements calls in current frame. */
+  u32 drawArraysCalls;                                /*!< Number of glDrawArrays calls in current frame. */
 
-  s64 renderDuration;         /*!< Frame render time (microseconds). */
+  s64 renderDuration;                                 /*!< Frame render time (microseconds). */
 
-  u32 batchCount;             /*!< Number of batches rendered. */
-  u32 vertexCount;            /*!< Number of vertices rendere. */
+  u32 batchCount;                                     /*!< Number of batches rendered. */
+  u32 vertexCount;                                    /*!< Number of vertices rendered. */
+
+  DynamicArray<RenderSystemRenderQueueData> queues;   /*!< Render queues data. */
 };
 
 /*! Statistics data structure for time-continuous quantities. */
@@ -58,6 +72,11 @@ class RenderSystemStatistics : public Component
     void onRenderStart();
     /*! Slot called when rendering of current frame ends. */
     void onRenderEnd();
+
+  private:
+
+    /*! Clears current record data. */
+    void clearCurrentRecord();
 
   private:
 
