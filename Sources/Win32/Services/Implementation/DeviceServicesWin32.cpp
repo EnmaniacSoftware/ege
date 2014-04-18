@@ -181,7 +181,7 @@ EGEResult DeviceServicesWin32::retrieveConfidentialValue(const String& name, PDa
 {
   EGEResult result = EGE_SUCCESS;
 
-  SqlQuery query = String("SELECT %1 FROM %2 WHERE %3=?;").arg(KConfidentialDBStoreTableColumnStrings)
+  SqlQuery query = String("SELECT %1 FROM %2 WHERE %3=?;").arg(KConfidentialDBStoreTableColumnBlobs)
                                                           .arg(KConfidentialDBStoreTableName)
                                                           .arg(KConfidentialDBStoreTableColumnName);
   query.addBindValue(name);

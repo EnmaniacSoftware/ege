@@ -20,12 +20,14 @@ DeviceServices::~DeviceServices()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PDataBuffer DeviceServices::aesEnctyptionKey()
 {
+  EGEResult result = EGE_SUCCESS;
+
   const String KAESKeyName = "aes-128-key";
 
   PDataBuffer value = ege_new DataBuffer(16);
   
   // try to retieve value
-  if (EGE_ERROR_NOT_FOUND == retrieveConfidentialValue(KAESKeyName, value))
+  if (EGE_ERROR_NOT_FOUND == (result = retrieveConfidentialValue(KAESKeyName, value)))
   {
     // not found, generate 128-bit (16 bytes) encryption key
     RandomGenerator random;
@@ -49,6 +51,11 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
       egeWarning(KDeviceServicesDebugName) << "Could not retrieve AES-128 encryption key!";
       value = NULL;
     }
+  }
+  else if (EGE_SUCCESS != result)
+  {
+    // error!
+    value = NULL;
   }
 
   return value;
