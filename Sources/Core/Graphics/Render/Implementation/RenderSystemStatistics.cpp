@@ -133,6 +133,25 @@ void RenderSystemStatistics::dumpDataToFile()
       buffer << " Hash: "<< queueData.hash << " Priority: " << queueData.priority << " Primitive: " << PrimitiveTypeName(queueData.primitiveType) 
              << " Batch Count: " << queueData.batchCount << " Indexed Batch Count: " << queueData.indexedBatchCount << " Vertex Count: " 
              << queueData.vertexCount << "\n";
+      
+      for (StringList::const_iterator itName = queueData.componentNames.begin(); itName != queueData.componentNames.end(); ++itName)
+      {
+        if (itName == queueData.componentNames.begin())
+        {
+          buffer << "   ";
+        }
+        else
+        {
+          buffer << ",";
+        }
+
+        buffer << *itName;
+      }
+
+      if ( ! queueData.componentNames.empty())
+      {
+        buffer << "\n";
+      }
     }
 
     buffer << "-- END RECORD\n\n";

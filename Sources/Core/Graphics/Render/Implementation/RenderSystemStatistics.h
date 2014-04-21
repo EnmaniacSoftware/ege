@@ -9,6 +9,7 @@
 #include "EGETime.h"
 #include "EGEComponent.h"
 #include "EGEDynamicArray.h"
+#include "EGEStringList.h"
 #include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
@@ -20,9 +21,10 @@ struct RenderSystemRenderQueueData
   s32 priority;
   s32 primitiveType;
   u32 hash;
-  u32 batchCount;           /*!< Number of seperate render queues bound to this hash value. */
-  u32 vertexCount;          /*!< Number of vertices rendered by all rendered queues bound to this hash value. */
-  u32 indexedBatchCount;    /*!< Number of indexed batches only. */
+  u32 batchCount;             /*!< Number of seperate render queues bound to this hash value. */
+  u32 vertexCount;            /*!< Number of vertices rendered by all rendered queues bound to this hash value. */
+  u32 indexedBatchCount;      /*!< Number of indexed batches only. */
+  StringList componentNames;  /*!< Names of components which are the part of this render queue. */
 };
 
 /*! Statistics data structure for a single frame. */
