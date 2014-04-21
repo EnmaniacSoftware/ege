@@ -82,7 +82,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\Implementation\ImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.cpp" />
@@ -287,7 +287,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\Interface\ImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\Image.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerJPG.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageHandlerPNG.h" />

@@ -337,6 +337,12 @@
     <Filter Include="Win32\Time\Implementation">
       <UniqueIdentifier>{1b603444-51d9-4a71-a2e3-88c73bcb4250}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\ImagedAnimation\Implementation">
+      <UniqueIdentifier>{694745a8-ddd8-4662-90cc-820e9d74fc50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\ImagedAnimation\Interface">
+      <UniqueIdentifier>{433903d6-dfad-4b0e-a1b0-a543e01002db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
@@ -656,9 +662,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp">
       <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.cpp">
-      <Filter>Core\Graphics\ImagedAnimation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp">
       <Filter>Core\Graphics\SpriteAnimation</Filter>
@@ -989,6 +992,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp">
       <Filter>Win32\Time\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\Implementation\ImagedAnimation.cpp">
+      <Filter>Core\Graphics\ImagedAnimation\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1426,9 +1432,6 @@
       <Filter>Core\Animation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAnimation.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\ImagedAnimation.h">
-      <Filter>Core\Graphics\ImagedAnimation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h">
       <Filter>Core\Graphics\SpriteAnimation</Filter>
     </ClInclude>
@@ -1856,6 +1859,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Time\Interface\Timer.h">
       <Filter>Core\Time\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\Interface\ImagedAnimation.h">
+      <Filter>Core\Graphics\ImagedAnimation\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

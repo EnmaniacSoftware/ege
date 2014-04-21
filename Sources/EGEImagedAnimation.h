@@ -44,7 +44,7 @@ namespace EGEImagedAnimation
 EGE_NAMESPACE_END
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#include "Core/Graphics/ImagedAnimation/ImagedAnimation.h"
+#include "Core/Graphics/ImagedAnimation/Interface/ImagedAnimation.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_IMAGEDANIMATION_H
