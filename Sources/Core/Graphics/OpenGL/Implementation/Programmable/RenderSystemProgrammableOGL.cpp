@@ -281,7 +281,9 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
     statisticsData.vertexCount += vertexCount;
     statisticsData.batchCount++;
     statisticsData.queues.rbegin()->indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
+    statisticsData.queues.rbegin()->batchCount++;
     statisticsData.queues.rbegin()->vertexCount += vertexCount;
+    statisticsData.queues.rbegin()->componentNames << component->name();
 
     // check if INDICIES are to be used
     if (0 < indexBuffer->indexCount())

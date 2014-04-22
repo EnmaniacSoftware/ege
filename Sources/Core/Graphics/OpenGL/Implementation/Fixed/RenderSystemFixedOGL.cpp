@@ -280,6 +280,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     statisticsData.vertexCount += vertexCount;
     statisticsData.batchCount++;
     statisticsData.queues.rbegin()->indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
+    statisticsData.queues.rbegin()->batchCount++;
     statisticsData.queues.rbegin()->vertexCount += vertexCount;
     statisticsData.queues.rbegin()->componentNames << component->name();
 

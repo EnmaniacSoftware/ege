@@ -97,7 +97,7 @@ void RenderSystemOGL::flush()
     queueData.hash              = itQueue->first;
     queueData.primitiveType     = queueData.hash & 0xff;
     queueData.priority          = queueData.hash >> 8;
-    queueData.batchCount        = queueList.size();
+    queueData.batchCount        = 0;
     queueData.vertexCount       = 0;
     queueData.indexedBatchCount = 0;
     statisticsData.queues.push_back(queueData);
