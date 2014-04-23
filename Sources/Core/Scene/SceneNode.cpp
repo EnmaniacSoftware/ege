@@ -15,14 +15,22 @@ EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
 : Object(manager->app()), 
-  Node(manager->app(), name, parent, componentType), 
-  m_manager(manager)
+  Node(manager->app(), name, parent), 
+  m_manager(manager),
+  m_worldMatrixInvalid(true)
 {
+  m_physics = ege_new PhysicsComponent(manager->app(), "node-physics-" + name, componentType);
+  if (m_physics)
+  {
+    ege_connect(m_physics, transformationChanged, this, SceneNode::transformationChanged);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::~SceneNode()
 {
   removeAllAttachedObjects();
+
+  m_physics = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool SceneNode::attachObject(PSceneNodeObject object)
@@ -141,16 +149,59 @@ void SceneNode::update(const Time& time)
   //m_bNeedUpdate = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node* SceneNode::createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType)
-{
-  return ege_new SceneNode(name, this, sceneManager(), componentType);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::ComponentType componentType)
 {
-  return static_cast<SceneNode*>(createChildNode(name, componentType));
+  SceneNode* node = NULL;
+
+  // check if there is NO node with the given name
+  if (NULL == childNode(name))
+  {
+    // create node
+    node = ege_new SceneNode(name, this, sceneManager(), componentType);
+    if (NULL != node)
+    {
+      // add into vector
+      m_children.push_back(node);
+    }
+    else
+    {
+      // error!
+      EGE_DELETE(node);
+    }
+  }
+
+  return node;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Matrix4f& SceneNode::worldMatrix() const 
+{ 
+  if (m_worldMatrixInvalid)
+  {
+    Quaternionf orientation = physics()->orientation();
+    Vector4f position = physics()->position();
+    Vector4f scale = physics()->scale();
+  
+    m_worldMatrix = Math::CreateMatrix(position, scale, orientation);
+  
+    if (NULL != parent())
+    {
+      m_worldMatrix = static_cast<SceneNode*>(parent())->worldMatrix().multiply(m_worldMatrix);
+    }
+
+    // validate
+    m_worldMatrixInvalid = false;
+  }
+
+  return m_worldMatrix; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SceneNode::transformationChanged()
+{
+  // invalidate world matrix
+  m_worldMatrixInvalid = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 //void SceneNode::setPosition( const CVector3& cPosition )
 //{
 //  // store position

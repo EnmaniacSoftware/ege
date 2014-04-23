@@ -53,12 +53,6 @@ EGEResult SceneManager::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
-  if ( ! m_rootNode->isValid())
-  {
-    EGE_DELETE(m_rootNode);
-    return EGE_ERROR;
-  }
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

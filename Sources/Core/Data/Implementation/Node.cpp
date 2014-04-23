@@ -1,57 +1,28 @@
 #include "Core/Data/Interface/Node.h"
+#include "EGEDebug.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType) : m_name(name), 
-                                                                                                          m_parent(parent), 
-                                                                                                          m_visible(true),
-                                                                                                          m_worldMatrixInvalid(true)
+Node::Node(Application* app, const String& name, Node* parent) : m_name(name)
+                                                               , m_parent(parent)
+                                                               , m_visible(true)
 {
-  m_physics = ege_new PhysicsComponent(app, "node-physics-" + name, componentType);
-  if (m_physics)
-  {
-    ege_connect(m_physics, transformationChanged, this, Node::transformationChanged);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Node::~Node()
 {
   deleteAllChildNodes();
-
-  m_physics = NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Node::isValid() const
-{
-  return (NULL != m_physics) && m_physics->isValid();
+const String& Node::name() const 
+{ 
+  return m_name; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node* Node::createChildNode(const String& name, EGEPhysics::ComponentType componentType)
-{
-  Node* node;
-
-  // check if there is already node with the given name
-  if (NULL != childNode(name))
-  {
-    // cannot create
-    return NULL;
-  }
-
-  // create node
-  node = createChildNodeImpl(name, componentType);
-  if (NULL != node && node->isValid())
-  {
-    // add into vector
-    m_children.push_back(node);
-  }
-  else
-  {
-    // error!
-    EGE_DELETE(node);
-  }
-
-  return node;
+Node* Node::parent() const 
+{ 
+  return m_parent; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Node::deleteChildNode(const String& name)
@@ -125,32 +96,9 @@ void Node::deleteAllChildNodes()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Matrix4f& Node::worldMatrix() const 
+bool Node::isVisible() const 
 { 
-  if (m_worldMatrixInvalid)
-  {
-    Quaternionf orientation = physics()->orientation();
-    Vector4f position = physics()->position();
-    Vector4f scale = physics()->scale();
-  
-    m_worldMatrix = Math::CreateMatrix(position, scale, orientation);
-  
-    if (NULL != parent())
-    {
-      m_worldMatrix = parent()->worldMatrix().multiply(m_worldMatrix);
-    }
-
-    // validate
-    m_worldMatrixInvalid = false;
-  }
-
-  return m_worldMatrix; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Node::transformationChanged()
-{
-  // invalidate world matrix
-  m_worldMatrixInvalid = true;
+  return m_visible; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Node::setVisible(bool set)
@@ -161,5 +109,3 @@ void Node::setVisible(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

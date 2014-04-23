@@ -1,6 +1,17 @@
 #ifndef EGE_CORE_SCENENODE_H
 #define EGE_CORE_SCENENODE_H
 
+/** Class representing a scene node in articulated scene graph.
+    @remarks
+        A node in the scene graph is a node in a structured tree. A node contains
+        information about the transformation which will apply to
+        it and all of it's children. Child nodes can have transforms of their own, which
+        are combined with their parent's transformations.
+    @par
+        This is an abstract class - concrete classes are based on this for specific purposes,
+        e.g. SceneNode, Bone
+*/
+
 // NOTE: scene manager should be passed by raw pointer to make sure it is deallocated properly in EGEngine
 // NOTE: scene object should not be wrapped around smart pointer as it is shared with children and it would prevent 
 //       correct deallocation
@@ -9,6 +20,7 @@
 #include "EGETime.h"
 #include "EGEList.h"
 #include "EGEMatrix.h"
+#include "EGEComponent.h"
 #include "Core/Data/Interface/Node.h"
 #include "Core/Graphics/Camera.h"
 
@@ -19,7 +31,9 @@ class IRenderer;
 class SceneManager;
 EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListener>
+class SceneNode : public Object
+                , public Node
+                , public ComponentHost
 {
   public:
 
@@ -44,6 +58,10 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     /*! Removes all objects. */
     void removeAllAttachedObjects();
    
+    /*! Returns local physics component. */
+    PPhysicsComponent physics() const { return m_physics; }
+    /*! Returns cached combined world matrix. */
+    const Matrix4f& worldMatrix() const;
 
     //typedef hash_map<string, SceneNodeObject*> AttachedObjectsMap;
 
@@ -86,9 +104,14 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
   private:
 
     /*! Node override. Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) override;
+    //virtual Node* createChildNode(const String& name) override;
     /*! Returns pointer to scene manager. */
     SceneManager* sceneManager() const { return m_manager; }
+
+  private slots:
+
+    /*! Called when one of transformation values has beeen changed. */
+    void transformationChanged();
 
   private:
 
@@ -96,6 +119,12 @@ class SceneNode : public Object, public Node //ListenerContainer<ISceneNodeListe
     SceneManager* m_manager;
     /*! List of node objects attached. */
     List<PSceneNodeObject> m_objects;
+    /*! Physics component. */
+    PPhysicsComponent m_physics;
+    /*! Cached combined world matrix from all self and all parent nodes. */
+    mutable Matrix4f m_worldMatrix;
+    /*! Flag indicating if world matrix is invalid. */
+    mutable bool m_worldMatrixInvalid;
 
     //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
     //bool m_bNeedUpdate;                             // TRUE if update is needed

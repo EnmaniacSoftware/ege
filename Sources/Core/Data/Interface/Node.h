@@ -1,67 +1,51 @@
-#ifndef EGE_CORE_NODE_H
-#define EGE_CORE_NODE_H
+#ifndef EGE_CORE_DATA_NODE_H
+#define EGE_CORE_DATA_NODE_H
 
-/** Class representing a general-purpose node an articulated scene graph.
-    @remarks
-        A node in the scene graph is a node in a structured tree. A node contains
-        information about the transformation which will apply to
-        it and all of it's children. Child nodes can have transforms of their own, which
-        are combined with their parent's transformations.
-    @par
-        This is an abstract class - concrete classes are based on this for specific purposes,
-        e.g. SceneNode, Bone
-*/
+/** Class representing a general-purpose node in arbitrary graph.
+ */
 
 #include "EGE.h"
 #include "EGEList.h"
-#include "EGEMatrix.h"
-#include "Core/Component/Physics/PhysicsComponent.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class IRenderer;
 class Application;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Node
 {
   public:
 
-    Node(Application* app, const String& name, Node* parent, EGEPhysics::ComponentType componentType = EGEPhysics::COMPONENT_DYNAMIC);
+    Node(Application* app, const String& name, Node* parent);
     virtual ~Node();
 
-    /*! Returns TRUE if object is valid. */
-    bool isValid() const;
     /*! Returns node name. */
-    const String& name() const { return m_name; }
-    /*! Returns node's parent. NULL if this is root node. */
-    Node* parent() const { return m_parent; }
+    const String& name() const;
 
-    /*! Deletes child node with a given name and detaches it. */
+    /*! Returns node's parent. NULL if this is root node. */
+    Node* parent() const;
+
+    /*! Deletes child node with a given name and detaches it. 
+     *  @param  name  Name of the child node to delete.
+     */
     void deleteChildNode(const String& name);
     /*! Deletes and detaches all child nodes. */
     void deleteAllChildNodes();
     /*! Returns number of child nodes. */
     u32 childNodeCount() const;
-    /*! Returns child node with a given name. Returns NULL if no such node exists. */
+    /*! Returns child node with a given name.
+     *  @param name Name of the child not to find.
+     *  @return Pointer to child node with the given name or NULL if not found.
+     */
     Node* childNode(const String& name) const;
 
-    /*! Returns local physics component. */
-    PPhysicsComponent physics() const { return m_physics; }
-    /*! Returns cached combined world matrix. */
-    const Matrix4f& worldMatrix() const;
-
     /*! Returns TRUE if object is visible. */
-    bool isVisible() const { return m_visible; }
-    /*! Sets visibility flag. */
+    bool isVisible() const;
+    /*! Sets visibility flag. 
+     *  @param  set TRUE if node should become visible. Otherwise, FALSE.
+     */
     void setVisible(bool set);
-
-  protected:
-
-    /*! Creates child node with a given name and attaches it. */
-    Node* createChildNode(const String& name, EGEPhysics::ComponentType componentType);
-    /*! Creates child node with a given name. MUST be overriden by subclass. */
-    virtual Node* createChildNodeImpl(const String& name, EGEPhysics::ComponentType componentType) = 0;
 
   protected:
 
@@ -71,25 +55,11 @@ class Node
     Node* m_parent;
     /*! List of all child nodes attached. */
     List<Node*> m_children;
-    /*! Physics component. */
-    PPhysicsComponent m_physics;
-    /*! Cached combined world matrix from all self and all parent nodes. */
-    mutable Matrix4f m_worldMatrix;
     /*! Visibility flag. */
     bool m_visible;
-
-  private slots:
-
-    /*! Called when one of transformation values has beeen changed. */
-    void transformationChanged();
-
-  private:
-
-    /*! Flag indicating if world matrix is invalid. */
-    mutable bool m_worldMatrixInvalid;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SCENENODE_H
+#endif // EGE_CORE_DATA_NODE_H
