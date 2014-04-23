@@ -1,4 +1,4 @@
-#include "Core/Data/Node.h"
+#include "Core/Data/Interface/Node.h"
 
 EGE_NAMESPACE_BEGIN
 

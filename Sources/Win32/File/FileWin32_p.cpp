@@ -1,5 +1,5 @@
 #include "Win32/File/FileWin32_p.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
 

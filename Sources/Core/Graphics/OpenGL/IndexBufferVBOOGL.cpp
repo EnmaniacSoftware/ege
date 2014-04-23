@@ -1,5 +1,5 @@
 #include "Core/Graphics/OpenGL/IndexBufferVBOOGL.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEOpenGL.h"
 #include "EGEDebug.h"
 #include "EGEMath.h"

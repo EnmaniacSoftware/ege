@@ -66,8 +66,8 @@
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResultSqlite.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlQuery.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResult.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Data\Node.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Implementation\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp" />
@@ -279,7 +279,9 @@
     <ClInclude Include="..\..\Sources\Core\Database\Interface\DatabaseSqlite.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlQuery.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlResult.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\Serializable.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\DataBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\Node.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h" />
@@ -481,8 +483,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Device.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
     <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h" />

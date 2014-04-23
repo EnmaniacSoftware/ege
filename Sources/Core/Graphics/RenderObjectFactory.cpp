@@ -1,5 +1,5 @@
 #include "Core/Graphics/RenderObjectFactory.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGERenderComponent.h"
 #include "EGESpline.h"
 #include "EGEDebug.h"

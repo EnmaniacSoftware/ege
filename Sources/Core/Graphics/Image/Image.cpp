@@ -1,8 +1,8 @@
 #include "Core/Graphics/Image/Image.h"
-#include "Core/Data/DataBuffer.h"
 #include "Core/Graphics/Image/ImageHandlerPNG.h"
 #include "Core/Graphics/Image/ImageHandlerJPG.h"
 #include "Core/Graphics/Image/ImageHandlerPVR.h"
+#include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1,5 +1,5 @@
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN

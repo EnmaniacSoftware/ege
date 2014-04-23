@@ -1,5 +1,5 @@
 #include "Core/Graphics/VertexBuffer.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEList.h"
 #include "EGEDebug.h"
 

@@ -6,7 +6,7 @@
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
 #include "Core/UI/WidgetFactory.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 

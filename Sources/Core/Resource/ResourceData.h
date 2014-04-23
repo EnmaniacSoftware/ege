@@ -6,7 +6,7 @@
  */
 
 #include "EGE.h"
-#include "Core/Data/DataBuffer.h"
+#include "Core/Data/Interface/DataBuffer.h"
 #include "Core/Resource/Resource.h"
 #include "EGEXml.h"
 #include "EGEString.h"

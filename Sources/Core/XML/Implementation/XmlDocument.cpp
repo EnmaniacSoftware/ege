@@ -1,6 +1,6 @@
 #include "Core/XML/Interface/XMLDocument.h"
 #include "Core/XML/Interface/XMLElement.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEFile.h"
 
 #if EGE_XML_TINYXML

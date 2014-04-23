@@ -1,6 +1,6 @@
-#include "EGEDebug.h"
 #include "Core/File/File.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDebug.h"
+#include "EGEDataBuffer.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/File/FileWin32_p.h"

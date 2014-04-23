@@ -1,6 +1,6 @@
 #include "EGE.h"
 #include "EGEFile.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 
 #define HAVE_INT32
 

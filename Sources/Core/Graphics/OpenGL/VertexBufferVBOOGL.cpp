@@ -1,5 +1,5 @@
 #include "Core/Graphics/OpenGL/VertexBufferVBOOGL.h"
-#include "Core/Data/DataBuffer.h"
+#include "EGEDataBuffer.h"
 #include "EGEOpenGL.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"

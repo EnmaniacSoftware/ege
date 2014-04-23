@@ -343,11 +343,14 @@
     <Filter Include="Core\Graphics\ImagedAnimation\Interface">
       <UniqueIdentifier>{433903d6-dfad-4b0e-a1b0-a543e01002db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Data\Implementation">
+      <UniqueIdentifier>{a6405066-4975-45f6-977d-3fe62de456ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Interface">
+      <UniqueIdentifier>{3ad79fb3-6f86-4b70-99be-688b64d47396}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Data\DataBuffer.cpp">
-      <Filter>Core\Data</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
       <Filter>Core\Event</Filter>
     </ClCompile>
@@ -491,9 +494,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Data\Node.cpp">
-      <Filter>Core\Data</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp">
       <Filter>Core\Screen</Filter>
@@ -996,11 +996,14 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\ImagedAnimation\Implementation\ImagedAnimation.cpp">
       <Filter>Core\Graphics\ImagedAnimation\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataBuffer.cpp">
+      <Filter>Core\Data\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Implementation\Node.cpp">
+      <Filter>Core\Data\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Core\Data\DataBuffer.h">
-      <Filter>Core\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Event.h">
       <Filter>Core\Event</Filter>
     </ClInclude>
@@ -1206,9 +1209,6 @@
       <Filter>Core\Containers\stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEColor.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\Node.h">
-      <Filter>Core\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h">
       <Filter>Core\Screen</Filter>
     </ClInclude>
@@ -1574,9 +1574,6 @@
     <ClInclude Include="..\..\Sources\Core\String\StringBuffer.h">
       <Filter>Core\String</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Data\Serializable.h">
-      <Filter>Core\Data</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.h">
@@ -1862,6 +1859,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\ImagedAnimation\Interface\ImagedAnimation.h">
       <Filter>Core\Graphics\ImagedAnimation\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\DataBuffer.h">
+      <Filter>Core\Data\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\Node.h">
+      <Filter>Core\Data\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
+      <Filter>Core\Data\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

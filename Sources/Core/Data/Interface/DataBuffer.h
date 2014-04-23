@@ -3,7 +3,7 @@
 
 #include "EGE.h"
 #include "EGEByteOrder.h"
-#include "Core/Data/Serializable.h"
+#include "Core/Data/Interface/Serializable.h"
 
 EGE_NAMESPACE_BEGIN
 
