@@ -33,8 +33,6 @@
 		4514711F18C5231900AAC617 /* CryptographicHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F1D18C5231800AAC617 /* CryptographicHash.cpp */; };
 		4514712018C5231900AAC617 /* CryptographicHashMD5.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F1E18C5231800AAC617 /* CryptographicHashMD5.cpp */; };
 		4514712118C5231900AAC617 /* Hash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F1F18C5231800AAC617 /* Hash.cpp */; };
-		4514712618C5231900AAC617 /* DataBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3018C5231800AAC617 /* DataBuffer.cpp */; };
-		4514712718C5231900AAC617 /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3218C5231800AAC617 /* Node.cpp */; };
 		4514712818C5231900AAC617 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3718C5231800AAC617 /* Console.cpp */; };
 		4514712918C5231900AAC617 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3818C5231800AAC617 /* Debug.cpp */; };
 		4514712B18C5231900AAC617 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3A18C5231800AAC617 /* Logger.cpp */; };
@@ -56,7 +54,6 @@
 		4514713D18C5231900AAC617 /* ImageLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7018C5231900AAC617 /* ImageLoader.cpp */; };
 		4514713E18C5231900AAC617 /* ImageUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7218C5231900AAC617 /* ImageUtils.cpp */; };
 		4514713F18C5231900AAC617 /* ImageLoaderST_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7518C5231900AAC617 /* ImageLoaderST_p.cpp */; };
-		4514714018C5231900AAC617 /* ImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7818C5231900AAC617 /* ImagedAnimation.cpp */; };
 		4514714118C5231900AAC617 /* IndexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7A18C5231900AAC617 /* IndexBuffer.cpp */; };
 		4514714218C5231900AAC617 /* JpegDataSrcFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7D18C5231900AAC617 /* JpegDataSrcFile.cpp */; };
 		4514714318C5231900AAC617 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F7F18C5231900AAC617 /* Material.cpp */; };
@@ -237,6 +234,9 @@
 		45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */; };
 		45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */; };
 		45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */; };
+		45E0F0C81909AFBC0003E15F /* DataBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */; };
+		45E0F0C91909AFBC0003E15F /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C31909AFBC0003E15F /* Node.cpp */; };
+		45E0F0CE1909B0DD0003E15F /* ImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -447,11 +447,6 @@
 		45146F2618C5231800AAC617 /* CryptographicHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptographicHash.h; sourceTree = "<group>"; };
 		45146F2718C5231800AAC617 /* CryptographicHashMD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptographicHashMD5.h; sourceTree = "<group>"; };
 		45146F2818C5231800AAC617 /* Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hash.h; sourceTree = "<group>"; };
-		45146F3018C5231800AAC617 /* DataBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataBuffer.cpp; sourceTree = "<group>"; };
-		45146F3118C5231800AAC617 /* DataBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBuffer.h; sourceTree = "<group>"; };
-		45146F3218C5231800AAC617 /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
-		45146F3318C5231800AAC617 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
-		45146F3418C5231800AAC617 /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		45146F3718C5231800AAC617 /* Console.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Console.cpp; sourceTree = "<group>"; };
 		45146F3818C5231800AAC617 /* Debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Debug.cpp; sourceTree = "<group>"; };
 		45146F3A18C5231800AAC617 /* Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Logger.cpp; sourceTree = "<group>"; };
@@ -499,8 +494,6 @@
 		45146F7318C5231900AAC617 /* ImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageUtils.h; sourceTree = "<group>"; };
 		45146F7518C5231900AAC617 /* ImageLoaderST_p.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImageLoaderST_p.cpp; sourceTree = "<group>"; };
 		45146F7618C5231900AAC617 /* ImageLoaderST_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageLoaderST_p.h; sourceTree = "<group>"; };
-		45146F7818C5231900AAC617 /* ImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagedAnimation.cpp; sourceTree = "<group>"; };
-		45146F7918C5231900AAC617 /* ImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagedAnimation.h; sourceTree = "<group>"; };
 		45146F7A18C5231900AAC617 /* IndexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBuffer.cpp; sourceTree = "<group>"; };
 		45146F7B18C5231900AAC617 /* IndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBuffer.h; sourceTree = "<group>"; };
 		45146F7C18C5231900AAC617 /* IndexBufferTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBufferTypes.h; sourceTree = "<group>"; };
@@ -888,6 +881,13 @@
 		45C3AD3C18CDF4520009ABA3 /* DeviceServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS.h; sourceTree = "<group>"; };
 		45C3AD3D18CDF4520009ABA3 /* PurchaseServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesIOS.h; sourceTree = "<group>"; };
 		45C3AD3E18CDF4520009ABA3 /* SocialServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesIOS.h; sourceTree = "<group>"; };
+		45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataBuffer.cpp; sourceTree = "<group>"; };
+		45E0F0C31909AFBC0003E15F /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
+		45E0F0C51909AFBC0003E15F /* DataBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBuffer.h; sourceTree = "<group>"; };
+		45E0F0C61909AFBC0003E15F /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
+		45E0F0C71909AFBC0003E15F /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
+		45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagedAnimation.cpp; sourceTree = "<group>"; };
+		45E0F0CD1909B0DD0003E15F /* ImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagedAnimation.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1280,11 +1280,8 @@
 		45146F2F18C5231800AAC617 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				45146F3018C5231800AAC617 /* DataBuffer.cpp */,
-				45146F3118C5231800AAC617 /* DataBuffer.h */,
-				45146F3218C5231800AAC617 /* Node.cpp */,
-				45146F3318C5231800AAC617 /* Node.h */,
-				45146F3418C5231800AAC617 /* Serializable.h */,
+				45E0F0C11909AFBC0003E15F /* Implementation */,
+				45E0F0C41909AFBC0003E15F /* Interface */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1465,8 +1462,8 @@
 		45146F7718C5231900AAC617 /* ImagedAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				45146F7818C5231900AAC617 /* ImagedAnimation.cpp */,
-				45146F7918C5231900AAC617 /* ImagedAnimation.h */,
+				45E0F0CA1909B0DD0003E15F /* Implementation */,
+				45E0F0CC1909B0DD0003E15F /* Interface */,
 			);
 			path = ImagedAnimation;
 			sourceTree = "<group>";
@@ -2477,6 +2474,41 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		45E0F0C11909AFBC0003E15F /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */,
+				45E0F0C31909AFBC0003E15F /* Node.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45E0F0C41909AFBC0003E15F /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45E0F0C51909AFBC0003E15F /* DataBuffer.h */,
+				45E0F0C61909AFBC0003E15F /* Node.h */,
+				45E0F0C71909AFBC0003E15F /* Serializable.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45E0F0CA1909B0DD0003E15F /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45E0F0CC1909B0DD0003E15F /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45E0F0CD1909B0DD0003E15F /* ImagedAnimation.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -2614,8 +2646,6 @@
 				4514711F18C5231900AAC617 /* CryptographicHash.cpp in Sources */,
 				4514712018C5231900AAC617 /* CryptographicHashMD5.cpp in Sources */,
 				4514712118C5231900AAC617 /* Hash.cpp in Sources */,
-				4514712618C5231900AAC617 /* DataBuffer.cpp in Sources */,
-				4514712718C5231900AAC617 /* Node.cpp in Sources */,
 				4514712818C5231900AAC617 /* Console.cpp in Sources */,
 				4514712918C5231900AAC617 /* Debug.cpp in Sources */,
 				4514712B18C5231900AAC617 /* Logger.cpp in Sources */,
@@ -2637,7 +2667,6 @@
 				4514713D18C5231900AAC617 /* ImageLoader.cpp in Sources */,
 				4514713E18C5231900AAC617 /* ImageUtils.cpp in Sources */,
 				4514713F18C5231900AAC617 /* ImageLoaderST_p.cpp in Sources */,
-				4514714018C5231900AAC617 /* ImagedAnimation.cpp in Sources */,
 				4514714118C5231900AAC617 /* IndexBuffer.cpp in Sources */,
 				4514714218C5231900AAC617 /* JpegDataSrcFile.cpp in Sources */,
 				4514714318C5231900AAC617 /* Material.cpp in Sources */,
@@ -2812,6 +2841,9 @@
 				458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */,
 				458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */,
 				458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */,
+				45E0F0C81909AFBC0003E15F /* DataBuffer.cpp in Sources */,
+				45E0F0C91909AFBC0003E15F /* Node.cpp in Sources */,
+				45E0F0CE1909B0DD0003E15F /* ImagedAnimation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
