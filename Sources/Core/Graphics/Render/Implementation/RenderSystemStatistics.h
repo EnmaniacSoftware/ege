@@ -85,7 +85,7 @@ class RenderSystemStatistics : public Component
     /*! Array containing data records for a number of render frames. */
     DynamicArray<RenderSystemFrameStatisticData> m_records;
     /*! Current record index. */
-    u32 m_currentIndex;
+    s32 m_currentIndex;
     /*! Log file name. */
     String m_logFileName;
     /*! Time-continuous statistic data structure. */

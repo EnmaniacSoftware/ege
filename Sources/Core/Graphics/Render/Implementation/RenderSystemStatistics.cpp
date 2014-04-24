@@ -125,7 +125,7 @@ void RenderSystemStatistics::dumpDataToFile()
     buffer << "Batch Count      : " << data.batchCount << "\n";
     buffer << "Vertex Count     : " << data.vertexCount << "\n";
 
-    buffer << "Render queues: " << data.queues.size() << "\n";
+    buffer << "Render queues: " << static_cast<s32>(data.queues.size()) << "\n";
     for (DynamicArray<RenderSystemRenderQueueData>::const_iterator it = data.queues.begin(); it != data.queues.end(); ++it)
     {
       const RenderSystemRenderQueueData& queueData = *it;
