@@ -114,7 +114,7 @@ void RenderSystemStatistics::dumpDataToFile()
   // go thru all records backwards
   for (s32 i = 0; i < static_cast<s32>(m_records.size()); ++i)
   {
-    const s32 index = (0 <= (m_currentIndex - i - 1)) ? static_cast<s32>(m_records.size() - 1) : (m_currentIndex - i - 1);
+    const s32 index = (0 <= (m_currentIndex - i - 1)) ? (m_currentIndex - i - 1) : (static_cast<s32>(m_records.size()) + m_currentIndex - i - 1);
 
     const RenderSystemFrameStatisticData& data = m_records[index];
 
