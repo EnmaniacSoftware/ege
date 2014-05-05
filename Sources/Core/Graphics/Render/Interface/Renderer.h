@@ -11,7 +11,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer
 {
@@ -29,18 +28,6 @@ class IRenderer
      *  @param  queue Render queue which is to be added for rendering.
      */
     virtual bool addForRendering(const PRenderQueue& queue) = 0;
-    /*! Sets view matrix. 
-     *  @param  matrix  View matrix.
-     */
-    virtual void setViewMatrix(const Matrix4f& matrix) = 0;
-    /*! Returns view matrix. */
-    virtual const Matrix4f& viewMatrix() const = 0;
-    /*! Sets projection matrix. 
-     *  @param  matrix  Project matrix.
-     */
-    virtual void setProjectionMatrix(const Matrix4f& matrix) = 0;
-    /*! Returns current render target. */
-    virtual PRenderTarget currentRenderTarget() const = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

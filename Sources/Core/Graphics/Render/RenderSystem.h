@@ -95,11 +95,22 @@ class RenderSystem : public Object
      */
     void setTextureMipMapping(bool set);
 
+    /*! Sets view matrix. 
+     *  @param  matrix  View matrix.
+     */
+    void setViewMatrix(const Matrix4f& matrix);
+    /*! Returns view matrix. */
+    const Matrix4f& viewMatrix() const;
+    /*! Sets projection matrix. 
+     *  @param  matrix  Project matrix.
+     */
+    void setProjectionMatrix(const Matrix4f& matrix);
+
+    /*! Returns current render target. */
+    PRenderTarget currentRenderTarget() const;
+
   protected:
 
-    /*! @see IRenderer::currentRenderTarget. */
-    PRenderTarget currentRenderTarget() const override;
-    
     /*! Updates rectangle coordinates by given angle. 
      *  @param  rect  Rectangle to be rotated.
      *  @param  angle Angle by which to rotate rectangle.
@@ -183,12 +194,6 @@ class RenderSystem : public Object
     bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
     /*! @see IRenderer::addForRendering. */
     bool addForRendering(const PRenderQueue& queue) override;
-    /*! @see IRenderer::setViewMatrix. */
-    void setViewMatrix(const Matrix4f& matrix) override;
-    /*! @see IRenderer::viewMatrix. */
-    const Matrix4f& viewMatrix() const override;
-    /*! @see IRenderer::setProjectionMatrix. */
-    void setProjectionMatrix(const Matrix4f& matrix) override;
 
     /*! @see IHardwareResourceProvider::requestCreateTexture2D. */
     u32 requestCreateTexture2D(const String& name, const PImage& image) override;

@@ -2,6 +2,7 @@
 #define EGE_RENDERER_H
 
 #include "Core/Graphics/Render/Interface/Renderer.h"
+#include "Core/Graphics/Render/Interface/ComponentRenderer.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

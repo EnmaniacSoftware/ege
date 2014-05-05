@@ -1,5 +1,7 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
+#include "EGEApplication.h"
 #include "EGEGraphics.h"
+#include "EGERenderSystem.h"
 #include "EGERenderer.h"
 #include "EGERenderComponent.h"
 #include "EGEStringUtils.h"
@@ -340,7 +342,7 @@ bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& trans
       }
       else
       {
-        const Matrix4f& viewMatrix = renderer->viewMatrix();
+        const Matrix4f& viewMatrix = m_renderData->app()->graphics()->renderSystem()->viewMatrix();
 
         Vector3f right(viewMatrix.data[0], viewMatrix.data[1], viewMatrix.data[2]);
         Vector3f up(viewMatrix.data[4], viewMatrix.data[5], viewMatrix.data[6]);
