@@ -28,6 +28,12 @@ EGEResult SimpleRenderQueue::addForRendering(const PRenderComponent& component, 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult SimpleRenderQueue::addForRendering(const PRenderQueue& queue)
+{
+  EGE_UNUSED(queue);
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SimpleRenderQueue::clear()
 {
   m_renderData.clear();

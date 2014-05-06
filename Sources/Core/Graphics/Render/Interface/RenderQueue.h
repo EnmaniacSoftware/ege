@@ -6,6 +6,7 @@
 #include "EGE.h"
 #include "EGEGraphics.h"
 #include "EGERenderComponent.h"
+#include "EGERenderer.h"
 #include "EGEMatrix.h"
 
 EGE_NAMESPACE_BEGIN
@@ -16,6 +17,7 @@ class IComponentRenderer;
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderQueue : public Object
+                  , public IRenderer
 {
   public:
 
@@ -33,14 +35,11 @@ class RenderQueue : public Object
 
   public:
 
-    /*! Adds given data for rendering. 
-     *  @param  component   Component to add for later rendering.
-     *  @param  modelMatrix Model transformation matrix.
-     *  @return EGE_SUCCESS if given component has been added. EGE_ERROR_NOT_SUPPORTED if component has been rejected by render queue. EGE_ERROR otherwise.
-     *  @note Render queue may reject component due to invalid semantics or material. If this happens new render queue of similar kind can be created to accomodate
-     *        component.
-     */
-    virtual EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) = 0;
+    /*! @see IRenderer::addForRendering. */
+    EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) = 0;
+    /*! @see IRenderer::addForRendering. */
+    EGEResult addForRendering(const PRenderQueue& queue) = 0;
+
     /*! Clears (empties) queue. */
     virtual void clear() = 0;
     /*! Renders queue. */

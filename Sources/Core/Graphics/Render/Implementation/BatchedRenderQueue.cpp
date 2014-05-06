@@ -136,6 +136,12 @@ EGEResult BatchedRenderQueue::addForRendering(const PRenderComponent& component,
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult BatchedRenderQueue::addForRendering(const PRenderQueue& queue)
+{
+  EGE_UNUSED(queue);
+  return EGE_ERROR_NOT_SUPPORTED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void BatchedRenderQueue::clear()
 {
   if (NULL != m_renderData)

@@ -25,6 +25,8 @@ class SimpleRenderQueue : public RenderQueue
 
     /*! @see RenderQueue::addForRendering. */
     EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) override;
+    /*! @see RenderQueue::addForRendering. */
+    EGEResult addForRendering(const PRenderQueue& queue) override;
     /*! @see RenderQueue::clear. */
     void clear() override;
     /*! @see RenderQueue::render. */

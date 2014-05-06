@@ -1,7 +1,7 @@
 #include "Core/Graphics/Render/Interface/RenderQueue.h"
 #include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderQueue::RenderQueue(Application* app, u32 uid, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) : Object(app, uid),
@@ -50,4 +50,3 @@ EGEGraphics::RenderPrimitiveType RenderQueue::primitiveType() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_NAMESPACE_END
