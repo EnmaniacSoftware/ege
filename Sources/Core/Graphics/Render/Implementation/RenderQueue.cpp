@@ -44,6 +44,11 @@ u32 RenderQueue::priority() const
   return m_priority;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderQueue::setPriority(u32 priority)
+{
+  m_priority = priority;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEGraphics::RenderPrimitiveType RenderQueue::primitiveType() const
 {
   return m_primitiveType;

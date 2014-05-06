@@ -35,17 +35,18 @@ class RenderQueue : public Object
 
   public:
 
-    /*! @see IRenderer::addForRendering. */
-    EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& modelMatrix = Matrix4f::IDENTITY) = 0;
-    /*! @see IRenderer::addForRendering. */
-    EGEResult addForRendering(const PRenderQueue& queue) = 0;
-
     /*! Clears (empties) queue. */
     virtual void clear() = 0;
     /*! Renders queue. */
     virtual void render(IComponentRenderer& renderer) = 0;
+    
     /*! Returns render priority. */
     u32 priority() const;
+    /*! Sets render priority. 
+     *  @param  priority  Render priority.
+     */
+    void setPriority(u32 priority);
+    
     /*! Returns render primitve type. */
     EGEGraphics::RenderPrimitiveType primitiveType() const;
 
