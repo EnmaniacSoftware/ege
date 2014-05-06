@@ -25,7 +25,7 @@ VertexDeclaration& VertexDeclaration::operator = (const VertexDeclaration& other
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexDeclaration::operator == (const VertexDeclaration& other) const
 {
-  return (m_vertexSize == other.m_vertexSize) && (m_vertexElements == other.m_vertexElements);
+  return (vertexSize() == other.vertexSize()) && (m_vertexElements == other.m_vertexElements);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool VertexDeclaration::operator != (const VertexDeclaration& other) const
