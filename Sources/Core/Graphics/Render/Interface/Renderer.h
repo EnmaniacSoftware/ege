@@ -22,12 +22,14 @@ class IRenderer
     /*! Adds given data for rendering. 
      *  @param  component   Render component which is to be added for rendering.
      *  @param  worldMatrix Model view to world transformation matrix.
+     *  @return EGE_SUCCESS on success. EGE_ERROR_NOT_SUPPORTED if component has not been accepted by renderer. Otherwise, EGE_ERROR.
      */
-    virtual bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) = 0;
+    virtual EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) = 0;
     /*! Adds given render queue for rendering. 
      *  @param  queue Render queue which is to be added for rendering.
+     *  @return EGE_SUCCESS on success. EGE_ERROR_NOT_SUPPORTED if queue has not been accepted by renderer. Otherwise, EGE_ERROR.
      */
-    virtual bool addForRendering(const PRenderQueue& queue) = 0;
+    virtual EGEResult addForRendering(const PRenderQueue& queue) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

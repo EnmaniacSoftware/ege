@@ -191,9 +191,9 @@ class RenderSystem : public Object
   private:
 
     /*! @see IRenderer::addForRendering. */
-    bool addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
+    EGEResult addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix = Matrix4f::IDENTITY) override;
     /*! @see IRenderer::addForRendering. */
-    bool addForRendering(const PRenderQueue& queue) override;
+    EGEResult addForRendering(const PRenderQueue& queue) override;
 
     /*! @see IHardwareResourceProvider::requestCreateTexture2D. */
     u32 requestCreateTexture2D(const String& name, const PImage& image) override;

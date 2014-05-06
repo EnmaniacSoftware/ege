@@ -460,7 +460,7 @@ bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& trans
 
   if (0 < m_activeParticlesCount)
   {
-    return renderer->addForRendering(m_renderData, transform);
+    renderer->addForRendering(m_renderData, transform);
   }
 
   return true;

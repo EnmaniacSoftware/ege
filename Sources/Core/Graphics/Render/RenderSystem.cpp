@@ -193,9 +193,9 @@ void RenderSystem::setViewport(const PViewport& viewport)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RenderSystem::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
+EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const Matrix4f& worldMatrix)
 {
-  bool result = true;
+  EGEResult result = EGE_ERROR_NOT_SUPPORTED;
 
   // check if component is meaningful
   if ((0 < component->vertexBuffer()->vertexCount()) && (NULL != component->material()))
@@ -218,20 +218,9 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
         PRenderQueue& queue = *it;
 
         // add data into queue
-        EGEResult addResult = queue->addForRendering(component, worldMatrix);
-        if (EGE_SUCCESS == addResult)
+        result = queue->addForRendering(component, worldMatrix);
+        if (EGE_ERROR_NOT_SUPPORTED != result)
         {
-          // set flag
-          added = true;
-
-          // done
-          break;
-        }
-        else if (EGE_ERROR == addResult)
-        {
-          // general failure
-          result = false;
-
           // done
           break;
         }
@@ -239,10 +228,8 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
     }
 
     // check if no suitable queue has been found (but no error occured)
-    if (result && ! added)
+    if (EGE_ERROR_NOT_SUPPORTED == result)
     {
-      result = false;
-
       // create appriopriate queue
       PRenderQueue queue;
 
@@ -263,11 +250,11 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
       if (NULL != queue)
       {
         // add to newly created queue
-        result = (EGE_SUCCESS == queue->addForRendering(component, worldMatrix));
+        result = queue->addForRendering(component, worldMatrix);
       }
 
       // add it into pool if ok
-      if (result)
+      if (EGE_SUCCESS == result)
       {
         if (renderQueueForHashPresent)
         {
@@ -284,9 +271,9 @@ bool RenderSystem::addForRendering(const PRenderComponent& component, const Matr
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool RenderSystem::addForRendering(const PRenderQueue& queue)
+EGEResult RenderSystem::addForRendering(const PRenderQueue& queue)
 {
-  bool result = false;
+  EGEResult result = EGE_ERROR;
  
   // calculate hash
   // NOTE: at this stage components are separated into unique priorities and primitive types
@@ -310,19 +297,19 @@ bool RenderSystem::addForRendering(const PRenderQueue& queue)
         curQueue = queue;
 
         // done
-        result = true;
+        result = EGE_SUCCESS;
         break;
       }
     }
 
     // check if not found yet
-    if ( ! result)
+    if (EGE_ERROR == result)
     {
       // add to list
       queueList.push_back(queue);
 
       // done
-      result = true;
+      result = EGE_SUCCESS;
     }
   }
   else
@@ -331,7 +318,7 @@ bool RenderSystem::addForRendering(const PRenderQueue& queue)
     m_renderQueues.insert(hash, queue);
 
     // done
-    result = true;
+    result = EGE_SUCCESS;
   }
 
   return result;
