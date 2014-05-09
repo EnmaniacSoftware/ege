@@ -1,5 +1,4 @@
 #include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
-#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -162,11 +161,15 @@ void BatchedRenderQueue::clear()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void BatchedRenderQueue::render(IComponentRenderer& renderer)
+void BatchedRenderQueue::prepareRenderList(RenderDataList& list)
 {
   if ((NULL != m_renderData) && (NULL != m_renderData->material()) && (0 < m_renderData->vertexBuffer()->vertexCount()))
   {
-    renderer.renderComponent(m_renderData);
+    SRENDERDATA data;
+    data.component    = m_renderData;
+    data.modelMatrix  = Matrix4f::IDENTITY;
+
+    list.push_back(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -270,7 +273,14 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<co
         case EGEGraphics::RPT_TRIANGLES:
 
           // convert all incoming vertices
-          convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRects, modelMatrix);
+          if (Matrix4f::IDENTITY == modelMatrix)
+          {
+            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRects);
+          }
+          else
+          {
+            convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(inData), verticesToProcess, textureRects, modelMatrix);
+          }
           break;
 
         case EGEGraphics::RPT_TRIANGLE_STRIPS:
@@ -464,6 +474,79 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
           *outData++ = position.x;
           *outData++ = position.y;
           *outData++ = position.z;
+          break;
+
+        case NVertexBuffer::VES_NORMAL:
+
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          break;
+
+        case NVertexBuffer::VES_TEXTURE_UV:
+
+          *outData++ = (*itTextureRect)->x + (*inData++) * (*itTextureRect)->width;
+          *outData++ = (*itTextureRect)->y + (*inData++) * (*itTextureRect)->height;
+
+          // update number of processed coords
+          ++itTextureRect;
+          break;
+
+        case NVertexBuffer::VES_COLOR_RGBA:
+
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          break;
+
+        case NVertexBuffer::VES_TANGENT:
+
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          break;
+
+        case NVertexBuffer::VES_POINT_SPRITE_SIZE:
+
+          *outData++ = *inData++;
+          break;
+
+        default:
+
+          EGE_ASSERT_X(false, "Implement!!!");
+          break;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData, u32 count, const List<const Rectf*>& textureRects) const
+{
+  // get vertex elements
+  const VertexElementArray& vertexElements = m_renderData->vertexBuffer()->vertexDeclaration().vertexElements();
+
+  // go thru all vertices
+  for (u32 i = 0; i < count; ++i)
+  {
+    // point to first texture coords
+    List<const Rectf*>::const_iterator itTextureRect = textureRects.begin();
+  
+    VertexElementArray::const_iterator itLast = vertexElements.end();
+    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)
+    {
+      switch (it->semantic())
+      {
+        case NVertexBuffer::VES_POSITION_XY:
+
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          break;
+
+        case NVertexBuffer::VES_POSITION_XYZ:
+
+          *outData++ = *inData++;
+          *outData++ = *inData++;
+          *outData++ = *inData++;
           break;
 
         case NVertexBuffer::VES_NORMAL:

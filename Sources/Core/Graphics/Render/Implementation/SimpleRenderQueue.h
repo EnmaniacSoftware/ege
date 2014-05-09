@@ -29,22 +29,13 @@ class SimpleRenderQueue : public RenderQueue
     EGEResult addForRendering(const PRenderQueue& queue) override;
     /*! @see RenderQueue::clear. */
     void clear() override;
-    /*! @see RenderQueue::render. */
-    void render(IComponentRenderer& renderer) override;
+    /*! @see RenderQueue::prepareRenderList. */
+    void prepareRenderList(RenderDataList& list) override;
 
   private:
 
-    /*! Render data structure. */
-    struct SRENDERDATA
-    {
-      PRenderComponent component;   /*< Render component. */
-      Matrix4f modelMatrix;         /*< Model transformation matrix. */
-    };
-
-    typedef MultiMap<u32, SRENDERDATA> RenderDataMap;
-
-    /*! Render data sorted by component hash. */
-    RenderDataMap m_renderData;
+    /*! Render data. */
+    RenderDataList m_renderData;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

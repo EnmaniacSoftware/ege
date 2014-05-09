@@ -29,11 +29,13 @@ class TMatrix4
 
   operators:
 
-		TMatrix4&   operator += (const TMatrix4& matrix);
-	  TMatrix4&   operator -= (const TMatrix4& matrix);
-	  TMatrix4&   operator *= (const TMatrix4& matrix);
-		T*          operator [] (u32 column);
-    const T*    operator [] (u32 column) const;
+		TMatrix4& operator += (const TMatrix4& matrix);
+	  TMatrix4& operator -= (const TMatrix4& matrix);
+	  TMatrix4& operator *= (const TMatrix4& matrix);		
+    bool      operator == (const TMatrix4& other) const;
+    bool      operator != (const TMatrix4& other) const;
+    T*        operator [] (u32 column);
+    const T*  operator [] (u32 column) const;
 
   public:
 
@@ -48,6 +50,12 @@ class TMatrix4
     bool isAffine() const;
     /*! Sets scale part of the matrix. */
     void setScale(T x, T y, T z);
+    /*! Returns scale factor along X axis. */
+    T scaleX() const;
+    /*! Returns scale factor along X axis. */
+    T scaleY() const;
+    /*! Returns scale factor along X axis. */
+    T scaleZ() const;
     /*! Sets translation part of the matrix. */
     void setTranslation(T x, T y, T z);
     /*! Returns translation along X axis component value. */
@@ -162,6 +170,26 @@ TMatrix4<T>& TMatrix4<T>::operator *= (const TMatrix4<T>& matrix)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+bool TMatrix4<T>::operator == (const TMatrix4<T>& other) const
+{
+  if ((data[0]  != other.data[0])  || (data[1]  != other.data[1])  || (data[2]  != other.data[2])  || (data[3]  != other.data[3])  ||
+      (data[4]  != other.data[4])  || (data[5]  != other.data[5])  || (data[6]  != other.data[6])  || (data[7]  != other.data[7])  ||
+      (data[8]  != other.data[8])  || (data[9]  != other.data[9])  || (data[10] != other.data[10]) || (data[11] != other.data[11]) ||
+      (data[12] != other.data[12]) || (data[13] != other.data[13]) || (data[14] != other.data[14]) || (data[15] != other.data[15]))
+  {
+    return false;
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+bool TMatrix4<T>::operator != (const TMatrix4<T>& other) const
+{
+  return ! this->operator==(other);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 T* TMatrix4<T>::operator [] (u32 column)
 {
   EGE_ASSERT((4 > column) && (0 <= column));
@@ -230,6 +258,24 @@ void TMatrix4<T>::setScale(T x, T y, T z)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
+T TMatrix4<T>::scaleX() const
+{
+  return data[0];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TMatrix4<T>::scaleY() const
+{
+  return data[5];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+T TMatrix4<T>::scaleZ() const
+{
+  return data[10];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
 void TMatrix4<T>::setTranslation(T x, T y, T z)
 {
   data[12] = x;
@@ -277,6 +323,17 @@ template <typename T>
 TMatrix4<T> operator * (const TMatrix4<T>& left, const TMatrix4<T>& right)
 {
   return left.multiply(right);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+Debug operator << (Debug debug, const TMatrix4<T>& obj)
+{
+  debug.nospace() << "Matrix4(" << obj.data[0] << ", " << obj.data[4] << ", " << obj.data[8] << ", " << obj.data[12] << "\n";
+  debug.nospace() << "        " << obj.data[1] << ", " << obj.data[5] << ", " << obj.data[9] << ", " << obj.data[13] << "\n";
+  debug.nospace() << "        " << obj.data[2] << ", " << obj.data[6] << ", " << obj.data[10] << ", " << obj.data[14] << "\n";
+  debug.nospace() << "        " << obj.data[3] << ", " << obj.data[7] << ", " << obj.data[11] << ", " << obj.data[15] << ")";
+
+  return debug.space();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

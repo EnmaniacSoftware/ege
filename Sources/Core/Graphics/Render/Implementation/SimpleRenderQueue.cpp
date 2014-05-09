@@ -1,7 +1,6 @@
 #include "Core/Graphics/Render/Implementation/SimpleRenderQueue.h"
-#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SimpleRenderQueue)
@@ -23,7 +22,7 @@ EGEResult SimpleRenderQueue::addForRendering(const PRenderComponent& component, 
   data.modelMatrix  = modelMatrix;
   data.component    = component;
 
-  m_renderData.insert(component->hash(), data);
+  m_renderData.push_back(data);
 
   return EGE_SUCCESS;
 }
@@ -39,15 +38,8 @@ void SimpleRenderQueue::clear()
   m_renderData.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void SimpleRenderQueue::render(IComponentRenderer& renderer)
+void SimpleRenderQueue::prepareRenderList(RenderDataList& list)
 {
-  for (RenderDataMap::const_iterator it = m_renderData.begin(); it != m_renderData.end(); ++it)
-  {
-    const SRENDERDATA& data = it->second;
-
-    renderer.renderComponent(data.component, data.modelMatrix);
-  }
+  list = m_renderData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

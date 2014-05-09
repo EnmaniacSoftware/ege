@@ -39,8 +39,9 @@ class BatchedRenderQueue : public RenderQueue
     EGEResult addForRendering(const PRenderQueue& queue) override;
     /*! @see RenderQueue::clear. */
     void clear() override;
-    /*! @see RenderQueue::render. */
-    void render(IComponentRenderer& renderer) override;
+    /*! @see RenderQueue::prepareRenderList. */
+    void prepareRenderList(RenderDataList& list) override;
+
     /*! Allocates master render component for a given component. 
      *  @param  component Component for which master component should be used. It is used as a template.
      *  @return TRUE if master component has been allocated successfully.
@@ -72,6 +73,14 @@ class BatchedRenderQueue : public RenderQueue
      *  @param  modelMatrix   Model matrix used to convert vertex positions.
      */
     void convertVertices(float32* outData, const float32* inData, u32 count, const List<const Rectf*>& textureRects, const Matrix4f& modelMatrix) const;
+    /*! Converts vertices.
+     *  @param  outData       Buffer to write converted vertices into.
+     *  @param  inData        Buffer to read vertices from for conversion.
+     *  @param  count         Number of vertices to convert.
+     *  @param  textureRects  List of pointers to texture rectangles for texture coords conversions.
+     */
+    void convertVertices(float32* outData, const float32* inData, u32 count, const List<const Rectf*>& textureRects) const;
+
     /*! Checks if given material is compatible with master one.
      *  @param  material  Material to check.
      *  @return TRUE if material is compatible.

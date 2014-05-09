@@ -8,6 +8,7 @@
 #include "EGERenderComponent.h"
 #include "EGERenderer.h"
 #include "EGEMatrix.h"
+#include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -37,9 +38,7 @@ class RenderQueue : public Object
 
     /*! Clears (empties) queue. */
     virtual void clear() = 0;
-    /*! Renders queue. */
-    virtual void render(IComponentRenderer& renderer) = 0;
-    
+
     /*! Returns render priority. */
     u32 priority() const;
     /*! Sets render priority. 
@@ -47,8 +46,29 @@ class RenderQueue : public Object
      */
     void setPriority(u32 priority);
     
+    /*! Renders queue. */
+    void render(IComponentRenderer& renderer);
+
     /*! Returns render primitve type. */
     EGEGraphics::RenderPrimitiveType primitiveType() const;
+
+  protected:
+
+    /*! Render data structure. */
+    struct SRENDERDATA
+    {
+      PRenderComponent component;   /*< Render component. */
+      Matrix4f modelMatrix;         /*< Model transformation matrix. */
+    };
+
+    typedef List<SRENDERDATA> RenderDataList;
+
+  private:
+
+    /*! Prepares render list for rendering. 
+     *  @param  list  List to fill in with render data.
+     */
+    virtual void prepareRenderList(RenderDataList& list) = 0;
 
   private:
 

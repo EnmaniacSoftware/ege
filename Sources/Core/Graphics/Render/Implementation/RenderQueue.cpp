@@ -1,5 +1,6 @@
 #include "Core/Graphics/Render/Interface/RenderQueue.h"
 #include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
+#include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 
 EGE_NAMESPACE
 
@@ -52,6 +53,21 @@ void RenderQueue::setPriority(u32 priority)
 EGEGraphics::RenderPrimitiveType RenderQueue::primitiveType() const
 {
   return m_primitiveType;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void RenderQueue::render(IComponentRenderer& renderer)
+{
+  // get list of render data
+  RenderDataList list;
+  prepareRenderList(list);
+
+  // render all data
+  for (RenderDataList::const_iterator it = list.begin(); it != list.end(); ++it)
+  {
+    const SRENDERDATA& data = *it;
+
+    renderer.renderComponent(data.component, data.modelMatrix);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
