@@ -46,7 +46,7 @@ class IAnimation
     {
       STATE_STOPPED = 0,                /*!< Playback is stopped. */
       STATE_PLAYING,                    /*!< Playing. */
-      STATE_PAUSED                      /*!< Playback being paused. */
+      STATE_PAUSED                      /*!< Playback is being paused. */
     };
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
