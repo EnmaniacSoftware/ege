@@ -5,16 +5,16 @@
 #include "Core/Graphics/Material.h"
 #include "EGERenderer.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SceneNodeObject)
 EGE_DEFINE_DELETE_OPERATORS(SceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid), 
-                                                                m_name(name), 
-                                                                m_parentNode(NULL), 
-                                                                m_visible(true)
+SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid) 
+                                                              , m_name(name)
+                                                              , m_parentNode(NULL) 
+                                                              , m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,6 +60,11 @@ void SceneNodeObject::parentChanged(SceneNode* oldNode, SceneNode* newNode)
   EGE_UNUSED(newNode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SceneNodeObject::onParentNodeTransformationChanged()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 /*
 void SceneNodeObject::queryLights( void )
 {
@@ -130,4 +135,3 @@ bool SceneNodeObject::SLIGHTLESS::operator()( const CLight* pcLight1, const CLig
 // PROTECTED
 
 */
-EGE_NAMESPACE_END

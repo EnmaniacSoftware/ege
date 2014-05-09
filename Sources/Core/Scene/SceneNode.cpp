@@ -14,15 +14,15 @@ EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
-: Object(manager->app()), 
-  Node(manager->app(), name, parent), 
-  m_manager(manager),
-  m_worldMatrixInvalid(true)
+: Object(manager->app())
+, Node(manager->app(), name, parent) 
+, m_manager(manager)
+, m_childrenNeedUpdated(false)
 {
   m_physics = ege_new PhysicsComponent(manager->app(), "node-physics-" + name, componentType);
   if (m_physics)
   {
-    ege_connect(m_physics, transformationChanged, this, SceneNode::transformationChanged);
+    ege_connect(m_physics, transformationChanged, this, SceneNode::onTransformationChanged);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,6 +47,9 @@ bool SceneNode::attachObject(PSceneNodeObject object)
 
   // set new parent
   object->setParentNode(this);
+
+  // connect tranformation notification for attched object
+  ege_connect(m_physics, transformationChanged, object.object(), SceneNodeObject::onParentNodeTransformationChanged);
 
   return true;  
 }
@@ -82,6 +85,9 @@ void SceneNode::removeObject(const String& name)
       // remove parent
       object->setParentNode(NULL);
 
+      // disconnect tranformation notification for attched object
+      ege_disconnect(m_physics, transformationChanged, object, SceneNodeObject::onParentNodeTransformationChanged);
+
       *iter = NULL;
 
       // remove from pool
@@ -100,6 +106,9 @@ void SceneNode::removeAllAttachedObjects()
 
     // remove parent
     object->setParentNode(NULL);
+
+    // disconnect tranformation notification for attched object
+    ege_disconnect(m_physics, transformationChanged, object, SceneNodeObject::onParentNodeTransformationChanged);
 
     *iter = NULL;
 
@@ -175,7 +184,7 @@ SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::Compo
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Matrix4f& SceneNode::worldMatrix() const 
 { 
-  if (m_worldMatrixInvalid)
+  if ( ! m_worldMatrix.isValid())
   {
     Quaternionf orientation = physics()->orientation();
     Vector4f position = physics()->position();
@@ -187,18 +196,22 @@ const Matrix4f& SceneNode::worldMatrix() const
     {
       m_worldMatrix = static_cast<SceneNode*>(parent())->worldMatrix().multiply(m_worldMatrix);
     }
-
-    // validate
-    m_worldMatrixInvalid = false;
   }
 
   return m_worldMatrix; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void SceneNode::transformationChanged()
+void SceneNode::onTransformationChanged()
 {
   // invalidate world matrix
-  m_worldMatrixInvalid = true;
+  m_worldMatrix.invalidate();
+
+  // invalidate child nodes
+  for (List<Node*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  {
+    SceneNode* node = static_cast<SceneNode*>(*it);
+    node->onTransformationChanged();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

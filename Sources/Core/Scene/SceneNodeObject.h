@@ -3,6 +3,7 @@
 
 #include "EGE.h"
 #include "EGEMatrix.h"
+#include "EGESignal.h"
 #include "Core/Scene/SceneNode.h"
 
 EGE_NAMESPACE_BEGIN
@@ -39,7 +40,7 @@ class SceneNodeObject : public Object
 
     /*! Called when parent node changes. */
     virtual void parentChanged(SceneNode* oldNode, SceneNode* newNode);
-
+    
     // bounding box related methods
    // inline const CAxisAlignedBox& getLocalAABB( void ) const { return m_cLocalAABB; } // gets local AABB
 
@@ -57,6 +58,11 @@ class SceneNodeObject : public Object
 
     /* Sets parent node. This should be called from SceneNode only. */
     void setParentNode(SceneNode* parent);
+
+  private slots:
+
+    /*! Slot called when parent node transformation has changed. */
+    virtual void onParentNodeTransformationChanged();
 
   protected:
 

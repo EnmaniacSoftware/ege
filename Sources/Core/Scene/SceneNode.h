@@ -20,6 +20,7 @@
 #include "EGETime.h"
 #include "EGEList.h"
 #include "EGEMatrix.h"
+#include "EGECachedObject.h"
 #include "EGEComponent.h"
 #include "Core/Data/Interface/Node.h"
 #include "Core/Graphics/Camera.h"
@@ -110,8 +111,8 @@ class SceneNode : public Object
 
   private slots:
 
-    /*! Called when one of transformation values has beeen changed. */
-    void transformationChanged();
+    /*! Slot called when one of transformation values has beeen changed. */
+    void onTransformationChanged();
 
   private:
 
@@ -122,11 +123,10 @@ class SceneNode : public Object
     /*! Physics component. */
     PPhysicsComponent m_physics;
     /*! Cached combined world matrix from all self and all parent nodes. */
-    mutable Matrix4f m_worldMatrix;
-    /*! Flag indicating if world matrix is invalid. */
-    mutable bool m_worldMatrixInvalid;
+    mutable CachedObject<Matrix4f> m_worldMatrix;
+    /*! Flag indicating if child nodes needs update. */
+    bool m_childrenNeedUpdated;
 
-    //bool m_bChildrenNeedUpdate;                     // TRUE if child nodes needs to be updated
     //bool m_bNeedUpdate;                             // TRUE if update is needed
     //bool m_bTransformNeedUpdate;                    // TRUE if cached world transform needs to be updated
 
