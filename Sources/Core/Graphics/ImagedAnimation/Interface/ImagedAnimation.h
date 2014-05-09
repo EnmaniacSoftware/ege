@@ -27,7 +27,8 @@ EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(Sequencer, PSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ImagedAnimation : public Object, public IAnimation
+class ImagedAnimation : public Object
+                      , public IAnimation
 {
   public:
 
@@ -69,6 +70,11 @@ class ImagedAnimation : public Object, public IAnimation
     /*! @see IAnimation::update. */
     void update(const Time& time) override;
 
+    /*! Sets global transformation matrix. 
+     *  @param  transform New global transformation matrix for animation.
+     */
+    void setTransformationMatrix(const Matrix4f& transform);
+
     /*! Sets FPS playback value. */
     void setFPS(float32 fps);
     
@@ -83,20 +89,16 @@ class ImagedAnimation : public Object, public IAnimation
      */
     void setBaseAlignment(Alignment alignment);
     /*! Returns name. */
-    const String& name() const { return m_name; }
+    const String& name() const;
     /*! Sets name. */
     void setName(const String& name);
 
-    /*! Adds object with a given id to animation. 
-     *  @param object    Object to be added.
+    /*! Adds animation data.
+     *  @param  objects       Map of all unique objects animation is built from.
+     *  @param  frameActions  List of actions for each each frame of animation.
      */
-    EGEResult addObject(const EGEImagedAnimation::Object& object);
-    /*! Adds frame data.
-     *  @param action  List of action to be processed at given frame.
-     *  @note  This creates new frame and appends it into existing ones.
-     */
-    EGEResult addFrameData(const List<EGEImagedAnimation::ActionData>& actions);
-    
+    void addData(const EGEImagedAnimation::ObjectMap& objects, const List<EGEImagedAnimation::ActionDataList>& frameActions);
+
     /*! Adds sequencer. */
     void addSequencer(const PSequencer& sequencer);
     /*! Returns current sequencer. */
@@ -104,8 +106,8 @@ class ImagedAnimation : public Object, public IAnimation
 
     /*! Renders animation. */
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /*! Sets base render priority. */
-    void setBaseRenderPriority(s32 priority);
+    /*! Sets render priority. */
+    void setRenderPriority(s32 priority);
     /*! Clears object. */
     void clear();
 
@@ -114,30 +116,9 @@ class ImagedAnimation : public Object, public IAnimation
 
   private:
 
-    /*! Child object data structure. */
-    struct ChildObjectData
-    {
-      PRenderComponent renderData;                            /*!< Render data. */
-      Color baseDiffuseColor;                                 /*!< Base diffuse color. */
-      Matrix4f baseMatrix;                                    /*!< Base transformation matrix. */
-      Matrix4f baseFrameMatrix;                               /*!< Combined base and frame transformations matrix. */
-    };
-
-    /*! Object data structure. */
-    struct ObjectData
-    {
-      List<ChildObjectData> children;
-    };
-
-    /*! Frame data struct. */
-    struct FrameData
-    {
-      List<EGEImagedAnimation::ActionData> actions;           /*!< Array of actions for all frames. */
-    };
-
-    typedef Map<s32, ObjectData> ObjectDataMap;
-    typedef DynamicArray<FrameData> FrameDataArray;
     typedef DynamicArray<PSequencer> SequencerArray;
+    typedef DynamicArray<PRenderComponent> RenderComponentArray;
+    typedef List<EGEImagedAnimation::ActionDataList> ActionDataList;
 
   private:
 
@@ -145,7 +126,11 @@ class ImagedAnimation : public Object, public IAnimation
     State state() const { return m_state; }
     /*! Returns sequencer of a given name. */
     PSequencer sequencer(const String& name) const;
-    
+    /*! Calculates number of vertices required for a given render frame. */
+    u32 calculateFrameVertexCount(const EGEImagedAnimation::ObjectMap& objects, const EGEImagedAnimation::ActionDataList& frameActionList) const;
+    /*! Updates render data. */
+    void updateRenderData();
+
   private slots:
 
     /*! Slot called when sequencer animated into new frame. */
@@ -161,12 +146,8 @@ class ImagedAnimation : public Object, public IAnimation
     String m_name;
     /*! Frame duration. */
     Time m_frameDuration;
-    /*! Map of all objects [objectId, ObjectData]. */
-    ObjectDataMap m_objects;
     /*! Base render priority. */
-    s32 m_baseRenderPriority; 
-    /*! Array of frame data. */
-    FrameDataArray m_frames;
+    s32 m_renderPriority; 
     /*! Display size (in pixels). */
     Vector2f m_displaySize;
     /*! Base display alignment. */
@@ -177,6 +158,16 @@ class ImagedAnimation : public Object, public IAnimation
     PSequencer m_currentSequencer;
     /*! Global color alpha value. */
     float32 m_alpha;
+    /*! Render data validity flag. */
+    bool m_renderDataNeedsUpdate;
+    /*! Global transformation matrix. */
+    Matrix4f m_transform;
+    /*! Animation objects sorted by object ID. */
+    EGEImagedAnimation::ObjectMap m_objects;
+    /*! Animation frame action list. */
+    ActionDataList m_framesActionsList;
+    /*! Array of frame render components. */
+    RenderComponentArray m_renderComponents;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

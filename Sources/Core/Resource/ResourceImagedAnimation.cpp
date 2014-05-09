@@ -203,6 +203,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   instance->clear();
 
   // add objects
+  Map<s32, EGEImagedAnimation::Object> objects;
   for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     const ObjectData& data = *it;
@@ -224,30 +225,27 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
       child.matrix[1][0] = childData.skew.y;
       child.size = childData.size;
       child.material = childData.materialResource->createInstance();
+      child.rect = child.material->pass(0)->texture(0)->rect();
     
       object.children << child;
     }
 
-    // add object to instance
-    if (EGE_SUCCESS != instance->addObject(object))
-    {
-      // error!
-      return EGE_ERROR;
-    }
+    objects.insert(object.id, object);
   }
 
   // add frames
-  List<EGEImagedAnimation::ActionData> actions;
+  List<List<EGEImagedAnimation::ActionData> > allActions;
   for (FrameDataList::const_iterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
   {
     const FrameData& frameData = *itFrame;
+
+    List<EGEImagedAnimation::ActionData> actions;
     for (FrameActionDataList::const_iterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
     {
       const FrameActionData& action = *itAction;
 
       EGEImagedAnimation::ActionData actionData;
           
-//      actionData.queue    = action.queue;
       actionData.objectId = action.objectId;
       actionData.matrix   = Matrix4f::IDENTITY;
       actionData.matrix.setTranslation(action.translate.x, action.translate.y, 0);
@@ -260,20 +258,16 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
       actions.push_back(actionData);
     }
 
-    if (EGE_SUCCESS != instance->addFrameData(actions))
-    {
-      // error!
-      return EGE_ERROR;
-    }
+    allActions << actions;
 
     // clean up
     actions.clear();
   }
   
-  // setup data
   instance->setFPS(m_fps);
   instance->setName(name());
   instance->setDisplaySize(m_displaySize);
+  instance->addData(objects, allActions);
 
   // add sequencers
   for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
