@@ -66,7 +66,7 @@ class RenderSystemStatistics : public Component
     /*! Returns time-continuous statistics data structure. */
     const RenderSystemContinuousStatisticData& continuousData() const; 
     /*! Dumps records to file. */
-    void dumpDataToFile();
+    void dumpDataToFile(bool dumpComponentNames = true);
 
   private slots:
 

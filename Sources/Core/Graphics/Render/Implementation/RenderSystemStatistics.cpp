@@ -107,7 +107,7 @@ void RenderSystemStatistics::onRenderEnd()
   ++m_currentIndex %= m_records.size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystemStatistics::dumpDataToFile()
+void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
 {
   StringBuffer buffer;
 
@@ -134,23 +134,9 @@ void RenderSystemStatistics::dumpDataToFile()
              << " Batch Count: " << queueData.batchCount << " Indexed Batch Count: " << queueData.indexedBatchCount << " Vertex Count: " 
              << queueData.vertexCount << "\n";
       
-      for (StringList::const_iterator itName = queueData.componentNames.begin(); itName != queueData.componentNames.end(); ++itName)
+      for (StringList::const_iterator itName = queueData.componentNames.begin(); dumpComponentNames && (itName != queueData.componentNames.end()); ++itName)
       {
-        if (itName == queueData.componentNames.begin())
-        {
-          buffer << "   ";
-        }
-        else
-        {
-          buffer << ",";
-        }
-
-        buffer << *itName;
-      }
-
-      if ( ! queueData.componentNames.empty())
-      {
-        buffer << "\n";
+        buffer << "   " << *itName << "\n";
       }
     }
 
