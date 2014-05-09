@@ -21,7 +21,7 @@ class CachedObject
   operators:
   
     const CachedObject& operator = (const T& data);
-    operator T() const;
+    operator const T&() const;
 
   public:
 
@@ -68,7 +68,7 @@ const CachedObject<T>& CachedObject<T>::operator = (const T& data)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-CachedObject<T>::operator T() const
+CachedObject<T>::operator const T&() const
 {
   return m_data;
 }
