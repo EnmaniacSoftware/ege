@@ -200,8 +200,6 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
   // check if component is meaningful
   if ((0 < component->vertexBuffer()->vertexCount()) && (NULL != component->material()))
   {
-    bool added = false;
-
     // calculate hash
     // NOTE: at this stage components are separated into unique priorities and primitive types
     u32 hash = CalculateRenderQueueHash(component->priority(), component->primitiveType());

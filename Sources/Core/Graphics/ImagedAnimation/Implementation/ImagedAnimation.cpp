@@ -309,7 +309,6 @@ void ImagedAnimation::updateRenderData()
   declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
 
   // go thru all frames
-  int i = 0;
   for (List<EGEImagedAnimation::ActionDataList>::const_iterator itFrame = m_framesActionsList.begin(); itFrame != m_framesActionsList.end(); ++itFrame)
   {
     const List<EGEImagedAnimation::ActionData>& actions = *itFrame;
