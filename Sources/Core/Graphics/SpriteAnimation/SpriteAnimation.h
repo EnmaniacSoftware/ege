@@ -14,6 +14,7 @@
 #include "EGEAnimation.h"
 #include "EGESequencer.h"
 #include "EGEMatrix.h"
+#include "EGERenderable.h"
 #include "Core/Graphics/TextureImage.h"
 
 EGE_NAMESPACE_BEGIN
@@ -24,11 +25,12 @@ EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SpriteAnimation : public Object, public IAnimation
+class SpriteAnimation : public Object
+                      , public IAnimation
+                      , public Renderable
 {
   public:
 
-   // SpriteAnimation();
     SpriteAnimation(Application* app, const String& name);
    ~SpriteAnimation();
 
@@ -69,8 +71,17 @@ class SpriteAnimation : public Object, public IAnimation
     /*! @see IAnimation::update. */
     void update(const Time& time) override;
 
+    /*! @see Renderable::addForRendering. */
+    EGEResult addForRendering(IRenderer& renderer) override;
+
     /*! Sets FPS playback value. */
     void setFPS(float32 fps);
+
+    /*! Sets display size (in pixels). */
+    void setDisplaySize(const Vector2f& size);
+    /*! Returns display size (in pixels). */
+    const Vector2f& displaySize() const;
+
     /*! Sets frame data. */
     void setFrameData(const DynamicArray<EGESprite::FrameData>& data);
     /*! Sets texture image containing sprite data. */
@@ -79,6 +90,11 @@ class SpriteAnimation : public Object, public IAnimation
     const String& name() const { return m_name; }
     /*! Sets name. */
     void setName(const String& name);
+
+    /*! Sets global transformation matrix. 
+     *  @param  transform New global transformation matrix for animation.
+     */
+    void setTransformationMatrix(const Matrix4f& transform);
 
     /*! Sets base display alignment. 
      *  @param alignment Alignment animation is originally created for.
@@ -91,13 +107,14 @@ class SpriteAnimation : public Object, public IAnimation
     /*! Returns current sequencer. */
     PSequencer currentSequencer() const;
 
-    /*! Renders animation. */
-    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-
     /*! Returns physics data component. */
     const PPhysicsComponent& physics() const { return m_physicsData; }
-    /*! Returns render data component. */
-    const PRenderComponent& renderData() const { return m_renderData; }
+
+    /*! Sets render priority. */
+    void setRenderPriority(s32 priority);
+
+    /*! Sets transparency level. */
+    void setAlpha(float32 alpha);
 
   private:
 
@@ -107,7 +124,9 @@ class SpriteAnimation : public Object, public IAnimation
     PSequencer sequencer(const String& name) const;
     /*! Returns texture image for current frame. */
     PTextureImage frameTexture() const;
- 
+     /*! Updates render data. */
+    void updateRenderData();
+
   private slots:
 
     /*! Slot called when sequencer animated into new frame. */
@@ -141,6 +160,14 @@ class SpriteAnimation : public Object, public IAnimation
     PPhysicsComponent m_physicsData;
     /*! Base display alignment. */
     Alignment m_baseAlignment;
+    /*! Global color alpha value. */
+    float32 m_alpha;
+    /*! Render data validity flag. */
+    bool m_renderDataNeedsUpdate;
+    /*! Global transformation matrix. */
+    Matrix4f m_transform;
+    /*! Display size (in pixels). */
+    Vector2f m_displaySize;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

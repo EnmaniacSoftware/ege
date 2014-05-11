@@ -8,7 +8,7 @@
 #include "EGERenderer.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KSpriteAnimationDebugName = "EGESpriteAnimation";
@@ -16,16 +16,14 @@ static const char* KSpriteAnimationDebugName = "EGESpriteAnimation";
 EGE_DEFINE_NEW_OPERATORS(SpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(SpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//SpriteAnimation::SpriteAnimation() : Object(NULL), 
-//                                     m_state(STATE_STOPPED), 
-//                                     m_name("")
-//{
-//}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SpriteAnimation::SpriteAnimation(Application* app, const String& name) : Object(app), 
-                                                                         m_state(STATE_STOPPED), 
-                                                                         m_name(name),
-                                                                         m_baseAlignment(ALIGN_TOP_LEFT)
+SpriteAnimation::SpriteAnimation(Application* app, const String& name) : Object(app) 
+                                                                       , m_state(STATE_STOPPED)
+                                                                       , m_name(name)
+                                                                       , m_baseAlignment(ALIGN_TOP_LEFT)
+                                                                       , m_alpha(1.0f)
+                                                                       , m_renderDataNeedsUpdate(false)
+                                                                       , m_transform(Matrix4f::IDENTITY)
+                                                                       , m_displaySize(50, 50)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,8 +36,8 @@ EGEResult SpriteAnimation::construct()
   EGEResult result;
 
   // create render data
-  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, RenderObjectFactory::VS_V2_T2, 
-                                                   EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, NVertexBuffer::UT_STATIC_WRITE);
+  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, RenderObjectFactory::VS_V2_T2_C4, 
+                                                   EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   if (NULL == m_renderData)
   {
     // error!
@@ -283,22 +281,170 @@ PSequencer SpriteAnimation::currentSequencer() const
   return m_currentSequencer; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void SpriteAnimation::addForRendering(IRenderer* renderer, const Matrix4f& transform)
+EGEResult SpriteAnimation::addForRendering(IRenderer& renderer)
 {
-  // apply alignment
-  Vector2f translation = Vector2f(m_physicsData->position().x, m_physicsData->position().y);
-  Vector2f scale       = Vector2f(m_physicsData->scale().x, m_physicsData->scale().y);
+  EGEResult result = EGE_SUCCESS;
 
-  translation = Math::Align(translation, scale, ALIGN_TOP_LEFT, m_baseAlignment);
-  Matrix4f matrix = Math::CreateMatrix(Vector4f(translation.x, translation.y, m_physicsData->position().z), m_physicsData->scale(), Quaternionf::IDENTITY);
+  // check if render data is invalid
+  if (m_renderDataNeedsUpdate)
+  {
+    // update render data
+    updateRenderData();
 
-  renderer->addForRendering(m_renderData, transform * matrix);
+    // reset flag
+    m_renderDataNeedsUpdate = false;
+  }
+
+  return renderer.addForRendering(m_renderData);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::setBaseAlignment(Alignment alignment)
 {
-  m_baseAlignment = alignment;
+  if (m_baseAlignment != alignment)
+  {
+    m_baseAlignment = alignment;
+
+    // make sure render data gets updated
+    m_renderDataNeedsUpdate = true;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::setAlpha(float32 alpha)
+{
+  if (m_alpha != alpha)
+  {
+    m_alpha = alpha;
 
-EGE_NAMESPACE_END
+    // make sure render data gets updated
+    m_renderDataNeedsUpdate = true;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::setRenderPriority(s32 priority)
+{
+  m_renderData->setPriority(priority);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::setTransformationMatrix(const Matrix4f& transform)
+{
+  if (m_transform != transform)
+  {
+    // store new value
+    m_transform = transform;
+
+    // mark dirty to recalculate
+    m_renderDataNeedsUpdate = true;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::updateRenderData()
+{
+  const u32 vertexCount = m_renderData->vertexBuffer()->vertexCount();
+  EGE_ASSERT(6 == vertexCount);
+
+  float32* data = reinterpret_cast<float32*>(m_renderData->vertexBuffer()->lock(0, vertexCount));
+  EGE_ASSERT(NULL != data);
+
+  Matrix4f finalMatrix = m_transform * m_physicsData->transformationMatrix();
+
+  // apply alignment
+  Vector2f translation = Vector2f(finalMatrix.translationX(), finalMatrix.translationY());
+  translation = Math::Align(translation, m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
+
+  finalMatrix.setTranslation(translation.x, translation.y, finalMatrix.translationZ());
+
+  // calculate final size
+  const Vector2f size = m_displaySize * Vector2f(finalMatrix.scaleX(), finalMatrix.scaleY());
+
+  // calculate quad vertices
+  Vector4f vertexTL(0, 0, 0, 1);
+  Vector4f vertexBL(0, size.y, 0, 1);
+  Vector4f vertexBR(size.x, size.y, 0, 1);
+  Vector4f vertexTR(size.x, 0, 0, 1);
+
+  vertexTL = finalMatrix * vertexTL;
+  vertexBL = finalMatrix * vertexBL;
+  vertexBR = finalMatrix * vertexBR;
+  vertexTR = finalMatrix * vertexTR;
+
+  // update render data
+
+  // vertex 1
+  *data++ = vertexTL.x;
+  *data++ = vertexTL.y;
+  *data++ = 0;
+  *data++ = 0;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  // vertex 2
+  *data++ = vertexBL.x;
+  *data++ = vertexBL.y;
+  *data++ = 0;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  // vertex 3
+  *data++ = vertexBR.x;
+  *data++ = vertexBR.y;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  // vertex 4
+  *data++ = vertexTL.x;
+  *data++ = vertexTL.y;
+  *data++ = 0;
+  *data++ = 0;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  // vertex 5
+  *data++ = vertexBR.x;
+  *data++ = vertexBR.y;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  // vertex 6
+  *data++ = vertexTR.x;
+  *data++ = vertexTR.y;
+  *data++ = 1;
+  *data++ = 0;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = 1;
+  *data++ = m_alpha;
+
+  m_renderData->vertexBuffer()->unlock(data - 1);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::setDisplaySize(const Vector2f& size)
+{
+  if (m_displaySize != size)
+  {
+    m_displaySize = size;
+
+    // mark dirty to recalculate
+    m_renderDataNeedsUpdate = true;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Vector2f& SpriteAnimation::displaySize() const
+{
+  return m_displaySize;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------

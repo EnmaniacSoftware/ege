@@ -16,6 +16,7 @@
 #include "EGEGraphics.h"
 #include "EGEVector2.h"
 #include "EGEAnimation.h"
+#include "EGERenderable.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -29,6 +30,7 @@ EGE_DECLARE_SMART_CLASS(Sequencer, PSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ImagedAnimation : public Object
                       , public IAnimation
+                      , public Renderable
 {
   public:
 
@@ -70,6 +72,9 @@ class ImagedAnimation : public Object
     /*! @see IAnimation::update. */
     void update(const Time& time) override;
 
+    /*! @see Renderable::addForRendering. */
+    EGEResult addForRendering(IRenderer& renderer) override;
+
     /*! Sets global transformation matrix. 
      *  @param  transform New global transformation matrix for animation.
      */
@@ -104,8 +109,6 @@ class ImagedAnimation : public Object
     /*! Returns current sequencer. */
     PSequencer currentSequencer() const;
 
-    /*! Renders animation. */
-    void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
     /*! Sets render priority. */
     void setRenderPriority(s32 priority);
     /*! Clears object. */

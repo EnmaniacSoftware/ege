@@ -1869,6 +1869,10 @@
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
       <Filter>Core\Data\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderable.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGERenderable.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

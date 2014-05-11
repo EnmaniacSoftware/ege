@@ -322,6 +322,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\ComponentRenderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\RenderSystemStatistics.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\SimpleRenderQueue.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderable.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderComponent.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\RenderQueue.h" />
@@ -461,6 +462,7 @@
     <ClInclude Include="..\..\Sources\EGEPlane.h" />
     <ClInclude Include="..\..\Sources\EGEPurchaseServices.h" />
     <ClInclude Include="..\..\Sources\EGEQuaternion.h" />
+    <ClInclude Include="..\..\Sources\EGERenderable.h" />
     <ClInclude Include="..\..\Sources\EGERenderComponent.h" />
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGERenderQueues.h" />

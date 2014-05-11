@@ -165,37 +165,38 @@ void ImagedAnimation::setName(const String& name)
   m_name = name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImagedAnimation::addForRendering(IRenderer* renderer, const Matrix4f& transform)
+EGEResult ImagedAnimation::addForRendering(IRenderer& renderer)
 {
+  EGEResult result = EGE_SUCCESS;
+
   // check if no sequencer
-  if (NULL == m_currentSequencer)
+  if (NULL != m_currentSequencer)
   {
-    // do nothing
-    return;
+    // check if render data is invalid
+    if (m_renderDataNeedsUpdate)
+    {
+      // update render data
+      updateRenderData();
+
+      // reset flag
+      m_renderDataNeedsUpdate = false;
+    }
+
+    EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < static_cast<s32>(m_renderComponents.size()));
+
+    // get current frame render data
+    PRenderComponent& renderComponent = m_renderComponents[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
+
+    // update alpha
+    //ColorTransform colorTransform(Color::NONE, Color(1.0f, 1.0f, 1.0f, m_alpha));
+    //frameData.renderData->material()->setDiffuseColorTransformation(colorTransform);
+
+    // render
+    renderComponent->setPriority(m_renderPriority);
+    result = renderer.addForRendering(renderComponent);
   }
 
-  // check if render data is invalid
-  if (m_renderDataNeedsUpdate)
-  {
-    // update render data
-    updateRenderData();
-
-    // reset flag
-    m_renderDataNeedsUpdate = false;
-  }
-
-  EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < static_cast<s32>(m_renderComponents.size()));
-
-  // get current frame render data
-  PRenderComponent& renderComponent = m_renderComponents[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
-
-  // update alpha
-  //ColorTransform colorTransform(Color::NONE, Color(1.0f, 1.0f, 1.0f, m_alpha));
-  //frameData.renderData->material()->setDiffuseColorTransformation(colorTransform);
-
-  // render
-  renderComponent->setPriority(m_renderPriority);
-  renderer->addForRendering(renderComponent, transform);
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImagedAnimation::setRenderPriority(s32 priority)
@@ -215,14 +216,13 @@ const Vector2f& ImagedAnimation::displaySize() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImagedAnimation::setBaseAlignment(Alignment alignment)
 {
-  m_baseAlignment = alignment;
+  if (m_baseAlignment != alignment)
+  {
+    m_baseAlignment = alignment;
 
-  m_renderDataNeedsUpdate = true;
-
-  //Vector2f translation(0, 0);
-  //translation = Math::Align(translation, m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
-
-  //m_alignmentMatrix = Math::CreateMatrix(Vector4f(translation.x, translation.y, 0), Vector4f::ONE, Quaternionf::IDENTITY);
+    // make sure render data gets updated
+    m_renderDataNeedsUpdate = true;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImagedAnimation::clear()
