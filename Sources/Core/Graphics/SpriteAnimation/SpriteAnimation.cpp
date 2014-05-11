@@ -87,6 +87,8 @@ EGEResult SpriteAnimation::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
+  ege_connect(m_physicsData, transformationChanged, this, SpriteAnimation::onTransformationChanged);
+
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -446,5 +448,10 @@ void SpriteAnimation::setDisplaySize(const Vector2f& size)
 const Vector2f& SpriteAnimation::displaySize() const
 {
   return m_displaySize;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void SpriteAnimation::onTransformationChanged()
+{
+  m_renderDataNeedsUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

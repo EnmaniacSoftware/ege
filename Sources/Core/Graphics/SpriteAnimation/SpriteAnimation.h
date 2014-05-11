@@ -133,6 +133,8 @@ class SpriteAnimation : public Object
     void onSequencerFrameChanged(PSequencer sequencer, s32 frameId);
     /*! Slot called when sequencer finished animation .*/
     void onSequencerFinished(PSequencer sequencer);
+    /*! Slot called when internal transformation matrix is chanaged. */
+    void onTransformationChanged();
 
   private:
 
