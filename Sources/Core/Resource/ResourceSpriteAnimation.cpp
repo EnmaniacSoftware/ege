@@ -182,10 +182,7 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   // setup data
   instance->setFPS(m_fps);
   instance->setFrameData(m_frameData);
-
-  PTextureImage textureImage = ege_new TextureImage(app());
-  textureImage->copy(m_sheet->textureImage());
-  instance->setTexture(textureImage);
+  instance->setTexture(m_sheet->textureImage());
 
   // add sequencers
   for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)

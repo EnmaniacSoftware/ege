@@ -122,8 +122,6 @@ class SpriteAnimation : public Object
     State state() const { return m_state; }
     /*! Returns sequencer of a given name. */
     PSequencer sequencer(const String& name) const;
-    /*! Returns texture image for current frame. */
-    PTextureImage frameTexture() const;
      /*! Updates render data. */
     void updateRenderData();
 
@@ -150,8 +148,6 @@ class SpriteAnimation : public Object
     Time m_frameDuration;
     /*! List of all frames in correct sequence for playback. */
     DynamicArray<EGESprite::FrameData> m_frameData;
-    /*! Texture image with sprite pixel data. */
-    PTextureImage m_textureImage;
     /*! Array of all sequencers. */
     SequencerArray m_sequencers;
     /*! Current sequencer. */

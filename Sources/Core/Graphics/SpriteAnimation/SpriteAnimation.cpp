@@ -33,8 +33,6 @@ SpriteAnimation::~SpriteAnimation()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SpriteAnimation::construct()
 {
-  EGEResult result;
-
   // create render data
   m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, RenderObjectFactory::VS_V2_T2_C4, 
                                                    EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
@@ -61,20 +59,6 @@ EGEResult SpriteAnimation::construct()
 
   material->setSrcBlendFactor(EGEGraphics::BF_SRC_ALPHA);
   material->setDstBlendFactor(EGEGraphics::BF_ONE_MINUS_SRC_ALPHA);
-
-  PTextureImage texture = ege_new TextureImage(app());
-  if (NULL == texture)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  texture->setName("sprite-texture");
-  if (EGE_SUCCESS != (result = pass->addTexture(texture)))
-  {
-    // error!
-    return result;
-  }
 
   // associate material with render data
   m_renderData->setMaterial(material);
@@ -199,14 +183,6 @@ void SpriteAnimation::update(const Time& time)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PTextureImage SpriteAnimation::frameTexture() const
-{
-  EGE_ASSERT(NULL != m_currentSequencer);
-
-  m_textureImage->setRect(m_frameData[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())].m_rect);
-  return m_textureImage;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::setFPS(float32 fps)
 {
   m_frameDuration = (0.0f < fps) ? (1.0f / fps) : 0.0f;
@@ -219,7 +195,35 @@ void SpriteAnimation::setFrameData(const DynamicArray<EGESprite::FrameData>& dat
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::setTexture(const PTextureImage& texture)
 {
-  m_textureImage = texture;
+  EGE_ASSERT(NULL != m_renderData);
+  EGE_ASSERT(NULL != m_renderData->material());
+  EGE_ASSERT(NULL != m_renderData->material()->pass(0));
+
+  EGEResult result = EGE_ERROR_ALREADY_EXISTS;
+
+  // check if any texture present in render pass
+  PRenderPass pass = m_renderData->material()->pass(0);
+  if (0 < pass->textureCount())
+  {
+    // replace if different texture
+    if (pass->texture(0) != texture)
+    {
+      result = pass->setTexture(0, texture);
+    }
+  }
+  else
+  {
+    // add texture
+    result = pass->addTexture(texture);
+  }
+
+  if (EGE_SUCCESS == result)
+  {
+    // make sure vertex data gets updated
+    m_renderDataNeedsUpdate = true;
+  }
+
+  EGE_ASSERT((EGE_ERROR_ALREADY_EXISTS == result) || (EGE_SUCCESS == result));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::setName(const String& name)
@@ -260,10 +264,8 @@ PSequencer SpriteAnimation::sequencer(const String& name) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::onSequencerFrameChanged(PSequencer sequencer, s32 frameId)
 {
-  EGE_ASSERT(NULL != m_renderData);
-
-  // update render data
-  m_renderData->material()->pass(0)->setTexture(0, frameTexture());
+  // update vertex data
+  m_renderDataNeedsUpdate = true;
 
   // emit
   emit frameChanged(this, frameId);
@@ -349,14 +351,18 @@ void SpriteAnimation::updateRenderData()
 
   Matrix4f finalMatrix = m_transform * m_physicsData->transformationMatrix();
 
+  // NOTE: size AFTER scaling is required for proper realignments while for vertex calculations size BEFORE scaling should be used 
+  //       (vertices will be converted by transformation matrix)
+  const Vector2f size = m_displaySize;
+  const Vector2f alignmentSize = size * Vector2f(finalMatrix.scaleX(), finalMatrix.scaleY());
+
   // apply alignment
   Vector2f translation = Vector2f(finalMatrix.translationX(), finalMatrix.translationY());
-  translation = Math::Align(translation, m_displaySize, ALIGN_TOP_LEFT, m_baseAlignment);
-
+  translation = Math::Align(translation, alignmentSize, ALIGN_TOP_LEFT, m_baseAlignment);
   finalMatrix.setTranslation(translation.x, translation.y, finalMatrix.translationZ());
 
-  // calculate final size
-  const Vector2f size = m_displaySize * Vector2f(finalMatrix.scaleX(), finalMatrix.scaleY());
+  // get texture coordinates
+  const Rectf& textureRect = m_frameData[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())].m_rect;
 
   // calculate quad vertices
   Vector4f vertexTL(0, 0, 0, 1);
@@ -374,8 +380,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 1
   *data++ = vertexTL.x;
   *data++ = vertexTL.y;
-  *data++ = 0;
-  *data++ = 0;
+  *data++ = textureRect.x;
+  *data++ = textureRect.y;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
@@ -384,8 +390,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 2
   *data++ = vertexBL.x;
   *data++ = vertexBL.y;
-  *data++ = 0;
-  *data++ = 1;
+  *data++ = textureRect.x;
+  *data++ = textureRect.y + textureRect.height;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
@@ -394,8 +400,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 3
   *data++ = vertexBR.x;
   *data++ = vertexBR.y;
-  *data++ = 1;
-  *data++ = 1;
+  *data++ = textureRect.x + textureRect.width;
+  *data++ = textureRect.y + textureRect.height;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
@@ -404,8 +410,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 4
   *data++ = vertexTL.x;
   *data++ = vertexTL.y;
-  *data++ = 0;
-  *data++ = 0;
+  *data++ = textureRect.x;
+  *data++ = textureRect.y;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
@@ -414,8 +420,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 5
   *data++ = vertexBR.x;
   *data++ = vertexBR.y;
-  *data++ = 1;
-  *data++ = 1;
+  *data++ = textureRect.x + textureRect.width;
+  *data++ = textureRect.y + textureRect.height;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
@@ -424,8 +430,8 @@ void SpriteAnimation::updateRenderData()
   // vertex 6
   *data++ = vertexTR.x;
   *data++ = vertexTR.y;
-  *data++ = 1;
-  *data++ = 0;
+  *data++ = textureRect.x + textureRect.width;
+  *data++ = textureRect.y;
   *data++ = 1;
   *data++ = 1;
   *data++ = 1;
