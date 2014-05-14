@@ -343,6 +343,10 @@ void SpriteAnimation::setTransformationMatrix(const Matrix4f& transform)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SpriteAnimation::updateRenderData()
 {
+  EGE_ASSERT(NULL != m_renderData->material());
+  EGE_ASSERT(1 == m_renderData->material()->passCount());
+  EGE_ASSERT(1 == m_renderData->material()->pass(0)->textureCount());
+
   const u32 vertexCount = m_renderData->vertexBuffer()->vertexCount();
   EGE_ASSERT(6 == vertexCount);
 
