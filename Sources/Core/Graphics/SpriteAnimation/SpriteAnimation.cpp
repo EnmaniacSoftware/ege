@@ -287,8 +287,6 @@ PSequencer SpriteAnimation::currentSequencer() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SpriteAnimation::addForRendering(IRenderer& renderer)
 {
-  EGEResult result = EGE_SUCCESS;
-
   // check if render data is invalid
   if (m_renderDataNeedsUpdate)
   {
