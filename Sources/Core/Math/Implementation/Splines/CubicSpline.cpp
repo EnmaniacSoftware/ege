@@ -135,8 +135,10 @@ Vector3f CubicSpline::value(float32 parameter) const
   {
     const SegmentData& segment = *it;
 
-    // check if position within current segment
-    if (parameter <= segment.length)
+    // check if position within current segment or last element
+    // NOTE: since 'parameter' is enforced to be in [0-1] interval, it can be assumed that if last segment is reached but first
+    //       condition is not satisfied (ie due to round errors) it is still valid to process the last segment
+    if ((parameter <= segment.length) || (it == (m_segments.end() - 1)))
     {
       // re-map to [0-1] interval of current segement
       parameter = Math::Clamp(parameter / segment.length, 0.0f, 1.0f);
