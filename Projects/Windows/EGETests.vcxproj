@@ -58,6 +58,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(EGE_HOME)\External\OpenAL 1.13;$(EGE_HOME)\External\pthreads 2.8.0\lib;$(EGE_HOME)\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libeay32.lib;pthreadVC2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,6 +78,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(EGE_HOME)\External\OpenAL 1.13;$(EGE_HOME)\External\pthreads 2.8.0\lib;$(EGE_HOME)\External\OpenSSL 1.0.1f\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libeay32.lib;pthreadVC2.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -112,11 +116,29 @@
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj">
+      <Project>{90b6c2e4-0188-4552-ad48-15c26ce84838}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\External\gtest-1.7.0\msvc\gtest.vcxproj">
       <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\External\gtest-1.7.0\msvc\gtest_main.vcxproj">
       <Project>{3af54c8a-10bf-4332-9147-f68ed9862032}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\JpegLib\JpegLib.vcxproj">
+      <Project>{9e7ecddf-c76e-4013-83a0-7d67125d7511}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\PNGLib\libpng.vcxproj">
+      <Project>{9558633a-30ad-4309-bc0f-e9a45db9b2b9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\Sqlite 3.8.3.1\Sqlite3.vcxproj">
+      <Project>{2f0a47b4-effe-4754-8316-f60a1af2d13a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\tinyxml 2.6.1\tinyxmlSTL.vcxproj">
+      <Project>{a3a84737-5017-4577-b8a2-79429a25b8b6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\Zlib\ZLib.vcxproj">
+      <Project>{0697d285-5c52-44b0-a9f9-11824a857a66}</Project>
     </ProjectReference>
     <ProjectReference Include="EGE.vcxproj">
       <Project>{640bd281-71d7-4cc6-91db-8381773cc8f4}</Project>
