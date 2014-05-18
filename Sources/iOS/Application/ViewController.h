@@ -19,5 +19,7 @@
 - (id) initWithApplication: (EGE::Application*) application;
 /*! Converts native UI orientation into framework equivalent. */
 - (int) convertUIOrientation: (UIInterfaceOrientation) orientation;
+/*! Returns whether status bar should be hidden or not. */
+- (BOOL) prefersStatusBarHidden;
 
 @end
