@@ -236,7 +236,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug(KAppDelegateDebugName) << "Touch began at" << point.x << point.y << static_cast<float32>(touch.timestamp);
+    egeDebug(KAppDelegateDebugName) << "Touch began at" << static_cast<float32>(point.x) << static_cast<float32>(point.y)
+                                    << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -258,7 +259,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     // send pointer event
     [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
     
-    egeDebug(KAppDelegateDebugName) << "Touch ended at" << point.x << point.y << static_cast<float32>(touch.timestamp);
+    egeDebug(KAppDelegateDebugName) << "Touch ended at" << static_cast<float32>(point.x) <<static_cast<float32>(point.y)
+                                    << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -286,7 +288,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     // send pointer event
     [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
      
-    egeDebug(KAppDelegateDebugName) << "Touch moved at" << point.x << point.y << static_cast<float32>(touch.timestamp);
+    egeDebug(KAppDelegateDebugName) << "Touch moved at" << static_cast<float32>(point.x) << static_cast<float32>(point.y)
+                                    << static_cast<float32>(touch.timestamp);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -70,7 +70,7 @@ void DynamicArray<T>::removeAt(s32 index)
 template <typename T>
 const T DynamicArray<T>::last(const T& defaultValue) const
 {
-  return this->at(this->size() - 1, defaultValue);
+  return this->at(static_cast<s32>(this->size()) - 1, defaultValue);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>

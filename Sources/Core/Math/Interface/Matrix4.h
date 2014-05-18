@@ -143,7 +143,7 @@ TMatrix4<T>::TMatrix4(const TMatrix4<T>& matrix)
 template <typename T>
 TMatrix4<T>& TMatrix4<T>::operator += (const TMatrix4<T>& matrix)
 {
-  for (register u32 entry = 0; entry < 16; ++entry)
+  for (u32 entry = 0; entry < 16; ++entry)
   {
     data[entry] += matrix.data[entry];
   }
@@ -154,7 +154,7 @@ TMatrix4<T>& TMatrix4<T>::operator += (const TMatrix4<T>& matrix)
 template <typename T>
 TMatrix4<T>& TMatrix4<T>::operator -= (const TMatrix4<T>& matrix)
 {
-  for (register u32 entry = 0; entry < 16; ++entry)
+  for (u32 entry = 0; entry < 16; ++entry)
   {
     data[entry] -= matrix.data[entry];
   }

@@ -115,7 +115,7 @@
 		451B7D9718C5433A00CB9E71 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = 451B7D9A18C5433A00CB9E71 /* Build configuration list for PBXProject "sqlite3" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -150,6 +150,7 @@
 		451B7D9B18C5433A00CB9E71 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

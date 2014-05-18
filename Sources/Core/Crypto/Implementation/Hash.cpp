@@ -5,7 +5,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 Hash::FromString(const String& string)
 {
-  return Hash::FromData(reinterpret_cast<const u8*>(string.toAscii()), string.length());
+  return Hash::FromData(reinterpret_cast<const u8*>(string.toAscii()), static_cast<s32>(string.length()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 Hash::FromData(const u8* data, s32 size)

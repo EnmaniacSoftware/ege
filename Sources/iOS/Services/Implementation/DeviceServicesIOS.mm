@@ -20,8 +20,15 @@ bool DeviceServicesIOS::openUrl(const String& url)
   // convert URL
   NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
   
-  // try to open it
-  return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
+  // check if any application can handle URL
+  BOOL result = [[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: nsUrl]];
+  if (YES == result)
+  {
+    // try to open it
+    result = [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]];
+  }
+  
+  return (YES == result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const String& value)

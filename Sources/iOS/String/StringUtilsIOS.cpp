@@ -8,7 +8,7 @@ s32 StringUtils::ToInt(const char* text, bool* error)
 {
   char* end;
 
-  s32 value = strtol(text, &end, 10);
+  s32 value = static_cast<s32>(strtol(text, &end, 10));
 
   // check for error
   if (error && (0 != *end))

@@ -224,7 +224,7 @@ PImage ImageHandlerPNG::Load(PObject buffer, PixelFormat format)
   }
 
   // allocate image
-  PImage image = ege_new Image(NULL, pngInfoStruct->width, pngInfoStruct->height, format);
+  PImage image = ege_new Image(NULL, static_cast<s32>(pngInfoStruct->width), static_cast<s32>(pngInfoStruct->height), format);
   if ((NULL == image) || !image->isValid())
   {
     // error!

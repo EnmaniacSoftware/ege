@@ -223,7 +223,7 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
     ::sqlite3_stmt* statementObject = NULL;
 
     // prepare statement object
-    int sqlResult = ::sqlite3_prepare_v2(m_handle, query.value().toAscii(), query.value().length(), &statementObject, NULL);
+    int sqlResult = ::sqlite3_prepare_v2(m_handle, query.value().toAscii(), static_cast<int>(query.value().length()), &statementObject, NULL);
     switch (sqlResult)
     {
       case SQLITE_OK: result = EGE_SUCCESS; break;
@@ -250,7 +250,7 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
           case EGE_OBJECT_UID_STRING_BUFFER:
 
             sqlResult = ::sqlite3_bind_text(statementObject, i, ege_pcast<PStringBuffer>(object)->string().toAscii(), 
-                                            ege_pcast<PStringBuffer>(object)->string().length(), NULL);
+                                            static_cast<int>(ege_pcast<PStringBuffer>(object)->string().length()), NULL);
             break;
 
           case EGE_OBJECT_UID_DATA_BUFFER:

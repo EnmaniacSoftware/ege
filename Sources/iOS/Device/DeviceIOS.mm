@@ -145,7 +145,7 @@ void GetMemoryStatistics(u64& availableRAM, u64& totalRAM)
   }
   else
   {
-    natural_t mem_used = (vm_stat.active_count + vm_stat.inactive_count + vm_stat.wire_count) * pagesize;
+    natural_t mem_used = static_cast<natural_t>((vm_stat.active_count + vm_stat.inactive_count + vm_stat.wire_count) * pagesize);
     availableRAM = vm_stat.free_count * pagesize;
     totalRAM = mem_used + availableRAM;
   }
