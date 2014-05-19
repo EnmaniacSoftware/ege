@@ -26,6 +26,13 @@ class DeviceServicesIOS : public DeviceServices
     /*! @see DeviceServices::retrieveConfidentialValue. */
     EGEResult retrieveConfidentialValue(const String& name, String& value) override;
     EGEResult retrieveConfidentialValue(const String& name, PDataBuffer& value) override;
+
+  private:
+
+    /*! Open application rate URL. 
+     *  @return Returns TRUE if requests was processed successfully. Otherwise, FALSE.
+     */
+    bool openApplicationRateURL();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,3 +1,4 @@
+#include "Core/Services/Interface/SpecialURLs.h"
 #include "Win32/Services/Interface/DeviceServicesWin32.h"
 #include "EGEFile.h"
 #include "EGEDebug.h"
@@ -45,6 +46,14 @@ DeviceServicesWin32::~DeviceServicesWin32()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesWin32::openUrl(const String& url)
 {
+  // check for special URLs
+  if (KSpecialURLRateApp == url)
+  {
+    // not supported
+    return false;
+  }
+
+  // process given URL
   return (32 < reinterpret_cast<int>(ShellExecuteA(NULL, "open", url.toAscii(), NULL, NULL, SW_SHOWNORMAL)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

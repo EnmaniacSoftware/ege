@@ -21,7 +21,11 @@ class DeviceServices
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
     
-    /*! Opens given URL in Web browser. */
+    /*! Opens given URL in web browser. 
+     *  @param  url URL to open in the web browser.
+     *  @return TRUE if URL could be processed. Otherwise, FALSE.
+     *  @note Given URL can also be one of the special URLs.
+     */
     virtual bool openUrl(const String& url) = 0;
     /*! Stores value in secured area. 
      *  @param  name  Name of the value.

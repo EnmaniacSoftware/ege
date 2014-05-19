@@ -3,6 +3,7 @@
 
 #include "Core/Platform.h"
 #include "Core/Services/Interface/DeviceServices.h"
+#include "Core/Services/Interface/SpecialURLs.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Services/Interface/DeviceServicesWin32.h"

@@ -17,6 +17,12 @@ DeviceServicesIOS::~DeviceServicesIOS()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::openUrl(const String& url)
 {
+  // check for special URLs
+  if (KSpecialURLRateApp == url)
+  {
+    return openApplicationRateURL();
+  }
+
   // convert URL
   NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
   
@@ -140,5 +146,30 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
   }
   
   return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool DeviceServicesIOS::openApplicationRateURL()
+{
+  // 555099920
+  u64 appId = 555099920;
+
+	// iOS 7 needs a different URL
+	String url;
+  if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) 
+  {
+		url = String("itms-apps://itunes.apple.com/app/id%1");
+	}
+  else
+  {
+    url = String("itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%1");
+  }
+
+  url = url.arg(appId);
+
+  // convert URL
+  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+
+  // execute
+  return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

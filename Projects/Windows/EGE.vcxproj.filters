@@ -1002,6 +1002,9 @@
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\Node.cpp">
       <Filter>Core\Data\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\SpecialURLs.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Event\Event.h">
@@ -1873,6 +1876,9 @@
       <Filter>Core\Graphics\Render\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERenderable.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\SpecialURLs.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
