@@ -1,4 +1,5 @@
 #include "iOS/Services/Interface/DeviceServicesIOS.h"
+#include "Core/Services/Interface/SpecialURLs.h"
 #include "EGEDebug.h"
 #import <UIKit/UIKit.h>
 
@@ -6,6 +7,8 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KConfidentialValuesPrefix = "ege.deviceservices.confidentialstore.";
+
+static const NSString* KEGEITunesAppIdKey = @"ege-itunes-app-id";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesIOS::DeviceServicesIOS() : DeviceServices()
 {
@@ -150,12 +153,29 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::openApplicationRateURL()
 {
-  // 555099920
-  u64 appId = 555099920;
-
-	// iOS 7 needs a different URL
+  u32 appId = 0;
+  
+  // retrieve iTunes app id from .plist file
+  NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  
+  NSNumber* value = [infoDictionary objectForKey: KEGEITunesAppIdKey];
+  if (nil != value)
+  {
+    appId = static_cast<u32>([value intValue]);
+  }
+  else
+  {
+    // cannot process
+    return false;
+  }
+  
 	String url;
-  if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0) 
+  
+#if TARGET_IPHONE_SIMULATOR
+  url = String("https://itunes.apple.com/app/id%1");
+#else
+  // iOS 7 needs a different URL
+  if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
   {
 		url = String("itms-apps://itunes.apple.com/app/id%1");
 	}
@@ -163,7 +183,8 @@ bool DeviceServicesIOS::openApplicationRateURL()
   {
     url = String("itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%1");
   }
-
+#endif // TARGET_IPHONE_SIMULATOR
+  
   url = url.arg(appId);
 
   // convert URL

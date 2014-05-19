@@ -196,6 +196,7 @@
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
 		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
+		45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */; };
 		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
 		4558971618C548FC002C4C8B /* libsqlite3.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558970818C54679002C4C8B /* libsqlite3.a */; };
 		4558971B18C548FC002C4C8B /* libjpeglib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4558971718C548FC002C4C8B /* libjpeglib.a */; };
@@ -804,6 +805,8 @@
 		4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
+		45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialURLs.cpp; sourceTree = "<group>"; };
+		45296E04192A8BC300F3E9EA /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
 		453B563B18FDD5A1004E21D0 /* RenderSystemStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemStatistics.h; sourceTree = "<group>"; };
 		453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemStatistics.cpp; sourceTree = "<group>"; };
 		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
@@ -2429,6 +2432,7 @@
 		45C3AD2218CDF4380009ABA3 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */,
 				45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */,
 				45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */,
 				45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */,
@@ -2441,6 +2445,7 @@
 		45C3AD2818CDF4380009ABA3 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45296E04192A8BC300F3E9EA /* SpecialURLs.h */,
 				45C3AD2918CDF4380009ABA3 /* DeviceServices.h */,
 				45C3AD2A18CDF4380009ABA3 /* PurchaseServices.h */,
 				45C3AD2B18CDF4380009ABA3 /* PurchaseServicesNull.h */,
@@ -2754,6 +2759,7 @@
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
 				451471B718C5231900AAC617 /* Screen.cpp in Sources */,
+				45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */,
 				451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */,
 				451471B918C5231900AAC617 /* Sequencer.cpp in Sources */,
 				451471BF18C5231900AAC617 /* String.cpp in Sources */,

@@ -52,8 +52,11 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) onDeviceOrientationChanged: (NSNotification*) notification
 {
+  // get sender
+  UIDevice* device = [notification object];
+  
   // get orientation value
-  int nativeOrientation = [[notification object] orientation];
+  int nativeOrientation = [device orientation];
   
   egeDebug(KAppDelegateDebugName) << "Device orientation has changed:" << nativeOrientation;
 
