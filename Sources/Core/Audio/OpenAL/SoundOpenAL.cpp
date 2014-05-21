@@ -119,7 +119,6 @@ void SoundOpenAL::update(const Time& time)
           notifyFinished();
 
           // stop
-          setState(StateAboutToStop);
           doStop();
         }
       }
@@ -304,7 +303,7 @@ bool SoundOpenAL::doPlay(ALuint channel)
 bool SoundOpenAL::doStop()
 {
   // check if can be stopped
-  if (StateAboutToStop == state())
+  if ((StateAboutToStop == state()) || (StatePlaying == state()))
   {
     alSourceStop(m_channel);
     alSourcei(m_channel, AL_BUFFER, 0);
