@@ -39,7 +39,8 @@ bool SoundEffectFadeOut::update(const Time& time, PSound sound)
   if (done)
   {
     // notify
-    emit finished(this, sound);
+    emit finished();
+    emit finishedWithSelfAndSound(this, sound);
   }
 
   return done;

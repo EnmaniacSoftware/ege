@@ -56,6 +56,13 @@ class Sound : public Object
      */
     static PSound CreateAndPlay(Application* application, const String& name, s32 repeatCount = 0, const String& groupName = "");
 
+  public slots:
+  
+    /*! Stops playback. 
+     *  @note Stopping playback resets internal state of the sound ie. volume, codecs etc.
+     */
+    virtual void stop() = 0;
+
   public:
 
     /*! Constructs object. */
@@ -79,10 +86,6 @@ class Sound : public Object
     virtual bool isPlaying() const = 0;
     /*! Returns TRUE if sound is paused. */
     virtual bool isPaused() const = 0;
-    /*! Stops playback. 
-     *  @note Stopping playback resets internal state of the sound ie. volume, codecs etc.
-     */
-    virtual void stop() = 0;
     /*! Pauses the playback. */
     virtual void pause() = 0;
 

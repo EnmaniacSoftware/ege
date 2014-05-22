@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_SOUNDEFFECT_H
-#define EGE_CORE_SOUNDEFFECT_H
+#ifndef EGE_CORE_AUDIO_SOUNDEFFECT_H
+#define EGE_CORE_AUDIO_SOUNDEFFECT_H
 
 /** Class representing sound effect interface.
 */
@@ -23,11 +23,13 @@ class SoundEffect : public Object
 
   public signals:
 
-    /*! Signal emitted when effect came to completion. 
+    /*! Signal emitted when effect comes to completion. 
      *  @param effect Effect which is finished.
      *  @param sound  Sound for to which effect was bound while being finished.
      */
-    Signal2<PSoundEffect, PSound> finished;
+    Signal2<PSoundEffect, PSound> finishedWithSelfAndSound;
+    /*! Signal emitted when effect comes to completion. */
+    Signal0<> finished;
 
   public:
 
@@ -50,4 +52,4 @@ typedef List<PSoundEffect> SoundEffectList;
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SOUNDEFFECT_H
+#endif // EGE_CORE_AUDIO_SOUNDEFFECT_H
