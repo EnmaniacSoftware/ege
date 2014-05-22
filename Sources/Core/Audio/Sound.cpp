@@ -117,6 +117,18 @@ SoundEffectList Sound::effects(u32 uid) const
 {
   SoundEffectList list;
 
+  // go thru all effects
+  for (SoundEffectList::const_iterator it = m_effects.begin(); it != m_effects.end(); ++it)
+  {
+    const PSoundEffect& effect = *it;
+
+    // check if effect should be added
+    if ((effect->uid() == uid) || (EGE_OBJECT_UID_GENERIC == uid))
+    {
+      list.push_back(effect);
+    }
+  }
+
   return list;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -95,7 +95,11 @@ class Sound : public Object
      *  @note Effect is removed when finished.
      */
     bool addEffect(PSoundEffect effect);
-    /*! Returns list of sound effects of a given type. */
+    /*! Returns list of sound effects of a given type. 
+     *  @param  uid Object ID of the effects to be returned.
+     *  @return List of effects with given id.
+     *  @note If EGE_OBJECT_UID_GENERIC is used all effects will be returned.
+     */
     SoundEffectList effects(u32 uid) const;
 
     /*! Returns name. */
