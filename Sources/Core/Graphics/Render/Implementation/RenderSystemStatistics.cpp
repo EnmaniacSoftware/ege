@@ -162,7 +162,7 @@ void RenderSystemStatistics::clearCurrentRecord()
   record.batchCount        = 0;
   record.vertexCount       = 0;
 
-  const s32 KRenderQueuesReservedItemCount = 100;
+  const s32 KRenderQueuesReservedItemCount = 200;
   EGE_ASSERT_X(KRenderQueuesReservedItemCount >= record.queues.size(), "Increase reserve value!");
 
   record.queues.clear();
