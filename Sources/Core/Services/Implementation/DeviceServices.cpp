@@ -29,15 +29,17 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
   // try to retieve value
   if (EGE_ERROR_NOT_FOUND == (result = retrieveConfidentialValue(KAESKeyName, value)))
   {
+    egeWarning(KDeviceServicesDebugName) << "AES key not found. Generating...";
+
     // not found, generate 128-bit (16 bytes) encryption key
     RandomGenerator random;
-
+    
     s32 data[4];
     for (s32 i = 0; i < 4; i++)
     {
       data[i] = random();
     }
-
+    
     if (sizeof (data) != value->write(reinterpret_cast<const void*>(data), sizeof (data)))
     {
       // error!
@@ -51,11 +53,21 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
       egeWarning(KDeviceServicesDebugName) << "Could not retrieve AES-128 encryption key!";
       value = NULL;
     }
+    else
+    {
+      egeWarning(KDeviceServicesDebugName) << "AES key has been generated" << value;
+    }
   }
   else if (EGE_SUCCESS != result)
   {
     // error!
     value = NULL;
+    
+    egeWarning(KDeviceServicesDebugName) << "AES could not be retrieved!";
+  }
+  else
+  {
+    egeWarning(KDeviceServicesDebugName) << "AES retrieved successfully" << value;
   }
 
   return value;

@@ -1,16 +1,18 @@
 #include "EGEDebug.h"
-#import <Foundation/Foundation.h>
+#include "EGEString.h"
 #include <assert.h>
+#import <Foundation/Foundation.h>
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Assert(const char* assertion, const char* file, int line)
 {
-  EGE_UNUSED(file);
-  EGE_UNUSED(line);
-  
-  assert(false && assertion);
+  // log
+  Debug::PrintWithArgs("Assertion: %s, in file: %s @ line %d", assertion, file, line);
+
+  // assert
+  assert(false);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::Print(const char* text)
@@ -18,5 +20,3 @@ void Debug::Print(const char* text)
   NSLog(@"%s", text);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END
