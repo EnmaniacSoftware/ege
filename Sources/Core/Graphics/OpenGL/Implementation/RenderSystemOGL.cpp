@@ -126,7 +126,7 @@ void RenderSystemOGL::activateTextureUnit(u32 unit)
     if (unit < Device::TextureUnitsCount())
     {
       // check if multitexture available
-      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE))
+      if (Device::HasRenderCapability(ERenderCapabilityMultitexturing))
       {
         glActiveTexture(GL_TEXTURE0 + unit);
         OGL_CHECK();
@@ -175,7 +175,7 @@ PVertexBuffer RenderSystemOGL::createVertexBuffer(const String& name, const Vert
   PVertexBuffer buffer;
 
   // check if VBO is available
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  if (Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
     VertexBufferVBO* vertexBuffer = ege_new VertexBufferVBO(app(), name, vertexDeclaration, usage);
     if ((NULL == vertexBuffer) || (0 == vertexBuffer->id()))
@@ -198,7 +198,7 @@ PIndexBuffer RenderSystemOGL::createIndexBuffer(const String& name, EGEIndexBuff
 {
   PIndexBuffer buffer;
 
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+  if (Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
     IndexBufferVBO* indexBuffer = ege_new IndexBufferVBO(app(), name, usage);
     if ((NULL == indexBuffer) || (0 == indexBuffer->id()))
@@ -303,7 +303,7 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
 
   // check if FBO is supported
   PRenderTarget target;
-  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FBO))
+  if (Device::HasRenderCapability(ERenderCapabilityFrameBufferObjects))
   {
     target = ege_new RenderTextureFBOOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
   }
@@ -498,7 +498,7 @@ GLenum RenderSystemOGL::mapIndexSize(EGEIndexBuffer::IndexSize size) const
     case EGEIndexBuffer::IS_16BIT:  result = GL_UNSIGNED_SHORT; break;
     case EGEIndexBuffer::IS_32BIT:  
       
-      EGE_ASSERT(Device::HasRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT));
+      EGE_ASSERT(Device::HasRenderCapability(ERenderCapabilityElementIndexUnsignedInt));
 
       result = GL_UNSIGNED_INT; 
       break;
@@ -578,8 +578,8 @@ void RenderSystemOGL::createAndSetupVAOs()
 
   // check if VAO is supported and can be used (ie VBO is supported)
   if (vaos.empty() && 
-      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT) && 
-      Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT))
+      Device::HasRenderCapability(ERenderCapabilityVertexArrayObjects) && 
+      Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
     for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)
     {

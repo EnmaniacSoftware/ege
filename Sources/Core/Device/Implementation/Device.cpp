@@ -1,11 +1,11 @@
-#include "Core/Device/Device.h"
+#include "Core/Device/Interface/Device.h"
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KDeviceDebugName = "EGEDevice";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Device::m_renderCapabilities[EGEDevice::RENDER_CAPS_COUNT] = { false };
+bool Device::m_renderCapabilities[ERenderCapabilityCount] = { false };
 u32 Device::m_textureUnitsCount = 0;
 u32 Device::m_textureMaxSize = 0;
 u32 Device::m_surfaceRedChannelBitsCount = 0;
@@ -13,12 +13,12 @@ u32 Device::m_surfaceGreenChannelBitsCount = 0;
 u32 Device::m_surfaceBlueChannelBitsCount = 0;
 u32 Device::m_surfaceAlphaChannelBitsCount = 0;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Device::HasRenderCapability(EGEDevice::RenderCapability cap)
+bool Device::HasRenderCapability(DeviceRenderCapability cap)
 {
   return m_renderCapabilities[cap];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Device::SetRenderCapability(EGEDevice::RenderCapability cap, bool set)
+void Device::SetRenderCapability(DeviceRenderCapability cap, bool set)
 {
   m_renderCapabilities[cap] = set;
 }
@@ -83,5 +83,3 @@ u32 Device::SurfaceAlphaChannelBitsCount()
   return m_surfaceAlphaChannelBitsCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

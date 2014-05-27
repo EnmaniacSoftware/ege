@@ -139,7 +139,7 @@ EGEResult Texture2DOGL::create(const PImage& image)
   //else
   //{
   //  // S3TC compression
-  //  if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC))
+  //  if (Device::HasRenderCapability(ERenderCapabilityTextureCompressionS3TC))
   //  {
   //    switch (d_func()->format())
   //    {
@@ -148,7 +148,7 @@ EGEResult Texture2DOGL::create(const PImage& image)
   //    }
   //  }
   //  // PVRTC
-  //  else if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC))
+  //  else if (Device::HasRenderCapability(ERenderCapabilityTextureCompressionPVRTC))
   //  {
   //    switch (d_func()->format())
   //    {

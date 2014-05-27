@@ -584,7 +584,7 @@ void RenderWindowOGLWin32::detectCapabilities()
 
     if ((NULL != glClientActiveTexture) && (NULL != glActiveTexture))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+      Device::SetRenderCapability(ERenderCapabilityMultitexturing, true);
     }
   }
 
@@ -601,12 +601,9 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glBindFramebuffer) && (NULL != glDeleteFramebuffers) && (NULL != glGenFramebuffers) && (NULL != glCheckFramebufferStatus) && 
         (NULL != glFramebufferTexture2D) && (NULL != glGenerateMipmap))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+      Device::SetRenderCapability(ERenderCapabilityFrameBufferObjects, true);
     }
   }
-
-  // check if combine texture environment mode is supported
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, extensionArray.contains("GL_ARB_texture_env_combine"));
 
   // check if vertex buffer object is supported
   // NOTE: this implies that VBO mapping extension is present too
@@ -623,8 +620,8 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glGenBuffers) && (NULL != glBindBuffer) && (NULL != glBufferData) && (NULL != glBufferSubData) && (NULL != glDeleteBuffers) && 
         (NULL != glMapBuffer) && (NULL != glUnmapBuffer))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, false);
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
+      Device::SetRenderCapability(ERenderCapabilityVertexBufferObjects, false);
+      Device::SetRenderCapability(ERenderCapabilityMapBuffer, true);
     }
   }
 
@@ -636,22 +633,17 @@ void RenderWindowOGLWin32::detectCapabilities()
 
     if ((NULL != glPointParameterf) && (NULL != glPointParameterfv))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, true);
+      Device::SetRenderCapability(ERenderCapabilityPointSprites, true);
     }
   }
 
   // check if min and max blending functions are supported
-  if (extensionArray.contains("GL_ARB_imaging") || extensionArray.contains("GL_EXT_blend_minmax"))
+  if (extensionArray.contains("GL_ARB_imaging"))
   {
     glBlendEquation = reinterpret_cast<PFNGLBLENDEQUATIONPROC>(wglGetProcAddress("glBlendEquationARB"));
     if (NULL == glBlendEquation)
     {
       glBlendEquation = reinterpret_cast<PFNGLBLENDEQUATIONPROC>(wglGetProcAddress("glBlendEquationEXT"));
-    }
-
-    if (NULL != glBlendEquation)
-    {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
     }
 
     glBlendFuncSeparate = reinterpret_cast<PFNGLBLENDFUNCSEPARATEPROC>(wglGetProcAddress("glBlendFuncSeparateEXT"));
@@ -661,8 +653,8 @@ void RenderWindowOGLWin32::detectCapabilities()
   glCompressedTexImage2D = reinterpret_cast<PFNGLCOMPRESSEDTEXIMAGE2DPROC>(wglGetProcAddress("glCompressedTexImage2D"));
 
   // check for texture compressions support
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, extensionArray.contains("GL_IMG_texture_compression_pvrtc"));
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_S3TC, extensionArray.contains("GL_EXT_texture_compression_s3tc"));
+  Device::SetRenderCapability(ERenderCapabilityTextureCompressionPVRTC, extensionArray.contains("GL_IMG_texture_compression_pvrtc"));
+  Device::SetRenderCapability(ERenderCapabilityTextureCompressionS3TC, extensionArray.contains("GL_EXT_texture_compression_s3tc"));
 
   // check shader objects support
   if (extensionArray.contains("GL_ARB_shader_objects"))
@@ -709,12 +701,12 @@ void RenderWindowOGLWin32::detectCapabilities()
     if ((NULL != glDisableVertexAttribArray) && (NULL != glEnableVertexAttribArray) && (NULL != glGetAttribLocation) && 
         (NULL != glVertexAttribPointer) && (NULL != glGetActiveAttrib))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER, true);
+      Device::SetRenderCapability(ERenderCapabilityVertexShaders, true);
     }
   }
 
   // check fragment shader support
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER, extensionArray.contains("GL_ARB_fragment_shader"));
+  Device::SetRenderCapability(ERenderCapabilityFragmentShaders, extensionArray.contains("GL_ARB_fragment_shader"));
   
   // check vertex array objects support
   if (extensionArray.contains("GL_ARB_vertex_array_object"))
@@ -726,18 +718,15 @@ void RenderWindowOGLWin32::detectCapabilities()
 
     if ((NULL != glIsVertexArray) && (NULL != glGenVertexArrays) && (NULL != glDeleteVertexArrays) && (NULL != glBindVertexArray))
     {
-      Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT, true);
+      Device::SetRenderCapability(ERenderCapabilityVertexArrayObjects, true);
     }
   }
 
-  // Point sprite size array is not supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
-
   // 32bit indexing is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
+  Device::SetRenderCapability(ERenderCapabilityElementIndexUnsignedInt, true);
 
   // auto mipmapping support
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MIPMAPPING, extensionArray.contains("GL_SGIS_generate_mipmap"));
+  Device::SetRenderCapability(ERenderCapabilityAutoMipmapping, extensionArray.contains("GL_SGIS_generate_mipmap"));
 
   // at least one check at the end
   OGL_CHECK()

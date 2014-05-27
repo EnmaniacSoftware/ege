@@ -71,7 +71,7 @@
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Device\Device.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Device\Implementation\Device.cpp" />
     <ClCompile Include="..\..\Sources\Core\Directory\Implementation\Directory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
@@ -235,6 +235,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h" />
+    <ClInclude Include="..\..\Sources\Core\Device\Interface\Device.h" />
     <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
@@ -471,7 +473,6 @@
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp" />
@@ -487,7 +488,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
-    <ClInclude Include="..\..\Sources\Core\Device\Device.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
     <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h" />
     <ClInclude Include="..\..\Sources\Core\Event\EventListener.h" />

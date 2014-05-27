@@ -1,8 +1,8 @@
-#include "Core/Device/Device.h"
+#include "Core/Device/Interface/Device.h"
 #include <EGECipher.h>
 #include <windows.h>
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static u8 l_defaultCipherKeyData[] = { 0x46,0x84,0x38,0x38,0x3c,0x30,0x66,0xf7,0xec,0x54,0x20,0x07,0x07,0x07,0x07,0x07,0x07, 0xfe,0x67,0x83,0xdc,0x61,0x57 };
@@ -15,14 +15,14 @@ static u8 l_encryptedRegistrySubKeyValue[] = { 0x15,0xcb,0x7e,0x6c,0x6b,0x71,0x3
 // "ProductId" + NULL
 static u8 l_encryptedProductIdValueName[] = { 0x16,0xf6,0x57,0x5c,0x49,0x53,0x12,0xbe,0x88,0x54 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEDevice::OS Device::GetOS()
+DeviceOS Device::GetOS()
 {
-  return EGEDevice::OS_WINDOWS;
+  return EWindows;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEDevice::Device Device::GetDevice()
+DeviceType Device::GetDevice()
 {
-  return EGEDevice::DEVICE_GENERIC;
+  return EDeviceGeneric;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Device::SurfaceWidth()
@@ -99,5 +99,3 @@ String Device::GetUniqueId()
   return uniqueId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

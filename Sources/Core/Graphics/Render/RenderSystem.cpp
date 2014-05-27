@@ -234,7 +234,7 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
       // batch only really small buffers
       // NOTE: batching enabled only for non-VBO rendering due to issues with updating batch data ie no way to get vertex data from VBO in write-only mode
       if ((10 > component->vertexBuffer()->vertexCount()) && 
-          ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT) && 
+          ! Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects) && 
           RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
       {
         queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());

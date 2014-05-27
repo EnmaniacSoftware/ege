@@ -53,7 +53,7 @@ IndexBufferVBO::IndexBufferVBO(Application* app, const String& name, EGEIndexBuf
                                                                                                         m_usage(usage)
 {
   // allocate shadow buffer if no mapping is supported
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER))
+  if ( ! Device::HasRenderCapability(ERenderCapabilityMapBuffer))
   {
     m_shadowBuffer = ege_new DataBuffer();
   }
@@ -76,7 +76,7 @@ IndexBufferVBO::~IndexBufferVBO()
 bool IndexBufferVBO::isValid() const
 {
   // check if no shadow buffer if mapping is not available
-  if ( ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER) && (NULL == m_shadowBuffer))
+  if ( ! Device::HasRenderCapability(ERenderCapabilityMapBuffer) && (NULL == m_shadowBuffer))
   {
     // error!
     return false;

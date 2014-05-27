@@ -349,6 +349,15 @@
     <Filter Include="Core\Data\Interface">
       <UniqueIdentifier>{3ad79fb3-6f86-4b70-99be-688b64d47396}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\Device\Implementation">
+      <UniqueIdentifier>{b656c5d8-2590-4e1a-b99d-f52edaa0fa4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Device\Implementation">
+      <UniqueIdentifier>{285813f9-3377-4de1-bb07-261881db8081}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Device\Interface">
+      <UniqueIdentifier>{0e9fa093-c286-458b-a767-acfc09bd03e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -453,9 +462,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Device\DeviceWin32.cpp">
-      <Filter>Win32\Device</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp">
       <Filter>Core\Input</Filter>
     </ClCompile>
@@ -515,9 +521,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Device\Device.cpp">
-      <Filter>Core\Device</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\Image.cpp">
       <Filter>Core\Graphics\Image</Filter>
@@ -1005,6 +1008,12 @@
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\SpecialURLs.cpp">
       <Filter>Core\Services\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp">
+      <Filter>Win32\Device\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Device\Implementation\Device.cpp">
+      <Filter>Core\Device\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Event\Event.h">
@@ -1152,9 +1161,6 @@
       <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
-    <ClInclude Include="..\..\Sources\Core\Device\Device.h">
-      <Filter>Core\Device</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
     <ClInclude Include="..\..\Sources\EGERandom.h" />
     <ClInclude Include="..\..\Sources\EGEInput.h" />
@@ -1878,6 +1884,9 @@
     <ClInclude Include="..\..\Sources\EGERenderable.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\SpecialURLs.h">
       <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Device\Interface\Device.h">
+      <Filter>Core\Device\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

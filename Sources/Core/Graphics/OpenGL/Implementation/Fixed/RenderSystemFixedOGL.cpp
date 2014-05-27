@@ -143,7 +143,7 @@ void RenderSystemFixedOGL::applyPassParams(const PRenderPass& pass)
     if (EGEGraphics::RPT_POINTS == component->primitiveType())
     {
       // check if point sprites are supported
-      if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+      if (Device::HasRenderCapability(ERenderCapabilityPointSprites))
       {
         glEnable(GL_POINT_SPRITE);
         glTexEnvf(GL_POINT_SPRITE, GL_COORD_REPLACE, GL_TRUE);
@@ -333,7 +333,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
       // disable point sprites
       if (EGEGraphics::RPT_POINTS == component->primitiveType())
       {
-        if (Device::HasRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE))
+        if (Device::HasRenderCapability(ERenderCapabilityPointSprites))
         {
           glDisable(GL_POINT_SPRITE);
           OGL_CHECK()

@@ -1,4 +1,4 @@
-#include "Core/Device/Device.h"
+#include "Core/Device/Interface/Device.h"
 #include "EGEDebug.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
@@ -9,61 +9,61 @@
 #import <UIKit/UIScreen.h>
 #import <UIKit/UIDevice.h>
 
-EGE_NAMESPACE_BEGIN
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct DeviceInfo
 {
   NSString* deviceId;
   
-  EGEDevice::Device egeDevice;
+  DeviceType egeDevice;
 };
 
 static DeviceInfo l_iOSDeviceInfoMap[] = { 
-  { @"iPhone1,1",   EGEDevice::DEVICE_IPHONE },
-  { @"iPhone1,2",   EGEDevice::DEVICE_IPHONE_3G },
-  { @"iPhone2,1",   EGEDevice::DEVICE_IPHONE_3GS },
-  { @"iPhone3,1",   EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone3,2",   EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone3,3",   EGEDevice::DEVICE_IPHONE_4 },
-  { @"iPhone4,1",   EGEDevice::DEVICE_IPHONE_4S },
-  { @"iPhone5,1",   EGEDevice::DEVICE_IPHONE_5 },
-  { @"iPhone5,2",   EGEDevice::DEVICE_IPHONE_5 },
-  { @"iPhone5,3",   EGEDevice::DEVICE_IPHONE_5C },
-  { @"iPhone5,4",   EGEDevice::DEVICE_IPHONE_5C },
-  { @"iPhone6,1",   EGEDevice::DEVICE_IPHONE_5S },
-  { @"iPhone6,2",   EGEDevice::DEVICE_IPHONE_5S },
-  { @"iPod1,1",     EGEDevice::DEVICE_IPOD_TOUCH_1 },
-  { @"iPod2,1",     EGEDevice::DEVICE_IPOD_TOUCH_2 },
-  { @"iPod3,1",     EGEDevice::DEVICE_IPOD_TOUCH_3 },
-  { @"iPod4,1",     EGEDevice::DEVICE_IPOD_TOUCH_4 },
-  { @"iPod5,1",     EGEDevice::DEVICE_IPOD_TOUCH_5 },
-  { @"iPad1,1",     EGEDevice::DEVICE_IPAD },
-  { @"iPad2,1",     EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,2",     EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,3",     EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,4",     EGEDevice::DEVICE_IPAD_2 },
-  { @"iPad2,5",     EGEDevice::DEVICE_IPAD_MINI },
-  { @"iPad2,6",     EGEDevice::DEVICE_IPAD_MINI },
-  { @"iPad2,7",     EGEDevice::DEVICE_IPAD_MINI },
-  { @"iPad3,1",     EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,2",     EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,3",     EGEDevice::DEVICE_IPAD_3 },
-  { @"iPad3,4",     EGEDevice::DEVICE_IPAD_4 },
-  { @"iPad3,5",     EGEDevice::DEVICE_IPAD_4 },
-  { @"iPad3,6",     EGEDevice::DEVICE_IPAD_4 },
-  { @"iPad4,1",     EGEDevice::DEVICE_IPAD_AIR },
-  { @"iPad4,2",     EGEDevice::DEVICE_IPAD_AIR },
-  { @"iPad4,3",     EGEDevice::DEVICE_IPAD_AIR },
-  { @"iPad4,4",     EGEDevice::DEVICE_IPAD_MINI_2 },
-  { @"iPad4,5",     EGEDevice::DEVICE_IPAD_MINI_2 },
-  { @"iPad4,6",     EGEDevice::DEVICE_IPAD_MINI_2 },
-  { @"i386",        EGEDevice::DEVICE_EMULATOR },
-  { @"x86_64",      EGEDevice::DEVICE_EMULATOR }
+  { @"iPhone1,1",   EDeviceiPhone},
+  { @"iPhone1,2",   EDeviceiPhone3G },
+  { @"iPhone2,1",   EDeviceiPhone3GS },
+  { @"iPhone3,1",   EDeviceiPhone4 },
+  { @"iPhone3,2",   EDeviceiPhone4 },
+  { @"iPhone3,3",   EDeviceiPhone4 },
+  { @"iPhone4,1",   EDeviceiPhone4S },
+  { @"iPhone5,1",   EDeviceiPhone5 },
+  { @"iPhone5,2",   EDeviceiPhone5 },
+  { @"iPhone5,3",   EDeviceiPhone5C },
+  { @"iPhone5,4",   EDeviceiPhone5C },
+  { @"iPhone6,1",   EDeviceiPhone5S },
+  { @"iPhone6,2",   EDeviceiPhone5S },
+  { @"iPod1,1",     EDeviceiPodTouch1 },
+  { @"iPod2,1",     EDeviceiPodTouch2 },
+  { @"iPod3,1",     EDeviceiPodTouch3 },
+  { @"iPod4,1",     EDeviceiPodTouch4 },
+  { @"iPod5,1",     EDeviceiPodTouch5 },
+  { @"iPad1,1",     EDeviceiPad},
+  { @"iPad2,1",     EDeviceiPad2 },
+  { @"iPad2,2",     EDeviceiPad2 },
+  { @"iPad2,3",     EDeviceiPad2 },
+  { @"iPad2,4",     EDeviceiPad2 },
+  { @"iPad2,5",     EDeviceiPadMini },
+  { @"iPad2,6",     EDeviceiPadMini },
+  { @"iPad2,7",     EDeviceiPadMini },
+  { @"iPad3,1",     EDeviceiPad3 },
+  { @"iPad3,2",     EDeviceiPad3 },
+  { @"iPad3,3",     EDeviceiPad3 },
+  { @"iPad3,4",     EDeviceiPad4 },
+  { @"iPad3,5",     EDeviceiPad4 },
+  { @"iPad3,6",     EDeviceiPad4 },
+  { @"iPad4,1",     EDeviceiPadAir },
+  { @"iPad4,2",     EDeviceiPadAir },
+  { @"iPad4,3",     EDeviceiPadAir },
+  { @"iPad4,4",     EDeviceiPadMini2 },
+  { @"iPad4,5",     EDeviceiPadMini2 },
+  { @"iPad4,6",     EDeviceiPadMini2 },
+  { @"i386",        EDeviceEmulator },
+  { @"x86_64",      EDeviceEmulator }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function determining iOS device from string value. */
-static EGEDevice::Device GetIOSDevice(const String& deviceId)
+static DeviceType GetIOSDevice(const String& deviceId)
 {
   // convert
   NSString* deviceIdentifier = [NSString stringWithCString: deviceId.c_str() encoding: NSASCIIStringEncoding];
@@ -78,7 +78,7 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
     {
       // check if SIMULATOR
       // NOTE: in case of native simulator we want to mimic the exact device class
-      if (EGEDevice::DEVICE_EMULATOR == deviceInfo.egeDevice)
+      if (EDeviceEmulator == deviceInfo.egeDevice)
       {
         // determine device class based on resolution
         s32 width   = Device::SurfaceWidth();
@@ -87,27 +87,27 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
         // 320x480 device (iPhone 3GS)
         if ((320 == width) && (480 == height))
         {
-          return EGEDevice::DEVICE_IPHONE_3GS;
+          return EDeviceiPhone3GS;
         }
         // 640x960 device (iPhone 4)
         else if ((640 == width) && (960 == height))
         {
-          return EGEDevice::DEVICE_IPHONE_4;
+          return EDeviceiPhone4;
         }
         // 640x1136 device (iPhone 5)
         else if ((640 == width) && (1136 == height))
         {
-          return EGEDevice::DEVICE_IPHONE_5;
+          return EDeviceiPhone5;
         }
         // 1024x768 device (iPad)
         else if ((768 == width) && (1024 == height))
         {
-          return EGEDevice::DEVICE_IPAD_2;
+          return EDeviceiPad2;
         }
         // 2048x1536 device (iPad retina)
         else if ((1536 == width) && (2048 == height))
         {
-          return EGEDevice::DEVICE_IPAD_4;
+          return EDeviceiPad4;
         }
         
         EGE_ASSERT_X(false, "Unsupported device!");
@@ -117,7 +117,7 @@ static EGEDevice::Device GetIOSDevice(const String& deviceId)
     }
   }
 
-  return EGEDevice::DEVICE_GENERIC;
+  return DEVICE_GENERIC;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function calculating memory statistics. */
@@ -151,12 +151,12 @@ void GetMemoryStatistics(u64& availableRAM, u64& totalRAM)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEDevice::OS Device::GetOS()
+DeviceOS Device::GetOS()
 {
 #if TARGET_IPHONE_SIMULATOR
-  return EGEDevice::OS_MACOS;
+  return EMacOS;
 #else
-  return EGEDevice::OS_IOS;
+  return EIOS;
 #endif // TARGET_IPHONE_SIMULATOR
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -275,5 +275,3 @@ String Device::GetUniqueId()
   return uniqueId;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-EGE_NAMESPACE_END

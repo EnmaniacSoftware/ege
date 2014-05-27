@@ -138,8 +138,8 @@ void RenderSystemProgrammableOGL::applyPassParams(const PRenderPass& pass)
 PShader RenderSystemProgrammableOGL::createShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
 {
   // check if NOT supported
-  if (((EGEGraphics::VERTEX_SHADER == type) && ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_SHADER)) ||
-      ((EGEGraphics::FRAGMENT_SHADER == type) && ! Device::HasRenderCapability(EGEDevice::RENDER_CAPS_FRAGMENT_SHADER)) ||
+  if (((EGEGraphics::VERTEX_SHADER == type) && ! Device::HasRenderCapability(ERenderCapabilityVertexShaders)) ||
+      ((EGEGraphics::FRAGMENT_SHADER == type) && ! Device::HasRenderCapability(ERenderCapabilityFragmentShaders)) ||
       (EGEGraphics::UNKNOWN_SHADER == type))
   {
     // error!
