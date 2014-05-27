@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		450E126619351E2E00B9F785 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450E126519351E2E00B9F785 /* Device.cpp */; };
+		450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 450E126919351E4C00B9F785 /* DeviceIOS.mm */; };
 		4514710718C5231900AAC617 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146ED518C5231800AAC617 /* Application.cpp */; };
 		4514710818C5231900AAC617 /* AudioCodecMp3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146ED918C5231800AAC617 /* AudioCodecMp3.cpp */; };
 		4514710918C5231900AAC617 /* AudioCodecOgg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146EDB18C5231800AAC617 /* AudioCodecOgg.cpp */; };
@@ -36,7 +38,6 @@
 		4514712818C5231900AAC617 /* Console.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3718C5231800AAC617 /* Console.cpp */; };
 		4514712918C5231900AAC617 /* Debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3818C5231800AAC617 /* Debug.cpp */; };
 		4514712B18C5231900AAC617 /* Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F3A18C5231800AAC617 /* Logger.cpp */; };
-		4514712E18C5231900AAC617 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F4518C5231800AAC617 /* Device.cpp */; };
 		4514712F18C5231900AAC617 /* Directory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F4918C5231800AAC617 /* Directory.cpp */; };
 		4514713018C5231900AAC617 /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F4D18C5231800AAC617 /* Event.cpp */; };
 		4514713118C5231900AAC617 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F5118C5231800AAC617 /* EventManager.cpp */; };
@@ -183,7 +184,6 @@
 		4514722818C5236200AAC617 /* SoundDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F118C5236200AAC617 /* SoundDelegate.mm */; };
 		4514722918C5236200AAC617 /* SoundOpenALIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F318C5236200AAC617 /* SoundOpenALIOS.mm */; };
 		4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F518C5236200AAC617 /* DebugIOS.mm */; };
-		4514722B18C5236200AAC617 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F718C5236200AAC617 /* DeviceIOS.mm */; };
 		4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471FA18C5236200AAC617 /* DirectoryIOS.mm */; };
 		4514722D18C5236200AAC617 /* FileIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471FD18C5236200AAC617 /* FileIOS_p.mm */; };
 		4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720018C5236200AAC617 /* GraphicsIOS_p.mm */; };
@@ -293,6 +293,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		450E126519351E2E00B9F785 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Device.cpp; path = Implementation/Device.cpp; sourceTree = "<group>"; };
+		450E126719351E3400B9F785 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Device.h; path = Interface/Device.h; sourceTree = "<group>"; };
+		450E126919351E4C00B9F785 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceIOS.mm; path = Implementation/DeviceIOS.mm; sourceTree = "<group>"; };
 		45146E7418C522EA00AAC617 /* EGE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGE.h; path = ../../Sources/EGE.h; sourceTree = "<group>"; };
 		45146E7518C522EA00AAC617 /* EGEAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAlignment.h; path = ../../Sources/EGEAlignment.h; sourceTree = "<group>"; };
 		45146E7618C522EA00AAC617 /* EGEAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAngle.h; path = ../../Sources/EGEAngle.h; sourceTree = "<group>"; };
@@ -454,8 +457,6 @@
 		45146F3C18C5231800AAC617 /* Console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Console.h; sourceTree = "<group>"; };
 		45146F3D18C5231800AAC617 /* Debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		45146F3F18C5231800AAC617 /* Logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Logger.h; sourceTree = "<group>"; };
-		45146F4518C5231800AAC617 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Device.cpp; sourceTree = "<group>"; };
-		45146F4618C5231800AAC617 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 		45146F4918C5231800AAC617 /* Directory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Directory.cpp; sourceTree = "<group>"; };
 		45146F4B18C5231800AAC617 /* Directory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Directory.h; sourceTree = "<group>"; };
 		45146F4D18C5231800AAC617 /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
@@ -784,7 +785,6 @@
 		451471F218C5236200AAC617 /* SoundOpenALIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundOpenALIOS.h; sourceTree = "<group>"; };
 		451471F318C5236200AAC617 /* SoundOpenALIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundOpenALIOS.mm; sourceTree = "<group>"; };
 		451471F518C5236200AAC617 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
-		451471F718C5236200AAC617 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceIOS.mm; sourceTree = "<group>"; };
 		451471FA18C5236200AAC617 /* DirectoryIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DirectoryIOS.mm; sourceTree = "<group>"; };
 		451471FC18C5236200AAC617 /* FileIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileIOS_p.h; sourceTree = "<group>"; };
 		451471FD18C5236200AAC617 /* FileIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS_p.mm; sourceTree = "<group>"; };
@@ -914,6 +914,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		450E126319351E1600B9F785 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				450E126519351E2E00B9F785 /* Device.cpp */,
+			);
+			name = Implementation;
+			sourceTree = "<group>";
+		};
+		450E126419351E2100B9F785 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				450E126719351E3400B9F785 /* Device.h */,
+			);
+			name = Interface;
+			sourceTree = "<group>";
+		};
+		450E126819351E4200B9F785 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				450E126919351E4C00B9F785 /* DeviceIOS.mm */,
+			);
+			name = Implementation;
+			sourceTree = "<group>";
+		};
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
@@ -1321,8 +1345,8 @@
 		45146F4418C5231800AAC617 /* Device */ = {
 			isa = PBXGroup;
 			children = (
-				45146F4518C5231800AAC617 /* Device.cpp */,
-				45146F4618C5231800AAC617 /* Device.h */,
+				450E126419351E2100B9F785 /* Interface */,
+				450E126319351E1600B9F785 /* Implementation */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -2140,7 +2164,7 @@
 		451471F618C5236200AAC617 /* Device */ = {
 			isa = PBXGroup;
 			children = (
-				451471F718C5236200AAC617 /* DeviceIOS.mm */,
+				450E126819351E4200B9F785 /* Implementation */,
 			);
 			path = Device;
 			sourceTree = "<group>";
@@ -2654,7 +2678,6 @@
 				4514712818C5231900AAC617 /* Console.cpp in Sources */,
 				4514712918C5231900AAC617 /* Debug.cpp in Sources */,
 				4514712B18C5231900AAC617 /* Logger.cpp in Sources */,
-				4514712E18C5231900AAC617 /* Device.cpp in Sources */,
 				4514712F18C5231900AAC617 /* Directory.cpp in Sources */,
 				4514713018C5231900AAC617 /* Event.cpp in Sources */,
 				4514713118C5231900AAC617 /* EventManager.cpp in Sources */,
@@ -2696,6 +2719,7 @@
 				4514716218C5231900AAC617 /* Texture2D.cpp in Sources */,
 				4514716318C5231900AAC617 /* TextureImage.cpp in Sources */,
 				4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */,
+				450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */,
 				4514716518C5231900AAC617 /* VertexDeclaration.cpp in Sources */,
 				4514716618C5231900AAC617 /* VertexElement.cpp in Sources */,
 				4514716718C5231900AAC617 /* Viewport.cpp in Sources */,
@@ -2717,6 +2741,7 @@
 				4514718B18C5231900AAC617 /* OverlayManager.cpp in Sources */,
 				4514718C18C5231900AAC617 /* TextOverlay.cpp in Sources */,
 				4514718D18C5231900AAC617 /* DebugDrawBox2D.cpp in Sources */,
+				450E126619351E2E00B9F785 /* Device.cpp in Sources */,
 				4514718E18C5231900AAC617 /* PhysicsJointAttractBox2D_p.cpp in Sources */,
 				4514718F18C5231900AAC617 /* PhysicsJointDistanceBox2D_p.cpp in Sources */,
 				4514719018C5231900AAC617 /* PhysicsJointPulleyBox2D_p.cpp in Sources */,
@@ -2802,7 +2827,6 @@
 				4514722818C5236200AAC617 /* SoundDelegate.mm in Sources */,
 				4514722918C5236200AAC617 /* SoundOpenALIOS.mm in Sources */,
 				4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */,
-				4514722B18C5236200AAC617 /* DeviceIOS.mm in Sources */,
 				4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */,
 				4514722D18C5236200AAC617 /* FileIOS_p.mm in Sources */,
 				4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */,

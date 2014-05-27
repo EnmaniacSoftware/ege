@@ -48,14 +48,14 @@ EGE_NAMESPACE
   s32 egeOrientation;
   switch (orientation)
   {
-    case UIInterfaceOrientationPortrait:           egeOrientation = EGEDevice::EOrientationPortrait; break;
-    case UIInterfaceOrientationPortraitUpsideDown: egeOrientation = EGEDevice::EOrientationPortraitUpsideDown; break;
-    case UIInterfaceOrientationLandscapeLeft:      egeOrientation = EGEDevice::EOrientationLandscapeLeft; break;
-    case UIInterfaceOrientationLandscapeRight:     egeOrientation = EGEDevice::EOrientationLandscapeRight; break;
+    case UIInterfaceOrientationPortrait:           egeOrientation = EOrientationPortrait; break;
+    case UIInterfaceOrientationPortraitUpsideDown: egeOrientation = EOrientationPortraitUpsideDown; break;
+    case UIInterfaceOrientationLandscapeLeft:      egeOrientation = EOrientationLandscapeLeft; break;
+    case UIInterfaceOrientationLandscapeRight:     egeOrientation = EOrientationLandscapeRight; break;
 
     default:
 
-      egeOrientation = EGEDevice::EOrientationUnknown;
+      egeOrientation = EOrientationUnknown;
       break;
   }
 

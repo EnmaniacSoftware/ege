@@ -194,7 +194,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   // set initial orientation
   UIInterfaceOrientation nativeOrientation = [[UIApplication sharedApplication] statusBarOrientation];
   int orientation = [m_viewController convertUIOrientation: nativeOrientation];
-  setOrientation(static_cast<EGEDevice::Orientation>(orientation));
+  setOrientation(static_cast<DeviceOrientation>(orientation));
   
   return EGE_SUCCESS;
 }
@@ -298,20 +298,14 @@ void RenderWindowOGLIOS::detectCapabilities()
   Device::SetTextureMaxSize(static_cast<u32>(value));
   
   // multitexturing is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MULTITEXTURE, true);
+  Device::SetRenderCapability(ERenderCapabilityMultitexturing, true);
   
   // VBO is supported by default
   // TAGE - disable for time being until VBO implementation is more efficient
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_BUFFER_OBJECT, false);
+  Device::SetRenderCapability(ERenderCapabilityVertexBufferObjects, false);
 
-  // combine texture environment mode is supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_COMBINE_TEXTURE_ENV, true);
-  
   // point sprites are not available by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE, false);
-  
-  // point sprite size array is not supported by default
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_POINT_SPRITE_SIZE, false);
+  Device::SetRenderCapability(ERenderCapabilityPointSprites, false);
   
   // check if FBO is supported
 #if GL_OES_framebuffer_object
@@ -322,7 +316,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   glFramebufferTexture2D    = ::glFramebufferTexture2DOES;
   glRenderbufferStorage     = ::glRenderbufferStorageOES;
   
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+  Device::SetRenderCapability(ERenderCapabilityFrameBufferObjects, true);
 #else
   glBindFramebuffer         = ::glBindFramebuffer;
   glDeleteFramebuffers      = ::glDeleteFramebuffers;
@@ -331,7 +325,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   glFramebufferTexture2D    = ::glFramebufferTexture2D;
   glRenderbufferStorage     = ::glRenderbufferStorage;
 
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_FBO, true);
+  Device::SetRenderCapability(ERenderCapabilityFrameBufferObjects, true);
 #endif // GL_OES_framebuffer_object
 
   // check if map buffer is supported
@@ -339,7 +333,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   glMapBuffer   = ::glMapBufferOES;
   glUnmapBuffer = ::glUnmapBufferOES;
     
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MAP_BUFFER, true);
+  Device::SetRenderCapability(ERenderCapabilityMapBuffer, true);
 #endif // GL_OES_mapbuffer
   
   // blending functions are supported
@@ -354,12 +348,10 @@ void RenderWindowOGLIOS::detectCapabilities()
 #else
   glBlendFuncSeparate = ::glBlendFuncSeparate;
 #endif // GL_OES_blend_func_separate
-  
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_BLEND_MINMAX, true);
-      
+        
   // check for texture compressions support
 #if GL_IMG_texture_compression_pvrtc
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_TEXTURE_COMPRESSION_PVRTC, true);
+  Device::SetRenderCapability(ERenderCapabilityTextureCompressionPVRTC, true);
 #endif // GL_IMG_texture_compression_pvrtc
   
 #if !EGE_RENDERING_OPENGL_FIXED
@@ -398,17 +390,17 @@ void RenderWindowOGLIOS::detectCapabilities()
   glDeleteVertexArrays  = ::glDeleteVertexArraysOES;
   glBindVertexArray     = ::glBindVertexArrayOES;
   
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_VERTEX_ARRAY_OBJECT, true);
+  Device::SetRenderCapability(ERenderCapabilityVertexArrayObjects, true);
 #endif // GL_OES_vertex_array_object
   
   // check 32bit indexing support
 #if GL_OES_element_index_uint
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_ELEMENT_INDEX_UINT, true);
+  Device::SetRenderCapability(ERenderCapabilityElementIndexUnsignedInt, true);
 #endif // GL_OES_element_index_uint
 
   // auto mipmapping support
   glGenerateMipmap = ::glGenerateMipmap;
-  Device::SetRenderCapability(EGEDevice::RENDER_CAPS_MIPMAPPING, true);
+  Device::SetRenderCapability(ERenderCapabilityAutoMipmapping, true);
 
   // at least one check at the end
   OGL_CHECK()
@@ -421,7 +413,7 @@ void RenderWindowOGLIOS::onEventRecieved(PEvent event)
   {
     case EGE_EVENT_ID_INTERNAL_ORIENTATION_CHANGED:
       
-      setOrientation(static_cast<EGEDevice::Orientation>(ege_cast<Integer*>(event->data())->value()));
+      setOrientation(static_cast<DeviceOrientation>(ege_cast<Integer*>(event->data())->value()));
       break;
       
     default:
@@ -429,7 +421,7 @@ void RenderWindowOGLIOS::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderWindowOGLIOS::setOrientation(EGEDevice::Orientation orientation)
+void RenderWindowOGLIOS::setOrientation(DeviceOrientation orientation)
 {
   // resize render buffers
   resizeRenderBuffers();
@@ -440,36 +432,36 @@ void RenderWindowOGLIOS::setOrientation(EGEDevice::Orientation orientation)
     // process accroding to blit direction
     switch (orientation)
     {
-      case EGEDevice::EOrientationPortrait:
+      case EOrientationPortrait:
     
         m_orientationRotation.fromDegrees(0.0f);
         m_width   = m_physicalWidth;
         m_height  = m_physicalHeight;
         break;
     
-      case EGEDevice::EOrientationPortraitUpsideDown:
+      case EOrientationPortraitUpsideDown:
     
         m_orientationRotation.fromDegrees(180.0f);
         m_width   = m_physicalWidth;
         m_height  = m_physicalHeight;
         break;
 
-      case EGEDevice::EOrientationLandscapeLeft:
+      case EOrientationLandscapeLeft:
     
         m_orientationRotation.fromDegrees(90.0f);
         m_width   = m_physicalHeight;
         m_height  = m_physicalWidth;
         break;
     
-      case EGEDevice::EOrientationLandscapeRight:
+      case EOrientationLandscapeRight:
     
         m_orientationRotation.fromDegrees(270.0f);
         m_width   = m_physicalHeight;
         m_height  = m_physicalWidth;
         break;
     
-      case EGEDevice::EOrientationFaceUp:
-      case EGEDevice::EOrientationFaceDown:
+      case EOrientationFaceUp:
+      case EOrientationFaceDown:
     
         m_orientationRotation.fromDegrees(0.0f);
         m_width   = m_physicalWidth;

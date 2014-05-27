@@ -117,7 +117,7 @@ static DeviceType GetIOSDevice(const String& deviceId)
     }
   }
 
-  return DEVICE_GENERIC;
+  return EDeviceGeneric;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function calculating memory statistics. */
@@ -160,7 +160,7 @@ DeviceOS Device::GetOS()
 #endif // TARGET_IPHONE_SIMULATOR
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEDevice::Device Device::GetDevice()
+DeviceType Device::GetDevice()
 {
   // retrieve device name
   char modelName[64] = "\0";
@@ -168,7 +168,7 @@ EGEDevice::Device Device::GetDevice()
   sysctlbyname("hw.machine", modelName, &size, NULL, 0);
 
   String deviceName(modelName);
-  EGEDevice::Device deviceId = GetIOSDevice(deviceName);
+  DeviceType deviceId = GetIOSDevice(deviceName);
 
   egeDebug(KDeviceDebugName) << "Device ID:" << deviceName << deviceId;
   

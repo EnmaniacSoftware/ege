@@ -58,7 +58,7 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
     /*! Sets new orientation. */
-    void setOrientation(EGEDevice::Orientation orientation);
+    void setOrientation(DeviceOrientation orientation);
     /*! Resizes render buffers. */
     void resizeRenderBuffers();
   

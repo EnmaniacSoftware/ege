@@ -70,16 +70,16 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     s32 orientation;
     switch (nativeOrientation)
     {
-      case UIDeviceOrientationPortrait:           orientation = EGEDevice::EOrientationPortrait; break;
-      case UIDeviceOrientationPortraitUpsideDown: orientation = EGEDevice::EOrientationPortraitUpsideDown; break;
-      case UIDeviceOrientationLandscapeLeft:      orientation = EGEDevice::EOrientationLandscapeLeft; break;
-      case UIDeviceOrientationLandscapeRight:     orientation = EGEDevice::EOrientationLandscapeRight; break;
-      case UIDeviceOrientationFaceUp:             orientation = EGEDevice::EOrientationFaceUp; break;
-      case UIDeviceOrientationFaceDown:           orientation = EGEDevice::EOrientationFaceDown; break;
+      case UIDeviceOrientationPortrait:           orientation = EOrientationPortrait; break;
+      case UIDeviceOrientationPortraitUpsideDown: orientation = EOrientationPortraitUpsideDown; break;
+      case UIDeviceOrientationLandscapeLeft:      orientation = EOrientationLandscapeLeft; break;
+      case UIDeviceOrientationLandscapeRight:     orientation = EOrientationLandscapeRight; break;
+      case UIDeviceOrientationFaceUp:             orientation = EOrientationFaceUp; break;
+      case UIDeviceOrientationFaceDown:           orientation = EOrientationFaceDown; break;
       
       default:
       
-        orientation = EGEDevice::EOrientationUnknown;
+        orientation = EOrientationUnknown;
         break;
     }
     

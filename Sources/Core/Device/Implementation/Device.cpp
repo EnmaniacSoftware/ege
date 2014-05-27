@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const char* KDeviceDebugName = "EGEDevice";
+const char* EGE::KDeviceDebugName = "EGEDevice";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Device::m_renderCapabilities[ERenderCapabilityCount] = { false };
 u32 Device::m_textureUnitsCount = 0;
