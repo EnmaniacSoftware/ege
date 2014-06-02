@@ -44,7 +44,7 @@ PSound AudioHelper::CreateSoundAndPlay(Application* application, const String& n
   return sound;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSoundEffect AudioHelper::FadeIn(PSound& sound, Time& duration)
+PSoundEffect AudioHelper::FadeIn(PSound& sound, const Time& duration)
 {
   EGE_ASSERT(0 < duration.microseconds());
 
@@ -63,7 +63,7 @@ PSoundEffect AudioHelper::FadeIn(PSound& sound, Time& duration)
   return effect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSoundEffect AudioHelper::FadeOut(PSound& sound, Time& duration)
+PSoundEffect AudioHelper::FadeOut(PSound& sound, const Time& duration)
 {
   EGE_ASSERT(0 < duration.microseconds());
 
@@ -82,7 +82,7 @@ PSoundEffect AudioHelper::FadeOut(PSound& sound, Time& duration)
   return effect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSoundEffect AudioHelper::FadeOutAndStop(PSound& sound, Time& duration)
+PSoundEffect AudioHelper::FadeOutAndStop(PSound& sound, const Time& duration)
 {
   EGE_ASSERT(0 < duration.microseconds());
 

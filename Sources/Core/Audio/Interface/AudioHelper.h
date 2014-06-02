@@ -40,19 +40,19 @@ class AudioHelper
      *  @param  duration  Fade in duration.
      *  @return Fade in effect on success. If error occurs, returns NULL.
      */
-    static PSoundEffect FadeIn(PSound& sound, Time& duration);
+    static PSoundEffect FadeIn(PSound& sound, const Time& duration);
     /*! Fades out the given sound.
      *  @param  sound     Sound to fade out.
      *  @param  duration  Fade in duration.
      *  @return Fade out effect on success. If error occurs, returns NULL.
      */
-    static PSoundEffect FadeOut(PSound& sound, Time& duration);
+    static PSoundEffect FadeOut(PSound& sound, const Time& duration);
     /*! Fades out the given sound and stops it when effect is done.
      *  @param  sound     Sound to fade out.
      *  @param  duration  Fade in duration.
      *  @return Fade out effect on success. If error occurs, returns NULL.
      */
-    static PSoundEffect FadeOutAndStop(PSound& sound, Time& duration);
+    static PSoundEffect FadeOutAndStop(PSound& sound, const Time& duration);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
