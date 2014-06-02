@@ -6,12 +6,14 @@
 
 #include "EGE.h"
 #include "EGEString.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Application;
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
+EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioHelper
 {
@@ -32,6 +34,25 @@ class AudioHelper
      *  @return Created object. If error occurs, returns NULL.
      */
     static PSound CreateSoundAndPlay(Application* application, const String& name, s32 repeatCount = 0, const String& groupName = "");
+
+    /*! Fades in the given sound.
+     *  @param  sound     Sound to fade in.
+     *  @param  duration  Fade in duration.
+     *  @return Fade in effect on success. If error occurs, returns NULL.
+     */
+    static PSoundEffect FadeIn(PSound& sound, Time& duration);
+    /*! Fades out the given sound.
+     *  @param  sound     Sound to fade out.
+     *  @param  duration  Fade in duration.
+     *  @return Fade out effect on success. If error occurs, returns NULL.
+     */
+    static PSoundEffect FadeOut(PSound& sound, Time& duration);
+    /*! Fades out the given sound and stops it when effect is done.
+     *  @param  sound     Sound to fade out.
+     *  @param  duration  Fade in duration.
+     *  @return Fade out effect on success. If error occurs, returns NULL.
+     */
+    static PSoundEffect FadeOutAndStop(PSound& sound, Time& duration);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

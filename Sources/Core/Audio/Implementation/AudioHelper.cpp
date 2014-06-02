@@ -2,6 +2,8 @@
 #include "EGEResources.h"
 #include "Core/Audio/Interface/AudioHelper.h"
 #include "Core/Audio/Sound.h"
+#include "Core/Audio/SoundEffectFadeIn.h"
+#include "Core/Audio/SoundEffectFadeOut.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -40,6 +42,59 @@ PSound AudioHelper::CreateSoundAndPlay(Application* application, const String& n
   }
 
   return sound;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PSoundEffect AudioHelper::FadeIn(PSound& sound, Time& duration)
+{
+  EGE_ASSERT(0 < duration.microseconds());
+
+  // create effect
+  PSoundEffect effect = ege_new SoundEffectFadeIn(duration);
+  if (NULL != effect)
+  {
+    // add effect to sound
+    if ( ! sound->addEffect(effect))
+    {
+      // error, clean up
+      effect = NULL;
+    }
+  }
+
+  return effect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PSoundEffect AudioHelper::FadeOut(PSound& sound, Time& duration)
+{
+  EGE_ASSERT(0 < duration.microseconds());
+
+  // create effect
+  PSoundEffect effect = ege_new SoundEffectFadeOut(duration);
+  if (NULL != effect)
+  {
+    // add effect to sound
+    if ( ! sound->addEffect(effect))
+    {
+      // error, clean up
+      effect = NULL;
+    }
+  }
+
+  return effect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PSoundEffect AudioHelper::FadeOutAndStop(PSound& sound, Time& duration)
+{
+  EGE_ASSERT(0 < duration.microseconds());
+
+  // create effect
+  PSoundEffect effect = FadeOut(sound, duration);
+  if (NULL != effect)
+  {
+    // connect
+    ege_connect(effect, finished, sound.object(), Sound::stop); 
+  }
+
+  return effect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
