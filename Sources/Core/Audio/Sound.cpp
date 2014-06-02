@@ -14,42 +14,16 @@ static const char* KSoundDebugName = "EGESound";
 EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sound::Sound(Application* app, const String& name, PDataBuffer& data) : Object(app),
-                                                                        m_codec(NULL),
-                                                                        m_name(name),
-                                                                        m_data(data)
+Sound::Sound(Application* app, const String& name, PDataBuffer& data) : Object(app)
+                                                                      , m_codec(NULL)
+                                                                      , m_name(name)
+                                                                      , m_data(data)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Sound::~Sound()
 {
   EGE_DELETE(m_codec);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSound Sound::CreateAndPlay(Application* application, const String& name, s32 repeatCount, const String& resourceGroupName)
-{
-  EGE_ASSERT(NULL != application);
-
-  PSound sound;
-
-  // find sound resource
-  PResourceSound soundResource = application->resourceManager()->soundResource(name, resourceGroupName);
-  if (NULL != soundResource)
-  {
-    // create sound instance
-    sound = soundResource->createInstance();
-    if (NULL != sound)
-    {
-      // play
-      if (EGE_SUCCESS != sound->play(repeatCount))
-      {
-        // error!
-        sound = NULL;
-      }
-    }
-  }
-
-  return sound;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Sound::construct()

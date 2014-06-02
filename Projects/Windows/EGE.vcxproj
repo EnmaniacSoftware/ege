@@ -32,6 +32,7 @@
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioManagerBase.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.h" />
@@ -438,6 +440,7 @@
     <ClInclude Include="..\..\Sources\EGEAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
+    <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
     <ClInclude Include="..\..\Sources\EGECachedObject.h" />
     <ClInclude Include="..\..\Sources\EGECipher.h" />

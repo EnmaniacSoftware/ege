@@ -358,6 +358,12 @@
     <Filter Include="Core\Device\Interface">
       <UniqueIdentifier>{0e9fa093-c286-458b-a767-acfc09bd03e4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Audio\Implementation">
+      <UniqueIdentifier>{977c0035-738c-4c1b-95f4-1ce73876589c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Interface">
+      <UniqueIdentifier>{1c03fcb7-9055-428e-9742-65b36b36a7f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -1013,6 +1019,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Device\Implementation\Device.cpp">
       <Filter>Core\Device\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp">
+      <Filter>Core\Audio\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1888,6 +1897,10 @@
     <ClInclude Include="..\..\Sources\Core\Device\Interface\Device.h">
       <Filter>Core\Device\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioHelper.h">
+      <Filter>Core\Audio\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

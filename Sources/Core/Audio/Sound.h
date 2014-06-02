@@ -45,17 +45,6 @@ class Sound : public Object
      */
     Signal2<PSound, float32> volumeChanged;
 
-  public:
-
-    /*! Convinient method for creating and playing sound of a given name.
-     *  @param  application Pointer to application.
-     *  @param  name        Sound name to play.
-     *  @param  repeatCount Number of time sound should be repeated.
-     *  @param  groupName   Name of the resource group.
-     *  @return If successful, returns created sound.
-     */
-    static PSound CreateAndPlay(Application* application, const String& name, s32 repeatCount = 0, const String& groupName = "");
-
   public slots:
   
     /*! Stops playback. 
