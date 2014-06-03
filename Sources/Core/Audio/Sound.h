@@ -35,11 +35,23 @@ class Sound : public Object
     /*! Signal emitted when sound playback has come to an end. 
      *  @note Signal is NOT guaranteed to be sent from main thread.
      */
-    Signal1<PSound> finished;
+    Signal0<> finished;
+    /*! Signal emitted when sound playback has come to an end. 
+     *  @param sound  Sound which is finished.
+     *  @note Signal is NOT guaranteed to be sent from main thread.
+     */
+    Signal1<PSound> finishedWithSelf;
+
     /*! Signal emitted when sound playback has been stopped (by any means). 
      *  @note Signal is NOT guaranteed to be sent from main thread.
      */
-    Signal1<PSound> stopped;
+    Signal0<> stopped;
+    /*! Signal emitted when sound playback has been stopped (by any means). 
+     *  @param sound  Sound which is stopped.
+     *  @note Signal is NOT guaranteed to be sent from main thread.
+     */
+    Signal1<PSound> stoppedWithSelf;
+
     /*! Signal emitted when volume changes. 
      *  @param  Sound for which volume has changed.
      *  @param  oldVolume Old volume level.
