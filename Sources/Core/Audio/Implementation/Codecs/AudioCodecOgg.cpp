@@ -1,10 +1,9 @@
-#include "Core/Audio/AudioCodecOgg.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodecOgg.h"
+#include "Core/Audio/Implementation/Codecs/stb_vorbis.c"
 #include "EGEAudio.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
 #include "EGEFile.h"
-
-#include "Core/Audio/stb_vorbis.c"
 
 EGE_NAMESPACE_BEGIN
 

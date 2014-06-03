@@ -109,9 +109,6 @@
     <Filter Include="Core\Audio">
       <UniqueIdentifier>{6556f711-9739-4124-9e4d-40f130ad80e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Audio\OpenAL">
-      <UniqueIdentifier>{2469302f-a215-49ef-82ee-9745942d1421}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Win32\File">
       <UniqueIdentifier>{37b16d40-4fac-4a87-9902-c1c884e2bccd}</UniqueIdentifier>
     </Filter>
@@ -153,9 +150,6 @@
     </Filter>
     <Filter Include="Win32\NativeUI">
       <UniqueIdentifier>{d4765eae-b506-4d5e-a245-231de9637e02}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Audio\Null">
-      <UniqueIdentifier>{2941d0a1-a693-4e6e-8470-3cbc0ed0ca64}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Resource\Single Thread">
       <UniqueIdentifier>{d4663b92-9c1f-45ae-adc1-154ee2074414}</UniqueIdentifier>
@@ -363,6 +357,27 @@
     </Filter>
     <Filter Include="Core\Audio\Interface">
       <UniqueIdentifier>{1c03fcb7-9055-428e-9742-65b36b36a7f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Interface\Effects">
+      <UniqueIdentifier>{2f89b30d-7371-45ce-9fea-5b30b26c4425}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Implementation\Effects">
+      <UniqueIdentifier>{cc0f3b22-83af-4a75-a3bb-cfe15c3fc6d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Implementation\Codecs">
+      <UniqueIdentifier>{5508a051-2fe2-4337-a6ff-aa70412e3471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Implementation\Null">
+      <UniqueIdentifier>{7a833151-4745-4274-8354-dc44799cc94e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Implementation\OpenAL">
+      <UniqueIdentifier>{d06448c8-76ce-4b2c-b0db-6a88e6a6a049}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Interface\Null">
+      <UniqueIdentifier>{938a67a1-5358-446a-aee3-41aa370a24d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Audio\Interface\OpenAL">
+      <UniqueIdentifier>{490ff60e-d608-4aa6-ae61-37f79988e627}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -582,26 +597,8 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
       <Filter>Core\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.cpp">
-      <Filter>Core\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
@@ -635,9 +632,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\Label.cpp">
       <Filter>Core\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.cpp">
-      <Filter>Core\Audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp">
       <Filter>Core\Threading</Filter>
@@ -800,24 +794,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
       <Filter>Win32\Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.cpp">
-      <Filter>Core\Audio\Null</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull.cpp">
-      <Filter>Core\Audio\Null</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp">
-      <Filter>Core\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp">
-      <Filter>Core\Audio\OpenAL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
@@ -1022,6 +998,45 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp">
       <Filter>Core\Audio\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Sound.cpp">
+      <Filter>Core\Audio\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.cpp">
+      <Filter>Core\Audio\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Effects\SoundEffectFadeIn.cpp">
+      <Filter>Core\Audio\Implementation\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Effects\SoundEffectFadeOut.cpp">
+      <Filter>Core\Audio\Implementation\Effects</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.cpp">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecMp3.cpp">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecOgg.cpp">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecWav.cpp">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Null\AudioManagerNull.cpp">
+      <Filter>Core\Audio\Implementation\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Null\SoundNull.cpp">
+      <Filter>Core\Audio\Implementation\Null</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioManagerOpenAL.cpp">
+      <Filter>Core\Audio\Implementation\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioThreadOpenAL.cpp">
+      <Filter>Core\Audio\Implementation\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\SoundOpenAL.cpp">
+      <Filter>Core\Audio\Implementation\OpenAL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1334,38 +1349,11 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\Sound.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h">
       <Filter>Core\Tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\VertexBufferVAOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
@@ -1405,9 +1393,6 @@
       <Filter>Core\UI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGECircle.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEThread.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
@@ -1594,24 +1579,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.h">
-      <Filter>Core\Audio\Null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull.h">
-      <Filter>Core\Audio\Null</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioManagerBase.h">
-      <Filter>Core\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.h">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.h">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h">
-      <Filter>Core\Audio\OpenAL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.h">
       <Filter>Core\Graphics\Render\Implementation</Filter>
     </ClInclude>
@@ -1901,6 +1868,54 @@
       <Filter>Core\Audio\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Sound.h">
+      <Filter>Core\Audio\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.h">
+      <Filter>Core\Audio\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffect.h">
+      <Filter>Core\Audio\Interface\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffectFadeIn.h">
+      <Filter>Core\Audio\Interface\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffectFadeOut.h">
+      <Filter>Core\Audio\Interface\Effects</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioManagerBase.h">
+      <Filter>Core\Audio\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioManager.h">
+      <Filter>Core\Audio\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecMp3.h">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecOgg.h">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecWav.h">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.h">
+      <Filter>Core\Audio\Implementation\Codecs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Null\SoundNull.h">
+      <Filter>Core\Audio\Implementation\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Null\AudioManagerNull.h">
+      <Filter>Core\Audio\Interface\Null</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioThreadOpenAL.h">
+      <Filter>Core\Audio\Implementation\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\OpenAL\SoundOpenAL.h">
+      <Filter>Core\Audio\Implementation\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\OpenAL\AudioManagerOpenAL.h">
+      <Filter>Core\Audio\Interface\OpenAL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

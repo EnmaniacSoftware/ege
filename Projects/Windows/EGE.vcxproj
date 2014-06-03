@@ -28,27 +28,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecMp3.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecOgg.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioCodecWav.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\AudioUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\Null\SoundNull.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\Sound.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Audio\stb_vorbis.c">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - GL3x MT|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL MT|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OGL FPL ST|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - GL3x MT|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release - OGL FPL MT|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseWithDebug - OGL FPL MT|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecMp3.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecOgg.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecWav.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Effects\SoundEffectFadeIn.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Effects\SoundEffectFadeOut.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Null\AudioManagerNull.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Null\SoundNull.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioManagerOpenAL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioThreadOpenAL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\OpenAL\SoundOpenAL.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\Sound.cpp" />
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp" />
     <ClCompile Include="..\..\Sources\Core\Component\Implementation\Component.cpp" />
     <ClCompile Include="..\..\Sources\Core\Component\Implementation\ComponentHost.cpp" />
@@ -248,23 +241,23 @@
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodec.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecMp3.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecOgg.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioCodecWav.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioManager.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioManagerBase.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\AudioUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioManagerBase.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecMp3.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecOgg.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodecWav.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Null\SoundNull.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\OpenAL\AudioThreadOpenAL.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Implementation\OpenAL\SoundOpenAL.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioHelper.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\AudioManagerNull.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\Null\SoundNull.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioManagerOpenAL.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\AudioThreadOpenAL.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\OpenAL\SoundOpenAL.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\Sound.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffect.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeIn.h" />
-    <ClInclude Include="..\..\Sources\Core\Audio\SoundEffectFadeOut.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffect.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffectFadeIn.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Effects\SoundEffectFadeOut.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Null\AudioManagerNull.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\OpenAL\AudioManagerOpenAL.h" />
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\Sound.h" />
     <ClInclude Include="..\..\Sources\Core\Cache\Interface\CachedObject.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\Component.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Interface\ComponentHost.h" />

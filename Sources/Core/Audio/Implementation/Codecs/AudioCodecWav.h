@@ -1,12 +1,12 @@
-#ifndef EGE_CORE_AUDIO_CODEC_WAV_H
-#define EGE_CORE_AUDIO_CODEC_WAV_H
+#ifndef EGE_CORE_AUDIO_CODECS_AUDIOCODECWAV_H
+#define EGE_CORE_AUDIO_CODECS_AUDIOCODECWAV_H
 
 /** WAVE audio file codec specialization. 
-*/
+ */
 
 #include "EGE.h"
-#include "Core/Audio/AudioCodec.h"
-#include "EGEAudio.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodec.h"
+#include "Core/Audio/Implementation/AudioUtils.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -33,14 +33,14 @@ class AudioCodecWav : public AudioCodec
     /*! Stream data size left (in bytes). */
     s32 m_streamSizeLeft;
     /*! Riff chunk header. */
-    Audio::WaveRiffHeader m_riffHeader;
+    AudioWavRiffHeader m_riffHeader;
     /*! Fmt chunk header. */
-    Audio::WaveFmtHeader m_fmtHeader;
+    AudioWavFormatHeader m_fmtHeader;
     /*! Data chunk header. */
-    Audio::WaveDataHeader m_dataHeader;
+    AudioWavDataHeader m_dataHeader;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIO_CODEC_WAV_H
+#endif // EGE_CORE_AUDIO_CODECS_AUDIOCODECWAV_H

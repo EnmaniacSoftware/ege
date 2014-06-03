@@ -6,15 +6,17 @@
 
 #include "EGE.h"
 #include "EGETime.h"
-#include "Core/Audio/AudioManagerBase.h"
-#include "Core/Audio/AudioManager.h"
+#include "Core/Audio/Implementation/AudioManagerBase.h"
+#include "Core/Audio/Interface/AudioManager.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerNull : public Object, public IAudioManagerBase, public IAudioManager
+class AudioManagerNull : public Object, 
+                         public IAudioManagerBase, 
+                         public IAudioManager
 {
   public:
     

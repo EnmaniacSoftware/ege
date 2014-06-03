@@ -1,8 +1,8 @@
-#ifndef EGE_CORE_AUDIO_SOUNDEFFECT_H
-#define EGE_CORE_AUDIO_SOUNDEFFECT_H
+#ifndef EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECT_H
+#define EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECT_H
 
 /** Class representing sound effect interface.
-*/
+ */
 
 #include "EGE.h"
 #include "EGESignal.h"
@@ -52,4 +52,4 @@ typedef List<PSoundEffect> SoundEffectList;
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIO_SOUNDEFFECT_H
+#endif // EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECT_H

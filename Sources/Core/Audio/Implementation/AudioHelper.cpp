@@ -1,9 +1,9 @@
 #include "EGEApplication.h"
 #include "EGEResources.h"
 #include "Core/Audio/Interface/AudioHelper.h"
-#include "Core/Audio/Sound.h"
-#include "Core/Audio/SoundEffectFadeIn.h"
-#include "Core/Audio/SoundEffectFadeOut.h"
+#include "Core/Audio/Interface/Sound.h"
+#include "Core/Audio/Interface/Effects/SoundEffectFadeIn.h"
+#include "Core/Audio/Interface/Effects/SoundEffectFadeOut.h"
 
 EGE_NAMESPACE_BEGIN
 

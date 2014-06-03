@@ -1,5 +1,6 @@
-#include "Core/Audio/OpenAL/SoundOpenAL.h"
-#include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
+#include "Core/Audio/Implementation/OpenAL/SoundOpenAL.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodec.h"
+#include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "EGEMath.h"
 
 EGE_NAMESPACE

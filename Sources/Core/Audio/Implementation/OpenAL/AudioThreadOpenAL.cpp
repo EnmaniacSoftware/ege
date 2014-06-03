@@ -1,8 +1,8 @@
 #ifdef EGE_AUDIO_OPENAL
 
 #include "Core/Application/Application.h"
-#include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
-#include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
+#include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
+#include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "EGEDevice.h"
 #include "EGETime.h"
 #include "EGEDebug.h"

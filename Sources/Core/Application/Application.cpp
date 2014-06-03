@@ -13,8 +13,8 @@
 #include "Core/Event/Event.h"
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
-#include "Core/Audio/AudioManager.h"
-#include "Core/Audio/Null/AudioManagerNull.h"
+#include "Core/Audio/Interface/AudioManager.h"
+#include "Core/Audio/Interface/Null/AudioManagerNull.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "EGEDebug.h"
 #include "EGEDeviceServices.h"
@@ -26,13 +26,13 @@
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Application/ApplicationWin32_p.h"
-  #include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
+  #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #elif EGE_PLATFORM_AIRPLAY
   #include "Airplay/Application/ApplicationAirplay_p.h"
   #include "Airplay/Audio/AudioManagerAirplay.h"
 #elif EGE_PLATFORM_IOS
   #include "iOS/Application/ApplicationIOS_p.h"
-  #include "iOS/Audio/OpenAL/AudioManagerOpenALIOS.h"
+  #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
 #endif // EGE_PLATFORM_WIN32
 
 EGE_NAMESPACE_BEGIN

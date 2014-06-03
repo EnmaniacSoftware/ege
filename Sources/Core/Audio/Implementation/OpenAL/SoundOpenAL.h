@@ -2,7 +2,7 @@
 #define EGE_CORE_AUDIO_OPENAL_SOUNDOPENAL_H
 
 #include "EGE.h"
-#include "Core/Audio/Sound.h"
+#include "Core/Audio/Interface/Sound.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include <al.h>

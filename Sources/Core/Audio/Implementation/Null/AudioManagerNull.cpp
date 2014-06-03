@@ -1,7 +1,7 @@
 #include "Core/Application/Application.h"
-#include "Core/Audio/Null/AudioManagerNull.h"
-#include "Core/Audio/Null/SoundNull.h"
-#include "Core/Audio/Sound.h"
+#include "Core/Audio/Interface/Null/AudioManagerNull.h"
+#include "Core/Audio/Implementation/Null/SoundNull.h"
+#include "Core/Audio/Interface/Sound.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
 

@@ -1,5 +1,5 @@
-#include "Core/Audio/SoundEffectFadeOut.h"
-#include "Core/Audio/Sound.h"
+#include "Core/Audio/Interface/Effects/SoundEffectFadeOut.h"
+#include "Core/Audio/Interface/Sound.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -7,9 +7,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SoundEffectFadeOut)
 EGE_DEFINE_DELETE_OPERATORS(SoundEffectFadeOut)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(EGE_OBJECT_UID_SOUND_EFFECT_FADE_OUT),
-                                                               m_duration(duration),
-                                                               m_time(0.0f)
+SoundEffectFadeOut::SoundEffectFadeOut(const Time& duration) : SoundEffect(EGE_OBJECT_UID_SOUND_EFFECT_FADE_OUT)
+                                                             , m_duration(duration)
+                                                             , m_time(0.0f)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

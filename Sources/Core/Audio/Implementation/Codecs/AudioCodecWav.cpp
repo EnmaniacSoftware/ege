@@ -1,4 +1,5 @@
-#include "Core/Audio/AudioCodecWav.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodecWav.h"
+#include "Core/Audio/Implementation/AudioUtils.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
 

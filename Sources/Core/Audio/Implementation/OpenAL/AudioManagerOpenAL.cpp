@@ -1,8 +1,7 @@
 #include "Core/Application/Application.h"
-#include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
-#include "Core/Audio/OpenAL/AudioThreadOpenAL.h"
-#include "Core/Audio/OpenAL/SoundOpenAL.h"
-#include "Core/Audio/Sound.h"
+#include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
+#include "Core/Audio/Implementation/OpenAL/SoundOpenAL.h"
+#include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
 

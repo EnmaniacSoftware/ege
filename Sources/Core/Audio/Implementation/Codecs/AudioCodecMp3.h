@@ -1,11 +1,11 @@
-#ifndef EGE_CORE_AUDIO_CODEC_MP3_H
-#define EGE_CORE_AUDIO_CODEC_MP3_H
+#ifndef EGE_CORE_AUDIO_CODECS_AUDIOCODECMP3_H
+#define EGE_CORE_AUDIO_CODECS_AUDIOCODECMP3_H
 
 /** MP3 audio file codec specialization. 
-*/
+ */
 
 #include "EGE.h"
-#include "Core/Audio/AudioCodec.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodec.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -29,4 +29,4 @@ class AudioCodecMp3 : public AudioCodec
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIO_CODEC_MP3_H
+#endif // EGE_CORE_AUDIO_CODECS_AUDIOCODECMP3_H

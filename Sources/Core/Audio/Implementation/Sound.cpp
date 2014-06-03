@@ -1,8 +1,8 @@
-#include "Core/Audio/Sound.h"
-#include "Core/Audio/AudioCodecWav.h"
-#include "Core/Audio/AudioCodecOgg.h"
-#include "Core/Audio/AudioCodecMp3.h"
-#include "Core/Audio/AudioUtils.h"
+#include "Core/Audio/Interface/Sound.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodecWav.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodecOgg.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodecMp3.h"
+#include "Core/Audio/Implementation/AudioUtils.h"
 #include "EGEApplication.h"
 #include "EGEResources.h"
 
@@ -29,21 +29,21 @@ Sound::~Sound()
 EGEResult Sound::construct()
 {
   // detect stream type
-  Audio::StreamType type = AudioUtils::DetectStreamType(m_data);
+  AudioStreamType type = AudioUtils::DetectStreamType(m_data);
 
   switch (type)
   {
-    case Audio::ST_WAVE:
+    case AST_WAV:
         
       m_codec = ege_new AudioCodecWav(m_data);
       break;
 
-    case Audio::ST_OGG:
+    case AST_OGG:
 
       m_codec = ege_new AudioCodecOgg(m_data);
       break;
       
-    case Audio::ST_MP3:
+    case AST_MP3:
 
       m_codec = ege_new AudioCodecMp3(m_data);
       break;

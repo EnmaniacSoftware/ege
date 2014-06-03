@@ -1,11 +1,11 @@
-#ifndef EGE_CORE_AUDIO_CODEC_OGG_H
-#define EGE_CORE_AUDIO_CODEC_OGG_H
+#ifndef EGE_CORE_AUDIO_CODECS_AUDIOCODECOGG_H
+#define EGE_CORE_AUDIO_CODECS_AUDIOCODECOGG_H
 
 /** OGG audio file codec specialization. 
-*/
+ */
 
 #include "EGE.h"
-#include "Core/Audio/AudioCodec.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodec.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct stb_vorbis;
@@ -61,7 +61,7 @@ class AudioCodecOgg : public AudioCodec
     /*! STB vorbis stream object. */
     stb_vorbis* m_codecStream;
     /*! Buffer containing all samples which were decoded but were over the samples count requested. These will be used next time samples are requested before
-        any decompression takes place.
+     *  any decompression takes place.
      */
     DataBuffer m_overflousDecodedSamples;
 };
@@ -69,4 +69,4 @@ class AudioCodecOgg : public AudioCodec
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIO_CODEC_OGG_H
+#endif // EGE_CORE_AUDIO_CODECS_AUDIOCODECOGG_H

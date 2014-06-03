@@ -1,4 +1,4 @@
-#include "Core/Audio/AudioUtils.h"
+#include "Core/Audio/Implementation/AudioUtils.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 #define MP3_ID3_HEADER_ID   0x49443300
 #define MP3_ENC_HEADER_ID   0xfffb0000
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioUtils::ReadWavHeaders(const PDataBuffer& data, Audio::WaveRiffHeader& riffHeader, Audio::WaveFmtHeader& fmtHeader, Audio::WaveDataHeader& dataHeader)
+void AudioUtils::ReadWavHeaders(const PDataBuffer& data, AudioWavRiffHeader& riffHeader, AudioWavFormatHeader& fmtHeader, AudioWavDataHeader& dataHeader)
 {
   EGE_MEMSET(&riffHeader, 0, sizeof (riffHeader));
   EGE_MEMSET(&fmtHeader, 0, sizeof (fmtHeader));
@@ -81,17 +81,17 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, Audio::WaveRiffHeader& 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Audio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
+AudioStreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
 {
   // check if WAVE stream
   data->setReadOffset(0);
 
   // check if amount of data at least for the headers
-  if (data->size() > sizeof (Audio::WaveFmtHeader) + sizeof (Audio::WaveRiffHeader) + sizeof (Audio::WaveDataHeader))
+  if (data->size() > sizeof (AudioWavFormatHeader) + sizeof (AudioWavRiffHeader) + sizeof (AudioWavDataHeader))
   {
-    Audio::WaveRiffHeader riffHeader;
-    Audio::WaveFmtHeader fmtHeader;
-    Audio::WaveDataHeader dataHeader;
+    AudioWavRiffHeader riffHeader;
+    AudioWavFormatHeader fmtHeader;
+    AudioWavDataHeader dataHeader;
 
     // read headers in
     AudioUtils::ReadWavHeaders(data, riffHeader, fmtHeader, dataHeader);
@@ -100,7 +100,7 @@ Audio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
     if ((WAVE_RIFF_HEADER_ID == riffHeader.id) && (WAVE_FMT_HEADER_ID == fmtHeader.id) && (WAVE_DATA_HEADER_ID == dataHeader.id))
     {
       // found
-      return Audio::ST_WAVE;
+      return AST_WAV;
     }
   }
 
@@ -114,7 +114,7 @@ Audio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   if (OGG_PAGE_HEADER_ID == headerId)
   {
     // found
-    return Audio::ST_OGG;
+    return AST_OGG;
   }
 
   // check if MP3 stream
@@ -130,10 +130,10 @@ Audio::StreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   if ((MP3_ID3_HEADER_ID == (headerId & 0xffffff00)) || (MP3_ENC_HEADER_ID == (headerId & 0xffff0000)))
   {
     // found
-    return Audio::ST_MP3;
+    return AST_MP3;
   }
 
-  return Audio::ST_UNKNOWN;
+  return AST_UNKNOWN;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

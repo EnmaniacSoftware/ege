@@ -10,7 +10,7 @@
 #include "EGETime.h"
 #include "EGEDataBuffer.h"
 #include "EGEList.h"
-#include "Core/Audio/SoundEffect.h"
+#include "Core/Audio/Interface/Effects/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN
 

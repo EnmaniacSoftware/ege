@@ -2,7 +2,7 @@
 #define EGE_CORE_AUDIO_NULL_SOUNDNULL_H
 
 #include "EGE.h"
-#include "Core/Audio/Sound.h"
+#include "Core/Audio/Interface/Sound.h"
 
 EGE_NAMESPACE_BEGIN
 

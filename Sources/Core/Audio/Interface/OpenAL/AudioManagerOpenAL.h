@@ -9,7 +9,7 @@
 #include "EGEMutex.h"
 #include "EGEThread.h"
 #include "EGEAudio.h"
-#include "Core/Audio/AudioManagerBase.h"
+#include "Core/Audio/Implementation/AudioManagerBase.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include <al.h>

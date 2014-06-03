@@ -1,8 +1,8 @@
-#ifndef EGE_CORE_AUDIO_CODEC_H
-#define EGE_CORE_AUDIO_CODEC_H
+#ifndef EGE_CORE_AUDIO_CODECS_AUDIOCODEC_H
+#define EGE_CORE_AUDIO_CODECS_AUDIOCODEC_H
 
 /** Class represents audio codec interface.
-*/
+ */
 
 #include "EGE.h"
 #include "EGEDataBuffer.h"
@@ -16,9 +16,8 @@ class AudioCodec : public Object
 {
   public:
 
-    AudioCodec(u32 uid, const PDataBuffer& stream) : Object(NULL, uid), m_stream(stream), m_streamOffset(0), m_channels(0), m_frequency(0), m_bitsPerSample(0)
-    {}
-    virtual ~AudioCodec() {}
+    AudioCodec(u32 uid, const PDataBuffer& stream);
+    virtual ~AudioCodec();
 
     /*! Decodes up to given number of samples. 
      *  @param  out             Data buffer containing decoded samples.
@@ -30,14 +29,15 @@ class AudioCodec : public Object
     virtual bool decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded) = 0;
     /*! Resets codec. */
     virtual bool reset() = 0;
+
     /*! Returns number of channels. */
-    s32 channels() const { return m_channels; }
+    s32 channels() const;
     /*! Returns playback frequency (in Hz). */
-    s32 frequency() const { return m_frequency; }
+    s32 frequency() const;
     /*! Returns number of bits per sample (for single channel). */
-    s32 bitsPerSample() const { return m_bitsPerSample; }
+    s32 bitsPerSample() const;
     /*! Returns data stream. */
-    const PObject& stream() const { return m_stream; }
+    const PObject& stream() const;
 
   protected:
 
@@ -56,4 +56,4 @@ class AudioCodec : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_AUDIO_CODEC_H
+#endif // EGE_CORE_AUDIO_CODECS_AUDIOCODEC_H

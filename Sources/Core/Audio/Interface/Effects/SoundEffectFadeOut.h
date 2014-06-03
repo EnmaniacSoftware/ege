@@ -1,23 +1,23 @@
-#ifndef EGE_CORE_SOUNDEFFECTFADEIN_H
-#define EGE_CORE_SOUNDEFFECTFADEIN_H
+#ifndef EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECTFADEOUT_H
+#define EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECTFADEOUT_H
 
 /** Sound effect responsible for fading volume out.
-*/
+ */
 
 #include "EGE.h"
-#include "Core/Audio/SoundEffect.h"
+#include "Core/Audio/Interface/Effects/SoundEffect.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Sound;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SoundEffectFadeIn : public SoundEffect
+class SoundEffectFadeOut : public SoundEffect
 {
   public:
 
-    SoundEffectFadeIn(const Time& duration);
-   ~SoundEffectFadeIn();
+    SoundEffectFadeOut(const Time& duration);
+   ~SoundEffectFadeOut();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -42,4 +42,4 @@ class SoundEffectFadeIn : public SoundEffect
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SOUNDEFFECTFADEIN_H
+#endif // EGE_CORE_AUDIO_EFFECTS_SOUNDEFFECTFADEOUT_H
