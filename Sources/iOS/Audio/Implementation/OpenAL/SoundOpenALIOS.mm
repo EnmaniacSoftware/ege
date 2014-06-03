@@ -1,6 +1,7 @@
-#include "iOS/Audio/OpenAL/SoundOpenALIOS.h"
-#include "iOS/Audio/OpenAL/AudioManagerOpenALIOS.h"
-#import "iOS/Audio/OpenAL/SoundDelegate.h"
+#include "iOS/Audio/Implementation/OpenAL/SoundOpenALIOS.h"
+#include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
+#include "Core/Audio/Implementation/Codecs/AudioCodec.h"
+#import "iOS/Audio/Interface/SoundDelegate.h"
 #import <AVFoundation/AVFoundation.h>
 
 EGE_NAMESPACE

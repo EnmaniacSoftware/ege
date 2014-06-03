@@ -5,7 +5,9 @@
  */
 
 #include "EGE.h"
-#include "Core/Audio/OpenAL/AudioManagerOpenAL.h"
+#include "EGEString.h"
+#include "EGEDataBuffer.h"
+#include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 
 EGE_NAMESPACE_BEGIN
 

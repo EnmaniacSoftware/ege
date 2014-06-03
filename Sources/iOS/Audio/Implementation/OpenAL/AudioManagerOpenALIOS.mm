@@ -1,6 +1,6 @@
 #include "Core/Application/Application.h"
-#include "iOS/Audio/OpenAL/AudioManagerOpenALIOS.h"
-#include "iOS/Audio/OpenAL/SoundOpenALIOS.h"
+#include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
+#include "iOS/Audio/Implementation/OpenAL/SoundOpenALIOS.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE

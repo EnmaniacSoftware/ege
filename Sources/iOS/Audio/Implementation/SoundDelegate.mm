@@ -1,4 +1,4 @@
-#import "SoundDelegate.h"
+#import "iOS/Audio/Interface/SoundDelegate.h"
 
 EGE_NAMESPACE
 

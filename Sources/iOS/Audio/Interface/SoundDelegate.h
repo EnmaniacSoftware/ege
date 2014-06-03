@@ -7,7 +7,7 @@
 //
 
 #include "EGE.h"
-#include "iOS/Audio/OpenAL/SoundOpenALIOS.h"
+#include "iOS/Audio/Implementation/OpenAL/SoundOpenALIOS.h"
 #import <AVFoundation/AVFoundation.h>
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

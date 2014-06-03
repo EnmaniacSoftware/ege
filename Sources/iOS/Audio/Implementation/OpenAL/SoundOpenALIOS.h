@@ -2,7 +2,7 @@
 #define EGE_IOS_AUDIO_OPENAL_SOUNDOPENALIOS_H
 
 #include "EGE.h"
-#include "Core/Audio/OpenAL/SoundOpenAL.h"
+#include "Core/Audio/Implementation/OpenAL/SoundOpenAL.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 @class SoundDelegate;
