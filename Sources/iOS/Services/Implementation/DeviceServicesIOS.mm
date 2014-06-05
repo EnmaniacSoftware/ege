@@ -2,6 +2,11 @@
 #include "Core/Services/Interface/SpecialURLs.h"
 #include "EGEDebug.h"
 #import <UIKit/UIKit.h>
+#import <Security/Security.h>
+
+/*! Secure storage implementation based on the following articale:
+ *  http://useyourloaf.com/blog/2010/03/29/simple-iphone-keychain-access.html
+ */
 
 EGE_NAMESPACE
 
@@ -9,6 +14,53 @@ EGE_NAMESPACE
 static const char* KConfidentialValuesPrefix = "ege.deviceservices.confidentialstore.";
 
 static const NSString* KEGEITunesAppIdKey = @"ege-itunes-app-id";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function used to create dictionary to manipulate secure storage.
+ *  @param  keyValue  Name of the key for dictionary is to be created.
+ *  @return Created dictionary.
+ */
+static NSMutableDictionary* CreateSearchDictionary(NSString* keyValue)
+{
+  NSMutableDictionary* searchDictionary = [[NSMutableDictionary alloc] init];
+  
+  // set class of keychain
+  [searchDictionary setObject: (id) kSecClassGenericPassword forKey: (id) kSecClass];
+  
+  // set key value name
+  NSData* keyValueData = [keyValue dataUsingEncoding: NSUTF8StringEncoding];
+  [searchDictionary setObject: keyValueData forKey: (id) kSecAttrGeneric];
+  
+  // set rest of attibutes
+  NSString* serviceAttrbute = [NSString stringWithFormat: @"%s", KConfidentialValuesPrefix];
+  NSString* keyAttributeData = [NSString stringWithFormat:@"%@%@", serviceAttrbute, keyValue];
+  
+  [searchDictionary setObject: keyAttributeData forKey: (id) kSecAttrAccount];
+  [searchDictionary setObject: serviceAttrbute forKey: (id) kSecAttrService];
+  
+  return [searchDictionary autorelease];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local function used to search and retrieve dictionary value from secure storage.
+ *  @param  keyValue  Name of the key for dictionary is to be retrieved.
+ *  @return Buffer containing data associated with the given key. NIL is returned in case of an error, key has not been found, or no data was associated.
+ */
+static NSData* SearchDictionary(NSString* keyValue)
+{
+  NSMutableDictionary* searchDictionary = CreateSearchDictionary(keyValue);
+  EGE_ASSERT(nil != searchDictionary);
+  
+  // specify that only one result is expected
+  [searchDictionary setObject: (id) kSecMatchLimitOne forKey: (id) kSecMatchLimit];
+  
+  // make sure data buffer will be available directly
+  [searchDictionary setObject: (id) kCFBooleanTrue forKey: (id) kSecReturnData];
+  
+  NSData* valueData = nil;
+  SecItemCopyMatching((CFDictionaryRef) searchDictionary, (CFTypeRef*) &valueData);
+  [valueData autorelease];
+  
+  return valueData;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesIOS::DeviceServicesIOS() : DeviceServices()
 {
@@ -44,22 +96,32 @@ EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const St
 {
   EGEResult result = EGE_ERROR;
   
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  EGE_ASSERT(nil != defaults);
-
-  // convert name and value
+  // convert key name
   NSString* nsName  = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
-  NSString* nsValue = [NSString stringWithCString: value.c_str() encoding: NSASCIIStringEncoding];
-
-  EGE_ASSERT(nil != nsName);
-  EGE_ASSERT(nil != nsValue);
+  NSData* valueData = [[[NSData alloc] initWithBytes: value.c_str() length: value.size()] autorelease];
   
-  // store
-  if ((nil != nsName) && (nil != nsValue))
+  if ((nil == nsName) || (nil == valueData))
   {
-    [defaults setObject: nsValue forKey: nsName];
-  
-    result = EGE_SUCCESS;
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  else
+  {
+    // create new search dictionary
+    NSMutableDictionary* searchDictionary = CreateSearchDictionary(nsName);
+    if (nil == searchDictionary)
+    {
+      // error!
+      result = EGE_ERROR_NO_MEMORY;
+    }
+    else
+    {
+      // add data buffer to dictionary
+      [searchDictionary setObject: valueData forKey: (id) kSecValueData];
+      
+      // add to key chain
+      result = (errSecSuccess == SecItemAdd((CFDictionaryRef) searchDictionary, NULL)) ? EGE_SUCCESS : EGE_ERROR;
+    }
   }
   
   return result;
@@ -69,22 +131,32 @@ EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const PD
 {
   EGEResult result = EGE_ERROR;
 
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  EGE_ASSERT(nil != defaults);
-  
-  // convert name and value
+  // convert key name
   NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
   NSData* nsValue  = [NSData dataWithBytesNoCopy:value->data(value->readOffset()) length: value->size() - value->readOffset() freeWhenDone: NO];
   
-  EGE_ASSERT(nil != nsName);
-  EGE_ASSERT(nil != nsValue);
-  
-  // store
-  if ((nil != nsName) && (nil != nsValue))
+  if ((nil == nsName) || (nil == nsValue))
   {
-    [defaults setObject: nsValue forKey: nsName];
-  
-    result = EGE_SUCCESS;
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  else
+  {
+    // create new search dictionary
+    NSMutableDictionary* searchDictionary = CreateSearchDictionary(nsName);
+    if (nil == searchDictionary)
+    {
+      // error!
+      result = EGE_ERROR_NO_MEMORY;
+    }
+    else
+    {
+      // add data buffer to dictionary
+      [searchDictionary setObject: nsValue forKey: (id) kSecValueData];
+      
+      // add to key chain
+      result = (errSecSuccess == SecItemAdd((CFDictionaryRef) searchDictionary, NULL)) ? EGE_SUCCESS : EGE_ERROR;
+    }
   }
   
   return result;
@@ -94,26 +166,34 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, Strin
 {
   EGEResult result = EGE_ERROR_NOT_FOUND;
 
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  EGE_ASSERT(nil != defaults);
-  
-  // convert name
+  // convert key name
   NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
-  EGE_ASSERT(nil != nsName);
-  
-  // retrieve
-  if (nil != nsName)
+  if (nil == nsName)
   {
-    NSString* nsValue = [defaults stringForKey: nsName];
-    EGE_ASSERT(nil != nsValue);
-    
-    if (nil != nsValue)
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  else
+  {
+    // find key data in dictionary
+    NSData* data = SearchDictionary(nsName);
+    if (nil != data)
     {
-      // convert to EGE format
-      value = [nsValue cStringUsingEncoding: NSASCIIStringEncoding];
-  
-      // success
-      result = EGE_SUCCESS;
+      // convert to string
+      NSString* valueDataAsString = [[[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding] autorelease];
+      if (nil == valueDataAsString)
+      {
+        // error!
+        result = EGE_ERROR_NO_MEMORY;
+      }
+      else
+      {
+        // convert to EGE format
+        value = [valueDataAsString cStringUsingEncoding: NSASCIIStringEncoding];
+    
+        // set result
+        result = EGE_SUCCESS;
+      }
     }
   }
   
@@ -124,27 +204,21 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
 {
   EGEResult result = EGE_ERROR_NOT_FOUND;
   
-  NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-  EGE_ASSERT(nil != defaults);
-  
-  // convert name
+  // convert key name
   NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
-  EGE_ASSERT(nil != nsName);
-  
-  // retrieve
-  if (nil != nsName)
+  if (nil == nsName)
   {
-    NSData* nsValue = [defaults objectForKey: nsName];
-    if (nil != nsValue)
+    // error!
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  else
+  {
+    // find key data in dictionary
+    NSData* data  = SearchDictionary(nsName);
+    if (nil != data)
     {
-      result = EGE_SUCCESS;
-      
       // convert to EGE format
-      if ([nsValue length] != value->write([nsValue bytes], [nsValue length]))
-      {
-        // error!
-        result = EGE_ERROR;
-      }
+      result = ([data length] == value->write([data bytes], [data length])) ? EGE_SUCCESS : EGE_ERROR;
     }
   }
   
