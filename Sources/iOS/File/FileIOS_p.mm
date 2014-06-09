@@ -58,6 +58,9 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
 
       // open
       m_file = [NSFileHandle fileHandleForWritingAtPath: FilePathToNative(d_func()->filePath())];
+      
+      // truncate to make sure no garbage gets through
+      [(id) m_file truncateFileAtOffset: 0];
       break;
     
     case EGEFile::MODE_APPEND:
