@@ -176,7 +176,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   EventManager* eventManager = egeApplication->eventManager();
   if (NULL != eventManager)
   {
-    eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE);
+    // pause application immediately
+    eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE, true);
     
     // disable rendering
     egeApplication->graphics()->setRenderingEnabled(false);
