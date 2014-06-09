@@ -44,7 +44,6 @@ RenderSystem::RenderSystem(Application* app) : Object(app)
                                              , m_textureAddressingModeS(AM_CLAMP)
                                              , m_textureAddressingModeT(AM_CLAMP)
                                              , m_textureMipMapping(false)
-                                             , m_nextRequestID(1)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,12 +85,12 @@ EGEResult RenderSystem::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::update()
 {
-  if ( ! m_requests.empty())
+  if ((STATE_READY == m_state) && ! m_requests.empty())
   {
     // copy for processing
     m_requestsMutex->lock();
     RequestDataList queue(m_requests);
-    m_requests.clear();
+    m_requests.clear();    
     m_requestsMutex->unlock();
 
     // process locally
@@ -113,7 +112,10 @@ void RenderSystem::update()
         PTexture2D texture = createTexture2D(request.name, image);
 
         // signal
-        emit requestComplete(request.id, texture);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(texture);
+        }
       }
       else if (REQUEST_DESTROY_TEXTURE_2D == request.type)
       {
@@ -122,7 +124,10 @@ void RenderSystem::update()
         request.objects.clear();
 
         // signal
-        emit requestComplete(request.id, NULL);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(NULL);
+        }
       }
       else if (REQUEST_CREATE_SHADER == request.type)
       {
@@ -130,7 +135,10 @@ void RenderSystem::update()
         PShader shader = createShader(request.shaderType, request.name, data);
 
         // signal
-        emit requestComplete(request.id, shader);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(shader);
+        }
       }
       else if (REQUEST_DESTROY_SHADER == request.type)
       {
@@ -139,7 +147,10 @@ void RenderSystem::update()
         request.objects.clear();
 
         // signal
-        emit requestComplete(request.id, NULL);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(NULL);
+        }
       }
       else if (REQUEST_CREATE_PROGRAM == request.type)
       {
@@ -152,7 +163,10 @@ void RenderSystem::update()
         PProgram program = createProgram(request.name, shadersList);
 
         // signal
-        emit requestComplete(request.id, program);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(program);
+        }
       }
       else if (REQUEST_DESTROY_PROGRAM == request.type)
       {
@@ -161,7 +175,10 @@ void RenderSystem::update()
         request.objects.clear();
 
         // signal
-        emit requestComplete(request.id, NULL);
+        if ( ! request.callbackSlot.empty())
+        {
+          emit request.callbackSlot(NULL);
+        }
       }
     }
   }
@@ -399,33 +416,33 @@ Rectf RenderSystem::applyRotation(const Rectf& rect, const Angle& angle) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestCreateTexture2D(const String& name, const PImage& image)
+bool RenderSystem::requestCreateTexture2D(const String& name, const PImage& image, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
   request.type                    = REQUEST_CREATE_TEXTURE_2D;
-  request.id                      = m_nextRequestID++;
   request.name                    = name;
   request.textureMinFilter        = m_textureMinFilter;
   request.textureMagFilter        = m_textureMagFilter;
   request.textureAddressingModeS  = m_textureAddressingModeS;
   request.textureAddressingModeT  = m_textureAddressingModeT;
   request.textureMipMapping       = m_textureMipMapping;
+  request.callbackSlot            = slot;
   request.objects << image;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
-
-  return request.id;
+  
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
+bool RenderSystem::requestDestroyTexture2D(PTexture2D texture, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
-  request.type    = REQUEST_DESTROY_TEXTURE_2D;
-  request.id      = m_nextRequestID++;
+  request.type         = REQUEST_DESTROY_TEXTURE_2D;
+  request.callbackSlot = slot;
   request.objects << texture;
 
   // queue it
@@ -434,47 +451,47 @@ u32 RenderSystem::requestDestroyTexture2D(PTexture2D texture)
 
   egeDebug(KRenderSystemDebugName) << "Requested texture destroy:" << texture->name();
 
-  return request.id;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data)
+bool RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
-  request.type       = REQUEST_CREATE_SHADER;
-  request.id         = m_nextRequestID++;
-  request.name       = name;
-  request.shaderType = type;
+  request.type          = REQUEST_CREATE_SHADER;
+  request.name          = name;
+  request.shaderType    = type;
+  request.callbackSlot  = slot;
   request.objects << data;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
-  return request.id;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestDestroyShader(PShader shader)
+bool RenderSystem::requestDestroyShader(PShader shader, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
-  request.type = REQUEST_DESTROY_SHADER;
-  request.id   = m_nextRequestID++;
+  request.type          = REQUEST_DESTROY_SHADER;
+  request.callbackSlot  = slot;
   request.objects << shader;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
-  return request.id;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& shaders)
+bool RenderSystem::requestCreateProgram(const String& name, const List<PShader>& shaders, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
-  request.type = REQUEST_CREATE_PROGRAM;
-  request.id   = m_nextRequestID++;
+  request.type          = REQUEST_CREATE_PROGRAM;
+  request.callbackSlot  = slot;
   request.name = name;
 
   for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
@@ -486,22 +503,22 @@ u32 RenderSystem::requestCreateProgram(const String& name, const List<PShader>& 
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
-  return request.id;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-u32 RenderSystem::requestDestroyProgram(PProgram program)
+bool RenderSystem::requestDestroyProgram(PProgram program, const HardwareResourceProviderSlot& slot)
 {
   // create request
   RequestData request;
-  request.type    = REQUEST_DESTROY_PROGRAM;
-  request.id      = m_nextRequestID++;
+  request.type          = REQUEST_DESTROY_PROGRAM;
+  request.callbackSlot  = slot;
   request.objects << program;
 
   // queue it
   MutexLocker locker(m_requestsMutex);
   m_requests.push_back(request);
 
-  return request.id;
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setTextureMinFilter(TextureFilter filter)

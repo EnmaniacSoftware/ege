@@ -21,17 +21,12 @@ static const char* KResourceProgramDebugName = "EGEResourceProgram";
 EGE_DEFINE_NEW_OPERATORS(ResourceProgram)
 EGE_DEFINE_DELETE_OPERATORS(ResourceProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceProgram::ResourceProgram(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PROGRAM),
-                                                                           m_resourceRequestId(0)
+ResourceProgram::ResourceProgram(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PROGRAM)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceProgram::~ResourceProgram()
 {
-  if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
-  {
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceProgram::onRequestComplete);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceProgram::Create(Application* app, ResourceGroup* group)
@@ -107,10 +102,7 @@ EGEResult ResourceProgram::load()
         }
 
         // request program
-        m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateProgram(name(), shaders);
-
-        // connect for notification
-        ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceProgram::onRequestComplete);
+        app()->graphics()->hardwareResourceProvider()->requestCreateProgram(name(), shaders, ege_make_slot(this, ResourceProgram::onRequestComplete));
 
         // set state
         m_state = STATE_LOADING;
@@ -155,20 +147,13 @@ void ResourceProgram::unload()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceProgram::onRequestComplete(u32 handle, PObject object)
+void ResourceProgram::onRequestComplete(PObject object)
 {
-  if (handle == m_resourceRequestId)
-  {
-    // store handle
-    m_program = object;
+  // store handle
+  m_program = object;
 
-    // disconnect
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceProgram::onRequestComplete);
-    m_resourceRequestId = 0;
-
-    // set state
-    m_state = STATE_LOADED;
-  }
+  // set state
+  m_state = STATE_LOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceProgram::addShaderReference(const PXmlElement& tag)

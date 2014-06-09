@@ -24,21 +24,14 @@ EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+typedef Delegate1<PObject> HardwareResourceProviderSlot;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IHardwareResourceProvider
 {
   public:
 
     IHardwareResourceProvider() {}
     virtual ~IHardwareResourceProvider() {}
-
-  public signals:
-
-    /*! Signal emitted when request has been completed. 
-     *  @param  requestId   ID of the request.
-     *  @param  object      Requested object.
-     *  @note Signal is emitted in RenderSystem's thread. In case of creation requests, if object is NULL indicates error.
-     */
-    Signal2<u32, PObject> requestComplete;
 
   public:
 
@@ -67,11 +60,11 @@ class IHardwareResourceProvider
     /*! Requests creation of 2D texture from given image. 
      *  @param  name  Name of the texture.
      *  @param  image Image data for texture.
-     *  @return Returns ID of the request for further delivery check.
+     *  @param  slot  Slot to be called once request is handled.
+     *  @return TRUE if request has been accepted. FALSE otherwise.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestCreateTexture2D(const String& name, const PImage& image) = 0;
+    virtual bool requestCreateTexture2D(const String& name, const PImage& image, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
     /*! Creates render texture. 
      *  @param  name    Name of the texture.
      *  @param  width   Width of the texture (in pixels).
@@ -82,11 +75,11 @@ class IHardwareResourceProvider
     virtual PTexture2D createRenderTexture(const String& name, s32 width, s32 height, PixelFormat format) = 0;
     /*! Requests deletion of 2D texture. 
      *  @param  texture Texture to destroy.
-     *  @return Returns ID of the request for further delivery check.
+     *  @param  slot    Slot to be called once request is handled.
+     *  @return TRUE if request has been accepted. FALSE otherwise.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestDestroyTexture2D(PTexture2D texture) = 0;
+    virtual bool requestDestroyTexture2D(PTexture2D texture, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
     /*! Creates shader from given data. 
      *  @param  type  Type of the shader.
      *  @param  name  Name of the shader.
@@ -98,18 +91,19 @@ class IHardwareResourceProvider
      *  @param  type  Type of the shader.
      *  @param  name  Name of the shader.
      *  @param  data  Shader data.
-     *  @return Returns ID of the request for further delivery check.
+     *  @param  slot  Slot to be called once request is handled.
+     *  @return TRUE if request has been accepted. FALSE otherwise.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) = 0;
+    virtual bool requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data,
+                                     const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
     /*! Requests deletion of shader. 
      *  @param  shader  Shader to destroy.
-     *  @return Returns ID of the request for further delivery check.
+     *  @param  slot    Slot to be called once request is handled.
+     *  @return TRUE if request has been accepted. FALSE otherwise.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestDestroyShader(PShader shader) = 0;
+    virtual bool requestDestroyShader(PShader shader, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
     /*! Creates program. 
      *  @param  name    Name of the program.
      *  @param  shaders List of shaders to attach to program.
@@ -119,18 +113,19 @@ class IHardwareResourceProvider
     /*! Requests creation of program. 
      *  @param  name    Name of the program.
      *  @param  shaders List of shaders to attach to program.
+     *  @param  slot    Slot to be called once request is handled.
      *  @return Returns ID of the request for further delivery check.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestCreateProgram(const String& name, const List<PShader>& shaders) = 0;
+    virtual bool requestCreateProgram(const String& name, const List<PShader>& shaders,
+                                      const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
     /*! Requests deletion of program. 
-     *  @param  program  Program to destroy.
-     *  @return Returns ID of the request for further delivery check.
+     *  @param  program Program to destroy.
+     *  @param  slot    Slot to be called once request is handled.
+     *  @return TRUE if request has been accepted. FALSE otherwise.
      *  @note This method queues the request and will process it later. Processing always takes place in the rendering thread.
-     *        Upon completion result will be signalled by requestComplete.
      */
-    virtual u32 requestDestroyProgram(PProgram program) = 0;
+    virtual bool requestDestroyProgram(PProgram program, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

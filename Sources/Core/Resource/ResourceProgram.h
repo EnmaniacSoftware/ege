@@ -59,7 +59,7 @@ class ResourceProgram : public IResource
   private slots:
 
     /*! Slot called when shader request is done. */
-    void onRequestComplete(u32 handle, PObject object);
+    void onRequestComplete(PObject object);
 
   private:
 
@@ -72,8 +72,6 @@ class ResourceProgram : public IResource
     String m_name;
     /*! Program object created from resource. NULL if not created yet. */
     PProgram m_program;
-    /*! Resource request id. */
-    u32 m_resourceRequestId;
     /*! Shader map. */
     ShaderMap m_shaders;
 };

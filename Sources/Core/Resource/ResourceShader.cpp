@@ -36,17 +36,12 @@ static EGEGraphics::ShaderType MapShaderTypeName(const String& name)
   return EGEGraphics::UNKNOWN_SHADER;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceShader::ResourceShader(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SHADER),
-                                                                         m_resourceRequestId(0)
+ResourceShader::ResourceShader(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SHADER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceShader::~ResourceShader()
 {
-  if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
-  {
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceShader::onRequestComplete);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceShader::Create(Application* app, ResourceGroup* group)
@@ -134,18 +129,20 @@ EGEResult ResourceShader::create()
   if (file.read(m_data, file.size()) != file.size())
   {
     // error!
-    return EGE_ERROR_IO;
+    result = EGE_ERROR_IO;
   }
 
   file.close();
 
   // request texture
-  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateShader(m_type, name(), m_data);
+  if ((EGE_SUCCESS == result) && ! app()->graphics()->hardwareResourceProvider()->requestCreateShader(m_type, name(), m_data,
+                                                                                                      ege_make_slot(this, ResourceShader::onRequestComplete)))
+  {
+    // error!
+    result = EGE_ERROR;
+  }
 
-  // connect for notification
-  ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceShader::onRequestComplete);
-
-  return EGE_SUCCESS;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceShader::unload() 
@@ -163,20 +160,13 @@ void ResourceShader::unload()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceShader::onRequestComplete(u32 handle, PObject object)
+void ResourceShader::onRequestComplete(PObject object)
 {
-  if (handle == m_resourceRequestId)
-  {
-    // store handle
-    m_shader = object;
+  // store handle
+  m_shader = object;
 
-    // disconnect
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceShader::onRequestComplete);
-    m_resourceRequestId = 0;
-
-    // set state
-    m_state = STATE_LOADED;
-  }
+  // set state
+  m_state = STATE_LOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

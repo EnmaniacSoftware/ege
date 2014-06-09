@@ -9,6 +9,7 @@
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
 #include "EGEDirectory.h"
+#include "EGEAtomic.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
@@ -58,22 +59,12 @@ ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IReso
                                                                          , m_magFilter(TF_NEAREST)
                                                                          , m_addressingModeS(AM_REPEAT)
                                                                          , m_addressingModeT(AM_REPEAT)
-                                                                         , m_resourceRequestId(0)
                                                                          , m_mipmap(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceTexture::~ResourceTexture()
 {
-//  if (name() == "main-menu-heart")
-//  {
-//    int a = 1;
-//  }
-
-  if ((NULL != app()->graphics()) && (NULL != app()->graphics()->hardwareResourceProvider()))
-  {
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceTexture::Create(Application* app, ResourceGroup* group)
@@ -164,11 +155,14 @@ EGEResult ResourceTexture::load()
     // create according to type
     if ("2d" == type())
     {
+      // create texture
       result = create2D();
+      
+      // check if success and that is hasnt been loaded in the meantime
       if (EGE_SUCCESS == result)
       {
         // set to loading
-        m_state = STATE_LOADING;
+        egeAtomicCompareAndSet(reinterpret_cast<u32&>(m_state), STATE_UNLOADED, STATE_LOADING);
       }
     }
   }
@@ -205,13 +199,9 @@ EGEResult ResourceTexture::create2D()
   app()->graphics()->renderSystem()->setTextureMipMapping(mipmap());
 
   // request texture
-  m_resourceRequestId = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image);
-
-  // connect for notification
-  egeDebug(KResourceTextureDebugName) << "Awaiting" << group()->name() << "for" << m_resourceRequestId;
-  ege_connect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
-
-  return EGE_SUCCESS;
+  bool result = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image, ege_make_slot(this, ResourceTexture::onRequestComplete));
+  
+  return result ? EGE_SUCCESS :  EGE_ERROR;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceTexture::unload() 
@@ -236,21 +226,13 @@ void ResourceTexture::unload()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceTexture::onRequestComplete(u32 handle, PObject object)
+void ResourceTexture::onRequestComplete(PObject object)
 {
-  if (handle == m_resourceRequestId)
-  {
-    // store handle
-    m_texture = object;
+  // store handle
+  m_texture = object;
 
-    // disconnect
-    egeDebug(KResourceTextureDebugName) << "Aquired" << group()->name() << "for" << m_resourceRequestId;
-    ege_disconnect(app()->graphics()->hardwareResourceProvider(), requestComplete, this, ResourceTexture::onRequestComplete);
-    m_resourceRequestId = 0;
-
-    // set state
-    m_state = STATE_LOADED;
-  }
+  // set state
+  egeAtomicCompareAndSet(reinterpret_cast<u32&>(m_state), m_state, STATE_LOADED);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceTexture::loadTextureData(const PXmlElement& tag)

@@ -171,7 +171,6 @@ class RenderSystem : public Object
     /*! Resource request data struct. */
     struct RequestData
     {
-      u32 id;                                             /*!< Assigned request id. */
       RequestType type;                                   /*!< Request type. */
       String name;                                        /*!< Name associated with request. May be empty. */
 
@@ -184,6 +183,8 @@ class RenderSystem : public Object
       bool textureMipMapping;                             /*!< Texture mip mapping flag. */
 
       EGEGraphics::ShaderType shaderType;                 /*!< Shader type. */
+      
+      HardwareResourceProviderSlot callbackSlot;          /*!< Callback slot. */
     };
 
     typedef List<RequestData> RequestDataList;
@@ -196,17 +197,18 @@ class RenderSystem : public Object
     EGEResult addForRendering(const PRenderQueue& queue) override;
 
     /*! @see IHardwareResourceProvider::requestCreateTexture2D. */
-    u32 requestCreateTexture2D(const String& name, const PImage& image) override;
+    bool requestCreateTexture2D(const String& name, const PImage& image, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
     /*! @see IHardwareResourceProvider::requestDestroyTexture2D. */
-    u32 requestDestroyTexture2D(PTexture2D texture) override;
+    bool requestDestroyTexture2D(PTexture2D texture, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
     /*! @see IHardwareResourceProvider::requestCreateShader. */
-    u32 requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data) override;
+    bool requestCreateShader(EGEGraphics::ShaderType type, const String& name, const PDataBuffer& data, const HardwareResourceProviderSlot& slot) override;
     /*! @see IHardwareResourceProvider::requestDestroyShader. */
-    u32 requestDestroyShader(PShader shader) override;
+    bool requestDestroyShader(PShader shader, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
     /*! @see IHardwareResourceProvider::requestCreateProgram. */
-    u32 requestCreateProgram(const String& name, const List<PShader>& shaders) override;
+    bool requestCreateProgram(const String& name, const List<PShader>& shaders,
+                              const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
     /*! @see IHardwareResourceProvider::requestDestroyProgram. */
-    u32 requestDestroyProgram(PProgram program) override;
+    bool requestDestroyProgram(PProgram program, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
 
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent event) override;
@@ -217,8 +219,6 @@ class RenderSystem : public Object
     State m_state;
     /*! Currently active render target. */
     PRenderTarget m_renderTarget;
-    /*! Next available request ID. */
-    u32 m_nextRequestID;
     /*! List of pending requests. */
     RequestDataList m_requests;
     /*! Request data list mutex. */

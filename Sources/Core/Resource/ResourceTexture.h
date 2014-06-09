@@ -68,7 +68,7 @@ class ResourceTexture : public IResource
   private slots:
 
     /*! Slot called when texture request is done. */
-    void onRequestComplete(u32 handle, PObject object);
+    void onRequestComplete(PObject object);
 
   private:
 
@@ -94,8 +94,6 @@ class ResourceTexture : public IResource
     PObject m_texture;
     /*! Rotation angle. */
     Angle m_rotation;
-    /*! Resource request id. */
-    u32 m_resourceRequestId;
     /*! Mipmap flag. */
     bool m_mipmap;
 };

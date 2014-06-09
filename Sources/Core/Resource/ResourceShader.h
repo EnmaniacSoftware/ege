@@ -53,7 +53,7 @@ class ResourceShader : public IResource
   private slots:
 
     /*! Slot called when shader request is done. */
-    void onRequestComplete(u32 handle, PObject object);
+    void onRequestComplete(PObject object);
 
   private:
 
@@ -63,8 +63,6 @@ class ResourceShader : public IResource
     EGEGraphics::ShaderType m_type;
     /*! Shader object created from resource. NULL if not created yet. */
     PShader m_shader;
-    /*! Resource request id. */
-    u32 m_resourceRequestId;
     /*! Shader source data. */
     PDataBuffer m_data;
 };
