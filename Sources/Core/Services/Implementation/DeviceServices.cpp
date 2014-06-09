@@ -55,7 +55,7 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
     }
     else
     {
-      egeWarning(KDeviceServicesDebugName) << "AES key has been generated" << value;
+      egeWarning(KDeviceServicesDebugName) << "AES key has been generated!";
     }
   }
   else if (EGE_SUCCESS != result)
@@ -67,8 +67,18 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
   }
   else
   {
-    egeWarning(KDeviceServicesDebugName) << "AES retrieved successfully" << value;
+    egeWarning(KDeviceServicesDebugName) << "AES retrieved successfully!";
   }
+  
+  String keyValue;
+  for (s64 i = 0; i < value->size(); ++i)
+  {
+    const char* data = reinterpret_cast<const char*>(value->data());
+    const char dataValue = data[i];
+    
+    keyValue += String::Format("%02hhX", dataValue);
+  }
+  egeWarning(KDeviceServicesDebugName) << "AES-128:" << keyValue;
 
   return value;
 }
