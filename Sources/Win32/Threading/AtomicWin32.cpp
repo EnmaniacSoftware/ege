@@ -14,5 +14,10 @@ void egeAtomicDecrement(volatile u32& value)
   InterlockedDecrement(&value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void egeAtomicCompareAndSet(volatile u32& value, u32 compareValue, u32 newValue)
+{
+  InterlockedCompareExchangeAcquire(&value, compareValue, newValue);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
