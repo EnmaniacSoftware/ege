@@ -8,7 +8,7 @@
  *  http://useyourloaf.com/blog/2010/03/29/simple-iphone-keychain-access.html
  */
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KConfidentialValuesPrefix = "ege.deviceservices.confidentialstore.";
@@ -76,6 +76,10 @@ bool DeviceServicesIOS::openUrl(const String& url)
   if (KSpecialURLRateApp == url)
   {
     return openApplicationRateURL();
+  }
+  else if (KSpecialURLGiftApp == url)
+  {
+    return openApplicationGiftURL();
   }
 
   // convert URL
@@ -228,18 +232,9 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
 bool DeviceServicesIOS::openApplicationRateURL()
 {
   u32 appId = 0;
-  
-  // retrieve iTunes app id from .plist file
-  NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
-  
-  NSNumber* value = [infoDictionary objectForKey: KEGEITunesAppIdKey];
-  if (nil != value)
+  if (0 == appId)
   {
-    appId = static_cast<u32>([value intValue]);
-  }
-  else
-  {
-    // cannot process
+    // error!
     return false;
   }
   
@@ -268,3 +263,47 @@ bool DeviceServicesIOS::openApplicationRateURL()
   return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool DeviceServicesIOS::openApplicationGiftURL()
+{
+  u32 appId = applicationId();
+  if (0 == appId)
+  {
+    // error!
+    return false;
+  }
+  
+  String url;
+  
+#if TARGET_IPHONE_SIMULATOR
+  url = "https://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/giftSongsWizard?gift=1&salableAdamId=%1&productType=C&pricingParameter=STDQ&mt=8";
+#else
+  url = "itms-appss://buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/giftSongsWizard?gift=1&salableAdamId=%1&productType=C&pricingParameter=STDQ&mt=8&ign-mscache=1";
+#endif // TARGET_IPHONE_SIMULATOR
+  
+  url = url.arg(appId);
+  
+  // convert URL
+  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+  
+  // execute
+  return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 DeviceServicesIOS::applicationId() const
+{
+  u32 appId = 0;
+  
+  // retrieve iTunes app id from .plist file
+  NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  
+  NSNumber* value = [infoDictionary objectForKey: KEGEITunesAppIdKey];
+  if (nil != value)
+  {
+    appId = static_cast<u32>([value intValue]);
+  }
+
+  return appId;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

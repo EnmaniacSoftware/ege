@@ -33,6 +33,14 @@ class DeviceServicesIOS : public DeviceServices
      *  @return Returns TRUE if requests was processed successfully. Otherwise, FALSE.
      */
     bool openApplicationRateURL();
+    /*! Open application gift URL.
+     *  @return Returns TRUE if requests was processed successfully. Otherwise, FALSE.
+     */
+    bool openApplicationGiftURL();
+    /*! Returns application id. 
+     *  @return Application (iTunes) ID. Returns zero if error occured or not defined.
+     */
+    u32 applicationId() const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

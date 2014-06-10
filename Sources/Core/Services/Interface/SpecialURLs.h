@@ -10,7 +10,9 @@
 EGE_NAMESPACE_BEGIN
 
 /*! Opens web page where current application can be rated. */
-const String KSpecialURLRateApp;
+extern const String KSpecialURLRateApp;
+/*! Opens web page where current application can be gifted. */
+extern const String KSpecialURLGiftApp;
 
 EGE_NAMESPACE_END
 
