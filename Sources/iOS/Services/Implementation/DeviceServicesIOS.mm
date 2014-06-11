@@ -231,7 +231,7 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::openApplicationRateURL()
 {
-  u32 appId = 0;
+  u32 appId = applicationId();
   if (0 == appId)
   {
     // error!
