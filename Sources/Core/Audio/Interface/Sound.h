@@ -114,7 +114,7 @@ class Sound : public Object
   protected:
 
     /*! Constructor available only for actual implementations. */
-    Sound(Application* app, const String& name, PDataBuffer& data);
+    Sound(Application* app, const String& name, const PDataBuffer& data);
     /*! Notifies sound has finished playback. */
     void notifyFinished();
     /*! Notifies sound has stopped playback. */

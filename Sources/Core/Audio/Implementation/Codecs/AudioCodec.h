@@ -41,7 +41,10 @@ class AudioCodec : public Object
 
   protected:
 
-    /*! Data stream. */
+    /*! Data stream. 
+     *  @note This is potentially shared resource ie. from sound resource, likely accessed from multiple threads. Internal offsets should nto be modified 
+     *        directly. Use m_streamOffset to offest manually.
+     */
     PObject m_stream;
     /*! Position within stream. */
     s64 m_streamOffset;

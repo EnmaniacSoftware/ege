@@ -29,23 +29,20 @@ bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
   {
     stream = ege_pcast<PDataBuffer>(m_stream);
 
-    // apply current stream offset
-    // NOTE: multiple codecs can re-use same stream
-    stream->setReadOffset(m_streamOffset);
-
     // calculate number of samples we can read
     samplesDecoded = Math::Min(samplesCount, m_streamSizeLeft / sampleSize);
 
     // move required data from stream into output buffer
-    // NOTE: this should not require multiple attepts as read is done from memory buffer
-    if (out->write(stream, samplesDecoded * sampleSize) != samplesDecoded * sampleSize)
+    // NOTE: this should not require multiple attempts as read is done from memory buffer
+    const s64 written = out->write(stream->data(m_streamOffset), samplesDecoded * sampleSize);
+    if (written != (samplesDecoded * sampleSize))
     {
       // error!
       egeCritical(KAudioCodecWavDebugName) << "Error decoding!";
     }
 
     // update stream offset
-    m_streamOffset = stream->readOffset();
+    m_streamOffset += written;
   }
   else
   {
@@ -65,10 +62,9 @@ bool AudioCodecWav::reset()
   {
     stream = ege_pcast<PDataBuffer>(m_stream);
 
-    // reset stream to begining
-    stream->setReadOffset(0);
-
-    AudioUtils::ReadWavHeaders(stream, m_riffHeader, m_fmtHeader, m_dataHeader);
+    // NOTE: Wrap stream into local buffer as AudioUtils::ReadWavHeaders will likely affect internal offset which are not to be touched.
+    DataBuffer data(stream->data(), stream->size());
+    AudioUtils::ReadWavHeaders(data, m_riffHeader, m_fmtHeader, m_dataHeader);
   }
   else
   {

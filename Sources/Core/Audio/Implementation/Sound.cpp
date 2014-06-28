@@ -14,10 +14,10 @@ static const char* KSoundDebugName = "EGESound";
 EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sound::Sound(Application* app, const String& name, PDataBuffer& data) : Object(app)
-                                                                      , m_codec(NULL)
-                                                                      , m_name(name)
-                                                                      , m_data(data)
+Sound::Sound(Application* app, const String& name, const PDataBuffer& data) : Object(app)
+                                                                            , m_codec(NULL)
+                                                                            , m_name(name)
+                                                                            , m_data(data)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,9 +28,16 @@ Sound::~Sound()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Sound::construct()
 {
-  // detect stream type
-  AudioStreamType type = AudioUtils::DetectStreamType(m_data);
+  // wrap original data within local buffer
+  // NOTE: This method is usually called from outside of the Audio thread. It means that internal m_data offsets can be modified from two threads at the same
+  //       time. This can lead to some undefined behavior. Since, usually after construction all processing is done Audio thread alone, extra care needs to be
+  //       taken here where this is generally not the case.
+  DataBuffer data(m_data->data(), m_data->size());
 
+  // detect stream type
+  AudioStreamType type = AudioUtils::DetectStreamType(data);
+
+  // NOTE: AudioCodecs guarantee internal offsets of data buffers are not changed
   switch (type)
   {
     case AST_WAV:

@@ -20,7 +20,7 @@ static s16 ClipToS16(s32 value)
     // we overflowed.
     if (value > Math::MAX_S16)
     {
-        value = Math::MAX_S16;
+      value = Math::MAX_S16;
     }
     else if (value < Math::MIN_S16)
     {
@@ -28,7 +28,7 @@ static s16 ClipToS16(s32 value)
     }
   }
 
-  return (s16) value;
+  return static_cast<s16>(value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream), 
