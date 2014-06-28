@@ -3063,6 +3063,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = EGE;
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 				USER_HEADER_SEARCH_PATHS = "\"../../Sources\"";
 			};
 			name = Debug;
@@ -3071,6 +3072,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
 				DSTROOT = /tmp/EGE.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "EGE-Prefix.pch";
@@ -3103,6 +3105,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = EGE;
 				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
 				USER_HEADER_SEARCH_PATHS = "\"../../Sources\"";
 			};
 			name = Release;
