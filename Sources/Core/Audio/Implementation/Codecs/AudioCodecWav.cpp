@@ -22,35 +22,39 @@ AudioCodecWav::~AudioCodecWav()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AudioCodecWav::decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded)
 {
-  const s32 sampleSize = m_channels * (m_bitsPerSample >> 3);
-
-  PDataBuffer stream;
-  if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
+  // check if any data left
+  if (0 < m_streamSizeLeft)
   {
-    stream = ege_pcast<PDataBuffer>(m_stream);
-
-    // calculate number of samples we can read
-    samplesDecoded = Math::Min(samplesCount, m_streamSizeLeft / sampleSize);
-
-    // move required data from stream into output buffer
-    // NOTE: this should not require multiple attempts as read is done from memory buffer
-    const s64 written = out->write(stream->data(m_streamOffset), samplesDecoded * sampleSize);
-    if (written != (samplesDecoded * sampleSize))
+    const s32 sampleSize = m_channels * (m_bitsPerSample >> 3);
+  
+    PDataBuffer stream;
+    if (EGE_OBJECT_UID_DATA_BUFFER == m_stream->uid())
     {
-      // error!
-      egeCritical(KAudioCodecWavDebugName) << "Error decoding!";
+      stream = ege_pcast<PDataBuffer>(m_stream);
+
+      // calculate number of samples we can read
+      samplesDecoded = Math::Min(samplesCount, m_streamSizeLeft / sampleSize);
+
+      // move required data from stream into output buffer
+      // NOTE: this should not require multiple attempts as read is done from memory buffer
+      const s64 written = out->write(stream->data(m_streamOffset), samplesDecoded * sampleSize);
+      if (written != (samplesDecoded * sampleSize))
+      {
+        // error!
+        egeCritical(KAudioCodecWavDebugName) << "Error decoding!";
+      }
+
+      // update stream offset
+      m_streamOffset += written;
+    }
+    else
+    {
+      EGE_ASSERT_X(false, "Not supported");
     }
 
-    // update stream offset
-    m_streamOffset += written;
+    // update stream size left indicator
+    m_streamSizeLeft -= samplesDecoded * sampleSize;
   }
-  else
-  {
-    EGE_ASSERT_X(false, "Not supported");
-  }
-
-  // update stream size left indicator
-  m_streamSizeLeft -= samplesDecoded * sampleSize;
 
   return (0 == m_streamSizeLeft);
 }
