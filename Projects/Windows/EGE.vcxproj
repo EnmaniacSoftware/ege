@@ -120,7 +120,7 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderTarget.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderWindow.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Shader.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\Implementation\SpriteAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Texture2D.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexBuffer.cpp" />
@@ -330,7 +330,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderSystem.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Shader.h" />
-    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\Interface\SpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />

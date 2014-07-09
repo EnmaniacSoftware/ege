@@ -382,6 +382,12 @@
     <Filter Include="Core\Animation\Interface">
       <UniqueIdentifier>{ce2b4cd4-fe2d-4d12-b79f-d1ad23916792}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Graphics\SpriteAnimation\Implementation">
+      <UniqueIdentifier>{75a48786-7a67-493c-9860-8e6f6cbae171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\SpriteAnimation\Interface">
+      <UniqueIdentifier>{38f78ebb-e93b-4875-976b-51ff279679f1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -665,9 +671,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp">
       <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.cpp">
-      <Filter>Core\Graphics\SpriteAnimation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.cpp">
       <Filter>Core\Resource</Filter>
@@ -1043,6 +1046,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Animation\Implementation\KeyFrameAnimation.cpp">
       <Filter>Core\Animation\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\Implementation\SpriteAnimation.cpp">
+      <Filter>Core\Graphics\SpriteAnimation\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1433,9 +1439,6 @@
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSequencer.h">
       <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\SpriteAnimation.h">
-      <Filter>Core\Graphics\SpriteAnimation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.h">
@@ -1922,6 +1925,9 @@
       <Filter>Core\Animation\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEKeyFrameAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\Interface\SpriteAnimation.h">
+      <Filter>Core\Graphics\SpriteAnimation\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -1,8 +1,8 @@
 #include "Core/Resource/ResourceSpriteAnimation.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Graphics/SpriteAnimation/SpriteAnimation.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSequencer.h"
+#include "EGESpriteAnimation.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
 #include "EGEResources.h"
@@ -224,7 +224,7 @@ void ResourceSpriteAnimation::calculateFrameData()
     m_frameData.clear();
     for (s32 i = 0; i < sheet()->frameCount(); ++i)
     {
-      EGESprite::FrameData data;
+      SpriteAnimationFrameData data;
   
       data.m_rect = m_sheet->textureImage()->rect().combine(Rectf(i % sheet()->framesPerRow() * cellWidth, 
                                                                   i / sheet()->framesPerRow() * cellHeight, cellWidth, cellHeight));

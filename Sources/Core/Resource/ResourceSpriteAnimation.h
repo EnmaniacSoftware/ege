@@ -66,7 +66,7 @@ class ResourceSpriteAnimation : public IResource
 
   private:
 
-    typedef DynamicArray<EGESprite::FrameData> FameDataArray;
+    typedef DynamicArray<SpriteAnimationFrameData> FameDataArray;
     typedef List<PResourceSequencer> SequenceResourceList;
 
   private:
