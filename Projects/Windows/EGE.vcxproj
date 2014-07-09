@@ -27,6 +27,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Animation\Implementation\KeyFrameAnimation.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Animation\Implementation\Sequencer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Application\Application.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.cpp" />
@@ -186,7 +188,6 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
     <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Sequencer\Sequencer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\DeviceServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\PurchaseServicesNull.cpp" />
@@ -240,7 +241,8 @@
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp" />
-    <ClInclude Include="..\..\Sources\Core\Animation\IAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Animation\Interface\KeyFrameAnimation.h" />
+    <ClInclude Include="..\..\Sources\Core\Animation\Interface\Sequencer.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioManagerBase.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.h" />
@@ -387,7 +389,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceWidget.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h" />
-    <ClInclude Include="..\..\Sources\Core\Sequencer\Sequencer.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\DeviceServices.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServices.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\PurchaseServicesNull.h" />
@@ -430,7 +431,6 @@
     <ClInclude Include="..\..\Sources\Core\XML\Interface\XmlElement.h" />
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
-    <ClInclude Include="..\..\Sources\EGEAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
@@ -450,6 +450,7 @@
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGEKeyFrameAnimation.h" />
     <ClInclude Include="..\..\Sources\EGELine2.h" />
     <ClInclude Include="..\..\Sources\EGELog.h" />
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />

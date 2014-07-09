@@ -264,7 +264,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
     actions.clear();
   }
   
-  instance->setFPS(m_fps);
+  instance->setKeysPerSecond(m_fps);
   instance->setName(name());
   instance->setDisplaySize(m_displaySize);
   instance->addData(objects, allActions);

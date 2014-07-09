@@ -180,7 +180,7 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   calculateFrameData();
   
   // setup data
-  instance->setFPS(m_fps);
+  instance->setKeysPerSecond(m_fps);
   instance->setFrameData(m_frameData);
 
   // create copy of the texture and reset texture rectangle as information is included in frames data
