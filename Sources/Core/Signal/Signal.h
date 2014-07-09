@@ -65,12 +65,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)();
+			delegate();
 		}
 	}
 
@@ -131,12 +133,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1);
+			delegate(p1);
 		}
 	}
 
@@ -197,12 +201,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2);
+			delegate(p1, p2);
 		}
 	}
 
@@ -263,12 +269,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3);
+			delegate(p1, p2, p3);
 		}
 	}
 
@@ -329,12 +337,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3, p4);
+			delegate(p1, p2, p3, p4);
 		}
 	}
 
@@ -395,12 +405,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3, p4, p5);
+			delegate(p1, p2, p3, p4, p5);
 		}
 	}
 
@@ -461,12 +473,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3, p4, p5, p6);
+			delegate(p1, p2, p3, p4, p5, p6);
 		}
 	}
 
@@ -527,12 +541,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3, p4, p5, p6, p7);
+			delegate(p1, p2, p3, p4, p5, p6, p7);
 		}
 	}
 
@@ -593,12 +609,14 @@ public:
 	{
 		for (DelegateIterator i = delegateList.begin(); i != delegateList.end();)
 		{
+      _Delegate delegate = *i;
+
       // TAGE - already go to next iterator here to be able to proceed with iteration in the case current iterator gets erased in emission function
       //        ie. due to signal disconnection in emitter function
-      DelegateIterator current = i++;
+      ++i;
 
       // now safetly call emitter function of current iterator
-			(*current)(p1, p2, p3, p4, p5, p6, p7, p8);
+			delegate(p1, p2, p3, p4, p5, p6, p7, p8);
 		}
 	}
 
