@@ -72,14 +72,14 @@ class Sequencer : public Object
     /*! Returns given frame id. */
     s32 frameId(s32 frameIndex) const;
     /*! Returns current frame index. */
-    s32 currentFrameIndex() const { return m_frameIndex; }
+    s32 currentFrameIndex() const;
     /*! Returns number of frames. */
-    s32 frameCount() const { return static_cast<s32>(m_framesIds.size()); }
+    s32 frameCount() const;
 
     /*! Sets name. */
     void setName(const String& name);
     /*! Returns name. */
-    const String& name() const { return m_name; }
+    const String& name() const;
 
     /*! Returns normalized position between current and next frame. */
     float32 normalizedFrameTime() const;

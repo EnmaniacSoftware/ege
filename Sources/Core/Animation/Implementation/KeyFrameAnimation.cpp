@@ -195,7 +195,7 @@ void KeyFrameAnimation::onSequencerFinished()
 
   // emit
   emit signalFinished();
-  emit signalFinishedWithSelf(this);
+  emit signalFinishedWithSelf(*this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void KeyFrameAnimation::setKeysPerSecond(float32 value)
@@ -211,6 +211,11 @@ void KeyFrameAnimation::setName(const String& name)
 const String& KeyFrameAnimation::name() const
 { 
   return m_name; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PSequencer KeyFrameAnimation::currentSequencer() const
+{
+  return m_currentSequencer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
