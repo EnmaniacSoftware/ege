@@ -63,7 +63,6 @@
 		4514715E18C5231900AAC617 /* RenderWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FC018C5231900AAC617 /* RenderWindow.cpp */; };
 		4514715F18C5231900AAC617 /* RenderObjectFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FC218C5231900AAC617 /* RenderObjectFactory.cpp */; };
 		4514716018C5231900AAC617 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FC418C5231900AAC617 /* Shader.cpp */; };
-		4514716118C5231900AAC617 /* SpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FC718C5231900AAC617 /* SpriteAnimation.cpp */; };
 		4514716218C5231900AAC617 /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FC918C5231900AAC617 /* Texture2D.cpp */; };
 		4514716318C5231900AAC617 /* TextureImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FCB18C5231900AAC617 /* TextureImage.cpp */; };
 		4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FCD18C5231900AAC617 /* VertexBuffer.cpp */; };
@@ -131,7 +130,6 @@
 		451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709518C5231900AAC617 /* SceneNodeObject.cpp */; };
 		451471B718C5231900AAC617 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709818C5231900AAC617 /* Screen.cpp */; };
 		451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709A18C5231900AAC617 /* ScreenManager.cpp */; };
-		451471B918C5231900AAC617 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709D18C5231900AAC617 /* Sequencer.cpp */; };
 		451471BF18C5231900AAC617 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B018C5231900AAC617 /* String.cpp */; };
 		451471C018C5231900AAC617 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B218C5231900AAC617 /* Text.cpp */; };
 		451471C118C5231900AAC617 /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B418C5231900AAC617 /* StringBuffer.cpp */; };
@@ -218,6 +216,9 @@
 		455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 455A2FF218F48D9D00CD9581 /* Texture2DOGL.cpp */; };
 		455A2FFC18F48D9D00CD9581 /* VertexBufferVAOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 455A2FF318F48D9D00CD9581 /* VertexBufferVAOGL.cpp */; };
 		455A2FFD18F48D9D00CD9581 /* VertexBufferVBOOGL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 455A2FF418F48D9D00CD9581 /* VertexBufferVBOOGL.cpp */; };
+		4563A4DA1971FB5C0002D632 /* KeyFrameAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D51971FB5C0002D632 /* KeyFrameAnimation.cpp */; };
+		4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D61971FB5C0002D632 /* Sequencer.cpp */; };
+		4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */; };
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
@@ -301,7 +302,6 @@
 		45146E7418C522EA00AAC617 /* EGE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGE.h; path = ../../Sources/EGE.h; sourceTree = "<group>"; };
 		45146E7518C522EA00AAC617 /* EGEAlignment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAlignment.h; path = ../../Sources/EGEAlignment.h; sourceTree = "<group>"; };
 		45146E7618C522EA00AAC617 /* EGEAngle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAngle.h; path = ../../Sources/EGEAngle.h; sourceTree = "<group>"; };
-		45146E7718C522EA00AAC617 /* EGEAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAnimation.h; path = ../../Sources/EGEAnimation.h; sourceTree = "<group>"; };
 		45146E7818C522EA00AAC617 /* EGEApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEApplication.h; path = ../../Sources/EGEApplication.h; sourceTree = "<group>"; };
 		45146E7918C522EA00AAC617 /* EGEAtomic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomic.h; path = ../../Sources/EGEAtomic.h; sourceTree = "<group>"; };
 		45146E7A18C522EA00AAC617 /* EGEAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAudio.h; path = ../../Sources/EGEAudio.h; sourceTree = "<group>"; };
@@ -388,7 +388,6 @@
 		45146ECD18C522EA00AAC617 /* EGEVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEVertexBuffer.h; path = ../../Sources/EGEVertexBuffer.h; sourceTree = "<group>"; };
 		45146ECE18C522EA00AAC617 /* EGEWaitCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEWaitCondition.h; path = ../../Sources/EGEWaitCondition.h; sourceTree = "<group>"; };
 		45146ECF18C522EA00AAC617 /* EGEXml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEXml.h; path = ../../Sources/EGEXml.h; sourceTree = "<group>"; };
-		45146ED318C5231800AAC617 /* IAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAnimation.h; sourceTree = "<group>"; };
 		45146ED518C5231800AAC617 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
 		45146ED618C5231800AAC617 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		45146EFA18C5231800AAC617 /* CachedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedObject.h; sourceTree = "<group>"; };
@@ -513,8 +512,6 @@
 		45146FC318C5231900AAC617 /* RenderObjectFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderObjectFactory.h; sourceTree = "<group>"; };
 		45146FC418C5231900AAC617 /* Shader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shader.cpp; sourceTree = "<group>"; };
 		45146FC518C5231900AAC617 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Shader.h; sourceTree = "<group>"; };
-		45146FC718C5231900AAC617 /* SpriteAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteAnimation.cpp; sourceTree = "<group>"; };
-		45146FC818C5231900AAC617 /* SpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteAnimation.h; sourceTree = "<group>"; };
 		45146FC918C5231900AAC617 /* Texture2D.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2D.cpp; sourceTree = "<group>"; };
 		45146FCA18C5231900AAC617 /* Texture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture2D.h; sourceTree = "<group>"; };
 		45146FCB18C5231900AAC617 /* TextureImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextureImage.cpp; sourceTree = "<group>"; };
@@ -675,8 +672,6 @@
 		4514709918C5231900AAC617 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		4514709A18C5231900AAC617 /* ScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenManager.cpp; sourceTree = "<group>"; };
 		4514709B18C5231900AAC617 /* ScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenManager.h; sourceTree = "<group>"; };
-		4514709D18C5231900AAC617 /* Sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sequencer.cpp; sourceTree = "<group>"; };
-		4514709E18C5231900AAC617 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sequencer.h; sourceTree = "<group>"; };
 		451470AB18C5231900AAC617 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
 		451470AC18C5231900AAC617 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		451470AD18C5231900AAC617 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
@@ -851,6 +846,14 @@
 		455A2FF218F48D9D00CD9581 /* Texture2DOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2DOGL.cpp; sourceTree = "<group>"; };
 		455A2FF318F48D9D00CD9581 /* VertexBufferVAOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBufferVAOGL.cpp; sourceTree = "<group>"; };
 		455A2FF418F48D9D00CD9581 /* VertexBufferVBOOGL.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexBufferVBOOGL.cpp; sourceTree = "<group>"; };
+		4563A4D21971FB360002D632 /* EGEAudioHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAudioHelper.h; path = ../../Sources/EGEAudioHelper.h; sourceTree = "<group>"; };
+		4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEKeyFrameAnimation.h; path = ../../Sources/EGEKeyFrameAnimation.h; sourceTree = "<group>"; };
+		4563A4D51971FB5C0002D632 /* KeyFrameAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyFrameAnimation.cpp; sourceTree = "<group>"; };
+		4563A4D61971FB5C0002D632 /* Sequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sequencer.cpp; sourceTree = "<group>"; };
+		4563A4D81971FB5C0002D632 /* KeyFrameAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyFrameAnimation.h; sourceTree = "<group>"; };
+		4563A4D91971FB5C0002D632 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sequencer.h; sourceTree = "<group>"; };
+		4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteAnimation.cpp; sourceTree = "<group>"; };
+		4563A4DF1971FBD20002D632 /* SpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteAnimation.h; sourceTree = "<group>"; };
 		457A67B218C7DAFC0004D38F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DatabaseSqlite.cpp; sourceTree = "<group>"; };
 		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
@@ -882,7 +885,7 @@
 		45C3AD2D18CDF4380009ABA3 /* SocialServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull.h; sourceTree = "<group>"; };
 		45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
 		45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
-		45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DeviceServicesIOS.mm; sourceTree = "<group>"; };
+		45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = DeviceServicesIOS.mm; sourceTree = "<group>"; wrapsLines = 0; };
 		45C3AD3718CDF4520009ABA3 /* GameCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterDelegate.h; sourceTree = "<group>"; };
 		45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterDelegate.mm; sourceTree = "<group>"; };
 		45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PurchaseServicesIOS.mm; sourceTree = "<group>"; };
@@ -947,10 +950,11 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
+				4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
 				45146E7618C522EA00AAC617 /* EGEAngle.h */,
-				45146E7718C522EA00AAC617 /* EGEAnimation.h */,
 				45146E7818C522EA00AAC617 /* EGEApplication.h */,
 				45146E7918C522EA00AAC617 /* EGEAtomic.h */,
 				45146E7A18C522EA00AAC617 /* EGEAudio.h */,
@@ -1080,7 +1084,6 @@
 				4514705D18C5231900AAC617 /* Resource */,
 				4514709018C5231900AAC617 /* Scene */,
 				4514709718C5231900AAC617 /* Screen */,
-				4514709C18C5231900AAC617 /* Sequencer */,
 				4514709F18C5231900AAC617 /* Services */,
 				451470AA18C5231900AAC617 /* Signal */,
 				451470AE18C5231900AAC617 /* String */,
@@ -1098,7 +1101,8 @@
 		45146ED218C5231800AAC617 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
-				45146ED318C5231800AAC617 /* IAnimation.h */,
+				4563A4D41971FB5C0002D632 /* Implementation */,
+				4563A4D71971FB5C0002D632 /* Interface */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -1550,8 +1554,8 @@
 		45146FC618C5231900AAC617 /* SpriteAnimation */ = {
 			isa = PBXGroup;
 			children = (
-				45146FC718C5231900AAC617 /* SpriteAnimation.cpp */,
-				45146FC818C5231900AAC617 /* SpriteAnimation.h */,
+				4563A4DC1971FBD20002D632 /* Implementation */,
+				4563A4DE1971FBD20002D632 /* Interface */,
 			);
 			path = SpriteAnimation;
 			sourceTree = "<group>";
@@ -1865,15 +1869,6 @@
 				4514709B18C5231900AAC617 /* ScreenManager.h */,
 			);
 			path = Screen;
-			sourceTree = "<group>";
-		};
-		4514709C18C5231900AAC617 /* Sequencer */ = {
-			isa = PBXGroup;
-			children = (
-				4514709D18C5231900AAC617 /* Sequencer.cpp */,
-				4514709E18C5231900AAC617 /* Sequencer.h */,
-			);
-			path = Sequencer;
 			sourceTree = "<group>";
 		};
 		4514709F18C5231900AAC617 /* Services */ = {
@@ -2430,6 +2425,40 @@
 			path = Programmable;
 			sourceTree = "<group>";
 		};
+		4563A4D41971FB5C0002D632 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				4563A4D51971FB5C0002D632 /* KeyFrameAnimation.cpp */,
+				4563A4D61971FB5C0002D632 /* Sequencer.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		4563A4D71971FB5C0002D632 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				4563A4D81971FB5C0002D632 /* KeyFrameAnimation.h */,
+				4563A4D91971FB5C0002D632 /* Sequencer.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		4563A4DC1971FBD20002D632 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		4563A4DE1971FBD20002D632 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				4563A4DF1971FBD20002D632 /* SpriteAnimation.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		457A67B018C7DAFC0004D38F /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -2796,7 +2825,6 @@
 				4514715E18C5231900AAC617 /* RenderWindow.cpp in Sources */,
 				4514715F18C5231900AAC617 /* RenderObjectFactory.cpp in Sources */,
 				4514716018C5231900AAC617 /* Shader.cpp in Sources */,
-				4514716118C5231900AAC617 /* SpriteAnimation.cpp in Sources */,
 				4514716218C5231900AAC617 /* Texture2D.cpp in Sources */,
 				4514716318C5231900AAC617 /* TextureImage.cpp in Sources */,
 				4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */,
@@ -2837,6 +2865,7 @@
 				4514719718C5231900AAC617 /* PhysicsJointAttract.cpp in Sources */,
 				4514719818C5231900AAC617 /* PhysicsJointDistance.cpp in Sources */,
 				4514719918C5231900AAC617 /* PhysicsJointPulley.cpp in Sources */,
+				4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */,
 				453C83F7193E6AD200FBA4AA /* AudioCodec.cpp in Sources */,
 				4514719A18C5231900AAC617 /* PhysicsManager.cpp in Sources */,
 				4514719B18C5231900AAC617 /* RandomGenerator.cpp in Sources */,
@@ -2872,7 +2901,6 @@
 				451471B718C5231900AAC617 /* Screen.cpp in Sources */,
 				45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */,
 				451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */,
-				451471B918C5231900AAC617 /* Sequencer.cpp in Sources */,
 				451471BF18C5231900AAC617 /* String.cpp in Sources */,
 				451471C018C5231900AAC617 /* Text.cpp in Sources */,
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
@@ -2897,6 +2925,7 @@
 				451471D618C5231900AAC617 /* UIScrollableView.cpp in Sources */,
 				451471D718C5231900AAC617 /* UIScrollView.cpp in Sources */,
 				451471D818C5231900AAC617 /* UIVerticalScrollbar.cpp in Sources */,
+				4563A4DA1971FB5C0002D632 /* KeyFrameAnimation.cpp in Sources */,
 				451471D918C5231900AAC617 /* Widget.cpp in Sources */,
 				451471DA18C5231900AAC617 /* WidgetFactory.cpp in Sources */,
 				451471DB18C5231900AAC617 /* WidgetFrame.cpp in Sources */,
@@ -2949,6 +2978,7 @@
 				453C83FA193E6AD200FBA4AA /* AudioCodecWav.cpp in Sources */,
 				455A2FE118F48C3100CD9581 /* RenderSystemOGL.cpp in Sources */,
 				455A2FE218F48C3100CD9581 /* VertexArrayObject.cpp in Sources */,
+				4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */,
 				455A2FF518F48D9D00CD9581 /* IndexBufferVAOGL.cpp in Sources */,
 				455A2FF618F48D9D00CD9581 /* IndexBufferVBOOGL.cpp in Sources */,
 				455A2FF718F48D9D00CD9581 /* ProgramOGL.cpp in Sources */,
