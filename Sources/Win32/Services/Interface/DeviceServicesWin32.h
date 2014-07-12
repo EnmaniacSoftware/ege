@@ -21,9 +21,13 @@ class DeviceServicesWin32 : public DeviceServices
 
     /*! @see DeviceServices::openUrl. */
     bool openUrl(const String& url) override;
+    /*! @see DeviceServices::mailTo. */
+    bool mailTo(const Text& recipient, const Text& title, const Text& body) override;
+
     /*! @see DeviceServices::retrieveConfidentialValue. */
     EGEResult storeConfidentialValue(const String& name, const String& value) override;
     EGEResult storeConfidentialValue(const String& name, const PDataBuffer value) override;
+
     /*! @see DeviceServices::retrieveConfidentialValue. */
     EGEResult retrieveConfidentialValue(const String& name, String& value) override;
     EGEResult retrieveConfidentialValue(const String& name, PDataBuffer& value) override;

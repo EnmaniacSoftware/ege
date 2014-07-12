@@ -39,7 +39,6 @@ Text::~Text()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts self to lower-case. */
 Text& Text::toLower()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'tolower' in <locale>
@@ -47,7 +46,6 @@ Text& Text::toLower()
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts self to upper-case. */
 Text& Text::toUpper()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'toupper' in <locale>  
@@ -69,7 +67,6 @@ Text& Text::operator+=(const Text& string)
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Creates formatted text. */
 void Text::format(const char* text, ...)
 {
   char buffer[WORK_BUFFER_LENGTH];
@@ -82,7 +79,6 @@ void Text::format(const char* text, ...)
   *this = buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Create new object from formatted text. */
 Text Text::Format(const char* text, ...)
 {
   char buffer[WORK_BUFFER_LENGTH];
@@ -99,7 +95,6 @@ Text Text::Format(const char* text, ...)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Converts from given UTF-8 string into UTF-16. */
 bool Text::fromString(const String& string)
 {
   DynamicArray<u32> unicode;
@@ -203,7 +198,6 @@ bool Text::fromString(const String& string)
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Finds data about arg escape of the lowest sequence number. */
 Text::ArgEscapeData Text::findArgEscapes() const
 {
   ArgEscapeData data;
@@ -253,8 +247,7 @@ Text::ArgEscapeData Text::findArgEscapes() const
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Replaces args with given string. */
-void Text::replaceArgEscapes(Text& out, const String& arg, ArgEscapeData& argData) const
+void Text::replaceArgEscapes(Text& out, const Text& arg, ArgEscapeData& argData) const
 {
   // preallocate enough space
   out.reserve(length() + argData.occurrences * arg.length());
@@ -308,8 +301,19 @@ void Text::replaceArgEscapes(Text& out, const String& arg, ArgEscapeData& argDat
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given string. */
 Text Text::arg(const String& string) const
+{
+  ArgEscapeData argEscapes = findArgEscapes();
+
+  Text convertedString(string);
+
+  Text out;
+  replaceArgEscapes(out, convertedString, argEscapes);
+
+  return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Text Text::arg(const Text& string) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
 
@@ -319,24 +323,22 @@ Text Text::arg(const String& string) const
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
 Text Text::arg(s32 value) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
 
   Text out;
-  replaceArgEscapes(out, String::Format("%d", value), argEscapes);
+  replaceArgEscapes(out, Text::Format("%d", value), argEscapes);
 
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
 Text Text::arg(float32 value) const
 {
   ArgEscapeData argEscapes = findArgEscapes();
 
   Text out;
-  replaceArgEscapes(out, String::Format("%f", value), argEscapes);
+  replaceArgEscapes(out, Text::Format("%f", value), argEscapes);
 
   return out;
 }

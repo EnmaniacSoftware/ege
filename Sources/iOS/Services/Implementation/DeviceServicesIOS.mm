@@ -3,6 +3,7 @@
 #include "EGEDebug.h"
 #import <UIKit/UIKit.h>
 #import <Security/Security.h>
+//#import <MessageUI/MFMailComposeViewController.h>
 
 /*! Secure storage implementation based on the following articale:
  *  http://useyourloaf.com/blog/2010/03/29/simple-iphone-keychain-access.html
@@ -94,6 +95,38 @@ bool DeviceServicesIOS::openUrl(const String& url)
   }
   
   return (YES == result);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool DeviceServicesIOS::mailTo(const Text& recipient, const Text& title, const Text& body)
+{
+/*NSArray *paths = SSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+
+NSString *documentsDirectory = [paths objectAtIndex:0];
+
+NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:@"myGreenCard.png"];
+
+
+
+MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+controller.mailComposeDelegate = self;
+[controller setSubject:@"Green card application"];
+[controller setMessageBody:@"Hi , <br/>  This is my new latest designed green card." isHTML:YES]; 
+[controller addAttachmentData:[NSData dataWithContentsOfFile:getImagePath] mimeType:@"png" fileName:@"My Green Card"];
+if (controller)
+    [self presentModalViewController:controller animated:YES];
+[controller release];
+
+*/
+/*
+  -(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
+{
+    if (result == MFMailComposeResultSent) {
+        NSLog(@"It's away!");
+    }
+    [self dismissModalViewControllerAnimated:YES];
+}
+*/
+  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const String& value)

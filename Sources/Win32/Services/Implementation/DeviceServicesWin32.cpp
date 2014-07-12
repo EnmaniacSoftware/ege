@@ -57,6 +57,16 @@ bool DeviceServicesWin32::openUrl(const String& url)
   return (32 < reinterpret_cast<int>(ShellExecuteA(NULL, "open", url.toAscii(), NULL, NULL, SW_SHOWNORMAL)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool DeviceServicesWin32::mailTo(const Text& recipient, const Text& title, const Text& body)
+{
+  // compose URL
+  Text url = "mailto:%1?subject=%2&body=%3";
+  url = url.arg(recipient).arg(title).arg(body);
+
+  // process given URL
+  return (32 < reinterpret_cast<int>(ShellExecuteW(NULL, L"open", url.data(), NULL, NULL, SW_SHOWNORMAL)));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DeviceServicesWin32::storeConfidentialValue(const String& name, const String& value)
 {
   EGEResult result = EGE_SUCCESS;

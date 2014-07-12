@@ -8,7 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 class Text : public std::wstring
 {
   public:
@@ -25,23 +24,25 @@ class Text : public std::wstring
 
   public:
 
-    /* Create new object from formatted text. */
+    /*! Create new object from formatted text. */
     static Text Format(const char* text, ...);
 
   public:
 
-    /* Creates formatted text. */
+    /*! Creates formatted text. */
     void format(const char* text, ...);
-    /* Converts self to lower-case. */
+    /*! Converts self to lower-case. */
     Text& toLower();
-    /* Converts self to upper-case. */
+    /*! Converts self to upper-case. */
     Text& toUpper();
 
-    /* Returns copy of the current string with lowest arg marker replaced with a given string. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
     Text arg(const String& string) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given integer value. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
+    Text arg(const Text& string) const;
+    /*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */
     Text arg(s32 value) const;
-    /* Returns copy of the current string with lowest arg marker replaced with a given float value. */
+    /*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
     Text arg(float32 value) const;
 
   public:
@@ -60,14 +61,13 @@ class Text : public std::wstring
 
   private:
 
-    /* Converts from given UTF-8 string into UTF-16. */
+    /*! Converts from given UTF-8 string into UTF-16. */
     bool fromString(const String& string);
-    /* Finds data about arg escape of the lowest sequence number. */
+    /*! Finds data about arg escape of the lowest sequence number. */
     ArgEscapeData findArgEscapes() const;
-    /* Replaces args with given string. */
-    void replaceArgEscapes(Text& out, const String& arg, ArgEscapeData& argData) const;
+    /*! Replaces args with given string. */
+    void replaceArgEscapes(Text& out, const Text& arg, ArgEscapeData& argData) const;
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline Text operator+(Text& left, const Text& right)
 {

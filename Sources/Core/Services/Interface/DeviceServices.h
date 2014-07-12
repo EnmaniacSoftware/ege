@@ -6,6 +6,7 @@
 
 #include "EGE.h"
 #include "EGEString.h"
+#include "EGEText.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -27,6 +28,14 @@ class DeviceServices
      *  @note Given URL can also be one of the special URLs.
      */
     virtual bool openUrl(const String& url) = 0;
+    /*! Opens built-in email application.
+     *  @param  recipient Main recipient of the email.
+     *  @param  title     Message title.
+     *  @param  body      Message body text.
+     *  @return TRUE if opening of email application has succeeded. Otherwise, FALSE.
+     */
+    virtual bool mailTo(const Text& recipient, const Text& title, const Text& body) = 0;
+
     /*! Stores value in secured area. 
      *  @param  name  Name of the value.
      *  @param  value Value to be stored.
