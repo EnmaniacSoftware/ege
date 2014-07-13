@@ -4,7 +4,7 @@
 #include "EGEDebug.h"
 #include <windows.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 extern const char* KDeviceServicesDebugName;
@@ -15,7 +15,7 @@ static const char* KConfidentialDBStoreTableColumnName      = "Name";
 static const char* KConfidentialDBStoreTableColumnStrings   = "String";
 static const char* KConfidentialDBStoreTableColumnBlobs     = "Blob";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServicesWin32::DeviceServicesWin32() : DeviceServices()
+DeviceServicesWin32::DeviceServicesWin32(Application* application) : DeviceServices(application)
 {
   // open database
   if (EGE_SUCCESS != m_database.open(KConfidentialDBName, false, ! File::Exists(KConfidentialDBName)))
@@ -239,3 +239,5 @@ EGEResult DeviceServicesWin32::retrieveConfidentialValue(const String& name, PDa
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

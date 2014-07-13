@@ -239,7 +239,7 @@
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\DeviceServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\PurchaseServicesWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\SocialServicesWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\String\Implementation\StringUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\Interface\KeyFrameAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Animation\Interface\Sequencer.h" />

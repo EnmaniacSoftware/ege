@@ -388,6 +388,9 @@
     <Filter Include="Core\Graphics\SpriteAnimation\Interface">
       <UniqueIdentifier>{38f78ebb-e93b-4875-976b-51ff279679f1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\String\Implementation">
+      <UniqueIdentifier>{97011b00-16f8-4aa5-aa67-41dcc6f3d5b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -662,9 +665,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp">
       <Filter>Core\Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\String\StringUtilsWin32.cpp">
-      <Filter>Win32\String</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.cpp">
       <Filter>Core\Resource</Filter>
@@ -1049,6 +1049,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\SpriteAnimation\Implementation\SpriteAnimation.cpp">
       <Filter>Core\Graphics\SpriteAnimation\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\String\Implementation\StringUtilsWin32.cpp">
+      <Filter>Win32\String\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
