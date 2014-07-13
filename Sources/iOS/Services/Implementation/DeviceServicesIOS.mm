@@ -1,9 +1,13 @@
 #include "iOS/Services/Interface/DeviceServicesIOS.h"
+#include "iOS/Services/Implementation/MailComposeDelegate.h"
+#include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
+#include "iOS/String/Interface/StringHelper.h"
 #include "Core/Services/Interface/SpecialURLs.h"
+#include "EGEApplication.h"
+#include "EGEGraphics.h"
 #include "EGEDebug.h"
 #import <UIKit/UIKit.h>
 #import <Security/Security.h>
-//#import <MessageUI/MFMailComposeViewController.h>
 
 /*! Secure storage implementation based on the following articale:
  *  http://useyourloaf.com/blog/2010/03/29/simple-iphone-keychain-access.html
@@ -63,12 +67,16 @@ static NSData* SearchDictionary(NSString* keyValue)
   return valueData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServicesIOS::DeviceServicesIOS() : DeviceServices()
+DeviceServicesIOS::DeviceServicesIOS(Application* application) : DeviceServices(application)
+                                                               , m_mailComposeDelegate(nil)
 {
+  m_mailComposeDelegate = [[MailComposeDelegate alloc] initWithObject: this];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesIOS::~DeviceServicesIOS()
 {
+  [(MailComposeDelegate*) m_mailComposeDelegate release];
+  m_mailComposeDelegate = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::openUrl(const String& url)
@@ -84,7 +92,7 @@ bool DeviceServicesIOS::openUrl(const String& url)
   }
 
   // convert URL
-  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsUrl = StringHelper::Convert(url);
   
   // check if any application can handle URL
   BOOL result = [[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString: nsUrl]];
@@ -99,33 +107,32 @@ bool DeviceServicesIOS::openUrl(const String& url)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool DeviceServicesIOS::mailTo(const Text& recipient, const Text& title, const Text& body)
 {
-/*NSArray *paths = SSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);
+  MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
+  if (nil != controller)
+  {
+    // convert data
+    NSString* nsRecipient = StringHelper::Convert(recipient);
+    NSString* nsTitle     = StringHelper::Convert(title);
+    NSString* nsBody      = StringHelper::Convert(body);
+    
+    // create list of recipients
+    NSArray* nsRecipients = [NSArray arrayWithObject: nsRecipient];
+    
+    controller.mailComposeDelegate = (MailComposeDelegate*) m_mailComposeDelegate;
+    [controller setToRecipients: nsRecipients];
+    [controller setSubject: nsTitle];
+    [controller setMessageBody: nsBody isHTML: YES];
+    
+    // show window
+    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+    EGE_ASSERT(NULL != renderWindow);
+    
+    UIWindow* window = renderWindow->window();
+    
+    [window.rootViewController presentViewController: controller animated: YES completion: nil];
+    [controller release];
+  }
 
-NSString *documentsDirectory = [paths objectAtIndex:0];
-
-NSString *getImagePath = [documentsDirectory stringByAppendingPathComponent:@"myGreenCard.png"];
-
-
-
-MFMailComposeViewController* controller = [[MFMailComposeViewController alloc] init];
-controller.mailComposeDelegate = self;
-[controller setSubject:@"Green card application"];
-[controller setMessageBody:@"Hi , <br/>  This is my new latest designed green card." isHTML:YES]; 
-[controller addAttachmentData:[NSData dataWithContentsOfFile:getImagePath] mimeType:@"png" fileName:@"My Green Card"];
-if (controller)
-    [self presentModalViewController:controller animated:YES];
-[controller release];
-
-*/
-/*
-  -(void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error;
-{
-    if (result == MFMailComposeResultSent) {
-        NSLog(@"It's away!");
-    }
-    [self dismissModalViewControllerAnimated:YES];
-}
-*/
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -134,7 +141,7 @@ EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const St
   EGEResult result = EGE_ERROR;
   
   // convert key name
-  NSString* nsName  = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsName  = StringHelper::Convert(KConfidentialValuesPrefix + name);
   NSData* valueData = [[[NSData alloc] initWithBytes: value.c_str() length: value.size()] autorelease];
   
   if ((nil == nsName) || (nil == valueData))
@@ -169,7 +176,7 @@ EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const PD
   EGEResult result = EGE_ERROR;
 
   // convert key name
-  NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsName = StringHelper::Convert(KConfidentialValuesPrefix + name);
   NSData* nsValue  = [NSData dataWithBytesNoCopy:value->data(value->readOffset()) length: value->size() - value->readOffset() freeWhenDone: NO];
   
   if ((nil == nsName) || (nil == nsValue))
@@ -204,7 +211,7 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, Strin
   EGEResult result = EGE_ERROR_NOT_FOUND;
 
   // convert key name
-  NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsName = StringHelper::Convert(KConfidentialValuesPrefix + name);
   if (nil == nsName)
   {
     // error!
@@ -242,7 +249,7 @@ EGEResult DeviceServicesIOS::retrieveConfidentialValue(const String& name, PData
   EGEResult result = EGE_ERROR_NOT_FOUND;
   
   // convert key name
-  NSString* nsName = [NSString stringWithCString: (KConfidentialValuesPrefix + name).c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsName = StringHelper::Convert(KConfidentialValuesPrefix + name);
   if (nil == nsName)
   {
     // error!
@@ -290,7 +297,7 @@ bool DeviceServicesIOS::openApplicationRateURL()
   url = url.arg(appId);
 
   // convert URL
-  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsUrl = StringHelper::Convert(url);
 
   // execute
   return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);
@@ -316,7 +323,7 @@ bool DeviceServicesIOS::openApplicationGiftURL()
   url = url.arg(appId);
   
   // convert URL
-  NSString* nsUrl = [NSString stringWithCString: url.c_str() encoding: NSASCIIStringEncoding];
+  NSString* nsUrl = StringHelper::Convert(url);
   
   // execute
   return (YES == [[UIApplication sharedApplication] openURL: [NSURL URLWithString: nsUrl]]);

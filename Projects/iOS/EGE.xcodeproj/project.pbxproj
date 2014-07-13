@@ -177,9 +177,10 @@
 		4514723318C5236200AAC617 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720B18C5236200AAC617 /* main.mm */; };
 		4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720D18C5236200AAC617 /* MemoryIOS.cpp */; };
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
-		4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
 		45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */; };
+		452EF2F919729E83006D5876 /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2F819729E83006D5876 /* StringHelper.mm */; };
+		452EF2FB1972A455006D5876 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */; };
 		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
 		453C83F5193E6AD200FBA4AA /* AudioHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453C83D9193E6AD200FBA4AA /* AudioHelper.cpp */; };
 		453C83F6193E6AD200FBA4AA /* AudioUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453C83DB193E6AD200FBA4AA /* AudioUtils.cpp */; };
@@ -219,6 +220,7 @@
 		4563A4DA1971FB5C0002D632 /* KeyFrameAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D51971FB5C0002D632 /* KeyFrameAnimation.cpp */; };
 		4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D61971FB5C0002D632 /* Sequencer.cpp */; };
 		4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */; };
+		4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */; };
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
@@ -765,11 +767,13 @@
 		4514720D18C5236200AAC617 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		4514720F18C5236200AAC617 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
 		4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
-		4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
 		45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialURLs.cpp; sourceTree = "<group>"; };
 		45296E04192A8BC300F3E9EA /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
+		452EF2F219729CE4006D5876 /* StringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringHelper.h; sourceTree = "<group>"; };
+		452EF2F819729E83006D5876 /* StringHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StringHelper.mm; sourceTree = "<group>"; };
+		452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
 		453B563B18FDD5A1004E21D0 /* RenderSystemStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RenderSystemStatistics.h; sourceTree = "<group>"; };
 		453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RenderSystemStatistics.cpp; sourceTree = "<group>"; };
 		453C83D9193E6AD200FBA4AA /* AudioHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioHelper.cpp; sourceTree = "<group>"; };
@@ -854,6 +858,8 @@
 		4563A4D91971FB5C0002D632 /* Sequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sequencer.h; sourceTree = "<group>"; };
 		4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteAnimation.cpp; sourceTree = "<group>"; };
 		4563A4DF1971FBD20002D632 /* SpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteAnimation.h; sourceTree = "<group>"; };
+		4563A4E11971FEA50002D632 /* MailComposeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailComposeDelegate.h; sourceTree = "<group>"; };
+		4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MailComposeDelegate.mm; sourceTree = "<group>"; };
 		457A67B218C7DAFC0004D38F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DatabaseSqlite.cpp; sourceTree = "<group>"; };
 		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
@@ -2202,7 +2208,8 @@
 		4514721C18C5236200AAC617 /* String */ = {
 			isa = PBXGroup;
 			children = (
-				4514721D18C5236200AAC617 /* StringUtilsIOS.cpp */,
+				452EF2F619729E83006D5876 /* Implementation */,
+				452EF2F119729CE4006D5876 /* Interface */,
 			);
 			path = String;
 			sourceTree = "<group>";
@@ -2213,6 +2220,23 @@
 				4514721F18C5236200AAC617 /* AtomicIOS.cpp */,
 			);
 			path = Threading;
+			sourceTree = "<group>";
+		};
+		452EF2F119729CE4006D5876 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				452EF2F219729CE4006D5876 /* StringHelper.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		452EF2F619729E83006D5876 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */,
+				452EF2F819729E83006D5876 /* StringHelper.mm */,
+			);
+			path = Implementation;
 			sourceTree = "<group>";
 		};
 		45340C9518C65AB200ECC3B8 /* Products */ = {
@@ -2608,6 +2632,8 @@
 				45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */,
 				45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */,
 				45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */,
+				4563A4E11971FEA50002D632 /* MailComposeDelegate.h */,
+				4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -2860,6 +2886,7 @@
 				4514719218C5231900AAC617 /* PhysicsJointAttractNull_p.cpp in Sources */,
 				4514719318C5231900AAC617 /* PhysicsJointDistanceNull_p.cpp in Sources */,
 				4514719418C5231900AAC617 /* PhysicsJointPulleyNull_p.cpp in Sources */,
+				452EF2FB1972A455006D5876 /* StringUtilsIOS.cpp in Sources */,
 				4514719518C5231900AAC617 /* PhysicsManagerNull_p.cpp in Sources */,
 				4514719618C5231900AAC617 /* PhysicsJoint.cpp in Sources */,
 				4514719718C5231900AAC617 /* PhysicsJointAttract.cpp in Sources */,
@@ -2914,6 +2941,7 @@
 				451471C818C5231900AAC617 /* Thread.cpp in Sources */,
 				451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */,
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
+				452EF2F919729E83006D5876 /* StringHelper.mm in Sources */,
 				451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */,
 				451471CF18C5231900AAC617 /* Dialog.cpp in Sources */,
 				451471D018C5231900AAC617 /* Label.cpp in Sources */,
@@ -2953,7 +2981,6 @@
 				4514723318C5236200AAC617 /* main.mm in Sources */,
 				4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */,
 				4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */,
-				4514723B18C5236200AAC617 /* StringUtilsIOS.cpp in Sources */,
 				4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */,
 				457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */,
 				457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */,
@@ -2984,6 +3011,7 @@
 				455A2FF718F48D9D00CD9581 /* ProgramOGL.cpp in Sources */,
 				455A2FF818F48D9D00CD9581 /* RenderTextureCopyOGL.cpp in Sources */,
 				455A2FF918F48D9D00CD9581 /* RenderTextureFBOOGL.cpp in Sources */,
+				4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */,
 				455A2FFA18F48D9D00CD9581 /* ShaderOGL.cpp in Sources */,
 				453C841F193E6BF000FBA4AA /* AudioManagerOpenALIOS.mm in Sources */,
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,

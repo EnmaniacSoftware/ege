@@ -2,7 +2,7 @@
 #include "EGEDebug.h"
 #include "EGERandom.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KDeviceServicesDebugName = "EGEDeviceServices";
@@ -10,7 +10,7 @@ const char* KDeviceServicesDebugName = "EGEDeviceServices";
 EGE_DEFINE_NEW_OPERATORS(DeviceServices)
 EGE_DEFINE_DELETE_OPERATORS(DeviceServices)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServices::DeviceServices()
+DeviceServices::DeviceServices(Application* application) : m_application(application)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,3 +83,11 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Application* DeviceServices::app() const
+{
+  return m_application;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
+

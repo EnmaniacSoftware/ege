@@ -16,13 +16,18 @@ class DeviceServices
 {
   public:
 
-    DeviceServices();
+    DeviceServices(Application* application);
     virtual ~DeviceServices();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
-    
-    /*! Opens given URL in web browser. 
+  
+  public:
+  
+    /*! Returns pointer to application object. */
+    Application* app() const;
+  
+    /*! Opens given URL in web browser.
      *  @param  url URL to open in the web browser.
      *  @return TRUE if URL could be processed. Otherwise, FALSE.
      *  @note Given URL can also be one of the special URLs.
@@ -54,6 +59,11 @@ class DeviceServices
      *  @return DataBuffer containing key information. NULL if error occured.
      */
     PDataBuffer aesEnctyptionKey();
+
+  private:
+  
+    /*! Pointer to application object. */
+    Application* m_application;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

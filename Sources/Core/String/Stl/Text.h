@@ -15,6 +15,7 @@ class Text : public std::wstring
     Text();
     Text(const Text& text);
     Text(const Char* string);
+    Text(const Char* string, s32 length);
     Text(const char* string);
     Text(const String& string);
    ~Text();

@@ -13,7 +13,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 @interface GameCenterDelegate : NSObject <GKGameCenterControllerDelegate>
 {
-  /*! Pointer to associated sound object .*/
+  /*! Pointer to framework's SocialServices object .*/
   EGE::SocialServicesIOS* m_object;
 }
 

@@ -123,7 +123,7 @@ EGEResult Application::construct(const Dictionary& params)
   }
 
   // create device services
-  m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)();
+  m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)(this);
   if (NULL == m_deviceServices)
   {
     // error!

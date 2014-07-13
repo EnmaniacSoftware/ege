@@ -15,9 +15,11 @@ class DeviceServicesIOS : public DeviceServices
 {
   public:
 
-    DeviceServicesIOS();
+    DeviceServicesIOS(Application* application);
    ~DeviceServicesIOS();
 
+  public:
+  
     /*! @see DeviceServices::openUrl. */
     bool openUrl(const String& url) override;
     /*! @see DeviceServices::mailTo. */
@@ -30,7 +32,7 @@ class DeviceServicesIOS : public DeviceServices
     /*! @see DeviceServices::retrieveConfidentialValue. */
     EGEResult retrieveConfidentialValue(const String& name, String& value) override;
     EGEResult retrieveConfidentialValue(const String& name, PDataBuffer& value) override;
-
+  
   private:
 
     /*! Open application rate URL. 
@@ -45,6 +47,11 @@ class DeviceServicesIOS : public DeviceServices
      *  @return Application (iTunes) ID. Returns zero if error occured or not defined.
      */
     u32 applicationId() const;
+  
+  private:
+  
+    /*! Mail compose delegate. */
+    void* m_mailComposeDelegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
