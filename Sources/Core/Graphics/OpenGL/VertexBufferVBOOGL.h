@@ -18,7 +18,7 @@ class VertexBufferVBO : public VertexBuffer
 {
   public:
 
-    VertexBufferVBO(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage);
+    VertexBufferVBO(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage);
    ~VertexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS

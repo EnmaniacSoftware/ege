@@ -3,7 +3,7 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PurchaseServicesNull::PurchaseServicesNull(Application* application) : PurchaseServices(application)
+PurchaseServicesNull::PurchaseServicesNull(Engine& engine) : PurchaseServices(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

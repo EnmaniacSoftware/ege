@@ -9,10 +9,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIScrollableView)
 EGE_DEFINE_DELETE_OPERATORS(UIScrollableView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIScrollableView::UIScrollableView(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: UIScrollView(app, name, EGE_OBJECT_UID_UI_SCROLLABLE_AREA, deleteFunc),
-  m_dirtyContent(false),
-  m_autoContentSize(true)
+UIScrollableView::UIScrollableView(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: UIScrollView(engine, name, EGE_OBJECT_UID_UI_SCROLLABLE_AREA, deleteFunc)
+, m_dirtyContent(false)
+, m_autoContentSize(true)
 {
   ege_connect(&m_physics, transformationChanged, this, UIScrollableView::transformationChanged);
 }
@@ -22,10 +22,10 @@ UIScrollableView::~UIScrollableView()
   ege_disconnect(&m_physics, transformationChanged, this, UIScrollableView::transformationChanged);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget UIScrollableView::Create(Application* app, const String& name)
+PWidget UIScrollableView::Create(Engine& engine, const String& name)
 {
   // allocate object
-  PUIScrollableView object = ege_new UIScrollableView(app, name);
+  PUIScrollableView object = ege_new UIScrollableView(engine, name);
   if (NULL != object)
   {
     // construct

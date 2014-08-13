@@ -14,7 +14,8 @@ EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Camera : public Frustum
+class Camera : public Object
+             , public Frustum
 {
   public:
 
@@ -23,6 +24,8 @@ class Camera : public Frustum
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Returns TRUE if object is valid(). */
     bool isValid() const;

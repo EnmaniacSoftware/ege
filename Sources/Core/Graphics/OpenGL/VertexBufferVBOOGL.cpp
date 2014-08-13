@@ -43,15 +43,15 @@ static GLenum MapUsageTypeToAccessType(NVertexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVBO::VertexBufferVBO(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) 
-: VertexBuffer(app, name, vertexDeclaration),
-  m_id(0),
-  m_vertexCount(0),
-  m_vertexCapacity(0),
-  m_lockOffset(0),
-  m_lockLength(0),
-  m_mapping(NULL),
-  m_usage(usage)
+VertexBufferVBO::VertexBufferVBO(const String& name, const VertexDeclaration& vertexDeclaration, NVertexBuffer::UsageType usage) 
+: VertexBuffer(name, vertexDeclaration)
+, m_id(0)
+, m_vertexCount(0)
+, m_vertexCapacity(0)
+, m_lockOffset(0)
+, m_lockLength(0)
+, m_mapping(NULL)
+, m_usage(usage)
 {
   // allocate shadow buffer if no mapping is supported
   if ( ! Device::HasRenderCapability(ERenderCapabilityMapBuffer))

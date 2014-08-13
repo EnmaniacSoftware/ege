@@ -1,19 +1,20 @@
-#include "Core/Application/Application.h"
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include "EGEOpenGL.h"
 #include "EGEEvent.h"
 #include "EGEInput.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
+#include "EGEEngine.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLWin32::RenderWindowOGLWin32(Application* app, const Dictionary& params) : RenderWindow(app, params), 
-                                                                                         m_hWnd(NULL), 
-                                                                                         m_hDC(NULL), 
-                                                                                         m_hRC(NULL)
+RenderWindowOGLWin32::RenderWindowOGLWin32(Engine& engine, const Dictionary& params) : RenderWindow(params)
+                                                                                     , m_engine(engine)
+                                                                                     , m_hWnd(NULL)
+                                                                                     , m_hDC(NULL)
+                                                                                     , m_hRC(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -261,7 +262,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
   EventManager* eventManager = NULL;
   if (NULL != me)
   {
-    eventManager = me->app()->eventManager();
+    eventManager = me->engine().eventManager();
   }
 
   // detrmine current keyboard modifiers
@@ -367,7 +368,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
       // shut down engine
       if (NULL != me)
       {
-        me->app()->quit();
+        eventManager->send(EGE_EVENT_ID_CORE_QUIT_REQUEST);
       }
       return 0;
 
@@ -735,6 +736,11 @@ void RenderWindowOGLWin32::detectCapabilities()
 bool RenderWindowOGLWin32::isAutoRotated() const
 {
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& RenderWindowOGLWin32::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -16,18 +16,20 @@ EGE_NAMESPACE_BEGIN
 EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
 EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef PParticleEmitter  (*egeParticleEmitterCreateFunc)(Application* app, const String& name);
-typedef PParticleAffector (*egeParticleAffectorCreateFunc)(Application* app, const String& name);
+typedef PParticleEmitter  (*egeParticleEmitterCreateFunc)(Engine& engine, const String& name);
+typedef PParticleAffector (*egeParticleAffectorCreateFunc)(const String& name);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ParticleFactory : public Object
 {
   public:
 
-    ParticleFactory(Application* app);
+    ParticleFactory(Engine& engine);
    ~ParticleFactory();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Creates object. */
     EGEResult construct();
@@ -70,6 +72,13 @@ class ParticleFactory : public Object
 
   private:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
+
+  private:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Registered emitters sorted by type name. */
     ParticleEmitterRegisterMap m_registeredEmitters;
     /*! Registered affectors sorted by type name. */

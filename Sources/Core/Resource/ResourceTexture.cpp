@@ -3,7 +3,7 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
@@ -54,12 +54,12 @@ static TextureAddressingMode MapTextureAddressingName(const String& name, Textur
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE)
-                                                                         , m_minFilter(TF_NEAREST)
-                                                                         , m_magFilter(TF_NEAREST)
-                                                                         , m_addressingModeS(AM_REPEAT)
-                                                                         , m_addressingModeT(AM_REPEAT)
-                                                                         , m_mipmap(false)
+ResourceTexture::ResourceTexture(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_TEXTURE)
+                                                                       , m_minFilter(TF_NEAREST)
+                                                                       , m_magFilter(TF_NEAREST)
+                                                                       , m_addressingModeS(AM_REPEAT)
+                                                                       , m_addressingModeT(AM_REPEAT)
+                                                                       , m_mipmap(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,15 +67,15 @@ ResourceTexture::~ResourceTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceTexture::Create(Application* app, ResourceGroup* group)
+PResource ResourceTexture::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceTexture(app, group);
+  return ege_new ResourceTexture(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceTexture::Create(Application* app, ResourceGroup* group, const String& name, PObject texture)
+PResource ResourceTexture::Create(Engine& engine, ResourceGroup* group, const String& name, PObject texture)
 {
   // create empty resource
-  PResourceTexture resource = Create(app, group);
+  PResourceTexture resource = Create(engine, group);
   if (resource)
   {
     resource->m_name    = name;
@@ -192,14 +192,14 @@ EGEResult ResourceTexture::create2D()
   //}
 
   // apply texture filters
-  app()->graphics()->renderSystem()->setTextureMinFilter(minFilter());
-  app()->graphics()->renderSystem()->setTextureMagFilter(magFilter());
-  app()->graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
-  app()->graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
-  app()->graphics()->renderSystem()->setTextureMipMapping(mipmap());
+  engine().graphics()->renderSystem()->setTextureMinFilter(minFilter());
+  engine().graphics()->renderSystem()->setTextureMagFilter(magFilter());
+  engine().graphics()->renderSystem()->setTextureAddressingModeS(adressingModeS());
+  engine().graphics()->renderSystem()->setTextureAddressingModeT(adressingModeT());
+  engine().graphics()->renderSystem()->setTextureMipMapping(mipmap());
 
   // request texture
-  bool result = app()->graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image, ege_make_slot(this, ResourceTexture::onRequestComplete));
+  bool result = engine().graphics()->hardwareResourceProvider()->requestCreateTexture2D(name(), image, ege_make_slot(this, ResourceTexture::onRequestComplete));
   
   return result ? EGE_SUCCESS :  EGE_ERROR;
 }
@@ -215,7 +215,7 @@ void ResourceTexture::unload()
   {
     if ("2d" == type())
     {
-      app()->graphics()->hardwareResourceProvider()->requestDestroyTexture2D(m_texture);
+      engine().graphics()->hardwareResourceProvider()->requestDestroyTexture2D(m_texture);
 
       // clean up
       m_texture = NULL; 

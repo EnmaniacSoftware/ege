@@ -16,7 +16,7 @@ class ProgramOGL : public Program
 {
   public:
 
-    ProgramOGL(Application* app, const String& name, IHardwareResourceProvider* provider);
+    ProgramOGL(const String& name, IHardwareResourceProvider* provider);
     virtual ~ProgramOGL();
 
     EGE_DECLARE_NEW_OPERATORS

@@ -1,19 +1,18 @@
 #ifdef EGE_AUDIO_OPENAL
 
-#include "Core/Application/Application.h"
 #include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
 #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "EGEDevice.h"
 #include "EGETime.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define UPDATE_PERIOD (20)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioThreadOpenAL::AudioThreadOpenAL(Application* app, AudioManagerOpenAL* manager) : Thread(app), 
-                                                                                      m_manager(manager)
+AudioThreadOpenAL::AudioThreadOpenAL(AudioManagerOpenAL* manager) : Thread()
+                                                                  , m_manager(manager)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -38,5 +37,7 @@ s32 AudioThreadOpenAL::run()
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_AUDIO_OPENAL

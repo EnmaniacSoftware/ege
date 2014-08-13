@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Sequencer)
 EGE_DEFINE_DELETE_OPERATORS(Sequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sequencer::Sequencer() : Object(NULL)
+Sequencer::Sequencer() : Object()
                        , m_frameIndex(0)
                        , m_repeatable(false)
 {

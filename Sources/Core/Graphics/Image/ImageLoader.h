@@ -20,7 +20,7 @@ class ImageLoader : public Object, public IEventListener
 {
   public:
 
-    ImageLoader(Application* app);
+    explicit ImageLoader(Engine& engine);
    ~ImageLoader();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -75,10 +75,15 @@ class ImageLoader : public Object, public IEventListener
     void onEventRecieved(PEvent event) override;
     /*! Shuts down. */
     void shutDown();
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(ImageLoader)
+
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

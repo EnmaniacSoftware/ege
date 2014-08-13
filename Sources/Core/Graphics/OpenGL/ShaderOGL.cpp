@@ -29,9 +29,9 @@ static GLenum MapShaderType(EGEGraphics::ShaderType type)
 EGE_DEFINE_NEW_OPERATORS(ShaderOGL)
 EGE_DEFINE_DELETE_OPERATORS(ShaderOGL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ShaderOGL::ShaderOGL(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider) 
-: Shader(app, name, type, provider),
-  m_id(0)
+ShaderOGL::ShaderOGL(const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider) 
+: Shader(name, type, provider)
+, m_id(0)
 {
   m_id = glCreateShader(MapShaderType(type));
   OGL_CHECK();

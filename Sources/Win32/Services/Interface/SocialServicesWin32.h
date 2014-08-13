@@ -14,7 +14,7 @@ class SocialServicesWin32 : public SocialServicesNull
 {
   public:
     
-    SocialServicesWin32(Application* application);
+    SocialServicesWin32(Engine& engine);
    ~SocialServicesWin32();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

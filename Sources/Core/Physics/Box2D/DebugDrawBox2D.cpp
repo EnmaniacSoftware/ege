@@ -11,9 +11,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(DebugDraw)
 EGE_DEFINE_DELETE_OPERATORS(DebugDraw)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DebugDraw::DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate) : b2DebugDraw(), 
-                                                                                m_app(app), 
-                                                                                m_managerPrivate(managerPrivate)
+DebugDraw::DebugDraw(Engine& engine, PhysicsManagerPrivate* managerPrivate) : b2DebugDraw()
+                                                                            , m_engine(engine) 
+                                                                            , m_managerPrivate(managerPrivate)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ DebugDraw::~DebugDraw()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawPolygon", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component = ege_new RenderComponent(engine(), "DebugDraw::DrawPolygon", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                        EGEGraphics::RPT_LINE_LOOP);
   if (component->isValid())
   {
@@ -47,15 +47,15 @@ void DebugDraw::DrawPolygon(const b2Vec2* vertices, int32 vertexCount, const b2C
 
     component->vertexBuffer()->unlock(data - 1);
 
-    app()->graphics()->renderer()->addForRendering(component);
+    engine().graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, const b2Color& color)
 {
-  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component_fill = ege_new RenderComponent(engine(), "DebugDraw::DrawSolidPolygon-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                             EGEGraphics::RPT_TRIANGLE_FAN);
-  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidPolygon-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component_frame = ege_new RenderComponent(engine(), "DebugDraw::DrawSolidPolygon-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                             EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
@@ -97,14 +97,14 @@ void DebugDraw::DrawSolidPolygon(const b2Vec2* vertices, int32 vertexCount, cons
     component_fill->vertexBuffer()->unlock(data_fill - 1);
     component_frame->vertexBuffer()->unlock(data_frame - 1);
 
-    app()->graphics()->renderer()->addForRendering(component_fill);
-    app()->graphics()->renderer()->addForRendering(component_frame);
+    engine().graphics()->renderer()->addForRendering(component_fill);
+    engine().graphics()->renderer()->addForRendering(component_frame);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawCircle", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component = ege_new RenderComponent(engine(), "DebugDraw::DrawCircle", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                        EGEGraphics::RPT_LINE_LOOP);
   if (component->isValid())
   {
@@ -136,15 +136,15 @@ void DebugDraw::DrawCircle(const b2Vec2& center, EGE::float32 radius, const b2Co
 
     component->vertexBuffer()->unlock(data - 1);
 
-    app()->graphics()->renderer()->addForRendering(component);
+    engine().graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const b2Vec2& axis, const b2Color& color)
 {
-  PRenderComponent component_fill = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component_fill = ege_new RenderComponent(engine(), "DebugDraw::DrawSolidCircle-fill", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                             EGEGraphics::RPT_TRIANGLE_FAN);
-  PRenderComponent component_frame = ege_new RenderComponent(app(), "DebugDraw::DrawSolidCircle-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component_frame = ege_new RenderComponent(engine(), "DebugDraw::DrawSolidCircle-frame", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                             EGEGraphics::RPT_LINE_LOOP);
 
   PMaterial material = ege_new Material(NULL);
@@ -194,8 +194,8 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
     component_fill->vertexBuffer()->unlock(data_fill - 1);
     component_frame->vertexBuffer()->unlock(data_frame - 1);
 
-    app()->graphics()->renderer()->addForRendering(component_fill);
-    app()->graphics()->renderer()->addForRendering(component_frame);
+    engine().graphics()->renderer()->addForRendering(component_fill);
+    engine().graphics()->renderer()->addForRendering(component_frame);
   }
 
 	//b2Vec2 p = center + radius * axis;
@@ -207,7 +207,7 @@ void DebugDraw::DrawSolidCircle(const b2Vec2& center, EGE::float32 radius, const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& color)
 {
-  PRenderComponent component = ege_new RenderComponent(app(), "DebugDraw::DrawSegment", EGEGraphics::RP_PHYSICS_DEBUG, 
+  PRenderComponent component = ege_new RenderComponent(engine(), "DebugDraw::DrawSegment", EGEGraphics::RP_PHYSICS_DEBUG, 
                                                        EGEGraphics::RPT_LINES);
   if (component->isValid())
   {
@@ -236,7 +236,7 @@ void DebugDraw::DrawSegment(const b2Vec2& p1, const b2Vec2& p2, const b2Color& c
 
     component->vertexBuffer()->unlock(data - 1);
 
-    app()->graphics()->renderer()->addForRendering(component);
+    engine().graphics()->renderer()->addForRendering(component);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -257,6 +257,11 @@ void DebugDraw::DrawTransform(const b2Transform& xf)
 	//glVertex2f(p2.x, p2.y);
 
 	//glEnd();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& DebugDraw::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

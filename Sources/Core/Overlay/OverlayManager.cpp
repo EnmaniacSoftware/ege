@@ -6,7 +6,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(OverlayManager)
 EGE_DEFINE_DELETE_OPERATORS(OverlayManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-OverlayManager::OverlayManager(Application* app) : Object(app)
+OverlayManager::OverlayManager() : Object()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

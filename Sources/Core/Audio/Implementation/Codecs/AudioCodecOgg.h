@@ -21,15 +21,12 @@ class AudioCodecOgg : public AudioCodec
     AudioCodecOgg(const PDataBuffer& stream);
     virtual ~AudioCodecOgg();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
+  private:
 
     /*! @see AudioCodec::decode. */
     bool decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded) override;
     /*! @see AudioCodec::reset. */
     bool reset() override;
-
-  private:
 
     /*! Uploads mono channel into data buffers. 
      *  @param out         Primary output buffer data in being uploaded into.

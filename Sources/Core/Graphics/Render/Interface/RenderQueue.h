@@ -13,7 +13,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Application;
 class IComponentRenderer;
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +21,7 @@ class RenderQueue : public Object
 {
   public:
 
-    RenderQueue(Application* app, u32 uid, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
+    RenderQueue(u32 uid, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
     virtual ~RenderQueue();
 
   public:

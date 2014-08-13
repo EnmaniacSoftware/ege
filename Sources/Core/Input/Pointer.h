@@ -10,11 +10,11 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(PointerData, PPointerData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Pointer : public Object
+class Pointer
 {
   public:
 
-    Pointer(Application* app);
+    Pointer(Engine& engine);
    ~Pointer();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -32,9 +32,17 @@ class Pointer : public Object
     /*! Creates object. */
     EGEResult construct();
 
+  protected:
+
+    /*! Returns engine object. */
+    Engine& engine() const;
+
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Pointer)
+
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

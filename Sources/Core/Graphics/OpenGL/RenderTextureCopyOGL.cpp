@@ -6,11 +6,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTextureCopyOGL::RenderTextureCopyOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
-: RenderTarget(app, params), 
-  m_textureId(textureId), 
-  m_textureTarget(textureTarget), 
-  m_faceTarget(faceTarget)
+RenderTextureCopyOGL::RenderTextureCopyOGL(const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
+: RenderTarget(params)
+, m_textureId(textureId)
+, m_textureTarget(textureTarget)
+, m_faceTarget(faceTarget)
 {
   // decompose param list
   Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);

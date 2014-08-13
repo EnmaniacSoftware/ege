@@ -21,7 +21,7 @@ class UIScrollableView : public UIScrollView
 {
   public:
 
-    UIScrollableView(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    UIScrollableView(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~UIScrollableView();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -30,7 +30,7 @@ class UIScrollableView : public UIScrollView
   public:
 
     /*! Creates instance of widget. This method is a registration method for factory. */
-    static PWidget Create(Application* app, const String& name);
+    static PWidget Create(Engine& engine, const String& name);
 
   public:
 

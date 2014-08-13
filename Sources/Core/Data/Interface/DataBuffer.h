@@ -10,7 +10,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class DataBuffer : public Object, public ISerializable
+class DataBuffer : public Object
+                 , public ISerializable
 {
   public:
 
@@ -23,6 +24,8 @@ class DataBuffer : public Object, public ISerializable
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Sets buffer size in bytes. */
     EGEResult setSize(s64 size);

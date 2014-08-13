@@ -3,7 +3,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioCodec::AudioCodec(u32 uid, const PDataBuffer& stream) : Object(NULL, uid)
+EGE_DEFINE_NEW_OPERATORS(AudioCodec)
+EGE_DEFINE_DELETE_OPERATORS(AudioCodec)
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AudioCodec::AudioCodec(u32 uid, const PDataBuffer& stream) : Object(uid)
                                                            , m_stream(stream)
                                                            , m_streamOffset(0)
                                                            , m_channels(0)

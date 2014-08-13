@@ -1,11 +1,11 @@
-#include "Core/Application/Application.h"
+#include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
 
 #ifdef EGE_PHYSICS_BOX2D
-#include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
+  #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
 #elif defined EGE_PHYSICS_NULL
-#include "Core/Physics/Null/PhysicsJointDistanceNull_p.h"
+  #include "Core/Physics/Null/PhysicsJointDistanceNull_p.h"
 #endif // EGE_PHYSICS_BOX2D
 
 EGE_NAMESPACE_BEGIN
@@ -14,10 +14,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PhysicsJointDistance)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointDistance)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointDistance::PhysicsJointDistance(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB) 
-: PhysicsJoint(app, bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE)
+PhysicsJointDistance::PhysicsJointDistance(Engine& engine, PPhysicsComponent bodyA, PPhysicsComponent bodyB) 
+: PhysicsJoint(bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE)
 {
-  m_p = ege_new PhysicsJointDistancePrivate(this, app->physicsManager()->p_func());
+  m_p = ege_new PhysicsJointDistancePrivate(this, engine.physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointDistance::~PhysicsJointDistance()
@@ -60,7 +60,7 @@ void PhysicsJointDistance::setDampingRatio(EGE::float32 ratio)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointDistance::dampingRatio() const
+float32 PhysicsJointDistance::dampingRatio() const
 {
   if (isValid())
   {
@@ -78,7 +78,7 @@ void PhysicsJointDistance::setFrequency(EGE::float32 frequencyHz)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointDistance::frequency() const
+float32 PhysicsJointDistance::frequency() const
 {
   if (isValid())
   {

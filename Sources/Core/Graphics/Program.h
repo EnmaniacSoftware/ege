@@ -47,7 +47,7 @@ class Program : public Component
   protected:
 
     /*! Constructing only via RenderSystem. */
-    Program(Application* app, const String& name, IHardwareResourceProvider* provider);
+    Program(const String& name, IHardwareResourceProvider* provider);
 
   private:
 

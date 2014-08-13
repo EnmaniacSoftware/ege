@@ -2,7 +2,7 @@
 #include "Core/ComplexTypes.h"
 #include "EGEDataBuffer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SqlResultSqlite)
@@ -155,3 +155,5 @@ EGEResult SqlResultSqlite::addValue(s32 index, const void* buffer, s32 size)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

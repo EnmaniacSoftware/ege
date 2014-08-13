@@ -13,6 +13,8 @@ class Color
 
     Color(float32 red = 1.0f, float32 green = 1.0f, float32 blue = 1.0f, float32 alpha = 1.0f);
 
+  operators:
+
     Color& operator =(const Color& color);
     bool   operator==(const Color& color) const;
     bool   operator!=(const Color& color) const;

@@ -1,9 +1,9 @@
 #include "Win32/Services/Interface/SocialServicesWin32.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SocialServicesWin32::SocialServicesWin32(Application* application) : SocialServicesNull(application)
+SocialServicesWin32::SocialServicesWin32(Engine& engine) : SocialServicesNull(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,3 +11,5 @@ SocialServicesWin32::~SocialServicesWin32()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

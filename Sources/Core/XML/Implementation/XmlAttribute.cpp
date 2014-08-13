@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(XmlAttribute)
 EGE_DEFINE_DELETE_OPERATORS(XmlAttribute)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlAttribute::XmlAttribute() : Object(NULL)
+XmlAttribute::XmlAttribute() : Object()
 {
   m_p = ege_new XmlAttributePrivate(this);
 }

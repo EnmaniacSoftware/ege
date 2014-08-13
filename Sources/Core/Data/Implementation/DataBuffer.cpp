@@ -10,25 +10,25 @@ static const char* KDataBufferDebugName = "EGEDataBuffer";
 EGE_DEFINE_NEW_OPERATORS(DataBuffer)
 EGE_DEFINE_DELETE_OPERATORS(DataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer() : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
-                           m_size(0), 
-                           m_capacity(0), 
-                           m_data(NULL), 
-                           m_readOffset(0), 
-                           m_writeOffset(0), 
-                           m_mutable(true),
-                           m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer() : Object(EGE_OBJECT_UID_DATA_BUFFER)
+                         , m_size(0)
+                         , m_capacity(0)
+                         , m_data(NULL)
+                         , m_readOffset(0)
+                         , m_writeOffset(0)
+                         , m_mutable(true)
+                         , m_byteOrdering(ELittleEndian)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(const DataBuffer& other) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER),
-                                                  m_size(0), 
-                                                  m_capacity(0), 
-                                                  m_data(NULL), 
-                                                  m_readOffset(0), 
-                                                  m_writeOffset(0), 
-                                                  m_mutable(true),
-                                                  m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(const DataBuffer& other) : Object(EGE_OBJECT_UID_DATA_BUFFER)
+                                                , m_size(0)
+                                                , m_capacity(0)
+                                                , m_data(NULL)
+                                                , m_readOffset(0)
+                                                , m_writeOffset(0)
+                                                , m_mutable(true)
+                                                , m_byteOrdering(ELittleEndian)
 {
   // allocate space for data
   if (EGE_SUCCESS == setSize(other.size()))
@@ -43,7 +43,7 @@ DataBuffer::DataBuffer(const DataBuffer& other) : Object(NULL, EGE_OBJECT_UID_DA
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER)
+DataBuffer::DataBuffer(s64 size) : Object(EGE_OBJECT_UID_DATA_BUFFER)
                                  , m_size(0)
                                  , m_capacity(0)
                                  , m_data(NULL)
@@ -59,14 +59,14 @@ DataBuffer::DataBuffer(s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(const void* data, s64 size) : Object(NULL, EGE_OBJECT_UID_DATA_BUFFER), 
-                                                     m_size(size), 
-                                                     m_capacity(size), 
-                                                     m_data(const_cast<void*>(data)), 
-                                                     m_readOffset(0), 
-                                                     m_writeOffset(0), 
-                                                     m_mutable(false),
-                                                     m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(const void* data, s64 size) : Object(EGE_OBJECT_UID_DATA_BUFFER)
+                                                   , m_size(size)
+                                                   , m_capacity(size)
+                                                   , m_data(const_cast<void*>(data))
+                                                   , m_readOffset(0)
+                                                   , m_writeOffset(0)
+                                                   , m_mutable(false)
+                                                   , m_byteOrdering(ELittleEndian)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

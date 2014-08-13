@@ -17,7 +17,7 @@ class Component : public Object
 {
   public:
 
-    Component(Application* app, u32 uid, const String& name);
+    Component(u32 uid, const String& name);
     virtual ~Component();
 
     EGE_DECLARE_NEW_OPERATORS

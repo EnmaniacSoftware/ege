@@ -22,10 +22,10 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Font.h"
-#include "Core/Application/Application.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
+#include "EGEEngine.h"
 #include "EGEXml.h"
 #include "EGEDirectory.h"
 
@@ -72,24 +72,25 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_PROGRAM, ResourceProgram::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceManager(Application* app) : Object(app),
-                                                     m_p(NULL),
-                                                     m_totalResourcesToProcess(0),
-                                                     m_processedResourcesCount(0)
+ResourceManager::ResourceManager(Engine& engine) : Object()
+                                                 , m_p(NULL)
+                                                 , m_engine(engine)
+                                                 , m_totalResourcesToProcess(0)
+                                                 , m_processedResourcesCount(0)
 {
-  ege_connect(app, frameEnd, this, ResourceManager::onFrameEnd);
+  ege_connect(&engine, signalFrameEnd, this, ResourceManager::onFrameEnd);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
-  ege_disconnect(app(), frameEnd, this, ResourceManager::onFrameEnd);
+  ege_disconnect(&engine(), signalFrameEnd, this, ResourceManager::onFrameEnd);
 
   // NOTE: all groups should be already removed
   EGE_ASSERT(m_groups.empty());
 
   EGE_DELETE(m_p);
 
-  app()->eventManager()->removeListener(this);
+  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
@@ -133,7 +134,7 @@ EGEResult ResourceManager::construct()
   }
 
   // subscribe for event notifications
-  if ( ! app()->eventManager()->addListener(this))
+  if ( ! engine().eventManager()->addListener(this))
   {
     // error!
     egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
@@ -178,7 +179,7 @@ PResource ResourceManager::createResource(const String& name, ResourceGroup* gro
   if (it != m_registeredResources.end())
   {
     // create resource
-    resource = it->second.m_createFunc(app(), group);
+    resource = it->second.m_createFunc(engine(), group);
   }
 
   return resource;
@@ -309,7 +310,7 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
 {
   EGEResult result = EGE_SUCCESS;
 
-  PResourceGroup newGroup = ege_new ResourceGroup(app(), this);
+  PResourceGroup newGroup = ege_new ResourceGroup(this);
   if (NULL == newGroup)
   {
     // error!
@@ -659,6 +660,11 @@ void ResourceManager::onFrameEnd()
   {
     processCommands();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ResourceManager::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

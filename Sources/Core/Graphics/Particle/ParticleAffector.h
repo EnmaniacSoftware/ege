@@ -25,7 +25,7 @@ class ParticleAffector : public Object
 
   public:
 
-    ParticleAffector(Application* app, const String& name);
+    explicit ParticleAffector(const String& name);
     virtual ~ParticleAffector();
 
     EGE_DECLARE_NEW_OPERATORS

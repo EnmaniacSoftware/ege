@@ -3,12 +3,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IResource::IResource(Application* app, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc) 
-: Object(app, EGE_OBJECT_UID_RESOURCE, deleteFunc), 
-  m_manual(false), 
-  m_state(STATE_INVALID),
-  m_typeName(typeName), 
-  m_group(group)
+IResource::IResource(Engine& engine, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc) 
+: Object(EGE_OBJECT_UID_RESOURCE, deleteFunc)
+, m_engine(engine)
+, m_manual(false) 
+, m_state(STATE_INVALID)
+, m_typeName(typeName)
+, m_group(group)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,6 +40,11 @@ ResourceGroup* IResource::group() const
 const String& IResource::path() const
 {
   return m_path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& IResource::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

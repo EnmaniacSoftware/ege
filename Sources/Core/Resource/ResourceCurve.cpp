@@ -35,7 +35,7 @@ static CubicSplineType MapCurveTypeName(const String& name, CubicSplineType defa
   return defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceCurve::ResourceCurve(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_CURVE)
+ResourceCurve::ResourceCurve(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_CURVE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,9 +43,9 @@ ResourceCurve::~ResourceCurve()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceCurve::Create(Application* app, ResourceGroup* group)
+PResource ResourceCurve::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceCurve(app, group);
+  return ege_new ResourceCurve(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceCurve::name() const

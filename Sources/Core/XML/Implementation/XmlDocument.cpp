@@ -13,7 +13,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(XmlDocument)
 EGE_DEFINE_DELETE_OPERATORS(XmlDocument)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlDocument::XmlDocument() : Object(NULL)
+XmlDocument::XmlDocument() : Object()
 {
   m_p = ege_new XmlDocumentPrivate(this);
 }

@@ -110,7 +110,7 @@ PImage ImageHandlerJPG::Load(PObject buffer, PixelFormat format)
   }
 
   // allocate image
-  PImage image = ege_new Image(NULL, cinfo.image_width, cinfo.image_height, format);
+  PImage image = ege_new Image(cinfo.image_width, cinfo.image_height, format);
   if ((NULL == image) || !image->isValid())
   {
     // error!

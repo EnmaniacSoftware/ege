@@ -22,7 +22,7 @@ class SoundEffectFadeIn : public SoundEffect
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
+  private:
 
     /*! @see SoundEffect::update. */
     bool update(const Time& time, PSound sound) override;

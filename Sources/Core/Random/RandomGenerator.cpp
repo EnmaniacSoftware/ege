@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RandomGenerator)
 EGE_DEFINE_DELETE_OPERATORS(RandomGenerator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RandomGenerator::RandomGenerator(u32 seed) : Object(NULL)
+RandomGenerator::RandomGenerator(u32 seed) : Object()
 {
   m_p = ege_new RandomGeneratorPrivate();
   if (m_p && (0 < seed))

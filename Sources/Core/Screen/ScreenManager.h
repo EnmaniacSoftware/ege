@@ -21,11 +21,13 @@ class ScreenManager : public Object
 {
   public:
 
-    ScreenManager(Application* app);
+    ScreenManager(Engine& engine);
    ~ScreenManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Creates object. */
     EGEResult construct();
@@ -73,6 +75,11 @@ class ScreenManager : public Object
     /*! Returns current number of screens on stack. */
     u32 screenCount() const;
 
+  private:
+
+    /*! Returns engine object. */
+    Engine& engine() const;
+
   private slots:
 
     /*! Pointer event receiver. */
@@ -84,6 +91,8 @@ class ScreenManager : public Object
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! List of screens. Sorted from the bottom one to top one (currently visible). */
     ScreenList m_screens;
 };

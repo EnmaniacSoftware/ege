@@ -10,7 +10,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(StringBuffer, PStringBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class StringBuffer : public Object, public ISerializable
+class StringBuffer : public Object
+                   , public ISerializable
 {
   public:
   

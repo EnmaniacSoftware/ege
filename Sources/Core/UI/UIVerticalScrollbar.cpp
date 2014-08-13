@@ -9,8 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIVerticalScrollbar)
 EGE_DEFINE_DELETE_OPERATORS(UIVerticalScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIVerticalScrollbar::UIVerticalScrollbar(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: UIAbstractScrollbar(app, name, EGE_OBJECT_UID_UI_VERTICAL_SCROLLBAR, deleteFunc)
+UIVerticalScrollbar::UIVerticalScrollbar(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: UIAbstractScrollbar(engine, name, EGE_OBJECT_UID_UI_VERTICAL_SCROLLBAR, deleteFunc)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,10 +18,10 @@ UIVerticalScrollbar::~UIVerticalScrollbar()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget UIVerticalScrollbar::Create(Application* app, const String& name)
+PWidget UIVerticalScrollbar::Create(Engine& engine, const String& name)
 {
   // allocate object
-  PUIVerticalScrollbar object = ege_new UIVerticalScrollbar(app, name);
+  PUIVerticalScrollbar object = ege_new UIVerticalScrollbar(engine, name);
   if (NULL != object)
   {
     // construct

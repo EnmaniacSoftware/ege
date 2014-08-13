@@ -1,5 +1,5 @@
 #include "Core/Graphics/Particle/ParticleEmitter.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGERenderSystem.h"
 #include "EGERenderer.h"
@@ -18,11 +18,13 @@ using NVertexBuffer::VertexElementSemanticArray;
 EGE_DEFINE_NEW_OPERATORS(ParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ParticleEmitter)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNodeObject(name),
-                                                                         m_active(false), 
-                                                                         m_lifeDuration(0.0f), 
-                                                                         m_activeParticlesCount(0), 
-                                                                         m_emitCount(0.0f)
+ParticleEmitter::ParticleEmitter(Engine& engine, const String& name) 
+: SceneNodeObject(name)
+, m_active(false)
+, m_lifeDuration(0.0f)
+, m_activeParticlesCount(0)
+, m_emitCount(0.0f)
+, m_engine(engine)
 {
   // initialize to default values
   Dictionary params;
@@ -58,7 +60,7 @@ ParticleEmitter::ParticleEmitter(Application* app, const String& name) : SceneNo
   // create render data
   if (0 != declaration.vertexSize())
   {
-    m_renderData = ege_new RenderComponent(app, name, declaration, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES,
+    m_renderData = ege_new RenderComponent(engine, name, declaration, EGEGraphics::RP_MAIN, pointSprite ? EGEGraphics::RPT_POINTS : EGEGraphics::RPT_TRIANGLES,
                                            NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   }
 }
@@ -342,7 +344,7 @@ bool ParticleEmitter::addForRendering(IRenderer* renderer, const Matrix4f& trans
       }
       else
       {
-        const Matrix4f& viewMatrix = m_renderData->app()->graphics()->renderSystem()->viewMatrix();
+        const Matrix4f& viewMatrix = m_renderData->engine().graphics()->renderSystem()->viewMatrix();
 
         Vector3f right(viewMatrix.data[0], viewMatrix.data[1], viewMatrix.data[2]);
         Vector3f up(viewMatrix.data[4], viewMatrix.data[5], viewMatrix.data[6]);
@@ -509,6 +511,11 @@ void ParticleEmitter::removeAffector(PParticleAffector& affector)
       ege_disconnect(this, particleDied, affector.object(), ParticleAffector::onParticleDied);
     }
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ParticleEmitter::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

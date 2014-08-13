@@ -5,8 +5,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MutexLocker::MutexLocker(PMutex& mutex, bool debug) : m_mutex(mutex),
-                                                     m_debug(debug)
+MutexLocker::MutexLocker(PMutex& mutex, bool debug) : m_mutex(mutex)
+                                                    , m_debug(debug)
 {
   if (NULL != m_mutex)
   {

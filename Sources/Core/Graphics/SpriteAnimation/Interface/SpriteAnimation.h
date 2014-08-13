@@ -37,7 +37,7 @@ class SpriteAnimation : public KeyFrameAnimation
 {
   public:
 
-    SpriteAnimation(Application* app, const String& name);
+    SpriteAnimation(Engine& engine, const String& name);
    ~SpriteAnimation();
 
   public:

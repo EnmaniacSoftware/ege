@@ -30,11 +30,13 @@ class PhysicsManager : public Object
 
   public:
 
-    PhysicsManager(Application* app);
+    PhysicsManager();
     virtual ~PhysicsManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Creates object. */
     EGEResult construct(const Dictionary& params);

@@ -17,7 +17,7 @@ class Viewport : public Object
 {
   public:
 
-    Viewport(Application* app, const String& name, PCamera camera, RenderTarget* renderTarget);
+    Viewport(const String& name, PCamera camera, RenderTarget* renderTarget);
    ~Viewport();
 
     EGE_DECLARE_NEW_OPERATORS

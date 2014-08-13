@@ -1,20 +1,19 @@
-#include "Core/Application/Application.h"
 #include "Core/Audio/Interface/Null/AudioManagerNull.h"
 #include "Core/Audio/Implementation/Null/SoundNull.h"
 #include "Core/Audio/Interface/Sound.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManagerNull)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerNull)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerNull::AudioManagerNull(Application* app) : Object(app),
-                                                       IAudioManagerBase(),
-                                                       IAudioManager(),
-                                                       m_state(IAudioManager::StateNone)
+AudioManagerNull::AudioManagerNull(Engine& engine) : Object()
+                                                   , IAudioManagerBase()
+                                                   , IAudioManager()
+                                                   , m_state(IAudioManager::StateNone)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -60,7 +59,7 @@ bool AudioManagerNull::isEnabled() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSound AudioManagerNull::createSound(const String& name, PDataBuffer& data) const
 {
-  SoundNull* object = ege_new SoundNull(name, data);
+  Sound* object = ege_new SoundNull(name, data);
   if ((NULL == object) || (EGE_SUCCESS != object->construct()))
   {
     // error!
@@ -75,7 +74,5 @@ IAudioManager::EState AudioManagerNull::state() const
   return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerNull::onEventRecieved(PEvent event)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

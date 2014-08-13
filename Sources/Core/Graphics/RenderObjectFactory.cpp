@@ -7,7 +7,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+PRenderComponent RenderObjectFactory::CreateQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
                                                    bool flipV, VertexDeclarationSymbol vertexDeclaration, s32 priority, 
                                                    EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 {
@@ -18,18 +18,18 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
   if (0 != declaration.vertexSize())
   {
     // create quad
-    component = CreateQuadXY(app, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
+    component = CreateQuadXY(engine, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
   }
 
   return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+PRenderComponent RenderObjectFactory::CreateQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
                                                    bool flipV, const VertexDeclaration& vertexDeclaration, s32 priority, 
                                                    EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 
 {
-  PRenderComponent object = ege_new RenderComponent(app, name, vertexDeclaration, priority, primitive, vertexUsage);
+  PRenderComponent object = ege_new RenderComponent(engine, name, vertexDeclaration, priority, primitive, vertexUsage);
   if (NULL != object)
   {
     // setup vertex buffer semantics
@@ -49,7 +49,7 @@ PRenderComponent RenderObjectFactory::CreateQuadXY(Application* app, const Strin
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
                                                          bool flipV, VertexDeclarationSymbol vertexDeclaration, s32 priority, 
                                                          EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 {
@@ -60,18 +60,18 @@ PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Application* app, const
   if (0 != declaration.vertexSize())
   {
     // create object
-    component = CreateQuatroQuadXY(app, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
+    component = CreateQuatroQuadXY(engine, name, position, size, origin, flipU, flipV, declaration, priority, primitive, vertexUsage);
   }
 
   return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
+PRenderComponent RenderObjectFactory::CreateQuatroQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, 
                                                          bool flipV, const VertexDeclaration& vertexDeclaration, s32 priority, 
                                                          EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage)
 
 {
-  PRenderComponent object = ege_new RenderComponent(app, name, vertexDeclaration, priority, primitive, vertexUsage);
+  PRenderComponent object = ege_new RenderComponent(engine, name, vertexDeclaration, priority, primitive, vertexUsage);
   if (NULL != object)
   {
     // setup vertex buffer semantics
@@ -438,7 +438,7 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset,
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Engine& engine, const String& name, Vector3f offset,
                                              VertexDeclarationSymbol vertexDeclaration, s32 priority)
 {
   PRenderComponent component;
@@ -448,18 +448,18 @@ PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Applicat
   if (0 != declaration.vertexSize())
   {
     // create quad
-    component = Create(spline, app, name, offset, declaration, priority);
+    component = Create(spline, engine, name, offset, declaration, priority);
   }
 
   return component;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, 
+PRenderComponent RenderObjectFactory::Create(const CubicSpline* spline, Engine& engine, const String& name, Vector3f offset, 
                                              const VertexDeclaration& vertexDeclaration, s32 priority)
 {
   s32 vertexCount = 25;
 
-  PRenderComponent component = ege_new RenderComponent(app, name, vertexDeclaration, priority, EGEGraphics::RPT_LINES);
+  PRenderComponent component = ege_new RenderComponent(engine, name, vertexDeclaration, priority, EGEGraphics::RPT_LINES);
   if ((NULL != component) && component->isValid())
   {
     if (component->vertexBuffer()->setSize(vertexCount * 2))

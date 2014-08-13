@@ -17,11 +17,13 @@ class IndexBufferVA : public IndexBuffer
 {
   public:
 
-    IndexBufferVA(Application* app, const String& name);
+    explicit IndexBufferVA(const String& name);
     virtual ~IndexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! @see IndexBuffer::isValid. */
     bool isValid() const override;

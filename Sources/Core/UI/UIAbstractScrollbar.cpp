@@ -10,14 +10,14 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIAbstractScrollbar)
 EGE_DEFINE_DELETE_OPERATORS(UIAbstractScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIAbstractScrollbar::UIAbstractScrollbar(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(app, name, uid, deleteFunc),
-                                                                                                                          m_rangeStart(0),
-                                                                                                                          m_rangeEnd(100),
-                                                                                                                          m_pageSize(10),
-                                                                                                                          m_offset(0),
-                                                                                                                          m_state(STATE_HIDDEN),
-                                                                                                                          m_fadeDuration(1.0f),
-                                                                                                                          m_renderDataInvalid(true)
+UIAbstractScrollbar::UIAbstractScrollbar(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, uid, deleteFunc)
+                                                                                                                      , m_rangeStart(0)
+                                                                                                                      , m_rangeEnd(100)
+                                                                                                                      , m_pageSize(10)
+                                                                                                                      , m_offset(0)
+                                                                                                                      , m_state(STATE_HIDDEN)
+                                                                                                                      , m_fadeDuration(1.0f)
+                                                                                                                      , m_renderDataInvalid(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -108,7 +108,7 @@ EGEResult UIAbstractScrollbar::construct()
   }
 
   // create render data
-  PMaterial material = ege_new Material(app());
+  PMaterial material = ege_new Material();
   if (NULL == material)
   {
     // error!
@@ -136,7 +136,7 @@ EGEResult UIAbstractScrollbar::construct()
   }
 
   // create render data
-  m_renderData = ege_new RenderComponent(app(), "scrollbar", declaration, EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
+  m_renderData = ege_new RenderComponent(engine(), "scrollbar", declaration, EGEGraphics::RP_MAIN + 1, EGEGraphics::RPT_TRIANGLES);
   if (NULL == m_renderData)
   {
     // error!

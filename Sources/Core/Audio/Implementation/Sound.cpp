@@ -3,7 +3,6 @@
 #include "Core/Audio/Implementation/Codecs/AudioCodecOgg.h"
 #include "Core/Audio/Implementation/Codecs/AudioCodecMp3.h"
 #include "Core/Audio/Implementation/AudioUtils.h"
-#include "EGEApplication.h"
 #include "EGEResources.h"
 
 EGE_NAMESPACE
@@ -14,10 +13,10 @@ static const char* KSoundDebugName = "EGESound";
 EGE_DEFINE_NEW_OPERATORS(Sound)
 EGE_DEFINE_DELETE_OPERATORS(Sound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sound::Sound(Application* app, const String& name, const PDataBuffer& data) : Object(app)
-                                                                            , m_codec(NULL)
-                                                                            , m_name(name)
-                                                                            , m_data(data)
+Sound::Sound(const String& name, const PDataBuffer& data) : Object()
+                                                          , m_codec(NULL)
+                                                          , m_name(name)
+                                                          , m_data(data)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

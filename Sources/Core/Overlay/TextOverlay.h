@@ -17,7 +17,7 @@ class TextOverlay : public Overlay
 {
   public: 
 
-    TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    TextOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~TextOverlay();
     
     EGE_DECLARE_NEW_OPERATORS

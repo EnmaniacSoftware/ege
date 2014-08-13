@@ -43,14 +43,14 @@ static GLenum MapUsageTypeToAccessType(EGEIndexBuffer::UsageType type)
   return GL_WRITE_ONLY;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVBO::IndexBufferVBO(Application* app, const String& name, EGEIndexBuffer::UsageType usage) : IndexBuffer(app, name),
-                                                                                                        m_id(0),
-                                                                                                        m_indexCount(0),
-                                                                                                        m_indexCapacity(0),
-                                                                                                        m_lockOffset(0),
-                                                                                                        m_lockLength(0),
-                                                                                                        m_mapping(NULL),
-                                                                                                        m_usage(usage)
+IndexBufferVBO::IndexBufferVBO(const String& name, EGEIndexBuffer::UsageType usage) : IndexBuffer(name)
+                                                                                    , m_id(0)
+                                                                                    , m_indexCount(0)
+                                                                                    , m_indexCapacity(0)
+                                                                                    , m_lockOffset(0)
+                                                                                    , m_lockLength(0)
+                                                                                    , m_mapping(NULL)
+                                                                                    , m_usage(usage)
 {
   // allocate shadow buffer if no mapping is supported
   if ( ! Device::HasRenderCapability(ERenderCapabilityMapBuffer))

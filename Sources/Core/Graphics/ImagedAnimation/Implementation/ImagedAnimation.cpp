@@ -11,23 +11,23 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KImagedAnimationDebugName = "EGEImagedAnimation";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImagedAnimation::ImagedAnimation() : KeyFrameAnimation(NULL, "")
-                                   , m_renderPriority(EGEGraphics::RP_MAIN)
-                                   , m_displaySize(50, 50)
-                                   , m_baseAlignment(ALIGN_TOP_LEFT)
-                                   , m_alpha(1.0f)
-                                   , m_renderDataNeedsUpdate(false)
-                                   , m_transform(Matrix4f::IDENTITY)
+ImagedAnimation::ImagedAnimation(Engine& engine) : KeyFrameAnimation(engine, "")
+                                                 , m_renderPriority(EGEGraphics::RP_MAIN)
+                                                 , m_displaySize(50, 50)
+                                                 , m_baseAlignment(ALIGN_TOP_LEFT)
+                                                 , m_alpha(1.0f)
+                                                 , m_renderDataNeedsUpdate(false)
+                                                 , m_transform(Matrix4f::IDENTITY)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImagedAnimation::ImagedAnimation(Application* app, const String& name) : KeyFrameAnimation(app, name)
-                                                                       , m_renderPriority(EGEGraphics::RP_MAIN)
-                                                                       , m_displaySize(50, 50)
-                                                                       , m_baseAlignment(ALIGN_TOP_LEFT)
-                                                                       , m_alpha(1.0f)
-                                                                       , m_renderDataNeedsUpdate(false)
-                                                                       , m_transform(Matrix4f::IDENTITY)
+ImagedAnimation::ImagedAnimation(Engine& engine, const String& name) : KeyFrameAnimation(engine, name)
+                                                                     , m_renderPriority(EGEGraphics::RP_MAIN)
+                                                                     , m_displaySize(50, 50)
+                                                                     , m_baseAlignment(ALIGN_TOP_LEFT)
+                                                                     , m_alpha(1.0f)
+                                                                     , m_renderDataNeedsUpdate(false)
+                                                                     , m_transform(Matrix4f::IDENTITY)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -143,7 +143,7 @@ void ImagedAnimation::updateRenderData()
     const u32 vertexCount = calculateFrameVertexCount(m_objects, actions);
     
     // create render component for current frame
-    PRenderComponent frameRenderData = ege_new RenderComponent(app(), name(), declaration);
+    PRenderComponent frameRenderData = ege_new RenderComponent(engine(), name(), declaration);
     EGE_ASSERT(NULL != frameRenderData);
 
     PVertexBuffer vertexBuffer = frameRenderData->vertexBuffer();
@@ -168,7 +168,7 @@ void ImagedAnimation::updateRenderData()
         if (frameRenderData->material() == NULL)
         {
           // create material
-          PMaterial material = ege_new Material(app());
+          PMaterial material = ege_new Material();
 
           // add pass
           RenderPass* pass = material->addPass(NULL);

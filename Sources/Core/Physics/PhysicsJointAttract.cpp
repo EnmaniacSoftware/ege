@@ -1,4 +1,4 @@
-#include "Core/Application/Application.h"
+#include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
 
@@ -14,9 +14,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PhysicsJointAttract)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttract)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointAttract::PhysicsJointAttract(Application* app, PPhysicsComponent body) : PhysicsJoint(app, body, NULL, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
+PhysicsJointAttract::PhysicsJointAttract(Engine& engine, PPhysicsComponent body) : PhysicsJoint(body, NULL, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
 {
-  m_p = ege_new PhysicsJointAttractPrivate(this, app->physicsManager()->p_func());
+  m_p = ege_new PhysicsJointAttractPrivate(this, engine.physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointAttract::~PhysicsJointAttract()
@@ -45,7 +45,7 @@ void PhysicsJointAttract::setDampingRatio(EGE::float32 ratio)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointAttract::dampingRatio() const
+float32 PhysicsJointAttract::dampingRatio() const
 {
   if (isValid())
   {
@@ -63,7 +63,7 @@ void PhysicsJointAttract::setFrequency(EGE::float32 frequencyHz)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointAttract::frequency() const
+float32 PhysicsJointAttract::frequency() const
 {
   if (isValid())
   {

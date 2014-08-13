@@ -7,18 +7,18 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(TextureImage)
 EGE_DEFINE_DELETE_OPERATORS(TextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(Application* app) : Object(app, EGE_OBJECT_UID_TEXTURE_IMAGE)
-                                             , m_envMode(EM_MODULATE)
-                                             , m_textureCoordsIndex(0)
+TextureImage::TextureImage() : Object(EGE_OBJECT_UID_TEXTURE_IMAGE)
+                             , m_envMode(EM_MODULATE)
+                             , m_textureCoordsIndex(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const TextureImage& textureImage) : Object(textureImage.app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+TextureImage::TextureImage(const TextureImage& textureImage) : Object(EGE_OBJECT_UID_TEXTURE_IMAGE)
 {
   *this = textureImage; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(texture->app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(EGE_OBJECT_UID_TEXTURE_IMAGE)
                                                                   , m_texture(texture)
                                                                   , m_name(texture->name())
                                                                   , m_rect(rect)
@@ -27,7 +27,7 @@ TextureImage::TextureImage(const PTexture2D& texture, Rectf rect) : Object(textu
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Object(texture.app(), EGE_OBJECT_UID_TEXTURE_IMAGE)
+TextureImage::TextureImage(const TextureImage& texture, const Rectf& rect) : Object(EGE_OBJECT_UID_TEXTURE_IMAGE)
                                                                            , m_name(texture.name())
                                                                            , m_texture(texture.m_texture)
                                                                            , m_envMode(texture.m_envMode)

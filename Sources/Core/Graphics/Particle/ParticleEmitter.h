@@ -28,7 +28,7 @@ class ParticleEmitter : public SceneNodeObject
 {
   public:
 
-    ParticleEmitter(Application* app, const String& name);
+    ParticleEmitter(Engine& engine, const String& name);
     virtual ~ParticleEmitter();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -112,6 +112,11 @@ class ParticleEmitter : public SceneNodeObject
     /*! Adds object render data for rendering with given renderer. */
     bool addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 
+  protected:
+
+    /*! Returns engine object. */
+    Engine& engine() const;
+
   private:
 
     /*! Returns TRUE if there is no available space for new particle. */
@@ -175,6 +180,11 @@ class ParticleEmitter : public SceneNodeObject
     ParticleDataArray m_particles;
     /*! List of affectors. */
     ParticleAffectorList m_affectors;
+
+  private:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

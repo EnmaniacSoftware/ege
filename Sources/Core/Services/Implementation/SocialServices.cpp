@@ -1,6 +1,6 @@
 #include "Core/Services/Interface/SocialServices.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KSocialServicesDebugName = "EGESocialServices";
@@ -8,7 +8,8 @@ const char* KSocialServicesDebugName = "EGESocialServices";
 EGE_DEFINE_NEW_OPERATORS(SocialServices)
 EGE_DEFINE_DELETE_OPERATORS(SocialServices)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SocialServices::SocialServices(Application* application) : m_application(application)
+SocialServices::SocialServices(Engine& engine) 
+: m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,8 +17,16 @@ SocialServices::~SocialServices()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Application* SocialServices::app() const
+Engine& SocialServices::engine() const
 {
-  return m_application;
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AdNetworkList SocialServices::adNetworksAvailable() const
+{
+  AdNetworkList list;
+  return list;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

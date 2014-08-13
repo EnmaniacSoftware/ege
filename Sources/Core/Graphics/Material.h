@@ -17,16 +17,18 @@ class Material : public Object
 {
   public:
 
-    Material(Application* app);
+    Material();
    ~Material();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
+  operators:
 
     bool operator == (const Material& other) const;
     bool operator != (const Material& other) const;
+
+  public:
 
     /*! Returns TRUE if material is valid. 
      *  @note Material is considered valid if at least one pass is defined.

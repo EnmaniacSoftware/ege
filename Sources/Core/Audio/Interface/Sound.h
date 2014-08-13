@@ -18,7 +18,6 @@ EGE_NAMESPACE_BEGIN
 const s32 KRepeatSoundForever = -1;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioCodec;
-class Application;
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Sound : public Object
@@ -114,7 +113,7 @@ class Sound : public Object
   protected:
 
     /*! Constructor available only for actual implementations. */
-    Sound(Application* app, const String& name, const PDataBuffer& data);
+    Sound(const String& name, const PDataBuffer& data);
     /*! Notifies sound has finished playback. */
     void notifyFinished();
     /*! Notifies sound has stopped playback. */

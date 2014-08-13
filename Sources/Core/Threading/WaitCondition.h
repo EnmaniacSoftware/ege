@@ -15,7 +15,7 @@ class WaitCondition : public Object
 {
   public:
 
-    WaitCondition(Application* app);
+    WaitCondition();
    ~WaitCondition();
 
     EGE_DECLARE_NEW_OPERATORS

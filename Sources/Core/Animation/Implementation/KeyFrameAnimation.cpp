@@ -9,16 +9,17 @@ static const char* KKeyFrameAnimationDebugName = "EGEKeyFrameAnimation";
 EGE_DEFINE_NEW_OPERATORS(KeyFrameAnimation)
 EGE_DEFINE_DELETE_OPERATORS(KeyFrameAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-KeyFrameAnimation::KeyFrameAnimation(Application* app, const String& name) : Object(app)
-                                                                           , m_name(name)
-                                                                           , m_state(EStateStopped)
+KeyFrameAnimation::KeyFrameAnimation(Engine& engine, const String& name) : Object()
+                                                                         , m_engine(engine)
+                                                                         , m_name(name)
+                                                                         , m_state(EStateStopped)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 KeyFrameAnimation::~KeyFrameAnimation()
 {
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult KeyFrameAnimation::addSequencer(const PSequencer& sequencer)
 {
   EGEResult result = EGE_SUCCESS;
@@ -216,6 +217,11 @@ const String& KeyFrameAnimation::name() const
 PSequencer KeyFrameAnimation::currentSequencer() const
 {
   return m_currentSequencer;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& KeyFrameAnimation::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

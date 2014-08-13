@@ -1,7 +1,7 @@
 #include "Core/Crypto/Interface/CryptographicHash.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CryptographicHash::CryptographicHash()
@@ -27,3 +27,5 @@ PDataBuffer CryptographicHash::result()
   return m_result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

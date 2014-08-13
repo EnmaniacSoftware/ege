@@ -15,7 +15,7 @@ class PurchaseServices
 {
   public:
   
-    PurchaseServices(Application* application);
+    PurchaseServices(Engine& engine);
     virtual ~PurchaseServices();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -42,6 +42,16 @@ class PurchaseServices
     virtual EGEResult purchase(const String& product) = 0;
     /*! Restores all purchases made for so far. */
     virtual EGEResult restoreAll() = 0;
+
+  protected:
+
+    /*! Returns pointer to application object. */
+    Engine& engine() const;
+
+  private:
+  
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

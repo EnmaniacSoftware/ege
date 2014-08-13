@@ -1,4 +1,3 @@
-#include "Core/Application/Application.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Overlay/ImageOverlay.h"
 #include "Core/Resource/ResourceMaterial.h"
@@ -11,7 +10,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
+ImageOverlay::ImageOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
 {
   initialize();
 }
@@ -41,7 +40,7 @@ void ImageOverlay::initialize()
   // call base class
   Overlay::initialize();
 
-  m_renderData  = RenderObjectFactory::CreateQuadXY(app(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, 
+  m_renderData  = RenderObjectFactory::CreateQuadXY(engine(), "overlay_" + name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, 
                                                     RenderObjectFactory::VS_V2_T2, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLE_STRIPS,
                                                     NVertexBuffer::UT_STATIC_WRITE);
 }

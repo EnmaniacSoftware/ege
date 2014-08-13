@@ -6,10 +6,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBuffer::VertexBuffer(Application* app, const String& name, const VertexDeclaration& vertexDeclaration) 
-: Component(app, EGE_OBJECT_UID_VERTEX_BUFFER, name), 
-  m_locked(false), 
-  m_vertexDeclaration(vertexDeclaration)
+VertexBuffer::VertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration) : Component(EGE_OBJECT_UID_VERTEX_BUFFER, name)
+                                                                                           , m_locked(false)
+                                                                                           , m_vertexDeclaration(vertexDeclaration)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

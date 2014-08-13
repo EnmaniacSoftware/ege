@@ -5,13 +5,13 @@
 #include "Core/Graphics/Material.h"
 #include "EGERenderer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SceneNodeObject)
 EGE_DEFINE_DELETE_OPERATORS(SceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(NULL, uid) 
+SceneNodeObject::SceneNodeObject(const String& name, u32 uid) : Object(uid) 
                                                               , m_name(name)
                                                               , m_parentNode(NULL) 
                                                               , m_visible(true)
@@ -135,3 +135,5 @@ bool SceneNodeObject::SLIGHTLESS::operator()( const CLight* pcLight1, const CLig
 // PROTECTED
 
 */
+
+EGE_NAMESPACE_END

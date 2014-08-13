@@ -11,8 +11,8 @@ static const char* KResourceSequencerDebugName = "EGEResourceManager";
 EGE_DEFINE_NEW_OPERATORS(ResourceSequencer)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSequencer::ResourceSequencer(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SEQUENCE), 
-                                                                               m_repeatable(false)
+ResourceSequencer::ResourceSequencer(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SEQUENCE) 
+                                                                           , m_repeatable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,9 +20,9 @@ ResourceSequencer::~ResourceSequencer()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSequencer::Create(Application* app, ResourceGroup* group)
+PResource ResourceSequencer::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceSequencer(app, group);
+  return ege_new ResourceSequencer(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSequencer::name() const

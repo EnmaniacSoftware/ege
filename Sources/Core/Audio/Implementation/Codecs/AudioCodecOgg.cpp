@@ -8,9 +8,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AudioCodecOgg)
-EGE_DEFINE_DELETE_OPERATORS(AudioCodecOgg)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function clipping given value to S16 range. Taken from AIRPLAY SDK. */
 static s16 ClipToS16(s32 value)
 {
@@ -31,8 +28,8 @@ static s16 ClipToS16(s32 value)
   return static_cast<s16>(value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream), 
-                                                          m_codecStream(NULL)
+AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream)
+                                                        , m_codecStream(NULL)
 {
   reset();
 }

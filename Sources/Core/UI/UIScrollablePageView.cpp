@@ -12,8 +12,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIScrollablePageView)
 EGE_DEFINE_DELETE_OPERATORS(UIScrollablePageView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIScrollablePageView::UIScrollablePageView(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: UIScrollView(app, name, EGE_OBJECT_UID_UI_SCROLLABLE_PAGE_VIEW, deleteFunc)
+UIScrollablePageView::UIScrollablePageView(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: UIScrollView(engine, name, EGE_OBJECT_UID_UI_SCROLLABLE_PAGE_VIEW, deleteFunc)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,10 +21,10 @@ UIScrollablePageView::~UIScrollablePageView()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget UIScrollablePageView::Create(Application* app, const String& name)
+PWidget UIScrollablePageView::Create(Engine& engine, const String& name)
 {
   // allocate object
-  PUIScrollablePageView object = ege_new UIScrollablePageView(app, name);
+  PUIScrollablePageView object = ege_new UIScrollablePageView(engine, name);
   if (NULL != object)
   {
     // construct
@@ -50,7 +50,7 @@ EGEResult UIScrollablePageView::construct()
   }
 
   // allocate page indicator
-  m_pageIndicator = UIPageIndicator::Create(app(), name() + "-page-indicator");
+  m_pageIndicator = UIPageIndicator::Create(engine(), name() + "-page-indicator");
   if (NULL == m_pageIndicator)
   {
     // error!

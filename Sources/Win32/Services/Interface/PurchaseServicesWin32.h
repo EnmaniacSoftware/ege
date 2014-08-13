@@ -13,7 +13,7 @@ class PurchaseServicesWin32 : public PurchaseServicesNull
 {
   public:
     
-    PurchaseServicesWin32(Application* application);
+    PurchaseServicesWin32(Engine& engine);
    ~PurchaseServicesWin32();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

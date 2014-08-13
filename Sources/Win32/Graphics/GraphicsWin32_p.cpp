@@ -5,7 +5,7 @@
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include "EGEDevice.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(GraphicsPrivate)
@@ -24,7 +24,7 @@ EGEResult GraphicsPrivate::construct()
   EGEResult result = EGE_SUCCESS;
 
   // allocate render window
-  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(d_func()->app(), d_func()->m_params);
+  RenderWindowOGLWin32* renderWindow = ege_new RenderWindowOGLWin32(d_func()->engine(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!
@@ -39,7 +39,7 @@ EGEResult GraphicsPrivate::construct()
 
   // create render system
 #if EGE_RENDERING_OPENGL_FIXED 
-  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->app());
+  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->engine());
 #else
   d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->app());
 #endif // EGE_RENDERING_OPENGL_FIXED
@@ -61,3 +61,5 @@ EGEResult GraphicsPrivate::construct()
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

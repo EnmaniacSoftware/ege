@@ -4,6 +4,8 @@
 #include "EGE.h"
 #include "EGEOpenGL.h"
 
+EGE_NAMESPACE_BEGIN
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef signed long int GLintptr;
 typedef signed long int GLsizeiptr;
@@ -236,7 +238,8 @@ typedef void (GL_APIENTRYP PFNGLGETPROGRAMINFOLOGPROC) (GLuint program, GLsizei 
 
 extern PFNGLGETSHADERINFOLOGPROC glGetShaderInfoLog;
 extern PFNGLGETPROGRAMINFOLOGPROC glGetProgramInfoLog;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_WIN32_GRAPHICS_OPENGL_EXTENSIONSOGLWIN32_H

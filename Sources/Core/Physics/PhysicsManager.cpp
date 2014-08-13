@@ -12,8 +12,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PhysicsManager)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::PhysicsManager(Application* app) : Object(app),
-                                                   m_p(NULL)
+PhysicsManager::PhysicsManager() : Object()
+                                 , m_p(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

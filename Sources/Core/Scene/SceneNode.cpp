@@ -14,12 +14,12 @@ EGE_DEFINE_NEW_OPERATORS(SceneNode)
 EGE_DEFINE_DELETE_OPERATORS(SceneNode)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SceneNode::SceneNode(const String& name, SceneNode* parent, SceneManager* manager, EGEPhysics::ComponentType componentType)
-: Object(manager->app())
-, Node(manager->app(), name, parent) 
+: Object()
+, Node(name, parent) 
 , m_manager(manager)
 , m_childrenNeedUpdated(false)
 {
-  m_physics = ege_new PhysicsComponent(manager->app(), "node-physics-" + name, componentType);
+  m_physics = ege_new PhysicsComponent(manager->engine(), "node-physics-" + name, componentType);
   if (m_physics)
   {
     ege_connect(m_physics, transformationChanged, this, SceneNode::onTransformationChanged);
@@ -75,7 +75,7 @@ PSceneNodeObject SceneNode::attachedObject(const String& name) const
 void SceneNode::removeObject(const String& name)
 {
   // go thru all objects
-  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     SceneNodeObject* object = *iter;
 

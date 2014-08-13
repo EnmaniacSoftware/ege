@@ -16,9 +16,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(File)
 EGE_DEFINE_DELETE_OPERATORS(File)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-File::File(const String& filePath) : Object(NULL, EGE_OBJECT_UID_FILE), 
-                                     m_p(NULL), 
-                                     m_filePath(filePath)
+File::File(const String& filePath) : Object(EGE_OBJECT_UID_FILE)
+                                   , m_p(NULL)
+                                   , m_filePath(filePath)
 {
   m_p = ege_new FilePrivate(this);
 }

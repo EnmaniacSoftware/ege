@@ -28,7 +28,7 @@ class ResourceData : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceGroup* group);
+    static PResource Create(Engine& engine, ResourceGroup* group);
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -44,7 +44,7 @@ class ResourceData : public IResource
 
   private:
 
-    ResourceData(Application* app, ResourceGroup* group);
+    ResourceData(Engine& engine, ResourceGroup* group);
     /*! Returns whether data is NULL terminated.*/
     bool isNulled() const { return m_nulled; }
 

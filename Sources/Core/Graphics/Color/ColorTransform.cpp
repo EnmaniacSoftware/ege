@@ -4,13 +4,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ColorTransform::ColorTransform() : m_additionComponent(Color::NONE), 
-                                   m_multiplicationComponent(Color::WHITE)
+ColorTransform::ColorTransform() : m_additionComponent(Color::NONE)
+                                 , m_multiplicationComponent(Color::WHITE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ColorTransform::ColorTransform(const Color& addition, const Color& multiplication) : m_additionComponent(addition),
-                                                                                     m_multiplicationComponent(multiplication)
+ColorTransform::ColorTransform(const Color& addition, const Color& multiplication) : m_additionComponent(addition)
+                                                                                   , m_multiplicationComponent(multiplication)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

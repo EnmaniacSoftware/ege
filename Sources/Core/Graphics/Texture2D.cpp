@@ -1,21 +1,22 @@
 #include "Core/Graphics/Texture2D.h"
-#include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
+#include "EGEEngine.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Texture2D)
 EGE_DEFINE_DELETE_OPERATORS(Texture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2D::Texture2D(Application* app, const String& name, IHardwareResourceProvider* provider) : Object(app, EGE_OBJECT_UID_TEXTURE_2D), 
-                                                                                                  m_name(name), 
-                                                                                                  m_width(0), 
-                                                                                                  m_height(0), 
-                                                                                                  m_format(PF_UNKNOWN),
-                                                                                                  m_provider(provider)
+Texture2D::Texture2D(Engine& engine, const String& name, IHardwareResourceProvider* provider) : Object(EGE_OBJECT_UID_TEXTURE_2D)
+                                                                                              , m_engine(engine)
+                                                                                              , m_name(name)
+                                                                                              , m_width(0)
+                                                                                              , m_height(0)
+                                                                                              , m_format(PF_UNKNOWN)
+                                                                                              , m_provider(provider)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ Texture2D::~Texture2D()
   // remove render target
   if (NULL != m_target)
   {
-    app()->graphics()->removeRenderTarget(m_target->name());
+    engine().graphics()->removeRenderTarget(m_target->name());
     m_target = NULL;
   }
 }
@@ -59,3 +60,10 @@ const String& Texture2D::name() const
   return m_name; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& Texture2D::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

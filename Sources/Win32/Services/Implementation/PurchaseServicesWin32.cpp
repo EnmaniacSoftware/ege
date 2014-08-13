@@ -1,9 +1,9 @@
 #include "Win32/Services/Interface/PurchaseServicesWin32.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PurchaseServicesWin32::PurchaseServicesWin32(Application* application) : PurchaseServicesNull(application)
+PurchaseServicesWin32::PurchaseServicesWin32(Engine& engine) : PurchaseServicesNull(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -11,3 +11,5 @@ PurchaseServicesWin32::~PurchaseServicesWin32()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

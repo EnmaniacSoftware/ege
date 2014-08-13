@@ -3,13 +3,13 @@
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Texture2DOGL::Texture2DOGL(Application* app, const String& name, IHardwareResourceProvider* provider) : Texture2D(app, name, provider) 
-                                                                                                      , m_id(0)
-                                                                                                      , m_internalFormat(0)
-                                                                                                      , m_typeFormat(0)
+Texture2DOGL::Texture2DOGL(Engine& engine, const String& name, IHardwareResourceProvider* provider) : Texture2D(engine, name, provider) 
+                                                                                                    , m_id(0)
+                                                                                                    , m_internalFormat(0)
+                                                                                                    , m_typeFormat(0)
 {
   glGenTextures(1, &m_id);
   OGL_CHECK()
@@ -224,3 +224,5 @@ GLuint Texture2DOGL::id() const
   return m_id; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

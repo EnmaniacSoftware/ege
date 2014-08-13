@@ -74,7 +74,9 @@ class Texture2D : public Object
   protected:
 
     /*! Constructing only via RenderSystem. */
-    Texture2D(Application* app, const String& name, IHardwareResourceProvider* provider);
+    Texture2D(Engine& engine, const String& name, IHardwareResourceProvider* provider);
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   protected:
 
@@ -90,6 +92,11 @@ class Texture2D : public Object
     PixelFormat m_format;
     /*! Texture provider used to create texture. */
     IHardwareResourceProvider* m_provider;
+
+  private:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

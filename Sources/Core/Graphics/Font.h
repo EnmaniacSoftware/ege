@@ -17,11 +17,13 @@ class Font : public Object
 {
   public:
 
-    Font(Application* app, s32 height, const Map<Char, GlyphData>& glyphData);
+    Font(s32 height, const Map<Char, GlyphData>& glyphData);
    ~Font();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Returns TRUE if material is valid. */
     bool isValid() const;

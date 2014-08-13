@@ -36,7 +36,7 @@ class Shader : public Object
   protected:
 
     /*! Constructing only via RenderSystem. */
-    Shader(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
+    Shader(const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
 
   private:
 
@@ -47,16 +47,6 @@ class Shader : public Object
     /*! Resource provider used to create shader. */
     IHardwareResourceProvider* m_provider;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline const String& Shader::name() const 
-{ 
-  return m_name; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline EGEGraphics::ShaderType Shader::type() const
-{
-  return m_type;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

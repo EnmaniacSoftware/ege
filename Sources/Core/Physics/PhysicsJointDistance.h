@@ -13,7 +13,7 @@ class PhysicsJointDistance : public PhysicsJoint
 {
   public:
 
-    PhysicsJointDistance(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB);
+    PhysicsJointDistance(Engine& engine, PPhysicsComponent bodyA, PPhysicsComponent bodyB);
     virtual ~PhysicsJointDistance();
 
     EGE_DECLARE_NEW_OPERATORS

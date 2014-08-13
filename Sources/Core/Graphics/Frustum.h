@@ -13,11 +13,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Frustum : public Object
+class Frustum
 {
   public:
 
-    Frustum(Application* app, const Matrix4f& viewMatrix);
+    Frustum(const Matrix4f& viewMatrix);
     virtual ~Frustum();
 
     EGE_DECLARE_NEW_OPERATORS

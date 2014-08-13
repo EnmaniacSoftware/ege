@@ -10,19 +10,19 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Image)
 EGE_DEFINE_DELETE_OPERATORS(Image)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Image::Image(Application* app) : Object(app, EGE_OBJECT_UID_IMAGE), 
-                                 m_format(PF_UNKNOWN), 
-                                 m_rowLength(0), 
-                                 m_width(0), 
-                                 m_height(0),
-                                 m_premultiplied(false),
-                                 m_rowAlignment(1)
+Image::Image() : Object(EGE_OBJECT_UID_IMAGE)
+               , m_format(PF_UNKNOWN)
+               , m_rowLength(0)
+               , m_width(0)
+               , m_height(0)
+               , m_premultiplied(false)
+               , m_rowAlignment(1)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Image::Image(Application* app, s32 width, s32 height, PixelFormat format) : Object(app, EGE_OBJECT_UID_IMAGE),
-                                                                            m_premultiplied(false),
-                                                                            m_rowAlignment(1)
+Image::Image(s32 width, s32 height, PixelFormat format) : Object(EGE_OBJECT_UID_IMAGE)
+                                                        , m_premultiplied(false)
+                                                        , m_rowAlignment(1)
 {
   // allocate empty image
   allocateData(width, height, format);

@@ -15,7 +15,7 @@ class ColorTransform
     ColorTransform(const Color& addition, const Color& multiplication);
    ~ColorTransform();
 
-  public:
+  operators:
 
     bool operator == (const ColorTransform& other) const;
     bool operator != (const ColorTransform& other) const;

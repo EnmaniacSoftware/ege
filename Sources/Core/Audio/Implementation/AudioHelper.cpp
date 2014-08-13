@@ -1,4 +1,4 @@
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 #include "Core/Audio/Interface/AudioHelper.h"
 #include "Core/Audio/Interface/Sound.h"
@@ -8,14 +8,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSound AudioHelper::CreateSound(Application* application, const String& name, const String& resourceGroupName)
+PSound AudioHelper::CreateSound(Engine& engine, const String& name, const String& resourceGroupName)
 {
-  EGE_ASSERT(NULL != application);
-
   PSound sound;
 
   // find sound resource
-  PResourceSound soundResource = application->resourceManager()->soundResource(name, resourceGroupName);
+  PResourceSound soundResource = engine.resourceManager()->soundResource(name, resourceGroupName);
   if (NULL != soundResource)
   {
     // create sound instance
@@ -25,12 +23,10 @@ PSound AudioHelper::CreateSound(Application* application, const String& name, co
   return sound;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PSound AudioHelper::CreateSoundAndPlay(Application* application, const String& name, s32 repeatCount, const String& resourceGroupName)
+PSound AudioHelper::CreateSoundAndPlay(Engine& engine, const String& name, s32 repeatCount, const String& resourceGroupName)
 {
-  EGE_ASSERT(NULL != application);
-
   // create sound
-  PSound sound = CreateSound(application, name, resourceGroupName);
+  PSound sound = CreateSound(engine, name, resourceGroupName);
   if (NULL != sound)
   {
     // play
@@ -47,6 +43,7 @@ PSound AudioHelper::CreateSoundAndPlay(Application* application, const String& n
 PSoundEffect AudioHelper::FadeIn(PSound& sound, const Time& duration)
 {
   EGE_ASSERT(0 < duration.microseconds());
+  EGE_ASSERT(NULL != sound);
 
   // create effect
   PSoundEffect effect = ege_new SoundEffectFadeIn(duration);
@@ -66,6 +63,7 @@ PSoundEffect AudioHelper::FadeIn(PSound& sound, const Time& duration)
 PSoundEffect AudioHelper::FadeOut(PSound& sound, const Time& duration)
 {
   EGE_ASSERT(0 < duration.microseconds());
+  EGE_ASSERT(NULL != sound);
 
   // create effect
   PSoundEffect effect = ege_new SoundEffectFadeOut(duration);

@@ -4,7 +4,7 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEResources.h"
 #include "EGEShader.h"
@@ -21,7 +21,7 @@ static const char* KResourceProgramDebugName = "EGEResourceProgram";
 EGE_DEFINE_NEW_OPERATORS(ResourceProgram)
 EGE_DEFINE_DELETE_OPERATORS(ResourceProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceProgram::ResourceProgram(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PROGRAM)
+ResourceProgram::ResourceProgram(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_PROGRAM)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ ResourceProgram::~ResourceProgram()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceProgram::Create(Application* app, ResourceGroup* group)
+PResource ResourceProgram::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceProgram(app, group);
+  return ege_new ResourceProgram(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceProgram::name() const
@@ -102,7 +102,7 @@ EGEResult ResourceProgram::load()
         }
 
         // request program
-        app()->graphics()->hardwareResourceProvider()->requestCreateProgram(name(), shaders, ege_make_slot(this, ResourceProgram::onRequestComplete));
+        engine().graphics()->hardwareResourceProvider()->requestCreateProgram(name(), shaders, ege_make_slot(this, ResourceProgram::onRequestComplete));
 
         // set state
         m_state = STATE_LOADING;
@@ -137,7 +137,7 @@ void ResourceProgram::unload()
     }
 
     // schedule for destroy
-    app()->graphics()->hardwareResourceProvider()->requestDestroyProgram(m_program);
+    engine().graphics()->hardwareResourceProvider()->requestDestroyProgram(m_program);
 
     // clean up
     m_program = NULL; 

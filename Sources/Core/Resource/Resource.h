@@ -36,7 +36,7 @@ class IResource : public Object
 
   public:
 
-    IResource(Application* app, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL);
+    IResource(Engine& engine, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~IResource();
 
     /*! Initializes resource from XML. 
@@ -66,6 +66,8 @@ class IResource : public Object
 
     /*! Returns pointer to owning group. */
     ResourceGroup* group() const;
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   protected:
 
@@ -78,6 +80,8 @@ class IResource : public Object
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Type name. */
     String m_typeName;
     /*! Pointer to owning resource group. */

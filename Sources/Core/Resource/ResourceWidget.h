@@ -31,7 +31,7 @@ class ResourceWidget : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceGroup* group);
+    static PResource Create(Engine& engine, ResourceGroup* group);
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -47,7 +47,7 @@ class ResourceWidget : public IResource
 
   private:
 
-    ResourceWidget(Application* app, ResourceGroup* group);
+    ResourceWidget(Engine& engine, ResourceGroup* group);
     /*! Processes child data. */
     EGEResult processChild(const PXmlElement& tag);
     /*! Processes frame data. */

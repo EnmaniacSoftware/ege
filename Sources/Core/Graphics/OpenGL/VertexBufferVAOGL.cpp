@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVA::VertexBufferVA(Application* app, const String& name, const VertexDeclaration& vertexDeclaration) : VertexBuffer(app, name, vertexDeclaration)
+VertexBufferVA::VertexBufferVA(const String& name, const VertexDeclaration& vertexDeclaration) : VertexBuffer(name, vertexDeclaration)
 {
   m_buffer = ege_new DataBuffer();
 }

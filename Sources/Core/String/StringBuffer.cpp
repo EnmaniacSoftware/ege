@@ -7,7 +7,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(StringBuffer)
 EGE_DEFINE_DELETE_OPERATORS(StringBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-StringBuffer::StringBuffer() : Object(NULL, EGE_OBJECT_UID_STRING_BUFFER)
+StringBuffer::StringBuffer() : Object(EGE_OBJECT_UID_STRING_BUFFER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

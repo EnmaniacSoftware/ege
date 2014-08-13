@@ -2,12 +2,12 @@
 #include "Core/Graphics/Render/Implementation/BatchedRenderQueue.h"
 #include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderQueue::RenderQueue(Application* app, u32 uid, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) : Object(app, uid),
-                                                                                                                    m_priority(priority),
-                                                                                                                    m_primitiveType(primitiveType)
+RenderQueue::RenderQueue(u32 uid, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) : Object(uid)
+                                                                                                , m_priority(priority)
+                                                                                                , m_primitiveType(primitiveType)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -71,3 +71,4 @@ void RenderQueue::render(IComponentRenderer& renderer)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

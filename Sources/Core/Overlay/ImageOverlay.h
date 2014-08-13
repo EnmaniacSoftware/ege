@@ -15,12 +15,14 @@ class ImageOverlay : public Overlay
 {
   public: 
 
-    ImageOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    ImageOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~ImageOverlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
   
+  public:
+
     /*! @see Overlay::addForRendering. */
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
 

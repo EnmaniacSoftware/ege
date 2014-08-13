@@ -17,7 +17,7 @@ class WidgetFrame
 {
   public: 
 
-    WidgetFrame(Application* app);
+    WidgetFrame(Engine& engine);
    ~WidgetFrame();
     
     EGE_DECLARE_NEW_OPERATORS

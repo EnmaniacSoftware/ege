@@ -12,7 +12,7 @@ const char* KEventManagerDebugName = "EGEEventManager";
 EGE_DEFINE_NEW_OPERATORS(EventManager)
 EGE_DEFINE_DELETE_OPERATORS(EventManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EventManager::EventManager(Application* app) : Object(app)
+EventManager::EventManager() : Object()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,7 +25,7 @@ EventManager::~EventManager()
 EGEResult EventManager::construct()
 {
   // create mutex
-  m_mutex = ege_new Mutex(app());
+  m_mutex = ege_new Mutex();
   if (NULL == m_mutex)
   {
     // error!
@@ -71,7 +71,7 @@ void EventManager::update(const Time& time)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult EventManager::send(s32 id, bool immediate)
 {
-  PEvent event = ege_new Event(app(), id);
+  PEvent event = ege_new Event(id);
   if (NULL == event)
   {
     // error!
@@ -95,7 +95,7 @@ EGEResult EventManager::send(s32 id, bool immediate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult EventManager::send(s32 id, s32 data, bool immediate)
 {
-  PEvent event = ege_new Event(app(), id);
+  PEvent event = ege_new Event(id);
   if (NULL == event)
   {
     // error!
@@ -128,7 +128,7 @@ EGEResult EventManager::send(s32 id, s32 data, bool immediate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult EventManager::send(s32 id, float32 data, bool immediate)
 {
-  PEvent event = ege_new Event(app(), id);
+  PEvent event = ege_new Event(id);
   if (NULL == event)
   {
     // error!
@@ -161,7 +161,7 @@ EGEResult EventManager::send(s32 id, float32 data, bool immediate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult EventManager::send(s32 id, PObject data, bool immediate)
 {
-  PEvent event = ege_new Event(app(), id);
+  PEvent event = ege_new Event(id);
   if (NULL == event)
   {
     // error!

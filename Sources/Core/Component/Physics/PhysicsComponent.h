@@ -36,9 +36,9 @@ class PhysicsComponent : public Component
   public:
 
     /* Constructor used to create non-managable component. */
-    PhysicsComponent();
+    PhysicsComponent(Engine& engine);
     /* Constructor used to create managable component. */
-    PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
+    PhysicsComponent(Engine& engine, const String& name, EGEPhysics::ComponentType type = EGEPhysics::COMPONENT_DYNAMIC);
     virtual ~PhysicsComponent();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -108,11 +108,15 @@ class PhysicsComponent : public Component
 
     /*! Returns pointer to physics manager. */
     PhysicsManager* manager() const { return m_manager; }
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsComponent)
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Type. */
     EGEPhysics::ComponentType m_type;
     /*! Position vector. */

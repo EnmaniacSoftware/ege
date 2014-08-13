@@ -17,8 +17,8 @@ static const char* KResourceSpriteAnimationDebugName = "EGEResourceSpriteAnimati
 EGE_DEFINE_NEW_OPERATORS(ResourceSpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpriteAnimation::ResourceSpriteAnimation(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SPRITE_ANIMATION), 
-                                                                                           m_frameDataInvalid(false)
+ResourceSpriteAnimation::ResourceSpriteAnimation(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SPRITE_ANIMATION)
+                                                                                       , m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ ResourceSpriteAnimation::~ResourceSpriteAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSpriteAnimation::Create(Application* app, ResourceGroup* group)
+PResource ResourceSpriteAnimation::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceSpriteAnimation(app, group);
+  return ege_new ResourceSpriteAnimation(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSpriteAnimation::name() const
@@ -146,7 +146,7 @@ void ResourceSpriteAnimation::unload()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSpriteAnimation ResourceSpriteAnimation::createInstance()
 {
-	PSpriteAnimation object = ege_new SpriteAnimation(app(), name());
+	PSpriteAnimation object = ege_new SpriteAnimation(engine(), name());
   if (NULL != object)
   {
     // set new data
@@ -184,7 +184,7 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   instance->setFrameData(m_frameData);
 
   // create copy of the texture and reset texture rectangle as information is included in frames data
-  PTextureImage texture = ege_new TextureImage(app());
+  PTextureImage texture = ege_new TextureImage();
   texture->copy(m_sheet->textureImage());
   texture->setRect(Rectf::UNIT);
   instance->setTexture(texture);
@@ -243,7 +243,7 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(app(), group());
+  PResourceSequencer seqRes = ResourceSequencer::Create(engine(), group());
   if (NULL == seqRes)
   {
     // error!

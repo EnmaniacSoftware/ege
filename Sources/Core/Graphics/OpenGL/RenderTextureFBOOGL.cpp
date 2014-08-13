@@ -6,11 +6,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTextureFBOOGL::RenderTextureFBOOGL(Application* app, const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
-: RenderTarget(app, params), 
-  m_textureId(textureId), 
-  m_textureTarget(textureTarget), 
-  m_faceTarget(faceTarget)
+RenderTextureFBOOGL::RenderTextureFBOOGL(const Dictionary& params, GLenum textureTarget, GLenum faceTarget, GLuint textureId) 
+: RenderTarget(params)
+, m_textureId(textureId)
+, m_textureTarget(textureTarget)
+, m_faceTarget(faceTarget)
 {
   // get defult FBO id
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &m_defaultFBOId);

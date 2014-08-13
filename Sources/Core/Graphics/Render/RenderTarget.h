@@ -17,7 +17,7 @@ class RenderTarget : public Object
 {
   public:
 
-    RenderTarget(Application* app, const Dictionary& params);
+    explicit RenderTarget(const Dictionary& params);
     virtual ~RenderTarget();
 
     EGE_DECLARE_NEW_OPERATORS

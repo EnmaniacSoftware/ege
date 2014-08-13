@@ -1,11 +1,11 @@
-#include "Core/Application/Application.h"
+#include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
 
 #if EGE_PHYSICS_BOX2D
-#include "Core/Component/Physics/Box2D/PhysicsComponentBox2D_p.h"
+  #include "Core/Component/Physics/Box2D/PhysicsComponentBox2D_p.h"
 #elif EGE_PHYSICS_NULL
-#include "Core/Component/Physics/Null/PhysicsComponentNull_p.h"
+  #include "Core/Component/Physics/Null/PhysicsComponentNull_p.h"
 #endif // EGE_PHYSICS_BOX2D
 
 EGE_NAMESPACE_BEGIN
@@ -15,42 +15,44 @@ EGE_DEFINE_NEW_OPERATORS(PhysicsComponent)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Constructor used to create non-managable component. */
-PhysicsComponent::PhysicsComponent() : Component(NULL, EGE_OBJECT_UID_PHYSICS_COMPONENT, ""),
-                                       m_p(NULL),
-                                       m_type(EGEPhysics::COMPONENT_STATIC), 
-                                       m_position(Vector4f::ZERO), 
-                                       m_linearVelocity(Vector4f::ZERO), 
-                                       m_force(Vector4f::ZERO), 
-                                       m_orientation(Quaternionf::IDENTITY),
-                                       m_transformationMatrix(Matrix4f::IDENTITY),
-                                       m_transformationMatrixValid(false),
-                                       m_mass(1.0f), 
-                                       m_scale(Vector4f::ONE), 
-                                       m_awake(true), 
-                                       m_allowSleep(true),
-                                       m_manager(NULL)
+PhysicsComponent::PhysicsComponent(Engine& engine) : Component(EGE_OBJECT_UID_PHYSICS_COMPONENT, "")
+                                                   , m_p(NULL)
+                                                   , m_engine(engine)
+                                                   , m_type(EGEPhysics::COMPONENT_STATIC)
+                                                   , m_position(Vector4f::ZERO)
+                                                   , m_linearVelocity(Vector4f::ZERO)
+                                                   , m_force(Vector4f::ZERO)
+                                                   , m_orientation(Quaternionf::IDENTITY)
+                                                   , m_transformationMatrix(Matrix4f::IDENTITY)
+                                                   , m_transformationMatrixValid(false)
+                                                   , m_mass(1.0f)
+                                                   , m_scale(Vector4f::ONE)
+                                                   , m_awake(true)
+                                                   , m_allowSleep(true)
+                                                   , m_manager(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Constructor used to create managable component. */
-PhysicsComponent::PhysicsComponent(Application* app, const String& name, EGEPhysics::ComponentType type) 
-: Component(app, EGE_OBJECT_UID_PHYSICS_COMPONENT, name), 
-  m_type(type), 
-  m_position(Vector4f::ZERO), 
-  m_linearVelocity(Vector4f::ZERO), 
-  m_force(Vector4f::ZERO), 
-  m_orientation(Quaternionf::IDENTITY),
-  m_transformationMatrix(Matrix4f::IDENTITY),
-  m_transformationMatrixValid(false),
-  m_mass(1.0f), 
-  m_scale(Vector4f::ONE), 
-  m_awake(true), 
-  m_allowSleep(true)
+PhysicsComponent::PhysicsComponent(Engine& engine, const String& name, EGEPhysics::ComponentType type) 
+: Component(EGE_OBJECT_UID_PHYSICS_COMPONENT, name) 
+, m_engine(engine)
+, m_type(type)
+, m_position(Vector4f::ZERO)
+, m_linearVelocity(Vector4f::ZERO)
+, m_force(Vector4f::ZERO)
+, m_orientation(Quaternionf::IDENTITY)
+, m_transformationMatrix(Matrix4f::IDENTITY)
+, m_transformationMatrixValid(false)
+, m_mass(1.0f)
+, m_scale(Vector4f::ONE)
+, m_awake(true)
+, m_allowSleep(true)
 {
-  m_manager = app->physicsManager();
+  m_manager = engine.physicsManager();
 
   // create private thru manager
-  m_p = ege_new PhysicsComponentPrivate(this, app->physicsManager()->p_func());
+  m_p = ege_new PhysicsComponentPrivate(this, engine.physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::~PhysicsComponent()

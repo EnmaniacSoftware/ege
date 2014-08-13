@@ -13,15 +13,17 @@ EGE_DECLARE_SMART_CLASS(SceneManager, PSceneManager)
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SceneManager : public Object//ISceneNodeListener
+class SceneManager
 {
   public:
 
-    SceneManager(Application* app);
+    SceneManager(Engine& engine);
     virtual ~SceneManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Creates object. */
     EGEResult construct();
@@ -29,6 +31,9 @@ class SceneManager : public Object//ISceneNodeListener
     void update(const Time& time);
     /*! Destroys manager data effectively resetting it. */
     void destroy();
+
+    /*! Returns engine object. */
+    Engine& engine() const;
 
 //    typedef vector<SceneNode*> SceneNodesVector;
  //   typedef vector<CLight*> LightsVector;
@@ -79,6 +84,9 @@ class SceneManager : public Object//ISceneNodeListener
     //CAutoUniformDataSource* getAutoUniformsDataSource( void ) const;                          // gets auto uniforms data source, returns NULL if error
 
   protected:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
 
     //string m_strTypeName;                               // type name
     //string m_strName;                                   // name

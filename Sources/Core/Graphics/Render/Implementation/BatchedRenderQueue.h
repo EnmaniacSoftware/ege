@@ -10,14 +10,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Application;
 EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class BatchedRenderQueue : public RenderQueue
 {
   public:
 
-    BatchedRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
+    BatchedRenderQueue(u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
     virtual ~BatchedRenderQueue();
 
     EGE_DECLARE_NEW_OPERATORS

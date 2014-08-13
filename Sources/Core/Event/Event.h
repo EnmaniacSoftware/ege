@@ -14,18 +14,20 @@ class Event : public Object
 {
   public:
 
-    Event(Application* app, s32 id);
+    Event(s32 id);
     virtual ~Event();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Returns event ID. */
-    s32 id() const { return m_id; }
+    s32 id() const;
     /*1 Sets event data. */
     void setData(PObject data);
     /*! Returns event data. */
-    PObject data() const { return m_data; }
+    PObject data() const;
 
   private:
 

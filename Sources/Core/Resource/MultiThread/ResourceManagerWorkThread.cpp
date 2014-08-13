@@ -1,6 +1,5 @@
 #if EGE_RESOURCEMANAGER_MULTI_THREAD
 
-#include "Core/Application/Application.h"
 #include "Core/Resource/MultiThread/ResourceManagerMT_p.h"
 #include "Core/Resource/MultiThread/ResourceManagerWorkThread.h"
 #include "EGEGraphics.h"
@@ -9,8 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerWorkThread::ResourceManagerWorkThread(Application* app, ResourceManagerPrivate* manager) : Thread(app),
-                                                                                                          m_manager(manager)
+ResourceManagerWorkThread::ResourceManagerWorkThread(ResourceManagerPrivate* manager) : Thread()
+                                                                                      , m_manager(manager)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

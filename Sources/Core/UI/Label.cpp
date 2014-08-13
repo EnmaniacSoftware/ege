@@ -1,5 +1,5 @@
 #include "Core/UI/Label.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
 
@@ -9,14 +9,14 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Label)
 EGE_DEFINE_DELETE_OPERATORS(Label)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Label::Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
+Label::Label(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
 {
   // set default font
-  PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  PResourceFont fontResource = engine.resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
     // add text overlays
-    m_textOverlay = ege_new TextOverlay(app, "text");
+    m_textOverlay = ege_new TextOverlay(engine, "text");
 
     if (NULL != m_textOverlay)
     {
@@ -31,9 +31,9 @@ Label::~Label()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget Label::Create(Application* app, const String& name)
+PWidget Label::Create(Engine& engine, const String& name)
 {
-  return ege_new Label(app, name);
+  return ege_new Label(engine, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Label::isValid() const
@@ -95,7 +95,7 @@ bool Label::initialize(const Dictionary& params)
   // process font
   if (params.contains("font"))
   {
-    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
     if (fontResource)
     {
       setFont(fontResource->font());

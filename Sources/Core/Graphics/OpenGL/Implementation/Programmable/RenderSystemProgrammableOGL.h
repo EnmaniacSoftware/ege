@@ -26,7 +26,7 @@ class RenderSystemProgrammableOGL : public RenderSystemOGL
 {
   public:
 
-    RenderSystemProgrammableOGL(Application* app);
+    RenderSystemProgrammableOGL(Engine& engine);
     virtual ~RenderSystemProgrammableOGL();
 
   private:

@@ -18,11 +18,13 @@ class Overlay : public Object
 {
   public: 
 
-    Overlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    Overlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~Overlay();
     
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Returns TRUE if object is valid. */
     virtual bool isValid() const;
@@ -82,7 +84,7 @@ class Overlay : public Object
 
   protected:
 
-    Overlay(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
+    Overlay(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /*! Invalidates object forcing it to be updated next time it's possible. */
     void invalidate();
     /*! Validates object. */
@@ -96,9 +98,13 @@ class Overlay : public Object
 
     /*! Render component. */
     PRenderComponent m_renderData;
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Name. */
     String m_name;
     /*! Physics component. */

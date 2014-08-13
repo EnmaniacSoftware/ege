@@ -20,7 +20,8 @@ static BuiltInWidget l_widgetsToRegister[] = {  { "dialog", Dialog::Create },
                                                 { "scrollable-page-view", UIScrollablePageView::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WidgetFactory::WidgetFactory(Application* app) : Object(app)
+WidgetFactory::WidgetFactory(Engine& engine) : m_engine(engine)
+                              
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +75,7 @@ PWidget WidgetFactory::createWidget(const String& typeName, const String& name) 
   if (it != m_registeredWidgets.end())
   {
     // create resource
-    widget = it->second.createFunc(app(), name);
+    widget = it->second.createFunc(engine(), name);
   }
 
   return widget;
@@ -83,6 +84,11 @@ PWidget WidgetFactory::createWidget(const String& typeName, const String& name) 
 bool WidgetFactory::isWidgetRegistered(const String& typeName) const
 {
   return m_registeredWidgets.contains(typeName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& WidgetFactory::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

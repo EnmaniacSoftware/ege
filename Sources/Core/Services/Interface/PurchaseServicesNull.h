@@ -14,7 +14,7 @@ class PurchaseServicesNull : public PurchaseServices
 {
   public:
     
-    PurchaseServicesNull(Application* application);
+    PurchaseServicesNull(Engine& engine);
    ~PurchaseServicesNull();
 
   public:

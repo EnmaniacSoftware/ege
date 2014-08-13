@@ -8,9 +8,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KAudioCodecWavDebugName = "EGEAudioCodecWav";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AudioCodecWav)
-EGE_DEFINE_DELETE_OPERATORS(AudioCodecWav)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecWav::AudioCodecWav(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_WAV, stream)
 {
   reset();

@@ -15,7 +15,7 @@ static const char* KConfidentialDBStoreTableColumnName      = "Name";
 static const char* KConfidentialDBStoreTableColumnStrings   = "String";
 static const char* KConfidentialDBStoreTableColumnBlobs     = "Blob";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServicesWin32::DeviceServicesWin32(Application* application) : DeviceServices(application)
+DeviceServicesWin32::DeviceServicesWin32(Engine& engine) : DeviceServices(engine)
 {
   // open database
   if (EGE_SUCCESS != m_database.open(KConfidentialDBName, false, ! File::Exists(KConfidentialDBName)))

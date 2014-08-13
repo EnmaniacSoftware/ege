@@ -44,7 +44,7 @@ class SoundEffect : public Object
 
   protected:
 
-    SoundEffect(u32 uid) : Object(NULL, uid) {}
+    SoundEffect(u32 uid) : Object(uid) {}
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef List<PSoundEffect> SoundEffectList;

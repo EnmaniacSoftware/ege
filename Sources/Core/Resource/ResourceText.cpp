@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceText.h"
 #include "Core/Resource/ResourceManager.h"
-#include "Core/Application/Application.h"
+#include "EGEEngine.h"
 #include "EGEFile.h"
 #include "EGEResources.h"
 #include "EGEMath.h"
@@ -15,7 +15,7 @@ static const char* KResourceTextDebugName = "EGEResourceText";
 EGE_DEFINE_NEW_OPERATORS(ResourceText)
 EGE_DEFINE_DELETE_OPERATORS(ResourceText)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceText::ResourceText(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXT)
+ResourceText::ResourceText(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_TEXT)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,9 +23,9 @@ ResourceText::~ResourceText()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceText::Create(Application* app, ResourceGroup* group)
+PResource ResourceText::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceText(app, group);
+  return ege_new ResourceText(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceText::name() const
@@ -121,9 +121,9 @@ Text ResourceText::text(s32 numerous) const
   s32 index = (-1 != numerous) ? translationIndex(numerous) : 0;
 
   // check if translations for current language exists
-  if (m_translations.contains(app()->language()))
+  if (m_translations.contains(engine().language()))
   {
-    const TextArray& list = m_translations.at(app()->language());
+    const TextArray& list = m_translations.at(engine().language());
 
     index = Math::Clamp(index, static_cast<s32>(0), static_cast<s32>(list.size()) - 1);
     outText = list[index];
@@ -163,7 +163,7 @@ s32 ResourceText::translationIndex(s32 numerous) const
   s32 index = 0;
 
   // TAGE - this probably should end up in some Language class
-  if ("en" == app()->language())
+  if ("en" == engine().language())
   {
     switch (numerous)
     {
@@ -180,7 +180,7 @@ s32 ResourceText::translationIndex(s32 numerous) const
         break;
     }
   }
-  else if ("pl" == app()->language())
+  else if ("pl" == engine().language())
   {
     switch (numerous)
     {

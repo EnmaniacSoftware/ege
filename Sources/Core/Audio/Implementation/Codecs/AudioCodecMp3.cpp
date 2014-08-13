@@ -6,9 +6,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AudioCodecMp3)
-EGE_DEFINE_DELETE_OPERATORS(AudioCodecMp3)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioCodecMp3::AudioCodecMp3(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_MP3, stream)
 {
   reset();

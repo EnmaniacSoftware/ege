@@ -21,7 +21,7 @@ class RenderSystemOGL : public RenderSystem
 {
   public:
 
-    RenderSystemOGL(Application* app);
+    RenderSystemOGL(Engine& engine);
     virtual ~RenderSystemOGL();
 
   protected:

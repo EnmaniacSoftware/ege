@@ -1,9 +1,9 @@
 #include "Core/Services/Interface/SocialServicesNull.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SocialServicesNull::SocialServicesNull(Application* application) : SocialServices(application)
+SocialServicesNull::SocialServicesNull(Engine& engine) : SocialServices(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,3 +45,5 @@ bool SocialServicesNull::isAuthenticated() const
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

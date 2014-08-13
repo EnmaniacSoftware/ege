@@ -11,9 +11,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Thread)
 EGE_DEFINE_DELETE_OPERATORS(Thread)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Thread::Thread(Application* app) : Object(app, EGE_OBJECT_UID_THREAD),
-                                   m_stopping(false),
-                                   m_exitCode(0)
+Thread::Thread() : Object(EGE_OBJECT_UID_THREAD)
+                 , m_stopping(false)
+                 , m_exitCode(0)
 {
   m_p = ege_new ThreadPrivate(this);
 }

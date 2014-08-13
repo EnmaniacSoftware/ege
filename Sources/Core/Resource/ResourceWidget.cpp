@@ -2,7 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/UI/WidgetFrame.h"
 #include "Core/UI/WidgetFactory.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 #include "EGEGraphics.h"
 #include "EGEStringUtils.h"
@@ -18,7 +18,7 @@ static const char* KResourceWidgetDebugName = "EGEResourceWidget";
 EGE_DEFINE_NEW_OPERATORS(ResourceWidget)
 EGE_DEFINE_DELETE_OPERATORS(ResourceWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceWidget::ResourceWidget(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_WIDGET)
+ResourceWidget::ResourceWidget(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_WIDGET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,9 +26,9 @@ ResourceWidget::~ResourceWidget()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceWidget::Create(Application* app, ResourceGroup* group)
+PResource ResourceWidget::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceWidget(app, group);
+  return ege_new ResourceWidget(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceWidget::name() const
@@ -118,7 +118,7 @@ void ResourceWidget::unload()
 PWidget ResourceWidget::createInstance()
 {
   // create instance of widget of a correct type and with given name
-  PWidget object = app()->graphics()->widgetFactory()->createWidget(m_parameters["type"], m_name);
+  PWidget object = engine().graphics()->widgetFactory()->createWidget(m_parameters["type"], m_name);
   if (NULL != object)
   {
     // initialize with dictionary
@@ -142,7 +142,7 @@ PWidget ResourceWidget::createInstance()
     {
       const ChildData& childData = *it;
 
-      PResourceWidget widgetRes = app()->resourceManager()->resource(RESOURCE_NAME_WIDGET, childData.widgetName);
+      PResourceWidget widgetRes = engine().resourceManager()->resource(RESOURCE_NAME_WIDGET, childData.widgetName);
       EGE_ASSERT(widgetRes);
       if (widgetRes)
       {

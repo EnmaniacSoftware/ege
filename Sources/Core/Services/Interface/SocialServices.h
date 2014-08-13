@@ -8,6 +8,7 @@
 #include "EGEString.h"
 #include "EGEList.h"
 #include "EGESignal.h"
+#include "EGEAdNetwork.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -25,7 +26,7 @@ class SocialServices
 {
   public:
   
-    SocialServices(Application* application);
+    SocialServices(Engine& engine);
     virtual ~SocialServices();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -55,9 +56,6 @@ class SocialServices
   
   public:
 
-    /*! Returns pointer to application object. */
-    Application* app() const;
-  
     /*! Starts authentication. */
     virtual EGEResult startAuthentication() = 0;
     /*! Loads achievements. */
@@ -70,11 +68,18 @@ class SocialServices
     virtual EGEResult showScores(const String& scoreTable) = 0;
     /*! Returns TRUE if services are authenticated and ready to be used. */
     virtual bool isAuthenticated() const = 0;
+    /*! Returns list of advertisment network solutions available. */
+    virtual AdNetworkList adNetworksAvailable() const;
+
+  protected:
+
+    /*! Returns pointer to application object. */
+    Engine& engine() const;
 
   private:
-
-    /*! Pointer to application object. */
-    Application* m_application;
+  
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

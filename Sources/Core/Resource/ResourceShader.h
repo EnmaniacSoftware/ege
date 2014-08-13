@@ -30,7 +30,7 @@ class ResourceShader : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceGroup* group);
+    static PResource Create(Engine& engine, ResourceGroup* group);
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -46,7 +46,7 @@ class ResourceShader : public IResource
 
   private:
 
-    ResourceShader(Application* app, ResourceGroup* group);
+    ResourceShader(Engine& engine, ResourceGroup* group);
     /*! Creates shader. */
     EGEResult create();
 

@@ -32,8 +32,8 @@ class ImagedAnimation : public KeyFrameAnimation
 {
   public:
 
-    ImagedAnimation();
-    ImagedAnimation(Application* app, const String& name);
+    explicit ImagedAnimation(Engine& engine);
+    ImagedAnimation(Engine& engine, const String& name);
    ~ImagedAnimation();
 
     using KeyFrameAnimation::play;

@@ -117,7 +117,7 @@ EGEGraphics::BlendFactor MapBlendFactor(const String& name, EGEGraphics::BlendFa
 EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_MATERIAL)
+ResourceMaterial::ResourceMaterial(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_MATERIAL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -125,9 +125,9 @@ ResourceMaterial::~ResourceMaterial()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceMaterial::Create(Application* app, ResourceGroup* group)
+PResource ResourceMaterial::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceMaterial(app, group);
+  return ege_new ResourceMaterial(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceMaterial::name() const
@@ -458,7 +458,7 @@ EGEResult ResourceMaterial::addProgramReference(const PXmlElement& tag, PassData
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PMaterial ResourceMaterial::createInstance() const
 {
-	PMaterial object = ege_new Material(app());
+	PMaterial object = ege_new Material();
   if (object)
   {
     // set new data
@@ -512,7 +512,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
     for (TextureImageList::const_iterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
     {
       // allocate new texture image
-      PTextureImage texImg = ege_new TextureImage(app());
+      PTextureImage texImg = ege_new TextureImage();
       if (NULL == texImg)
       {
         // error!
@@ -593,7 +593,7 @@ EGEResult ResourceMaterial::loadDependencies()
       if (textureImageData.manual)
       {
         // add placeholder only
-        textureImageData.textureImage = ege_new TextureImage(app());
+        textureImageData.textureImage = ege_new TextureImage();
         if (NULL == textureImageData.textureImage)
         {
           // error!
@@ -623,7 +623,7 @@ EGEResult ResourceMaterial::loadDependencies()
         }
 
         // retrieve referred texture
-        TextureImage textureImage(app());
+        TextureImage textureImage;
         if (EGE_SUCCESS != (result = textureImageRes->setInstance(textureImage)))
         {
           // error!

@@ -14,11 +14,11 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_DEPENDANCY "dependancy"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(Application* app, ResourceManager* manager, const String& name) : Object(app), 
-                                                                                               m_manager(manager), 
-                                                                                               m_name(name), 
-                                                                                               m_loaded(false), 
-                                                                                               m_overridable(false)
+ResourceGroup::ResourceGroup(ResourceManager* manager, const String& name) : Object()
+                                                                           , m_manager(manager)
+                                                                           , m_name(name)
+                                                                           , m_loaded(false)
+                                                                           , m_overridable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

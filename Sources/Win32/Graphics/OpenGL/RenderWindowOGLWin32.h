@@ -12,7 +12,7 @@ class RenderWindowOGLWin32 : public RenderWindow
 {
   public:
 
-    RenderWindowOGLWin32(Application* app, const Dictionary& params);
+    RenderWindowOGLWin32(Engine& engine, const Dictionary& params);
     virtual ~RenderWindowOGLWin32();
 
     /*! Creates object. */
@@ -36,7 +36,9 @@ class RenderWindowOGLWin32 : public RenderWindow
     void detectCapabilities();
     /*! @see RenderWindow::isAutoRotated. */
     bool isAutoRotated() const override;
-      
+    /*! Returns engine object. */
+    Engine& engine() const;
+
   private:
 
     /*! Window procedure. */
@@ -44,6 +46,8 @@ class RenderWindowOGLWin32 : public RenderWindow
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Window handle. */
     HWND m_hWnd;
     /*! Window device context. */

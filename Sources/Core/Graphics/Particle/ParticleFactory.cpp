@@ -27,7 +27,8 @@ struct BuiltInAffector
 static BuiltInAffector l_affectorsToRegister[] = {  { "force", ParticleAffectorForce::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleFactory::ParticleFactory(Application* app) : Object(app)
+ParticleFactory::ParticleFactory(Engine& engine) : Object()
+                                                 , m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ PParticleEmitter ParticleFactory::createEmitter(const String& typeName, const St
   if (it != m_registeredEmitters.end())
   {
     // create resource
-    emitter = it->second.m_createFunc(app(), name);
+    emitter = it->second.m_createFunc(engine(), name);
   }
 
   return emitter;
@@ -131,7 +132,7 @@ PParticleAffector ParticleFactory::createAffector(const String& typeName, const 
   if (it != m_registeredAffectors.end())
   {
     // create resource
-    affector = it->second.m_createFunc(app(), name);
+    affector = it->second.m_createFunc(name);
   }
 
   return affector;
@@ -140,6 +141,11 @@ PParticleAffector ParticleFactory::createAffector(const String& typeName, const 
 bool ParticleFactory::isAffectorRegistered(const String& typeName) const
 {
   return m_registeredAffectors.contains(typeName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ParticleFactory::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

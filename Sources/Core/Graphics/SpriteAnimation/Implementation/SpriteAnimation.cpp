@@ -9,17 +9,17 @@
 #include "EGERenderer.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KSpriteAnimationDebugName = "EGESpriteAnimation";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SpriteAnimation::SpriteAnimation(Application* app, const String& name) : KeyFrameAnimation(app, name) 
-                                                                       , m_baseAlignment(ALIGN_TOP_LEFT)
-                                                                       , m_alpha(1.0f)
-                                                                       , m_renderDataNeedsUpdate(false)
-                                                                       , m_transform(Matrix4f::IDENTITY)
-                                                                       , m_displaySize(50, 50)
+SpriteAnimation::SpriteAnimation(Engine& engine, const String& name) : KeyFrameAnimation(engine, name) 
+                                                                     , m_baseAlignment(ALIGN_TOP_LEFT)
+                                                                     , m_alpha(1.0f)
+                                                                     , m_renderDataNeedsUpdate(false)
+                                                                     , m_transform(Matrix4f::IDENTITY)
+                                                                     , m_displaySize(50, 50)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -30,8 +30,9 @@ SpriteAnimation::~SpriteAnimation()
 EGEResult SpriteAnimation::construct()
 {
   // create render data
-  m_renderData = RenderObjectFactory::CreateQuadXY(app(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, RenderObjectFactory::VS_V2_T2_C4, 
-                                                   EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
+  m_renderData = RenderObjectFactory::CreateQuadXY(engine(), name(), Vector4f::ZERO, Vector2f::ONE, ALIGN_TOP_LEFT, false, false, 
+                                                   RenderObjectFactory::VS_V2_T2_C4, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, 
+                                                   NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   if (NULL == m_renderData)
   {
     // error!
@@ -39,7 +40,7 @@ EGEResult SpriteAnimation::construct()
   }
 
   // create local material
-  PMaterial material = ege_new Material(app());
+  PMaterial material = ege_new Material();
   if (NULL == material)
   {
     // error!
@@ -60,7 +61,7 @@ EGEResult SpriteAnimation::construct()
   m_renderData->setMaterial(material);
 
   // create physics data
-  m_physicsData = ege_new PhysicsComponent(app(), name());
+  m_physicsData = ege_new PhysicsComponent(engine(), name());
   if (NULL == m_physicsData)
   {
     // error!
@@ -297,3 +298,5 @@ void SpriteAnimation::onSequencerFrameChanged(s32 frameId)
   m_renderDataNeedsUpdate = true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

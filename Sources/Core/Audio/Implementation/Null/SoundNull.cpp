@@ -1,13 +1,10 @@
 #include "Core/Audio/Implementation/Null/SoundNull.h"
 #include "Core/Audio/Interface/Null/AudioManagerNull.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(SoundNull)
-EGE_DEFINE_DELETE_OPERATORS(SoundNull)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundNull::SoundNull(const String& name, PDataBuffer& data) : Sound(NULL, name, data)
+SoundNull::SoundNull(const String& name, PDataBuffer& data) : Sound(name, data)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,3 +67,5 @@ void SoundNull::pause()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

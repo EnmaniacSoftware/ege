@@ -51,7 +51,7 @@ class UIAbstractScrollbar : public Widget
 
   protected:
 
-    UIAbstractScrollbar(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
+    UIAbstractScrollbar(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /*! Widget override. Constructs object. */
     EGEResult construct() override;
 

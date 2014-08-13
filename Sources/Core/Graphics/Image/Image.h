@@ -19,8 +19,8 @@ class Image : public Object
 
   public:
 
-    Image(Application* app);
-    Image(Application* app, s32 width, s32 height, PixelFormat format);
+    Image();
+    Image(s32 width, s32 height, PixelFormat format);
    ~Image();
 
     EGE_DECLARE_NEW_OPERATORS

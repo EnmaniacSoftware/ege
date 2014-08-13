@@ -15,11 +15,13 @@ class ShaderOGL : public Shader
 {
   public:
 
-    ShaderOGL(Application* app, const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
+    ShaderOGL(const String& name, EGEGraphics::ShaderType type, IHardwareResourceProvider* provider);
     virtual ~ShaderOGL();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! @see Shader::isValid. */
     bool isValid() const override;

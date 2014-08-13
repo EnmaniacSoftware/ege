@@ -56,7 +56,7 @@ class RenderSystemStatistics : public Component
 {
   public:
 
-    RenderSystemStatistics(Application* app, const String& logFileName = "ege-rs-stats.log", u32 recordsCount = 10);
+    RenderSystemStatistics(Engine& engine, const String& logFileName = "ege-rs-stats.log", u32 recordsCount = 10);
    ~RenderSystemStatistics();
 
     /*! Returns current data record. */
@@ -79,9 +79,13 @@ class RenderSystemStatistics : public Component
 
     /*! Clears current record data. */
     void clearCurrentRecord();
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Array containing data records for a number of render frames. */
     DynamicArray<RenderSystemFrameStatisticData> m_records;
     /*! Current record index. */

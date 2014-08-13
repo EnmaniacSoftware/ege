@@ -24,7 +24,7 @@ class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(Application* app, ResourceManager* manager, const String& name = "");
+    ResourceGroup(ResourceManager* manager, const String& name = "");
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS

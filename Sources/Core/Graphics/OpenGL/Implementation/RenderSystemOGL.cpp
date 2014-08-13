@@ -10,19 +10,19 @@
 #include "Core/Graphics/OpenGL/RenderTextureFBOOGL.h"
 #include "Core/Graphics/OpenGL/Texture2DOGL.h"
 #include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGETimer.h"
 #include "EGERenderQueues.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystemOGL::RenderSystemOGL(Application* app) : RenderSystem(app)
-                                                   , m_activeTextureUnit(0)
-                                                   , m_activeTextureUnitsCount(0)
+RenderSystemOGL::RenderSystemOGL(Engine& engine) : RenderSystem(engine)
+                                                 , m_activeTextureUnit(0)
+                                                 , m_activeTextureUnitsCount(0)
 {
   m_blendEnabled = (GL_TRUE == glIsEnabled(GL_BLEND));
   OGL_CHECK()
@@ -177,7 +177,7 @@ PVertexBuffer RenderSystemOGL::createVertexBuffer(const String& name, const Vert
   // check if VBO is available
   if (Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
-    VertexBufferVBO* vertexBuffer = ege_new VertexBufferVBO(app(), name, vertexDeclaration, usage);
+    VertexBufferVBO* vertexBuffer = ege_new VertexBufferVBO(name, vertexDeclaration, usage);
     if ((NULL == vertexBuffer) || (0 == vertexBuffer->id()))
     {
       // error!
@@ -188,7 +188,7 @@ PVertexBuffer RenderSystemOGL::createVertexBuffer(const String& name, const Vert
   }
   else
   {
-    buffer = ege_new VertexBufferVA(app(), name, vertexDeclaration);
+    buffer = ege_new VertexBufferVA(name, vertexDeclaration);
   }
 
   return buffer;
@@ -200,7 +200,7 @@ PIndexBuffer RenderSystemOGL::createIndexBuffer(const String& name, EGEIndexBuff
 
   if (Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
-    IndexBufferVBO* indexBuffer = ege_new IndexBufferVBO(app(), name, usage);
+    IndexBufferVBO* indexBuffer = ege_new IndexBufferVBO(name, usage);
     if ((NULL == indexBuffer) || (0 == indexBuffer->id()))
     {
       // error!
@@ -211,7 +211,7 @@ PIndexBuffer RenderSystemOGL::createIndexBuffer(const String& name, EGEIndexBuff
   }
   else
   {
-    buffer = ege_new IndexBufferVA(app(), name);
+    buffer = ege_new IndexBufferVA(name);
   }
 
   return buffer;
@@ -305,11 +305,11 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
   PRenderTarget target;
   if (Device::HasRenderCapability(ERenderCapabilityFrameBufferObjects))
   {
-    target = ege_new RenderTextureFBOOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
+    target = ege_new RenderTextureFBOOGL(params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
   }
   else
   {
-    target = ege_new RenderTextureCopyOGL(app(), params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
+    target = ege_new RenderTextureCopyOGL(params, GL_TEXTURE_2D, GL_TEXTURE_2D, textureOGL->id());
   }
 
   // check if could not be allocated
@@ -323,7 +323,7 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
   texture->setRenderTarget(target);
 
   // add into render targets
-  app()->graphics()->registerRenderTarget(texture->renderTarget());
+  engine().graphics()->registerRenderTarget(texture->renderTarget());
 
   egeWarning(KOpenGLDebugName) << "Creating render target done" << texture;
 
@@ -332,7 +332,7 @@ PTexture2D RenderSystemOGL::createRenderTexture(const String& name, s32 width, s
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTexture2D RenderSystemOGL::createEmptyTexture(const String& name)
 {
-  Texture2DOGL* texture = ege_new Texture2DOGL(app(), name, this);
+  Texture2DOGL* texture = ege_new Texture2DOGL(engine(), name, this);
   if (NULL != texture)
   {
     EGE_ASSERT(0 <= texture->id());
@@ -584,7 +584,7 @@ void RenderSystemOGL::createAndSetupVAOs()
     for (u32 pass = 0; (pass < material->passCount()) && result; ++pass)
     {
       // create vao
-      PVertexArrayObject vao = ege_new VertexArrayObject(app(), component->name() + String::Format("-vao-%1", pass));
+      PVertexArrayObject vao = ege_new VertexArrayObject(component->name() + String::Format("-vao-%1", pass));
       if ((NULL == vao) || (EGE_SUCCESS != component->addComponent(vao)))
       {
         // error!
@@ -612,3 +612,5 @@ void RenderSystemOGL::createAndSetupVAOs()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

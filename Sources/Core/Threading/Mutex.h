@@ -17,7 +17,7 @@ class Mutex : public Object
 
   public:
 
-    Mutex(Application* app, EGEMutex::EType type = EGEMutex::Normal);
+    Mutex(EGEMutex::EType type = EGEMutex::Normal);
    ~Mutex();
 
     EGE_DECLARE_NEW_OPERATORS

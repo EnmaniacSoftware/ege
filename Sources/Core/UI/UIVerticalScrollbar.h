@@ -15,7 +15,7 @@ class UIVerticalScrollbar : public UIAbstractScrollbar
 {
   public:
 
-    UIVerticalScrollbar(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    UIVerticalScrollbar(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~UIVerticalScrollbar();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -24,7 +24,7 @@ class UIVerticalScrollbar : public UIAbstractScrollbar
   public:
 
     /*! Creates instance of widget. This method is a registration method for factory. */
-    static PWidget Create(Application* app, const String& name);
+    static PWidget Create(Engine& engine, const String& name);
     
   private:
 

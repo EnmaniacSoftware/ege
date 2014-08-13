@@ -8,13 +8,13 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(WidgetFrame)
 EGE_DEFINE_DELETE_OPERATORS(WidgetFrame)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WidgetFrame::WidgetFrame(Application* app) : m_renderDataInvalid(true)
+WidgetFrame::WidgetFrame(Engine& engine) : m_renderDataInvalid(true)
 {
   // create vertex declaration
   VertexDeclaration declaration;
   if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
-    m_renderData  = ege_new RenderComponent(app, "widget-frame", declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_STATIC_WRITE);
+    m_renderData  = ege_new RenderComponent(engine, "widget-frame", declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLES, NVertexBuffer::UT_STATIC_WRITE);
     if (m_renderData)
     {
       m_renderData->indexBuffer()->setIndexSize(EGEIndexBuffer::IS_8BIT);

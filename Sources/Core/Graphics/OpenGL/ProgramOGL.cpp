@@ -11,9 +11,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ProgramOGL)
 EGE_DEFINE_DELETE_OPERATORS(ProgramOGL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProgramOGL::ProgramOGL(Application* app, const String& name, IHardwareResourceProvider* provider) : Program(app, name, provider),
-                                                                                                    m_id(0),
-                                                                                                    m_linked(false)
+ProgramOGL::ProgramOGL(const String& name, IHardwareResourceProvider* provider) : Program(name, provider)
+                                                                                , m_id(0)
+                                                                                , m_linked(false)
 {
   m_id = glCreateProgram();
   OGL_CHECK();

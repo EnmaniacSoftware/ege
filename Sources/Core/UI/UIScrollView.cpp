@@ -14,16 +14,16 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIScrollView)
 EGE_DEFINE_DELETE_OPERATORS(UIScrollView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIScrollView::UIScrollView(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(app, name, uid, deleteFunc),
-                                                                                                            m_state(STATE_IDLE),
-                                                                                                            m_contentSize(Vector2f::ZERO),
-                                                                                                            m_maxOffset(Vector2f::ZERO),
-                                                                                                            m_scrollDirections(DIRECTION_BOTH),
-                                                                                                            m_offset(Vector2f::ZERO),
-                                                                                                            m_decelerationRate(0.95f),
-                                                                                                            m_animationDuration(0.75f),
-                                                                                                            m_throwCoefficient(10.0f),
-                                                                                                            m_scrollbarsNeedUpdate(true)
+UIScrollView::UIScrollView(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, uid, deleteFunc)
+                                                                                                        , m_state(STATE_IDLE)
+                                                                                                        , m_contentSize(Vector2f::ZERO)
+                                                                                                        , m_maxOffset(Vector2f::ZERO)
+                                                                                                        , m_scrollDirections(DIRECTION_BOTH)
+                                                                                                        , m_offset(Vector2f::ZERO)
+                                                                                                        , m_decelerationRate(0.95f)
+                                                                                                        , m_animationDuration(0.75f)
+                                                                                                        , m_throwCoefficient(10.0f)
+                                                                                                        , m_scrollbarsNeedUpdate(true)
 {
   ege_connect(this, sizeChanged, this, UIScrollView::onSizeChanged);
   ege_connect(this, positionChanged, this, UIScrollView::onPositionChanged);
@@ -45,14 +45,14 @@ EGEResult UIScrollView::construct()
   }
 
   // allocate scrollbars
-  m_verticalScroll = UIVerticalScrollbar::Create(app(), name() + "-vertical-scrollbar");
+  m_verticalScroll = UIVerticalScrollbar::Create(engine(), name() + "-vertical-scrollbar");
   if (NULL == m_verticalScroll)
   {
     // error!
     return EGE_ERROR;
   }
 
-  m_horizontalScroll = UIHorizontalScrollbar::Create(app(), name() + "-horizontal-scrollbar");
+  m_horizontalScroll = UIHorizontalScrollbar::Create(engine(), name() + "-horizontal-scrollbar");
   if (NULL == m_horizontalScroll)
   {
     // error!

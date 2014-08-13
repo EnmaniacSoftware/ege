@@ -13,7 +13,7 @@ static const char* KResourceSpriteSheetDebugName = "EGEResourceSpriteSheet";
 EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpritesheet::ResourceSpritesheet(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SPRITE_SHEET)
+ResourceSpritesheet::ResourceSpritesheet(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SPRITE_SHEET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +21,9 @@ ResourceSpritesheet::~ResourceSpritesheet()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSpritesheet::Create(Application* app, ResourceGroup* group)
+PResource ResourceSpritesheet::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceSpritesheet(app, group);
+  return ege_new ResourceSpritesheet(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSpritesheet::name() const

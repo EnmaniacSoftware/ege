@@ -25,7 +25,7 @@ class PhysicsJoint : public Object
 
   protected:
 
-    PhysicsJoint(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, u32 uid);
+    PhysicsJoint(PPhysicsComponent bodyA, PPhysicsComponent bodyB, u32 uid);
 
   private:
 

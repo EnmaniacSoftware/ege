@@ -70,7 +70,7 @@ class VertexBuffer : public Component
   protected:
 
     /*! Constructing only via RenderSystem. */
-    VertexBuffer(Application* app, const String& name, const VertexDeclaration& vertexDeclaration);
+    VertexBuffer(const String& name, const VertexDeclaration& vertexDeclaration);
     /*! Destroys buffer. */
     virtual void destroy();
 

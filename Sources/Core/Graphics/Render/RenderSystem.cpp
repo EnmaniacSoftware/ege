@@ -1,4 +1,4 @@
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGERenderComponent.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Component/Physics/PhysicsComponent.h"
@@ -17,7 +17,7 @@
 #include "EGEOpenGL.h"
 #include "EGEDevice.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KRenderSystemDebugName = "EGERenderSystem";
@@ -37,25 +37,26 @@ u32 CalculateRenderQueueHash(u32 priority, EGEGraphics::RenderPrimitiveType prim
 EGE_DEFINE_NEW_OPERATORS(RenderSystem)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystem::RenderSystem(Application* app) : Object(app)
-                                             , m_state(STATE_NONE)
-                                             , m_textureMinFilter(TF_NEAREST)
-                                             , m_textureMagFilter(TF_NEAREST)
-                                             , m_textureAddressingModeS(AM_CLAMP)
-                                             , m_textureAddressingModeT(AM_CLAMP)
-                                             , m_textureMipMapping(false)
+RenderSystem::RenderSystem(Engine& engine) : Object()
+                                           , m_engine(engine)
+                                           , m_state(STATE_NONE)
+                                           , m_textureMinFilter(TF_NEAREST)
+                                           , m_textureMagFilter(TF_NEAREST)
+                                           , m_textureAddressingModeS(AM_CLAMP)
+                                           , m_textureAddressingModeT(AM_CLAMP)
+                                           , m_textureMipMapping(false)
 {
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystem::~RenderSystem()
 {
-  app()->eventManager()->removeListener(this);
+  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderSystem::construct()
 {
   // create access mutex
-  m_requestsMutex = ege_new Mutex(app());
+  m_requestsMutex = ege_new Mutex();
   if (NULL == m_requestsMutex)
   {
     // error!
@@ -63,7 +64,7 @@ EGEResult RenderSystem::construct()
   }
 
   // subscribe for event notifications
-  if ( ! app()->eventManager()->addListener(this))
+  if ( ! engine().eventManager()->addListener(this))
   {
     // error!
     egeCritical(KRenderSystemDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
@@ -71,7 +72,7 @@ EGEResult RenderSystem::construct()
   }
 
   // add render system statistics component
-  if (EGE_SUCCESS != addComponent(ege_new RenderSystemStatistics(app())))
+  if (EGE_SUCCESS != addComponent(ege_new RenderSystemStatistics(engine())))
   {
     // error!
     return EGE_ERROR_NO_MEMORY;
@@ -185,7 +186,7 @@ void RenderSystem::update()
   else if (STATE_CLOSING == m_state)
   {
     // NOTE: wait till resource manager is done processing
-    if (ResourceManager::STATE_CLOSED == app()->resourceManager()->state())
+    if (ResourceManager::STATE_CLOSED == engine().resourceManager()->state())
     {
       m_state = STATE_CLOSED;
     }
@@ -254,11 +255,11 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
           ! Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects) && 
           RenderQueue::IsSuitable(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component))
       {
-        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
+        queue = RenderQueueFactory::Create(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, component->priority(), component->primitiveType());
       }
       else
       {
-        queue = RenderQueueFactory::Create(app(), EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, component->priority(), component->primitiveType());
+        queue = RenderQueueFactory::Create(EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, component->priority(), component->primitiveType());
       }
 
       // check if properly allocated
@@ -577,3 +578,10 @@ const PRenderComponent& RenderSystem::activeRenderComponent() const
   return m_renderComponent;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& RenderSystem::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

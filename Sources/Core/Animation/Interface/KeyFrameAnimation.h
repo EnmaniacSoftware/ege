@@ -19,7 +19,7 @@ class KeyFrameAnimation : public Object
 {
   public:
 
-    KeyFrameAnimation(Application* app, const String& name);
+    KeyFrameAnimation(Engine& engine, const String& name);
     virtual ~KeyFrameAnimation();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -102,6 +102,8 @@ class KeyFrameAnimation : public Object
 
   protected:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
     /*! Returns current state. */
     State state() const;
 
@@ -126,6 +128,8 @@ class KeyFrameAnimation : public Object
 
   protected:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Current state. */
     State m_state;
     /*! Name. */

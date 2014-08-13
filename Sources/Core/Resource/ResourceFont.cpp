@@ -12,8 +12,8 @@ static const char* KResourceFontDebugName = "EGEResourceFont";
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceFont::ResourceFont(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_FONT),
-                                                                     m_height(0)
+ResourceFont::ResourceFont(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_FONT)
+                                                                 , m_height(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,15 +21,15 @@ ResourceFont::~ResourceFont()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceFont::Create(Application* app, ResourceGroup* group)
+PResource ResourceFont::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceFont(app, group);
+  return ege_new ResourceFont(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceFont::Create(Application* app, ResourceGroup* group, const String& name, PFont font)
+PResource ResourceFont::Create(Engine& engine, ResourceGroup* group, const String& name, PFont font)
 {
   // create empty resource
-  PResourceFont resource = Create(app, group);
+  PResourceFont resource = Create(engine, group);
   if (resource)
   {
     resource->m_name    = name;
@@ -133,7 +133,7 @@ EGEResult ResourceFont::load()
         return EGE_ERROR;
       }
 
-      PFont font = ege_new Font(app(), height(), m_glyphs);
+      PFont font = ege_new Font(height(), m_glyphs);
       if (NULL == font)
       {
         // error!

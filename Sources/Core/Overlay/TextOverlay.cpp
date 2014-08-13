@@ -9,10 +9,10 @@ static const char* KTextOverlayDebugName = "EGETextOverlay";
 EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(app, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc), 
-                                                                                                 m_textDataValid(false),
-                                                                                                 m_renderableCharactersCount(0),
-                                                                                                 m_textAlignment(ALIGN_TOP_LEFT)
+TextOverlay::TextOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc)
+                                                                                             , m_textDataValid(false)
+                                                                                             , m_renderableCharactersCount(0)
+                                                                                             , m_textAlignment(ALIGN_TOP_LEFT)
 {
   initialize();
 }
@@ -181,7 +181,7 @@ void TextOverlay::initialize()
   if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
     // create render buffer
-    m_renderData  = ege_new RenderComponent(app(), "overlay-" + name(), declaration, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
+    m_renderData  = ege_new RenderComponent(engine(), "overlay-" + name(), declaration, EGEGraphics::RP_MAIN_OVERLAY, EGEGraphics::RPT_TRIANGLES,
                                             NVertexBuffer::UT_DYNAMIC_WRITE_DONT_CARE);
   }
 }

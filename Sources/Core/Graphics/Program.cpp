@@ -1,5 +1,4 @@
 #include "Core/Graphics/Program.h"
-#include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
@@ -8,8 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Program::Program(Application* app, const String& name, IHardwareResourceProvider* provider) : Component(app, EGE_OBJECT_UID_PROGRAM, name), 
-                                                                                              m_provider(provider)
+Program::Program(const String& name, IHardwareResourceProvider* provider) : Component(EGE_OBJECT_UID_PROGRAM, name)
+                                                                          , m_provider(provider)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -17,11 +17,13 @@ class VertexBufferVA : public VertexBuffer
 {
   public:
 
-    VertexBufferVA(Application* app, const String& name, const VertexDeclaration& vertexDeclaration);
+    VertexBufferVA(const String& name, const VertexDeclaration& vertexDeclaration);
     virtual ~VertexBufferVA();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! @see VertexBuffer::isValid. */
     bool isValid() const override;

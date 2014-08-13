@@ -8,13 +8,13 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Viewport)
 EGE_DEFINE_DELETE_OPERATORS(Viewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Viewport::Viewport(Application* app, const String& name, PCamera camera, RenderTarget* renderTarget) : Object(app), 
-                                                                                                       m_polygonMode(POLYGON_MODE_SOLID), 
-                                                                                                       m_clearBufferTypes(BUFFER_TYPE_COLOR), 
-                                                                                                       m_vertexCount(0), 
-                                                                                                       m_batchCount(0), 
-                                                                                                       m_overlays(true), 
-                                                                                                       m_renderTarget(renderTarget)
+Viewport::Viewport(const String& name, PCamera camera, RenderTarget* renderTarget) : Object()
+                                                                                   , m_polygonMode(POLYGON_MODE_SOLID)
+                                                                                   , m_clearBufferTypes(BUFFER_TYPE_COLOR)
+                                                                                   , m_vertexCount(0)
+                                                                                   , m_batchCount(0)
+                                                                                   , m_overlays(true)
+                                                                                   , m_renderTarget(renderTarget)
 {
   m_name = name;
   m_camera = camera;

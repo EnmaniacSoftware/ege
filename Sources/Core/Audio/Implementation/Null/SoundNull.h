@@ -14,10 +14,7 @@ class SoundNull : public Sound
     SoundNull(const String& name, PDataBuffer& data);
    ~SoundNull();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-  public:
+  private:
 
     /*! @see Sound::construct. */
     EGEResult construct() override;

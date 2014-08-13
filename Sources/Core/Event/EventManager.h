@@ -20,15 +20,18 @@ EGE_NAMESPACE_BEGIN
 EGE_DECLARE_SMART_CLASS(EventManager, PEventManager)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class EventManager : public Object, public ListenerContainer<IEventListener>
+class EventManager : public Object
+                   , public ListenerContainer<IEventListener>
 {
   public:
 
-    EventManager(Application* app);
+    EventManager();
    ~EventManager();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Constructs object. */
     EGEResult construct();

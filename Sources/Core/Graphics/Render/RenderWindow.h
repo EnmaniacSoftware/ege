@@ -13,8 +13,10 @@ class RenderWindow : public RenderTarget
 {
   public:
 
-    RenderWindow(Application* app, const Dictionary& params);
+    RenderWindow(const Dictionary& params);
     virtual ~RenderWindow();
+
+  public:
 
     /*! Returns window title. */
     const String title() const { return m_title; }

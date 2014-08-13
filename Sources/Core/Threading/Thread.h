@@ -16,7 +16,7 @@ class Thread : public Object
 {
   public:
 
-    Thread(Application* app);
+    Thread();
    ~Thread();
 
     EGE_DECLARE_NEW_OPERATORS

@@ -29,7 +29,7 @@ bool MemoryManager::Initialize()
 {
   // allocate recursive mutex
   // NOTE: it is allocated outside the manager scope
-  l_mutex = ege_new Mutex(NULL, EGEMutex::Recursive);
+  l_mutex = ege_new Mutex(EGEMutex::Recursive);
 
   // allocate memory manager
   l_instance = new MemoryManager();

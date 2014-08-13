@@ -7,7 +7,7 @@
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const String KUniformModelViewPerspectiveName = "u_mvpMatrix";
@@ -19,8 +19,8 @@ static const String KAttributeNormalName        = "a_normal";
 static const String KAttributeColorName         = "a_color";
 static const String KAttributeTextureCoordXName = "a_texCoord%1";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystemProgrammableOGL::RenderSystemProgrammableOGL(Application* app) : RenderSystemOGL(app)
-                                                                           , m_activeProgram(NULL)
+RenderSystemProgrammableOGL::RenderSystemProgrammableOGL(Engine& engine) : RenderSystemOGL(engine)
+                                                                         , m_activeProgram(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ PShader RenderSystemProgrammableOGL::createShader(EGEGraphics::ShaderType type, 
   }
 
   // create shader
-  ShaderOGL* shader = ege_new ShaderOGL(app(), name, type, this);
+  ShaderOGL* shader = ege_new ShaderOGL(name, type, this);
   if ((NULL == shader) || ! shader->isValid())
   {
     // error!
@@ -169,7 +169,7 @@ PShader RenderSystemProgrammableOGL::createShader(EGEGraphics::ShaderType type, 
 PProgram RenderSystemProgrammableOGL::createProgram(const String& name, const List<PShader>& shaders)
 {
   // create shader program
-  ProgramOGL* program = ege_new ProgramOGL(app(), name, this);
+  ProgramOGL* program = ege_new ProgramOGL(name, this);
   if ((NULL == program) || ! program->isValid())
   {
     // error!
@@ -515,3 +515,5 @@ void RenderSystemProgrammableOGL::setupVAO(PVertexArrayObject& vertexArrayObject
   indexBuffer->bind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

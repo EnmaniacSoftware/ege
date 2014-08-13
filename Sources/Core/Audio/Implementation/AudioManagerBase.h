@@ -2,17 +2,17 @@
 #define EGE_CORE_AUDIO_AUDIOMANAGERBASE_H
 
 /** This class represents private interface for AudioManager.
+ *  TODO: Rename this class so name is more descriptive and refers to playback capabilites offered
  */
 
 #include "EGE.h"
-#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class IAudioManagerBase : public IEventListener 
+class IAudioManagerBase
 {
   public:
     

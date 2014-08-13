@@ -1,12 +1,12 @@
 #include "Core/Data/Interface/Node.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(Application* app, const String& name, Node* parent) : m_name(name)
-                                                               , m_parent(parent)
-                                                               , m_visible(true)
+Node::Node(const String& name, Node* parent) : m_name(name)
+                                             , m_parent(parent)
+                                             , m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,3 +109,5 @@ void Node::setVisible(bool set)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -12,12 +12,12 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIPageIndicator)
 EGE_DEFINE_DELETE_OPERATORS(UIPageIndicator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIPageIndicator::UIPageIndicator(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: Widget(app, name, EGE_OBJECT_UID_UI_PAGE_INDICATOR, deleteFunc),
-  m_pageCount(0),
-  m_page(0),
-  m_renderPriority(EGEGraphics::RP_MAIN + 1),
-  m_indicatorSize(INDICATOR_SIZE)
+UIPageIndicator::UIPageIndicator(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, EGE_OBJECT_UID_UI_PAGE_INDICATOR, deleteFunc)
+, m_pageCount(0)
+, m_page(0)
+, m_renderPriority(EGEGraphics::RP_MAIN + 1)
+, m_indicatorSize(INDICATOR_SIZE)
 {
   setSize(Vector2f(INDICATOR_SIZE, INDICATOR_SIZE));
 }
@@ -26,10 +26,10 @@ UIPageIndicator::~UIPageIndicator()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget UIPageIndicator::Create(Application* app, const String& name)
+PWidget UIPageIndicator::Create(Engine& engine, const String& name)
 {
   // allocate object
-  PUIPageIndicator object = ege_new UIPageIndicator(app, name);
+  PUIPageIndicator object = ege_new UIPageIndicator(engine, name);
   if (NULL != object)
   {
     // construct
@@ -108,7 +108,7 @@ void UIPageIndicator::updateRenderData()
     // create render data
     Vector2f size(static_cast<float32>(m_indicatorSize), static_cast<float32>(m_indicatorSize));
     String renderDataName = String::Format("page-indicator-%d-%s", i, name().toAscii());
-    PRenderComponent renderData = RenderObjectFactory::CreateQuadXY(app(), renderDataName, Vector4f::ZERO, size, ALIGN_TOP_LEFT, false, false, 
+    PRenderComponent renderData = RenderObjectFactory::CreateQuadXY(engine(), renderDataName, Vector4f::ZERO, size, ALIGN_TOP_LEFT, false, false, 
                                                                     RenderObjectFactory::VS_V2_T2, m_renderPriority, EGEGraphics::RPT_TRIANGLE_STRIPS, 
                                                                     NVertexBuffer::UT_STATIC_WRITE);
 

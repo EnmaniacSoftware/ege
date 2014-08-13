@@ -1,6 +1,6 @@
 #include "Core/UI/Dialog.h"
 #include "Core/UI/WidgetFactory.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 #include "EGEGraphics.h"
 #include "EGERenderer.h"
@@ -15,24 +15,24 @@ EGE_DEFINE_DELETE_OPERATORS(Dialog)
 static const Rectf l_defaultTitleAreaRect = Rectf(0, 0.5f, 1.0f, 0.2f);
 static const Rectf l_defaultTextAreaRect  = Rectf(0, 0.2f, 1.0f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
+Dialog::Dialog(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
 {
   // create vertex declaration
   VertexDeclaration declaration;
   if (declaration.addElement(NVertexBuffer::VES_POSITION_XY) && declaration.addElement(NVertexBuffer::VES_TEXTURE_UV))
   {
     // create tail render data
-    m_tailRenderData  = ege_new RenderComponent(app, "dialog-tail" + name, declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, 
+    m_tailRenderData  = ege_new RenderComponent(engine, "dialog-tail" + name, declaration, EGEGraphics::RP_MAIN, EGEGraphics::RPT_TRIANGLE_STRIPS, 
                                                 NVertexBuffer::UT_STATIC_WRITE);
 
-    PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+    PResourceFont fontResource = engine.resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
     if (fontResource)
     {
       m_titleFont = fontResource->font();
       m_textFont  = fontResource->font();
 
       // title label
-      PLabel label = app->graphics()->widgetFactory()->createWidget("label", "title");
+      PLabel label = engine.graphics()->widgetFactory()->createWidget("label", "title");
       if (label)
       {
         label->setFont(m_titleFont);
@@ -40,7 +40,7 @@ Dialog::Dialog(Application* app, const String& name, egeObjectDeleteFunc deleteF
       }
 
       // text label
-      label = app->graphics()->widgetFactory()->createWidget("label", "text");
+      label = engine.graphics()->widgetFactory()->createWidget("label", "text");
       if (label)
       {
         label->setFont(m_textFont);
@@ -54,9 +54,9 @@ Dialog::~Dialog()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget Dialog::Create(Application* app, const String& name)
+PWidget Dialog::Create(Engine& engine, const String& name)
 {
-  return ege_new Dialog(app, name);
+  return ege_new Dialog(engine, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Dialog::isValid() const
@@ -161,7 +161,7 @@ bool Dialog::initialize(const Dictionary& params)
   // check if material name is defined
   if (params.contains("material"))
   {
-    PResourceMaterial materialResource = app()->resourceManager()->materialResource(params.at("material"));
+    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.at("material"));
     EGE_ASSERT(materialResource);
     if (materialResource)
     {
@@ -204,7 +204,7 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("title-font"))
   {
-    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("title-font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("title-font"));
     if (fontResource)
     {
       // set new font
@@ -234,7 +234,7 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("text-font"))
   {
-    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("text-font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("text-font"));
     if (fontResource)
     {
       // set new font

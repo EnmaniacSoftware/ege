@@ -25,7 +25,7 @@ ResourceManagerPrivate::~ResourceManagerPrivate()
 EGEResult ResourceManagerPrivate::construct()
 {
   // create work thread
-  m_workThread = ege_new ResourceManagerWorkThread(d_func()->app(), this);
+  m_workThread = ege_new ResourceManagerWorkThread(this);
   if (NULL == m_workThread)
   {
     // error!
@@ -34,7 +34,7 @@ EGEResult ResourceManagerPrivate::construct()
   ege_connect(m_workThread, finished, this, ResourceManagerPrivate::onWorkThreadFinished);
 
   // create access mutex
-  m_mutex = ege_new Mutex(d_func()->app());
+  m_mutex = ege_new Mutex();
   if (NULL == m_mutex)
   {
     // error!
@@ -42,7 +42,7 @@ EGEResult ResourceManagerPrivate::construct()
   }
 
   // create group emit resource mutex
-  m_emitRequstsMutex = ege_new Mutex(d_func()->app());
+  m_emitRequstsMutex = ege_new Mutex();
   if (NULL == m_emitRequstsMutex)
   {
     // error!
@@ -50,7 +50,7 @@ EGEResult ResourceManagerPrivate::construct()
   }
 
   // create wait condition
-  m_commandsToProcess = ege_new WaitCondition(d_func()->app());
+  m_commandsToProcess = ege_new WaitCondition();
   if (NULL == m_commandsToProcess)
   {
     // error!

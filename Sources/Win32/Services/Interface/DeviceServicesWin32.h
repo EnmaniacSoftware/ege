@@ -16,7 +16,7 @@ class DeviceServicesWin32 : public DeviceServices
 {
   public:
 
-    DeviceServicesWin32(Application* application);
+    DeviceServicesWin32(Engine& engine);
    ~DeviceServicesWin32();
 
     /*! @see DeviceServices::openUrl. */

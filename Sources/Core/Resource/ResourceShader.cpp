@@ -3,7 +3,7 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
@@ -36,7 +36,7 @@ static EGEGraphics::ShaderType MapShaderTypeName(const String& name)
   return EGEGraphics::UNKNOWN_SHADER;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceShader::ResourceShader(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SHADER)
+ResourceShader::ResourceShader(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SHADER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -44,9 +44,9 @@ ResourceShader::~ResourceShader()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceShader::Create(Application* app, ResourceGroup* group)
+PResource ResourceShader::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceShader(app, group);
+  return ege_new ResourceShader(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceShader::name() const
@@ -135,8 +135,8 @@ EGEResult ResourceShader::create()
   file.close();
 
   // request texture
-  if ((EGE_SUCCESS == result) && ! app()->graphics()->hardwareResourceProvider()->requestCreateShader(m_type, name(), m_data,
-                                                                                                      ege_make_slot(this, ResourceShader::onRequestComplete)))
+  if ((EGE_SUCCESS == result) && ! engine().graphics()->hardwareResourceProvider()->requestCreateShader(m_type, name(), m_data,
+                                                                                                        ege_make_slot(this, ResourceShader::onRequestComplete)))
   {
     // error!
     result = EGE_ERROR;
@@ -150,7 +150,7 @@ void ResourceShader::unload()
   if (STATE_LOADED == m_state)
   {
     // schedule for destroy
-    app()->graphics()->hardwareResourceProvider()->requestDestroyShader(m_shader);
+    engine().graphics()->hardwareResourceProvider()->requestDestroyShader(m_shader);
 
     // clean up
     m_shader = NULL; 

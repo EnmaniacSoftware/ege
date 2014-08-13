@@ -10,6 +10,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Engine;
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioCodec : public Object
@@ -18,6 +19,11 @@ class AudioCodec : public Object
 
     AudioCodec(u32 uid, const PDataBuffer& stream);
     virtual ~AudioCodec();
+
+    EGE_DECLARE_NEW_OPERATORS
+    EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Decodes up to given number of samples. 
      *  @param  out             Data buffer containing decoded samples.

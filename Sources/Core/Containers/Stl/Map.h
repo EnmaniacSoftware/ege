@@ -13,12 +13,17 @@ class Map : public std::map<T, U>
 {
   public:
 
-    /* Returns TRUE if given key is present. */
+    /*! Returns TRUE if given key is present. */
     bool contains(const T& key) const;
     /*! Returns value associated with given key. If key is not found, default value is returned. */
     U value(const T& key, const U defaultValue) const;
     /*! Inserts value with given key to map. */
     void insert(const T& key, const U& value);
+    /*! Merges another map into this one. 
+     *  @param  other Other map to merge with this one.
+     *  @note In case of duplicate entries, the ones present in current map have precedence.
+     */
+    void merge(const Map& other);
     /*! Returns value. */
     U& at(const T& key);
     /*! Returns value. */
@@ -46,6 +51,12 @@ template <typename T, typename U>
 void Map<T, U>::insert(const T& key, const U& value)
 {
   std::map<T, U>::insert(std::pair<T, U>(key, value));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+void Map<T, U>::merge(const Map& other)
+{
+  std::map<T, U>::insert(other.begin(), other.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>

@@ -1,6 +1,6 @@
-#include "Core/Application/Application.h"
 #include "Core/Screen/Screen.h"
 #include "Core/Screen/ScreenManager.h"
+#include "EGEEngine.h"
 #include "EGESignal.h"
 
 EGE_NAMESPACE_BEGIN
@@ -9,14 +9,15 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ScreenManager)
 EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScreenManager::ScreenManager(Application* app) : Object(app)
+ScreenManager::ScreenManager(Engine& engine) : Object()
+                                             , m_engine(engine)
 {
-  ege_connect(app->pointer(), eventSignal, this, ScreenManager::pointerEvent);
+  ege_connect(engine.pointer(), eventSignal, this, ScreenManager::pointerEvent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScreenManager::~ScreenManager()
 {
-  ege_disconnect(app()->pointer(), eventSignal, this, ScreenManager::pointerEvent);
+  ege_disconnect(engine().pointer(), eventSignal, this, ScreenManager::pointerEvent);
 
   // remove all
   removeAll();
@@ -291,6 +292,11 @@ bool ScreenManager::isVisible(const PScreen& screen) const
 u32 ScreenManager::screenCount() const
 {
   return static_cast<u32>(m_screens.size());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ScreenManager::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

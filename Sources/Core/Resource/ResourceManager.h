@@ -25,14 +25,15 @@ EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
 EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 EGE_DECLARE_SMART_CLASS(Event, PEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef PResource (*egeResourceCreateFunc)(Application* app, ResourceGroup* group);
+typedef PResource (*egeResourceCreateFunc)(Engine& engine, ResourceGroup* group);
 class ResourceManagerPrivate;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager : public Object, public IEventListener
+class ResourceManager : public Object
+                      , public IEventListener
 {
   public:
 
-    ResourceManager(Application* app);
+    ResourceManager(Engine& engine);
    ~ResourceManager();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -154,6 +155,8 @@ class ResourceManager : public Object, public IEventListener
     void processCommands();
     /*! Unloads all groups. This is called from ResourceManager thread. */
     void unloadAll();
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
@@ -169,6 +172,8 @@ class ResourceManager : public Object, public IEventListener
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(ResourceManager)
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! List of resource data directories. */
     StringList m_dataDirs;
     /*! Resource groups defined */

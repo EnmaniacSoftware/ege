@@ -47,7 +47,7 @@ class UIScrollView : public Widget
 
   protected:
 
-    UIScrollView(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
+    UIScrollView(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
 
     /*! @see Widget::update. */
     void update(const Time& time) override;

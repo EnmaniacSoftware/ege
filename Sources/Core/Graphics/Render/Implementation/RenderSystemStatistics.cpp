@@ -1,12 +1,12 @@
 #include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEFile.h"
 #include "EGEStringBuffer.h"
 #include "EGETimer.h"
 #include "EGEGraphics.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function returning literal for given render primitive type. */
@@ -30,8 +30,9 @@ const char* PrimitiveTypeName(s32 primitiveType)
   return "UNKNOWN";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystemStatistics::RenderSystemStatistics(Application* app, const String& logFileName, u32 recordsCount) 
-: Component(app, EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS, "rs-statistics")
+RenderSystemStatistics::RenderSystemStatistics(Engine& engine, const String& logFileName, u32 recordsCount) 
+: Component(EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS, "rs-statistics")
+, m_engine(engine)
 , m_currentIndex(0)
 , m_logFileName(logFileName)
 , m_fpsRendersCount(0)
@@ -44,8 +45,8 @@ RenderSystemStatistics::RenderSystemStatistics(Application* app, const String& l
   }
 
   // connect
-  ege_connect(app->graphics(), renderStart, this, RenderSystemStatistics::onRenderStart);
-  ege_connect(app->graphics(), renderEnd, this, RenderSystemStatistics::onRenderEnd);
+  ege_connect(engine.graphics(), renderStart, this, RenderSystemStatistics::onRenderStart);
+  ege_connect(engine.graphics(), renderEnd, this, RenderSystemStatistics::onRenderEnd);
 
   // clean up
   EGE_MEMSET(&m_continuousData, 0, sizeof (m_continuousData));
@@ -169,3 +170,10 @@ void RenderSystemStatistics::clearCurrentRecord()
   record.queues.reserve(KRenderQueuesReservedItemCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& RenderSystemStatistics::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -1,11 +1,11 @@
-#include "Core/Application/Application.h"
 #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "Core/Audio/Implementation/OpenAL/SoundOpenAL.h"
 #include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
+#include "EGEEngine.h"
 #include "EGEEvent.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KAudioManagerOpenALDebugName = "EGEAudioManagerOpenAL";
@@ -13,15 +13,12 @@ static const char* KAudioManagerOpenALDebugName = "EGEAudioManagerOpenAL";
 EGE_DEFINE_NEW_OPERATORS(AudioManagerOpenAL)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerOpenAL::AudioManagerOpenAL(Application* app) : Object(app),
-                                                           IAudioManagerBase(),
-                                                           IAudioManager(),
-                                                           m_state(IAudioManager::StateNone),
-                                                           m_device(NULL),
-                                                           m_context(NULL),
-                                                           m_enabled(true)
-
-
+AudioManagerOpenAL::AudioManagerOpenAL(Engine& engine) : Object()
+                                                       , m_engine(engine)
+                                                       , m_state(IAudioManager::StateNone)
+                                                       , m_device(NULL)
+                                                       , m_context(NULL)
+                                                       , m_enabled(true)
 {
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 }
@@ -49,13 +46,13 @@ AudioManagerOpenAL::~AudioManagerOpenAL()
     m_device = NULL;
   }
 
-  app()->eventManager()->removeListener(this);
+  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerOpenAL::construct()
 {
   // create thread
-  m_thread = ege_new AudioThreadOpenAL(app(), this);
+  m_thread = ege_new AudioThreadOpenAL(this);
   if (NULL == m_thread)
   {
     // error!
@@ -65,7 +62,7 @@ EGEResult AudioManagerOpenAL::construct()
   ege_connect(m_thread, finished, this, AudioManagerOpenAL::onThreadFinished);
 
   // create access mutex
-  m_mutex = ege_new Mutex(app(), EGEMutex::Recursive);
+  m_mutex = ege_new Mutex(EGEMutex::Recursive);
   if (NULL == m_mutex)
   {
     // error!
@@ -95,7 +92,7 @@ EGEResult AudioManagerOpenAL::construct()
   }
 
   // subscribe for event notifications
-  if ( ! app()->eventManager()->addListener(this))
+  if ( ! engine().eventManager()->addListener(this))
   {
     // error!
     return EGE_ERROR;
@@ -369,3 +366,10 @@ void AudioManagerOpenAL::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& AudioManagerOpenAL::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

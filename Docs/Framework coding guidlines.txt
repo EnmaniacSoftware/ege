@@ -1,1 +1,16 @@
-Corresponding OS/Device implementation modules can refer to Implementation in Core
+Corresponding OS/Device implementation modules can refer to Implementation in Core - HMM...
+Another modules can only refer to Interfaces
+Interface does not automatically mean 'available to clients of framework' !!!
+Framework clients can only use public EGExxx.h hearders
+Interface modules can be refered by components in the framework
+
+
+Coding standards:
+
+Initialization list syntax
+
+Ala::Ala()
+: Ola()
+, ela(1)
+...
+

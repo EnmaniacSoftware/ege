@@ -6,19 +6,21 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Overlay)
 EGE_DEFINE_DELETE_OPERATORS(Overlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Object(app, EGE_OBJECT_UID_OVERLAY, deleteFunc), 
-                                                                                         m_name(name), 
-                                                                                         m_updateNeeded(false), 
-                                                                                         m_visible(true),
-                                                                                         m_size(Vector2f::ZERO)
+Overlay::Overlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Object(EGE_OBJECT_UID_OVERLAY, deleteFunc)
+                                                                                     , m_engine(engine) 
+                                                                                     , m_name(name) 
+                                                                                     , m_updateNeeded(false) 
+                                                                                     , m_visible(true)
+                                                                                     , m_size(Vector2f::ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Overlay::Overlay(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(app, uid, deleteFunc), 
-                                                                                                  m_name(name), 
-                                                                                                  m_updateNeeded(false), 
-                                                                                                  m_visible(true),
-                                                                                                  m_size(Vector2f::ZERO)
+Overlay::Overlay(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(uid, deleteFunc)
+                                                                                              , m_engine(engine) 
+                                                                                              , m_name(name)
+                                                                                              , m_updateNeeded(false) 
+                                                                                              , m_visible(true)
+                                                                                              , m_size(Vector2f::ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,7 +42,7 @@ void Overlay::update(const Time& time)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Overlay::initialize()
 {
-  m_physics = ege_new PhysicsComponent(app(), "overlay_" + name());
+  m_physics = ege_new PhysicsComponent(engine(), "overlay_" + name());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Overlay::invalidate()
@@ -95,6 +97,11 @@ void Overlay::setSize(const Vector2f& size)
     m_size = size;
     invalidate();
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& Overlay::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

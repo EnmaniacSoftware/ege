@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(IndexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVA::IndexBufferVA(Application* app, const String& name) : IndexBuffer(app, name)
+IndexBufferVA::IndexBufferVA(const String& name) : IndexBuffer(name)
 {
   m_buffer = ege_new DataBuffer();
 }

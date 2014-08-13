@@ -16,16 +16,13 @@ class DeviceServices
 {
   public:
 
-    DeviceServices(Application* application);
+    DeviceServices(Engine& engine);
     virtual ~DeviceServices();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
   
   public:
-  
-    /*! Returns pointer to application object. */
-    Application* app() const;
   
     /*! Opens given URL in web browser.
      *  @param  url URL to open in the web browser.
@@ -60,10 +57,15 @@ class DeviceServices
      */
     PDataBuffer aesEnctyptionKey();
 
+  protected:
+
+    /*! Returns pointer to application object. */
+    Engine& engine() const;
+
   private:
   
-    /*! Pointer to application object. */
-    Application* m_application;
+    /*! Reference to engine. */
+    Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

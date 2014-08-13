@@ -15,7 +15,7 @@ class AudioThreadOpenAL : public Thread
 {
   public:
 
-    AudioThreadOpenAL(Application* app, AudioManagerOpenAL* manager);
+    AudioThreadOpenAL(AudioManagerOpenAL* manager);
    ~AudioThreadOpenAL();
 
   private:

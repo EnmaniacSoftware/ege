@@ -5,7 +5,7 @@
 #include "EGEDevice.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Maps texture environment to OpenGL compilant one. */
@@ -29,8 +29,8 @@ static GLint MapEnvironmentMode(TextureEnvironmentMode mode)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystemFixedOGL::RenderSystemFixedOGL(Application* app) : RenderSystemOGL(app)
-                                                             , m_activeClientTextureUnit(0)
+RenderSystemFixedOGL::RenderSystemFixedOGL(Engine& engine) : RenderSystemOGL(engine)
+                                                           , m_activeClientTextureUnit(0)
 {
   glGetIntegerv(GL_MATRIX_MODE, &m_matrixMode);
   OGL_CHECK()
@@ -538,3 +538,5 @@ void RenderSystemFixedOGL::setupVAO(PVertexArrayObject& vertexArrayObject, const
   vertexArrayObject->unbind();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

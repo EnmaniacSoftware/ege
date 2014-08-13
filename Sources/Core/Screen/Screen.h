@@ -21,11 +21,13 @@ class Screen : public Object
 {
   public:
 
-    Screen(Application* app, const String& name = "");
+    Screen(Engine& engine, const String& name = "");
     virtual ~Screen();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Constructs object. */
     virtual EGEResult construct();
@@ -55,8 +57,15 @@ class Screen : public Object
     /*! Returns name. */
     const String& name() const { return m_name; }
 
+  protected:
+
+    /*! Returns engine object. */
+    Engine& engine() const;
+
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Name. */
     String m_name;
     /*! Disabled flag. */

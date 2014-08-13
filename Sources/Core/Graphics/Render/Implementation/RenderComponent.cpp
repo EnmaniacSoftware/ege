@@ -1,9 +1,9 @@
-#include "Core/Application/Application.h"
 #include "Core/Graphics/IndexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Component/Interface/Component.h"
 #include "Core/Graphics/Render/Interface/RenderComponent.h"
+#include "EGEEngine.h"
 #include "EGEHash.h"
 #include "EGEVertexBuffer.h"
 #include "EGEDebug.h"
@@ -14,25 +14,22 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderComponent)
 EGE_DEFINE_DELETE_OPERATORS(RenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderComponent::RenderComponent(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority, 
+RenderComponent::RenderComponent(Engine& engine, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority, 
                                  EGEGraphics::RenderPrimitiveType primitive, NVertexBuffer::UsageType vertexUsage, EGEIndexBuffer::UsageType indexUsage) 
-: Component(app, EGE_OBJECT_UID_RENDER_COMPONENT, name), 
-  m_priority(priority), 
-  m_primitiveType(primitive), 
-  m_hash(0), 
-  m_hashInvalid(true), 
-  m_clipRect(Rectf::INVALID),
-  m_pointSize(1.0f),
-  m_lineWidth(1.0f)
+: Component(EGE_OBJECT_UID_RENDER_COMPONENT, name)
+, m_engine(engine)
+, m_priority(priority) 
+, m_primitiveType(primitive)
+, m_hash(0)
+, m_hashInvalid(true)
+, m_clipRect(Rectf::INVALID)
+, m_pointSize(1.0f)
+, m_lineWidth(1.0f)
 {
-  EGE_ASSERT(app);
-  EGE_ASSERT(app->graphics());
-  EGE_ASSERT(app->graphics()->hardwareResourceProvider());
-
   // register self in render system
   // NOTE: unregistration is done automatically
   PRenderComponent me(*this);
-  app->graphics()->hardwareResourceProvider()->registerComponent(me, vertexUsage, vertexDeclaration, indexUsage);
+  engine.graphics()->hardwareResourceProvider()->registerComponent(me, vertexUsage, vertexDeclaration, indexUsage);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderComponent::~RenderComponent()
@@ -218,6 +215,11 @@ void RenderComponent::removeAllVertexArrayObjects()
   {
     removeComponent(*it);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& RenderComponent::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

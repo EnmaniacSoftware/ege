@@ -12,8 +12,10 @@ class Texture2DOGL : public Texture2D
 {
   public:
 
-    Texture2DOGL(Application* app, const String& name, IHardwareResourceProvider* provider);
+    Texture2DOGL(Engine& engine, const String& name, IHardwareResourceProvider* provider);
    ~Texture2DOGL();
+
+  public:
 
     /*! @see Texture2D::create. */
     EGEResult create(const String& path) override;

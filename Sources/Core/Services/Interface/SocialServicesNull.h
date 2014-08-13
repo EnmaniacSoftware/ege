@@ -15,7 +15,7 @@ class SocialServicesNull : public SocialServices
 {
   public:
     
-    SocialServicesNull(Application* application);
+    SocialServicesNull(Engine& engine);
    ~SocialServicesNull();
 
   protected:

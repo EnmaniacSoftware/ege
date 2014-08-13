@@ -37,7 +37,7 @@ class RenderSystem : public Object
 {
   public:
 
-    RenderSystem(Application* app);
+    RenderSystem(Engine& engine);
     virtual ~RenderSystem();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -111,6 +111,8 @@ class RenderSystem : public Object
 
   protected:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
     /*! Updates rectangle coordinates by given angle. 
      *  @param  rect  Rectangle to be rotated.
      *  @param  angle Angle by which to rotate rectangle.
@@ -215,6 +217,8 @@ class RenderSystem : public Object
  
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Current state. */
     State m_state;
     /*! Currently active render target. */

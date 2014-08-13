@@ -18,8 +18,7 @@ class AudioCodecWav : public AudioCodec
     AudioCodecWav(const PDataBuffer& stream);
     virtual ~AudioCodecWav();
 
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
+  private:
 
     /*! @see AudioCodec::decode. */
     bool decode(const PDataBuffer& out, s32 samplesCount, s32& samplesDecoded) override;

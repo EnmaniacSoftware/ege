@@ -17,7 +17,7 @@ class OverlayManager : public Object
 {
   public: 
 
-    OverlayManager(Application* app);
+    OverlayManager();
    ~OverlayManager();
 
     EGE_DECLARE_NEW_OPERATORS

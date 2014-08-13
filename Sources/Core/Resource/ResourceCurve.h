@@ -32,7 +32,7 @@ class ResourceCurve : public IResource
   public:
 
     /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceGroup* group);
+    static PResource Create(Engine& engine, ResourceGroup* group);
 
   public:
 
@@ -63,7 +63,7 @@ class ResourceCurve : public IResource
 
   private:
 
-    ResourceCurve(Application* app, ResourceGroup* group);
+    ResourceCurve(Engine& engine, ResourceGroup* group);
     /*! Returns curve type. */
     CubicSplineType type() const { return m_type; }
     

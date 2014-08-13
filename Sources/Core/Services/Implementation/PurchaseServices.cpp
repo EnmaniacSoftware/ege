@@ -1,6 +1,6 @@
 #include "Core/Services/Interface/PurchaseServices.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KPurchaseServicesDebugName = "EGEPurchaseServices";
@@ -8,7 +8,7 @@ const char* KPurchaseServicesDebugName = "EGEPurchaseServices";
 EGE_DEFINE_NEW_OPERATORS(PurchaseServices)
 EGE_DEFINE_DELETE_OPERATORS(PurchaseServices)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PurchaseServices::PurchaseServices(Application* application)
+PurchaseServices::PurchaseServices(Engine& engine) : m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,3 +16,5 @@ PurchaseServices::~PurchaseServices()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

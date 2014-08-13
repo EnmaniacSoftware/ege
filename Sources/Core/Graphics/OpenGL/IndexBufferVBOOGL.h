@@ -20,7 +20,7 @@ class IndexBufferVBO : public IndexBuffer
 
   public:
 
-    IndexBufferVBO(Application* app, const String& name, EGEIndexBuffer::UsageType usage);
+    IndexBufferVBO(const String& name, EGEIndexBuffer::UsageType usage);
    ~IndexBufferVBO();
 
     EGE_DECLARE_NEW_OPERATORS

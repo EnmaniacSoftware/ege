@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ParticleAffectorForce)
 EGE_DEFINE_DELETE_OPERATORS(ParticleAffectorForce)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleAffectorForce::ParticleAffectorForce(Application* app, const String& name) : ParticleAffector(app, name)
+ParticleAffectorForce::ParticleAffectorForce(const String& name) : ParticleAffector(name)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,9 +18,9 @@ ParticleAffectorForce::~ParticleAffectorForce()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Creates instance of affector. This method is a registration method for factory. */
-PParticleAffector ParticleAffectorForce::Create(Application* app, const String& name)
+PParticleAffector ParticleAffectorForce::Create(const String& name)
 {
-  return ege_new ParticleAffectorForce(app, name);
+  return ege_new ParticleAffectorForce(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! ParticleAffectorForce override. Initializes affector from dictionary. */

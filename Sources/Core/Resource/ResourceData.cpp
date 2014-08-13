@@ -12,8 +12,8 @@ static const char* KResourceDataDebugName = "ResourceData";
 EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceData::ResourceData(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_DATA), 
-                                                                     m_nulled(false)
+ResourceData::ResourceData(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_DATA)
+                                                                 , m_nulled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,9 +21,9 @@ ResourceData::~ResourceData()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceData::Create(Application* app, ResourceGroup* group)
+PResource ResourceData::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceData(app, group);
+  return ege_new ResourceData(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceData::name() const

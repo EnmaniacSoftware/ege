@@ -15,7 +15,7 @@ static const char* KResourceTextureImageDebugName = "EGEResourceTextureImage";
 EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTextureImage::ResourceTextureImage(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_TEXTURE_IMAGE)
+ResourceTextureImage::ResourceTextureImage(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_TEXTURE_IMAGE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,9 +23,9 @@ ResourceTextureImage::~ResourceTextureImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceTextureImage::Create(Application* app, ResourceGroup* group)
+PResource ResourceTextureImage::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceTextureImage(app, group);
+  return ege_new ResourceTextureImage(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceTextureImage::name() const
@@ -106,7 +106,7 @@ void ResourceTextureImage::unload()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTextureImage ResourceTextureImage::createInstance()
 {
-	PTextureImage object = ege_new TextureImage(app());
+	PTextureImage object = ege_new TextureImage();
   if (object)
   {
     // set new data

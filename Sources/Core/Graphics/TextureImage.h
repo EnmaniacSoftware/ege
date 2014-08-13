@@ -18,7 +18,7 @@ class TextureImage : public Object
 {
   public:
 
-    explicit TextureImage(Application* app);
+    TextureImage();
     explicit TextureImage(const PTexture2D& texture, Rectf rect = Rectf(0, 0, 1.0f, 1.0f));
     explicit TextureImage(const TextureImage& textureImage);
     TextureImage(const TextureImage& texture, const Rectf& rect);

@@ -1,4 +1,3 @@
-#include "Core/Application/Application.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderTarget.h"
 #include "Core/Graphics/Render/RenderSystem.h"
@@ -6,6 +5,7 @@
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
 #include "Core/UI/WidgetFactory.h"
+#include "EGEEngine.h"
 #include "EGEDataBuffer.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
@@ -24,12 +24,12 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Application* app, const Dictionary& params) : Object(app),
-                                                                 m_p(NULL),
-                                                                 m_renderSystem(NULL),
-                                                                 m_particleFactory(NULL),
-                                                                 m_widgetFactory(NULL),
-                                                                 m_renderingEnabled(true)
+Graphics::Graphics(Engine& engine, const Dictionary& params) : m_p(NULL)
+                                                             , m_engine(engine)
+                                                             , m_renderSystem(NULL)
+                                                             , m_particleFactory(NULL)
+                                                             , m_widgetFactory(NULL)
+                                                             , m_renderingEnabled(true)
 {
   m_params = params;
 }
@@ -64,7 +64,7 @@ EGEResult Graphics::construct()
   }
 
   // create particle factory
-  m_particleFactory = ege_new ParticleFactory(app());
+  m_particleFactory = ege_new ParticleFactory(engine());
   if (NULL == m_particleFactory)
   {
     // error!
@@ -78,7 +78,7 @@ EGEResult Graphics::construct()
   }
 
   // create widget factory
-  m_widgetFactory = ege_new WidgetFactory(app());
+  m_widgetFactory = ege_new WidgetFactory(engine());
   if (NULL == m_widgetFactory)
   {
     // error!
@@ -124,7 +124,7 @@ void Graphics::render()
   }
 
   // render physics data
-  app()->physicsManager()->render();
+  engine().physicsManager()->render();
 
   // show what has been rendered in render window
   PRenderWindow window = renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME);
@@ -203,6 +203,11 @@ IRenderer* Graphics::renderer()
 IHardwareResourceProvider* Graphics::hardwareResourceProvider()
 {
   return m_renderSystem;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& Graphics::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

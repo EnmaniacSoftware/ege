@@ -9,8 +9,8 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ImageLoaderPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ImageLoaderPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageLoaderPrivate::ImageLoaderPrivate(ImageLoader* base) : m_d(base),
-                                                            m_state(ImageLoader::STATE_NONE)
+ImageLoaderPrivate::ImageLoaderPrivate(ImageLoader* base) : m_d(base)
+                                                          , m_state(ImageLoader::STATE_NONE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

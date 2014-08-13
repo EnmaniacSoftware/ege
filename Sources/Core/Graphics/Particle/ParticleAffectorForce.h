@@ -17,7 +17,7 @@ class ParticleAffectorForce : public ParticleAffector
 {
   public:
 
-    ParticleAffectorForce(Application* app, const String& name);
+    ParticleAffectorForce(const String& name);
     virtual ~ParticleAffectorForce();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -26,7 +26,7 @@ class ParticleAffectorForce : public ParticleAffector
   public:
 
     /*! Creates instance of affector. This method is a registration method for factory. */
-    static PParticleAffector Create(Application* app, const String& name);
+    static PParticleAffector Create(const String& name);
 
   public:
 

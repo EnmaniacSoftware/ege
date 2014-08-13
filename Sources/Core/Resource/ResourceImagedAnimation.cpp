@@ -21,7 +21,7 @@ static const char* KResourceImagedAnimationDebugName = "EGEResourceImagedAnimati
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceImagedAnimation::ResourceImagedAnimation(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_IMAGED_ANIMATION)
+ResourceImagedAnimation::ResourceImagedAnimation(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_IMAGED_ANIMATION)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -29,9 +29,9 @@ ResourceImagedAnimation::~ResourceImagedAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceImagedAnimation::Create(Application* app, ResourceGroup* group)
+PResource ResourceImagedAnimation::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceImagedAnimation(app, group);
+  return ege_new ResourceImagedAnimation(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceImagedAnimation::name() const
@@ -177,7 +177,7 @@ void ResourceImagedAnimation::unload()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PImagedAnimation ResourceImagedAnimation::createInstance()
 {
-	PImagedAnimation object = ege_new ImagedAnimation(app(), name());
+	PImagedAnimation object = ege_new ImagedAnimation(engine(), name());
   if (object)
   {
     // set new data
@@ -402,7 +402,7 @@ EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(app(), group());
+  PResourceSequencer seqRes = ResourceSequencer::Create(engine(), group());
   if (NULL == seqRes)
   {
     // error!

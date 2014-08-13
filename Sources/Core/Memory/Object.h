@@ -8,7 +8,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Application;
+class Engine;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void (*egeObjectDeleteFunc)(void* data);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,9 +16,8 @@ class Object
 {
   public:
 
-    Object(Application* app, u32 uid = EGE_OBJECT_UID_GENERIC, egeObjectDeleteFunc deleteFunc = NULL) 
-    : m_app(app), m_references(0), m_uid(uid), m_deleteFunc(deleteFunc) {}
-    virtual ~Object() {}
+    Object(u32 uid = EGE_OBJECT_UID_GENERIC, egeObjectDeleteFunc deleteFunc = NULL);
+    virtual ~Object();
     
     /*! Returns object Unique Identifier. */
     u32 uid() const;
@@ -28,13 +27,9 @@ class Object
     void release();
     /*! Returns reference count. */
     u32 referenceCount();
-    /*! Returns pointer to engine. */
-    Application* app() const;
 
   private:
 
-    /*! Pointer to application object. */
-    Application* m_app;
     /*! Reference counter. */
     u32 m_references;
     /*! Object UID. */
@@ -43,6 +38,16 @@ class Object
     egeObjectDeleteFunc m_deleteFunc;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Object::Object(u32 uid, egeObjectDeleteFunc deleteFunc) : m_references(0)
+                                                               , m_uid(uid)
+                                                               , m_deleteFunc(deleteFunc) 
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline Object::~Object() 
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline u32 Object::uid() const 
 { 
   return m_uid; 
@@ -50,13 +55,11 @@ inline u32 Object::uid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::addReference() 
 { 
-  //++m_references; 
   egeAtomicIncrement(m_references);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::release() 
 { 
-  //--m_references;
   egeAtomicDecrement(m_references);
   if (0 == m_references) 
   { 
@@ -69,11 +72,6 @@ inline void Object::release()
       delete this; 
     } 
   } 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Application* Object::app() const 
-{ 
-  return m_app; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline u32 Object::referenceCount()

@@ -173,7 +173,7 @@ void ImageUtils::Fill(PImage& dst, const Recti& dstRect, const Color& color)
 PImage ImageUtils::CreateImage(s32 width, s32 height, PixelFormat format, bool premultiplied, s32 rowLength, const PDataBuffer& data)
 {
   // allocate image
-  PImage image = ege_new Image(NULL);
+  PImage image = ege_new Image();
   if (NULL != image)
   {
     image->m_width          = width;

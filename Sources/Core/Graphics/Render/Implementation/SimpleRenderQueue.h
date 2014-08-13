@@ -9,13 +9,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Application;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SimpleRenderQueue : public RenderQueue
 {
   public:
 
-    SimpleRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
+    SimpleRenderQueue(u32 priority, EGEGraphics::RenderPrimitiveType primitiveType);
     virtual ~SimpleRenderQueue();
 
     EGE_DECLARE_NEW_OPERATORS

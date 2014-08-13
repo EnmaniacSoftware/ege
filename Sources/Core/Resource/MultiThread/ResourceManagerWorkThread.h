@@ -15,7 +15,7 @@ class ResourceManagerWorkThread : public Thread
 {
   public:
 
-    ResourceManagerWorkThread(Application* app, ResourceManagerPrivate* manager);
+    ResourceManagerWorkThread(ResourceManagerPrivate* manager);
    ~ResourceManagerWorkThread();
 
   private:

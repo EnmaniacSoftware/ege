@@ -17,7 +17,7 @@ class ParticleEmitterPoint : public ParticleEmitter
 {
   public:
 
-    ParticleEmitterPoint(Application* app, const String& name);
+    ParticleEmitterPoint(Engine& engine, const String& name);
     virtual ~ParticleEmitterPoint();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -26,7 +26,7 @@ class ParticleEmitterPoint : public ParticleEmitter
   public:
 
     /*! Creates instance of emitter. This method is a registration method for factory. */
-    static PParticleEmitter Create(Application* app, const String& name);
+    static PParticleEmitter Create(Engine& engine, const String& name);
 
   public:
 

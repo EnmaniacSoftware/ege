@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceParticleAffector.h"
 #include "Core/Resource/ResourceManager.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
@@ -14,7 +14,7 @@ static const char* KResourceParticleAffectorDebugName = "EGEResourceParticleAffe
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleAffector)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceParticleAffector::ResourceParticleAffector(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PARTICLE_AFFECTOR)
+ResourceParticleAffector::ResourceParticleAffector(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_PARTICLE_AFFECTOR)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,9 +22,9 @@ ResourceParticleAffector::~ResourceParticleAffector()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceParticleAffector::Create(Application* app, ResourceGroup* group)
+PResource ResourceParticleAffector::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceParticleAffector(app, group);
+  return ege_new ResourceParticleAffector(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceParticleAffector::name() const
@@ -87,7 +87,7 @@ void ResourceParticleAffector::unload()
 PParticleAffector ResourceParticleAffector::createInstance()
 {
   // create instance of particle emitter of a correct type and with given name
-  PParticleAffector object = app()->graphics()->particleFactory()->createAffector(m_parameters["type"], m_name);
+  PParticleAffector object = engine().graphics()->particleFactory()->createAffector(m_parameters["type"], m_name);
   if (object)
   {
     // initialize with dictionary

@@ -8,14 +8,14 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
 EGE_DEFINE_DELETE_OPERATORS(RenderPass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderPass::RenderPass(Application* app) : Object(app), 
-                                           m_diffuseColor(Color::WHITE), 
-                                           m_ambientColor(Color::WHITE), 
-                                           m_specularColor(Color::BLACK), 
-                                           m_shininess(0), 
-                                           m_emissionColor(Color::BLACK), 
-                                           m_srcBlendFactor(EGEGraphics::BF_ONE), 
-                                           m_dstBlendFactor(EGEGraphics::BF_ZERO)
+RenderPass::RenderPass() : Object()
+                         , m_diffuseColor(Color::WHITE)
+                         , m_ambientColor(Color::WHITE)
+                         , m_specularColor(Color::BLACK)
+                         , m_shininess(0)
+                         , m_emissionColor(Color::BLACK)
+                         , m_srcBlendFactor(EGEGraphics::BF_ONE)
+                         , m_dstBlendFactor(EGEGraphics::BF_ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -132,7 +132,7 @@ void RenderPass::setEmissionColor(const Color& color)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PRenderPass RenderPass::clone() const
 {
-  PRenderPass pass = ege_new RenderPass(app());
+  PRenderPass pass = ege_new RenderPass();
   if (NULL != pass)
   {
     // clone texture images

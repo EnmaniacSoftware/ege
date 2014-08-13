@@ -27,8 +27,8 @@ EGE_NAMESPACE_BEGIN
 #define RESOURCE_NAME_SHADER            "shader"
 #define RESOURCE_NAME_PROGRAM           "program"
 
-#define TR(app, name)     (app)->resourceManager()->textResource((name))->text()
-#define TRN(app, name, n) (app)->resourceManager()->textResource((name))->text((n))
+#define TR(engine, name)     (engine).resourceManager()->textResource((name))->text()
+#define TRN(engine, name, n) (engine).resourceManager()->textResource((name))->text((n))
 
 extern const char* KResourceManagerDebugName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

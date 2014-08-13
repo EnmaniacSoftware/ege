@@ -60,7 +60,7 @@ class IndexBuffer : public Component
   protected:
 
     /*! Constructing only via RenderSystem. */
-    IndexBuffer(Application* app, const String& name);
+    IndexBuffer(const String& name);
     /*! Destroys buffer. */
     virtual void destroy();
 

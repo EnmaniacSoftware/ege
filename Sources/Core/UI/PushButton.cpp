@@ -1,6 +1,6 @@
 #include "Core/UI/PushButton.h"
 #include "Core/UI/WidgetFactory.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 #include "EGEGraphics.h"
 #include "EGEStringUtils.h"
@@ -13,17 +13,17 @@ EGE_DEFINE_DELETE_OPERATORS(PushButton)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const Rectf l_defaultTextAreaRect = Rectf(0.1f, 0.1f, 0.8f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PushButton::PushButton(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(app, name, EGE_OBJECT_UID_UI_PUSH_BUTTON, deleteFunc),
-                                                                                               m_clicked(false)
+PushButton::PushButton(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_PUSH_BUTTON, deleteFunc)
+                                                                                           , m_clicked(false)
 {
-  PResourceFont fontResource = app->resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
+  PResourceFont fontResource = engine.resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
   {
     // store used font
     m_font = fontResource->font();
 
     // title label
-    PLabel label = app->graphics()->widgetFactory()->createWidget("label", "text");
+    PLabel label = engine.graphics()->widgetFactory()->createWidget("label", "text");
     if (label)
     {
       label->setFont(m_font);
@@ -36,9 +36,9 @@ PushButton::~PushButton()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget PushButton::Create(Application* app, const String& name)
+PWidget PushButton::Create(Engine& engine, const String& name)
 {
-  return ege_new PushButton(app, name);
+  return ege_new PushButton(engine, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool PushButton::isValid() const
@@ -124,7 +124,7 @@ bool PushButton::initialize(const Dictionary& params)
   // check if material name is defined
   if (params.contains("material"))
   {
-    PResourceMaterial materialResource = app()->resourceManager()->materialResource(params.at("material"));
+    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.at("material"));
     EGE_ASSERT(materialResource);
     if (materialResource)
     {
@@ -148,7 +148,7 @@ bool PushButton::initialize(const Dictionary& params)
   // check if font name is defined
   if (params.contains("font"))
   {
-    PResourceFont fontResource = app()->resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
     if (fontResource)
     {
       // set new font

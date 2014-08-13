@@ -10,7 +10,7 @@ const char* KDeviceServicesDebugName = "EGEDeviceServices";
 EGE_DEFINE_NEW_OPERATORS(DeviceServices)
 EGE_DEFINE_DELETE_OPERATORS(DeviceServices)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServices::DeviceServices(Application* application) : m_application(application)
+DeviceServices::DeviceServices(Engine& engine) : m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,9 +83,9 @@ PDataBuffer DeviceServices::aesEnctyptionKey()
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Application* DeviceServices::app() const
+Engine& DeviceServices::engine() const
 {
-  return m_application;
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 #include "Core/Crypto/Interface/CryptographicHashMD5.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CryptographicHashMD5::CryptographicHashMD5() : CryptographicHash()
@@ -45,3 +45,5 @@ PDataBuffer CryptographicHashMD5::result()
   return CryptographicHash::result();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

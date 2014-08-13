@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ParticleAffector)
 EGE_DEFINE_DELETE_OPERATORS(ParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleAffector::ParticleAffector(Application* app, const String& name) : Object(app)
+ParticleAffector::ParticleAffector(const String& name) : Object()
 {
   // initialize to default values
   Dictionary params;

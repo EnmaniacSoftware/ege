@@ -1,41 +1,80 @@
-#include "Core/Application/Application.h"
-#include <EGECommandLine.h>
-#include <EGEDictionary.h>
+#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInternal.h"
+#include "EGECommandLine.h"
+#include "EGEDictionary.h"
 #include <windows.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void run(Engine& engine)
+{
+  EngineInternal& engineInternal = static_cast<EngineInternal&>(reinterpret_cast<EngineInstance&>(engine));
+
+  // main loop
+  while ( ! engineInternal.isShutDown())
+  {
+    // process messages for all windows within our context
+    MSG msg;
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
+    { 
+      // process the message
+      TranslateMessage(&msg);
+      DispatchMessage(&msg);
+    }
+
+    // send begin of frame signal
+    emit engine.signalFrameBegin();
+
+    // update
+    engineInternal.update();
+
+    // render
+    engineInternal.render();
+
+    // send end of frame signal
+    emit engine.signalFrameEnd();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR strCmdLine, INT)
 {
   EGEResult result = EGE_ERROR;
 
-  // initialize memory manager
-  if (MemoryManager::Initialize())
+  try
   {
-    // process command line
-    CommandLineParser commandLineParser(strCmdLine);
-
-    // create application instance
-    Application* application = Application::CreateInstance();
-    if (NULL != application)
+    // initialize memory manager
+    if (MemoryManager::Initialize())
     {
-      // construct application
-      result = application->construct(commandLineParser.dictionary());
-      if (EGE_SUCCESS == result)
+      // process command line
+      CommandLineParser commandLineParser(strCmdLine);
+
+      // create engine
+      Engine* engine = ege_new EngineInstance(commandLineParser.dictionary());
+
+      // construct it
+      if (EGE_SUCCESS == (result = engine->construct()))
       {
-        // run application
-        result = application->run();
+        // run
+        run(*engine);
       }
+
+      // clean up
+      delete engine;
     }
 
-    // clean up
-    Application::DestroyInstance(application);
+    // deinitialize memory manager
+    MemoryManager::Deinitialize();
+  }
+  catch (std::bad_alloc&)
+  {
+    result = EGE_ERROR_NO_MEMORY;
+  }
+  catch (...)
+  {
+    result = EGE_ERROR;
   }
 
-  // deinitialize memory manager
-  MemoryManager::Deinitialize();
-
-  return (EGE_SUCCESS == result) ? 0 : 1;
+  return static_cast<INT>(result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -8,7 +8,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ParticleEmitterPoint)
 EGE_DEFINE_DELETE_OPERATORS(ParticleEmitterPoint)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ParticleEmitterPoint::ParticleEmitterPoint(Application* app, const String& name) : ParticleEmitter(app, name)
+ParticleEmitterPoint::ParticleEmitterPoint(Engine& engine, const String& name) : ParticleEmitter(engine, name)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -16,9 +16,9 @@ ParticleEmitterPoint::~ParticleEmitterPoint()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PParticleEmitter ParticleEmitterPoint::Create(Application* app, const String& name)
+PParticleEmitter ParticleEmitterPoint::Create(Engine& engine, const String& name)
 {
-  return ege_new ParticleEmitterPoint(app, name);
+  return ege_new ParticleEmitterPoint(engine, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ParticleEmitterPoint::initialize(const Dictionary& params)

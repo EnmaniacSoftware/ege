@@ -4,7 +4,7 @@
 #include "EGEDebug.h"
 #include <sqlite3.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KDatabaseSqliteDebugName = "EGEDatabaseSqlite";
@@ -385,3 +385,5 @@ const PSqlResult DatabaseSqlite::result() const
   return m_result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

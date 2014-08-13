@@ -9,8 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIHorizontalScrollbar)
 EGE_DEFINE_DELETE_OPERATORS(UIHorizontalScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIHorizontalScrollbar::UIHorizontalScrollbar(Application* app, const String& name, egeObjectDeleteFunc deleteFunc) 
-: UIAbstractScrollbar(app, name, EGE_OBJECT_UID_UI_HORIZONTAL_SCROLLBAR, deleteFunc)
+UIHorizontalScrollbar::UIHorizontalScrollbar(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: UIAbstractScrollbar(engine, name, EGE_OBJECT_UID_UI_HORIZONTAL_SCROLLBAR, deleteFunc)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -18,10 +18,10 @@ UIHorizontalScrollbar::~UIHorizontalScrollbar()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PWidget UIHorizontalScrollbar::Create(Application* app, const String& name)
+PWidget UIHorizontalScrollbar::Create(Engine& engine, const String& name)
 {
   // allocate object
-  PUIHorizontalScrollbar object =  ege_new UIHorizontalScrollbar(app, name);
+  PUIHorizontalScrollbar object =  ege_new UIHorizontalScrollbar(engine, name);
   if (NULL != object)
   {
     // construct

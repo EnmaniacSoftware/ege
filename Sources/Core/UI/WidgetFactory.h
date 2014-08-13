@@ -11,17 +11,19 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef PWidget (*egeWidgetCreateFunc)(Application* app, const String& name);
+typedef PWidget (*egeWidgetCreateFunc)(Engine& engine, const String& name);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class WidgetFactory : public Object
+class WidgetFactory
 {
   public:
 
-    WidgetFactory(Application* app);
+    WidgetFactory(Engine& engine);
    ~WidgetFactory();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
 
     /*! Creates object. */
     EGEResult construct();
@@ -48,6 +50,13 @@ class WidgetFactory : public Object
 
   private:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
+
+  private:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Registered widgets sorted by type name. */
     WidgetRegisterMap m_registeredWidgets;
 };

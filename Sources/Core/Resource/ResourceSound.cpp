@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceManager.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
@@ -15,7 +15,7 @@ static const char* KResourceSoundDebugName = "EGEResourceSound";
 EGE_DEFINE_NEW_OPERATORS(ResourceSound)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSound::ResourceSound(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_SOUND)
+ResourceSound::ResourceSound(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SOUND)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,9 +23,9 @@ ResourceSound::~ResourceSound()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSound::Create(Application* app, ResourceGroup* group)
+PResource ResourceSound::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceSound(app, group);
+  return ege_new ResourceSound(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSound::name() const
@@ -120,7 +120,7 @@ PSound ResourceSound::createInstance()
   }
 
   // create sound object from data
-  PSound object = app()->audioManager()->createSound(name(), m_data);
+  PSound object = engine().audioManager()->createSound(name(), m_data);
   if ((NULL == object))
   {
     // error!

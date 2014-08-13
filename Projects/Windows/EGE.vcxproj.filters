@@ -4,9 +4,6 @@
     <Filter Include="Core">
       <UniqueIdentifier>{4c4a2f98-a97a-48af-a446-6e5028f0eca5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Application">
-      <UniqueIdentifier>{d704e1fa-c528-4f1b-8bda-60c491ab0080}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Data">
       <UniqueIdentifier>{f7c03ef9-2265-42df-95c4-47c1bd3edec3}</UniqueIdentifier>
     </Filter>
@@ -48,9 +45,6 @@
     </Filter>
     <Filter Include="Win32">
       <UniqueIdentifier>{e0a2b4ec-3b04-4a2d-9ff1-239bc82d068f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Win32\Application">
-      <UniqueIdentifier>{aee24acd-16d9-4e3f-abe2-980f8aeadf82}</UniqueIdentifier>
     </Filter>
     <Filter Include="Win32\Debug">
       <UniqueIdentifier>{d3710955-51ce-4588-ab3e-752f5f6f90d5}</UniqueIdentifier>
@@ -391,6 +385,15 @@
     <Filter Include="Win32\String\Implementation">
       <UniqueIdentifier>{97011b00-16f8-4aa5-aa67-41dcc6f3d5b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Engine">
+      <UniqueIdentifier>{737338d0-341f-4e5b-bf71-df0d90f6c830}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine\Implementation">
+      <UniqueIdentifier>{9dfe5ae6-1876-4071-a947-01a72017a631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Engine\Interface">
+      <UniqueIdentifier>{09eadef2-6404-48f0-97e2-25a1bd7e8246}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -488,9 +491,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp">
       <Filter>Win32\File</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Application\Application.cpp">
-      <Filter>Core\Application</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
       <Filter>Core\Resource</Filter>
@@ -780,9 +780,6 @@
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceProgram.cpp">
       <Filter>Core\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Application\ApplicationWin32_p.cpp">
-      <Filter>Win32\Application</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
       <Filter>Core\Tools</Filter>
     </ClCompile>
@@ -1053,6 +1050,18 @@
     <ClCompile Include="..\..\Sources\Win32\String\Implementation\StringUtilsWin32.cpp">
       <Filter>Win32\String\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetwork.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetworkRegistry.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.cpp">
+      <Filter>Core\Engine\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineApplication.cpp">
+      <Filter>Core\Engine\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Event\Event.h">
@@ -1192,9 +1201,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h">
       <Filter>Win32\File</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Application\Application.h">
-      <Filter>Core\Application</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h">
       <Filter>Core\Resource</Filter>
@@ -1569,9 +1575,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceProgram.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\Application\ApplicationWin32_p.h">
-      <Filter>Win32\Application</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
       <Filter>Core\Tools</Filter>
@@ -1930,6 +1933,26 @@
     <ClInclude Include="..\..\Sources\EGEKeyFrameAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\SpriteAnimation\Interface\SpriteAnimation.h">
       <Filter>Core\Graphics\SpriteAnimation\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\AdNetwork.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAdNetwork.h" />
+    <ClInclude Include="..\..\Sources\Core\Services\Interface\AdNetworkRegistry.h">
+      <Filter>Core\Services\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\Engine.h">
+      <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEEngine.h" />
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineInternal.h">
+      <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.h">
+      <Filter>Core\Engine\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineApplication.h">
+      <Filter>Core\Engine\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

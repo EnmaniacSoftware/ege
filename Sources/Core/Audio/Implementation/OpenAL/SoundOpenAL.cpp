@@ -3,7 +3,7 @@
 #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "EGEMath.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KSoundOpenALDebugName = "EGESoundOpenAL";
@@ -11,14 +11,14 @@ static const char* KSoundOpenALDebugName = "EGESoundOpenAL";
 EGE_DEFINE_NEW_OPERATORS(SoundOpenAL)
 EGE_DEFINE_DELETE_OPERATORS(SoundOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SoundOpenAL::SoundOpenAL(AudioManagerOpenAL* manager, const String& name, PDataBuffer& data) : Sound(manager->app(), name, data),
-                                                                                               m_manager(manager),
-                                                                                               m_repeatsLeft(0),
-                                                                                               m_state(StateNone),
-                                                                                               m_format(0),
-                                                                                               m_channel(0),
-                                                                                               m_pitch(1.0f),
-                                                                                               m_volume(1.0f)
+SoundOpenAL::SoundOpenAL(AudioManagerOpenAL* manager, const String& name, PDataBuffer& data) : Sound(name, data)
+                                                                                             , m_manager(manager)
+                                                                                             , m_repeatsLeft(0)
+                                                                                             , m_state(StateNone)
+                                                                                             , m_format(0)
+                                                                                             , m_channel(0)
+                                                                                             , m_pitch(1.0f)
+                                                                                             , m_volume(1.0f)
 {
   EGE_MEMSET(m_buffers, 0, sizeof (m_buffers));
 }
@@ -477,3 +477,4 @@ s32 SoundOpenAL::repeatCount() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

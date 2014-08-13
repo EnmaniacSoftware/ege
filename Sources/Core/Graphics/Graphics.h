@@ -15,16 +15,15 @@ class RenderSystem;
 class IRenderer;
 class IHardwareResourceProvider;
 
-EGE_DECLARE_SMART_CLASS(Graphics, PGraphics)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class Graphics : public Object
+class Graphics
 {
   public:
 
-    Graphics(Application* app, const Dictionary& params);
+    Graphics(Engine& engine, const Dictionary& params);
     virtual ~Graphics();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -76,6 +75,8 @@ class Graphics : public Object
 
     /*! Unregisteres all render targets. */
     void unregisterAllRenderTargets();
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
@@ -85,6 +86,8 @@ class Graphics : public Object
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Graphics)
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Renderer system. */
     RenderSystem* m_renderSystem;
     /*! Render targets sorted by priority. */

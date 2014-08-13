@@ -5,9 +5,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBuffer::IndexBuffer(Application* app, const String& name) : Component(app, EGE_OBJECT_UID_INDEX_BUFFER, name), 
-                                                                 m_indexSize(EGEIndexBuffer::IS_UNKNOWN), 
-                                                                 m_locked(false)
+IndexBuffer::IndexBuffer(const String& name) : Component(EGE_OBJECT_UID_INDEX_BUFFER, name)
+                                             , m_indexSize(EGEIndexBuffer::IS_UNKNOWN)
+                                             , m_locked(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

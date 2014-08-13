@@ -1,7 +1,7 @@
 #include "Core/Component/Interface/ComponentHost.h"
 #include "Core/Component/Interface/Component.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ComponentHost::ComponentHost()
@@ -81,3 +81,5 @@ void ComponentHost::removeComponent(const PComponent& component)
   m_pool.removeByValue(component);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

@@ -1,6 +1,6 @@
 #include "Core/ComplexTypes.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(Integer)
@@ -8,12 +8,12 @@ EGE_DEFINE_DELETE_OPERATORS(Integer)
 EGE_DEFINE_NEW_OPERATORS(Float)
 EGE_DEFINE_DELETE_OPERATORS(Float)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Integer::Integer(const Integer& other) : Object(NULL, EGE_OBJECT_UID_INT)
+Integer::Integer(const Integer& other) : Object(EGE_OBJECT_UID_INT)
                                        , m_value(other.m_value)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Integer::Integer(s32 value) : Object(NULL, EGE_OBJECT_UID_INT)
+Integer::Integer(s32 value) : Object(EGE_OBJECT_UID_INT)
                             , m_value(value)
 {
 }
@@ -23,12 +23,12 @@ s32 Integer::value() const
   return m_value; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Float::Float(const Float& other) : Object(NULL, EGE_OBJECT_UID_FLOAT)
+Float::Float(const Float& other) : Object(EGE_OBJECT_UID_FLOAT)
                                  , m_value(other.m_value)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Float::Float(float32 value) : Object(NULL, EGE_OBJECT_UID_FLOAT)
+Float::Float(float32 value) : Object(EGE_OBJECT_UID_FLOAT)
                             , m_value(value)
 {
 }
@@ -38,3 +38,5 @@ float32 Float::value() const
   return m_value; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

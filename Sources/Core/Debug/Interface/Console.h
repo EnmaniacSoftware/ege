@@ -10,7 +10,7 @@ class Console : public Object
 {
   public:
 
-    Console(Application* app);
+    Console(Engine& engine);
     virtual ~Console();
 
     EGE_DECLARE_NEW_OPERATORS

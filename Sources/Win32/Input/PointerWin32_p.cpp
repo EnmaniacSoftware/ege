@@ -1,7 +1,7 @@
-#include "Core/Application/Application.h"
 #include "Core/Input/Pointer.h"
-#include "Win32/Input/PointerWin32_p.h"
 #include "Core/ListenerContainer.h"
+#include "Win32/Input/PointerWin32_p.h"
+#include "EGEEngine.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -15,13 +15,13 @@ PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::~PointerPrivate()
 {
-  d_func()->app()->eventManager()->removeListener(this);
+  d_func()->engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult PointerPrivate::construct()
 {
   // subscribe for notifications
-  if ( ! d_func()->app()->eventManager()->addListener(this))
+  if ( ! d_func()->engine().eventManager()->addListener(this))
   {
     // error!
     return EGE_ERROR;
@@ -32,12 +32,13 @@ EGEResult PointerPrivate::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PointerPrivate::onEventRecieved(PEvent event)
 {
+  // TAGE - port
   // check if quitting already
-  if (d_func()->app()->isQuitting())
-  {
-    // do not propagate
-    return;
-  }
+  //if (d_func()->engine().isQuitting())
+  //{
+  //  // do not propagate
+  //  return;
+  //}
 
   switch (event->id())
   {

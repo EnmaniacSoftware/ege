@@ -14,19 +14,19 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerNull : public Object, 
-                         public IAudioManagerBase, 
-                         public IAudioManager
+class AudioManagerNull : public Object 
+                       , public IAudioManagerBase
+                       , public IAudioManager
 {
   public:
     
-    AudioManagerNull(Application* app);
+    AudioManagerNull(Engine& engine);
    ~AudioManagerNull();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
+  private:
 
     /*! @see IAudioManagerBase::requestPlay. */
     EGEResult requestPlay(PSound sound) override;
@@ -47,11 +47,6 @@ class AudioManagerNull : public Object,
     PSound createSound(const String& name, PDataBuffer& data) const override;
     /*! @see IAudioManager::state. */
     EState state() const override;
-
-  private:
-
-    /*! @ see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent event) override;
 
   private:
 

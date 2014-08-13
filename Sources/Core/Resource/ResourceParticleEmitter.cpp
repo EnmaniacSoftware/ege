@@ -1,6 +1,6 @@
 #include "Core/Resource/ResourceParticleEmitter.h"
 #include "Core/Resource/ResourceManager.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
@@ -16,7 +16,7 @@ static const char* KResourceParticleEmitterDebugName = "EGEResourceParticleEmitt
 EGE_DEFINE_NEW_OPERATORS(ResourceParticleEmitter)
 EGE_DEFINE_DELETE_OPERATORS(ResourceParticleEmitter)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceParticleEmitter::ResourceParticleEmitter(Application* app, ResourceGroup* group) : IResource(app, group, RESOURCE_NAME_PARTICLE_EMITTER)
+ResourceParticleEmitter::ResourceParticleEmitter(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_PARTICLE_EMITTER)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,9 +24,9 @@ ResourceParticleEmitter::~ResourceParticleEmitter()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceParticleEmitter::Create(Application* app, ResourceGroup* group)
+PResource ResourceParticleEmitter::Create(Engine& engine, ResourceGroup* group)
 {
-  return ege_new ResourceParticleEmitter(app, group);
+  return ege_new ResourceParticleEmitter(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceParticleEmitter::name() const
@@ -159,7 +159,7 @@ void ResourceParticleEmitter::unload()
 PParticleEmitter ResourceParticleEmitter::createInstance()
 {
   // create instance of particle emitter of a correct type and with given name
-  PParticleEmitter object = app()->graphics()->particleFactory()->createEmitter(m_parameters["type"], m_name);
+  PParticleEmitter object = engine().graphics()->particleFactory()->createEmitter(m_parameters["type"], m_name);
   if (object)
   {
     // initialize with dictionary

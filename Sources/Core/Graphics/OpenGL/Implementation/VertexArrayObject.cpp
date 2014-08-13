@@ -4,8 +4,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexArrayObject::VertexArrayObject(Application* app, const String& name) : Component(app, EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT, name),
-                                                                             m_id(0)
+VertexArrayObject::VertexArrayObject(const String& name) : Component(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT, name)
+                                                         , m_id(0)
 {
   glGenVertexArrays(1, &m_id);
   OGL_CHECK();

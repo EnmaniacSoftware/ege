@@ -8,16 +8,16 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(Application* app, const Dictionary& params) : Object(app), 
-                                                                         m_vertexCount(0), 
-                                                                         m_batchCount(0), 
-                                                                         m_physicalWidth(0), 
-                                                                         m_physicalHeight(0), 
-                                                                         m_width(0), 
-                                                                         m_height(0), 
-                                                                         m_orientationRotation(0.0f),
-                                                                         m_zoom(1.0f),
-                                                                         m_enabled(true)
+RenderTarget::RenderTarget(const Dictionary& params) : Object()
+                                                     , m_vertexCount(0)
+                                                     , m_batchCount(0)
+                                                     , m_physicalWidth(0)
+                                                     , m_physicalHeight(0)
+                                                     , m_width(0)
+                                                     , m_height(0)
+                                                     , m_orientationRotation(0.0f)
+                                                     , m_zoom(1.0f)
+                                                     , m_enabled(true)
 {
   // decompose param list
   Dictionary::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
@@ -51,7 +51,7 @@ PViewport RenderTarget::addViewport(const String& name, PCamera camera)
   }
 
   // create new viewport
-  PViewport viewport = ege_new Viewport(app(), name, camera, this);
+  PViewport viewport = ege_new Viewport(name, camera, this);
   if (NULL != viewport)
   {
     m_viewports.push_back(viewport);

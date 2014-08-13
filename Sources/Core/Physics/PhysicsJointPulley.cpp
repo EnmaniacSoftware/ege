@@ -1,4 +1,4 @@
-#include "Core/Application/Application.h"
+#include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
 
@@ -14,15 +14,15 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PhysicsJointPulley)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsJointPulley)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsJointPulley::PhysicsJointPulley(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
+PhysicsJointPulley::PhysicsJointPulley(Engine& engine, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
                                        const Vector4f& groundAnchorA, const Vector4f& groundAnchorB) 
-: PhysicsJoint(app, bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY), 
+: PhysicsJoint(bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_PULLEY), 
   m_maxLengthA(maxLengthA), 
   m_maxLengthB(maxLengthB), 
   m_groundAnchorA(groundAnchorA), 
   m_groundAnchorB(groundAnchorB)
 {
-  m_p = ege_new PhysicsJointPulleyPrivate(this, app->physicsManager()->p_func());
+  m_p = ege_new PhysicsJointPulleyPrivate(this, engine.physicsManager()->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointPulley::~PhysicsJointPulley()
@@ -30,7 +30,7 @@ PhysicsJointPulley::~PhysicsJointPulley()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointPulley::lengthA() const
+float32 PhysicsJointPulley::lengthA() const
 {
   EGE_ASSERT(NULL != p_func());
 
@@ -42,7 +42,7 @@ EGE::float32 PhysicsJointPulley::lengthA() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE::float32 PhysicsJointPulley::lengthB() const
+float32 PhysicsJointPulley::lengthB() const
 {
   EGE_ASSERT(NULL != p_func());
 

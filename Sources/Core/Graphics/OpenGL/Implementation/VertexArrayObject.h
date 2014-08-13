@@ -18,8 +18,10 @@ class VertexArrayObject : public Component
 {
   public:
 
-    VertexArrayObject(Application* app, const String& name);
-    virtual ~VertexArrayObject();
+    VertexArrayObject(const String& name);
+   ~VertexArrayObject();
+
+  public:
 
     /*! Binds object. */
     void bind();

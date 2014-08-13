@@ -2,7 +2,7 @@
 #include "Core/ComplexTypes.h"
 #include "EGEStringBuffer.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 SqlQuery::SqlQuery(const String& statement) : m_query(statement)
@@ -54,3 +54,5 @@ const List<PObject>& SqlQuery::values() const
   return m_boundValues;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

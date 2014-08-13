@@ -24,7 +24,7 @@ class Label : public Widget
 {
   public: 
 
-    Label(Application* app, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
+    Label(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~Label();
     
     EGE_DECLARE_NEW_OPERATORS
@@ -33,7 +33,7 @@ class Label : public Widget
   public:
 
     /*! Creates instance of widget. This method is a registration method for factory. */
-    static PWidget Create(Application* app, const String& name);
+    static PWidget Create(Engine& engine, const String& name);
 
   public:
 

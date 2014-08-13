@@ -22,7 +22,7 @@ class TimeLine : public Object
 {
   public:
 
-    TimeLine(Application* app);
+    TimeLine();
    ~TimeLine();
 
     EGE_DECLARE_NEW_OPERATORS

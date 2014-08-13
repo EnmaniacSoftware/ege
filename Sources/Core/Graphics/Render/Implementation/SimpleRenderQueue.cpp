@@ -1,13 +1,13 @@
 #include "Core/Graphics/Render/Implementation/SimpleRenderQueue.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(SimpleRenderQueue)
 EGE_DEFINE_DELETE_OPERATORS(SimpleRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SimpleRenderQueue::SimpleRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) 
-: RenderQueue(app, EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, priority, primitiveType)
+SimpleRenderQueue::SimpleRenderQueue(u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) 
+: RenderQueue(EGE_OBJECT_UID_SIMPLE_RENDER_QUEUE, priority, primitiveType)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,3 +43,5 @@ void SimpleRenderQueue::prepareRenderList(RenderDataList& list)
   list = m_renderData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

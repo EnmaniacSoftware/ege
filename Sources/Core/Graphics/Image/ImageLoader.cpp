@@ -1,17 +1,17 @@
-#include "Core/Application/Application.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Event/Event.h"
 #include "Core/Event/EventIDs.h"
 #include "Core/Event/EventManager.h"
+#include "EGEEngine.h"
 #include "EGEDebug.h"
 
 #if EGE_IMAGEMANAGER_SINGLE_THREAD
-#include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"
+  #include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"
 #elif EGE_IMAGEMANAGER_MULTI_THREAD
-#include "Core/Graphics/Image/MultiThread/ImageLoaderST_p.h"
+  #include "Core/Graphics/Image/MultiThread/ImageLoaderST_p.h"
 #endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KImageLoaderDebugName = "EGEImageLoader";
@@ -19,8 +19,9 @@ static const char* KImageLoaderDebugName = "EGEImageLoader";
 EGE_DEFINE_NEW_OPERATORS(ImageLoader)
 EGE_DEFINE_DELETE_OPERATORS(ImageLoader)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageLoader::ImageLoader(Application* app) : Object(app), 
-                                             m_p(NULL)
+ImageLoader::ImageLoader(Engine& engine) : Object()
+                                         , m_p(NULL)
+                                         , m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +29,7 @@ ImageLoader::~ImageLoader()
 {
   EGE_DELETE(m_p);
 
-  app()->eventManager()->removeListener(this);
+  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ImageLoader::construct()
@@ -42,7 +43,7 @@ EGEResult ImageLoader::construct()
   }
 
   // subscribe for event notifications
-  if ( ! app()->eventManager()->addListener(this))
+  if ( ! engine().eventManager()->addListener(this))
   {
     // error!
     egeCritical(KImageLoaderDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
@@ -97,3 +98,10 @@ void ImageLoader::onEventRecieved(PEvent event)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ImageLoader::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

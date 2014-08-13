@@ -25,7 +25,7 @@ class RenderSystemFixedOGL : public RenderSystemOGL
 {
   public:
 
-    RenderSystemFixedOGL(Application* app);
+    RenderSystemFixedOGL(Engine& engine);
    ~RenderSystemFixedOGL();
 
   private:

@@ -8,15 +8,17 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Widget)
 EGE_DEFINE_DELETE_OPERATORS(Widget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Widget::Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(app, uid, deleteFunc), 
-                                                                                                m_name(name),
-                                                                                                m_renderDataInvalid(true), 
-                                                                                                m_visible(true),
-                                                                                                m_widgetFrame(NULL),
-                                                                                                m_parent(NULL),
-                                                                                                m_size(100.0f, 100.0f),
-                                                                                                m_alignment(ALIGN_TOP_LEFT),
-                                                                                                m_globalTransformationMatrixInvalid(true)
+Widget::Widget(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(uid, deleteFunc)
+                                                                                            , m_engine(engine)
+                                                                                            , m_name(name)
+                                                                                            , m_physics(engine)
+                                                                                            , m_renderDataInvalid(true)
+                                                                                            , m_visible(true)
+                                                                                            , m_widgetFrame(NULL)
+                                                                                            , m_parent(NULL)
+                                                                                            , m_size(100.0f, 100.0f)
+                                                                                            , m_alignment(ALIGN_TOP_LEFT)
+                                                                                            , m_globalTransformationMatrixInvalid(true)
 {
   ege_connect(&m_physics, transformationChanged, this, Widget::onTransformationChanged);
 }
@@ -37,7 +39,7 @@ bool Widget::initialize(const Dictionary& params)
 {
   if (!isFrameless())
   {
-    m_widgetFrame = ege_new WidgetFrame(app());
+    m_widgetFrame = ege_new WidgetFrame(engine());
     if (NULL == m_widgetFrame)
     {
       // error!
@@ -416,6 +418,11 @@ const Matrix4f& Widget::globalTransformationMatrix() const
 EGEResult Widget::construct()
 {
   return EGE_SUCCESS;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& Widget::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

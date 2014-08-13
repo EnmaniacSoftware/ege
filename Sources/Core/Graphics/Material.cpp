@@ -6,7 +6,7 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material(Application* app) : Object(app)
+Material::Material() : Object()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,7 +28,7 @@ PRenderPass Material::addPass(const PRenderPass& pass)
   if (NULL == renderPass)
   {
     // create new
-    renderPass = ege_new RenderPass(app());
+    renderPass = ege_new RenderPass();
   }
 
   if (NULL != renderPass)
@@ -213,7 +213,7 @@ void Material::clear()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PMaterial Material::clone() const
 {
-  PMaterial material = ege_new Material(app());
+  PMaterial material = ege_new Material();
   if (NULL != material)
   {
     // clone passes

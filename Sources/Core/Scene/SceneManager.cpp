@@ -1,4 +1,3 @@
-#include "Core/Application/Application.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Camera.h"
@@ -7,6 +6,7 @@
 #include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "EGEGraphics.h"
+#include "EGEEngine.h"
 
 #include "EGEScreen.h"
 
@@ -16,8 +16,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SceneManager)
 EGE_DEFINE_DELETE_OPERATORS(SceneManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneManager::SceneManager(Application* app) : Object(app), 
-                                               m_rootNode(NULL)
+SceneManager::SceneManager(Engine& engine) : m_engine(engine)
+                                           , m_rootNode(NULL)
 {
   // initialize
   //if (EGE_SUCCESS != (eResult = m_rootNode->initialize()))
@@ -58,7 +58,7 @@ EGEResult SceneManager::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::render(PCamera camera, PViewport viewport)
 {
-  RenderSystem* renderSystem = app()->graphics()->renderSystem();
+  RenderSystem* renderSystem = engine().graphics()->renderSystem();
 
   renderSystem->setViewport(viewport);
   renderSystem->setProjectionMatrix(camera->projectionMatrix());
@@ -82,7 +82,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   // check if overlays are to be rendered
   if (viewport->overlaysEnabled())
   {
-    app()->overlayManager()->render(viewport, renderSystem);
+    engine().overlayManager()->render(viewport, renderSystem);
 
     //// find visible GUI elements
     //CGUIManager::GetSingletonPtr()->findVisibleElements( pcViewport, m_pcRenderQueue );
@@ -91,7 +91,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
     //queueMouseCursorForRendering();
   }
 
-  app()->screenManager()->render(viewport, renderSystem);
+  engine().screenManager()->render(viewport, renderSystem);
 
   //// queue skybox for rendering
   //queueSkyForRendering();
@@ -559,4 +559,11 @@ void SceneManager::addForRendering(PCamera& camera, IRenderer* renderer)
 //
 //  return true;
 //}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& SceneManager::engine() const
+{
+  return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 EGE_NAMESPACE_END

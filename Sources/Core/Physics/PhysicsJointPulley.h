@@ -14,7 +14,7 @@ class PhysicsJointPulley : public PhysicsJoint
 {
   public:
 
-    PhysicsJointPulley(Application* app, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
+    PhysicsJointPulley(Engine& engine, PPhysicsComponent bodyA, PPhysicsComponent bodyB, float32 maxLengthA, float32 maxLengthB, 
                        const Vector4f& groundAnchorA, const Vector4f& groundAnchorB);
    ~PhysicsJointPulley();
 

@@ -19,7 +19,7 @@ class RenderComponent : public Component
 {
   public:
 
-    RenderComponent(Application* app, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority = EGEGraphics::RP_MAIN, 
+    RenderComponent(Engine& engine, const String& name, const VertexDeclaration& vertexDeclaration, s32 priority = EGEGraphics::RP_MAIN, 
                     EGEGraphics::RenderPrimitiveType primitive = EGEGraphics::RPT_TRIANGLES,
                     NVertexBuffer::UsageType vertexUsage = NVertexBuffer::UT_DYNAMIC_WRITE,
                     EGEIndexBuffer::UsageType indexUsage = EGEIndexBuffer::UT_DYNAMIC_WRITE);
@@ -69,6 +69,8 @@ class RenderComponent : public Component
     void setLineWidth(float32 width);
     /*! Returns line width. */
     float32 lineWidth() const { return m_lineWidth; }
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
@@ -92,6 +94,8 @@ class RenderComponent : public Component
 
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Index buffer. */
     PIndexBuffer m_indexBuffer;
     /*! Vertex buffer. */

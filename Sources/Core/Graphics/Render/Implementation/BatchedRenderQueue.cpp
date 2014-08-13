@@ -7,8 +7,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(BatchedRenderQueue)
 EGE_DEFINE_DELETE_OPERATORS(BatchedRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-BatchedRenderQueue::BatchedRenderQueue(Application* app, u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) 
-: RenderQueue(app, EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, priority, primitiveType)
+BatchedRenderQueue::BatchedRenderQueue(u32 priority, EGEGraphics::RenderPrimitiveType primitiveType) 
+: RenderQueue(EGE_OBJECT_UID_BACTHED_RENDER_QUEUE, priority, primitiveType)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -178,8 +178,9 @@ bool BatchedRenderQueue::allocateMasterRenderComponent(const PRenderComponent& c
   bool result = true;
 
   // allocate master component
-  m_renderData = ege_new RenderComponent(app(), String::Format("BatchedRenderQueue@%d", component->priority()), component->vertexBuffer()->vertexDeclaration(), 
-                                         component->priority(), component->primitiveType(), NVertexBuffer::UT_DYNAMIC_WRITE);
+  m_renderData = ege_new RenderComponent(component->engine(), String::Format("BatchedRenderQueue@%d", component->priority()), 
+                                         component->vertexBuffer()->vertexDeclaration(), component->priority(), component->primitiveType(), 
+                                         NVertexBuffer::UT_DYNAMIC_WRITE);
   if ((NULL == m_renderData) || ! m_renderData->isValid())
   {
     // error!

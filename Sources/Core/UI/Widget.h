@@ -96,13 +96,15 @@ class Widget : public Object
 
   protected:
 
-    Widget(Application* app, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
+    Widget(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
     /*! Generates render data. */
     virtual void generateRenderData();
     /*! Returns global transformation matrix. */
     const Matrix4f& globalTransformationMatrix() const;
     /*! Constructs object. */
     virtual EGEResult construct();
+    /*! Returns engine object. */
+    Engine& engine() const;
 
   private:
 
@@ -126,6 +128,8 @@ class Widget : public Object
 
   protected:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Name. */
     String m_name;
     /*! Physics component. */

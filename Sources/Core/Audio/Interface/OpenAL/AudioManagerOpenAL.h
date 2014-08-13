@@ -10,6 +10,7 @@
 #include "EGEThread.h"
 #include "EGEAudio.h"
 #include "Core/Audio/Implementation/AudioManagerBase.h"
+#include "Core/Event/EventListener.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include <al.h>
@@ -34,15 +35,26 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerOpenAL : public Object, public IAudioManagerBase, public IAudioManager
+class AudioManagerOpenAL : public Object
+                         , public IAudioManagerBase
+                         , public IAudioManager
+                         , public IEventListener 
 {
   public:
     
-    AudioManagerOpenAL(Application* app);
+    AudioManagerOpenAL(Engine& engine);
    ~AudioManagerOpenAL();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /*! Updates manager. 
+     *  @param  time  Time increment for which update is to be done.
+     *  @note Meant to be used from another thread. 
+     */
+    void threadUpdate(const Time& time);
 
   public:
 
@@ -66,17 +78,8 @@ class AudioManagerOpenAL : public Object, public IAudioManagerBase, public IAudi
     /*! @see IAudioManager::state. */
     EState state() const override;
 
-    /*! Updates manager. Meant to be used from another thread. */
-    void threadUpdate(const Time& time);
-
-  private slots:
-
-    /*! Slot called when audio thread is finished. */
-    void onThreadFinished(const PThread& thread);
-    /*! Slot called when given sound stopped playback. */
-    //void onStopped(PSound sound);
-
-  private:
+    /*! @ see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent event) override;
 
     /*! Queues given sound for stop. 
      *  @param  sound Sound to be stopped.
@@ -95,13 +98,25 @@ class AudioManagerOpenAL : public Object, public IAudioManagerBase, public IAudi
      */
     ALuint findAvailableChannel() const;
 
-    /*! @ see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent event) override;
     /*! Shuts down. */
     void shutDown();
 
   private:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
+
+  private slots:
+
+    /*! Slot called when audio thread is finished. */
+    void onThreadFinished(const PThread& thread);
+    /*! Slot called when given sound stopped playback. */
+    //void onStopped(PSound sound);
+
+  private:
+
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Current state. */
     IAudioManager::EState m_state;
     /*! Audio device. */

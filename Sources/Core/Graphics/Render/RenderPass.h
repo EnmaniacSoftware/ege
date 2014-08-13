@@ -21,7 +21,7 @@ class RenderPass : public Object
 {
   public:
 
-    RenderPass(Application* app);
+    RenderPass();
    ~RenderPass();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -36,10 +36,12 @@ class RenderPass : public Object
      */
     Signal1<PRenderPass> programChanged;
 
-  public:
+  operators:
 
     bool operator == (const RenderPass& other) const;
     bool operator != (const RenderPass& other) const;
+
+  public:
 
     /*! Adds new texture. */
     EGEResult addTexture(PTextureImage texture);

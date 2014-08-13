@@ -50,10 +50,10 @@ class RenderObjectFactory
      *  @param vertexUsage        Vertex buffer usage.
      *  @return Returns render component. NULL if failed.
      */
-    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
+    static PRenderComponent CreateQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                          VertexDeclarationSymbol vertexDeclaration, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                          NVertexBuffer::UsageType vertexUsage);
-    static PRenderComponent CreateQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
+    static PRenderComponent CreateQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                          const VertexDeclaration& vertexDeclaration, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                          NVertexBuffer::UsageType vertexUsage);
 
@@ -72,10 +72,10 @@ class RenderObjectFactory
      *  @return Returns render component. NULL if failed.
      *  @note Each quad has texture coordinates mirrored.
      */
-    static PRenderComponent CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
+    static PRenderComponent CreateQuatroQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                                VertexDeclarationSymbol vertexDeclaration, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                                NVertexBuffer::UsageType vertexUsage);
-    static PRenderComponent CreateQuatroQuadXY(Application* app, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
+    static PRenderComponent CreateQuatroQuadXY(Engine& engine, const String& name, Vector4f position, Vector2f size, Alignment origin, bool flipU, bool flipV,
                                                const VertexDeclaration& vertexDeclaration, s32 priority, EGEGraphics::RenderPrimitiveType primitive,
                                                NVertexBuffer::UsageType vertexUsage);
 
@@ -88,9 +88,9 @@ class RenderObjectFactory
      *  @param priority           Render priority.
      *  @return Returns render component. NULL if failed.
      */
-    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, VertexDeclarationSymbol vertexDeclaration, 
+    static PRenderComponent Create(const CubicSpline* spline, Engine& engine, const String& name, Vector3f offset, VertexDeclarationSymbol vertexDeclaration, 
                                    s32 priority);
-    static PRenderComponent Create(const CubicSpline* spline, Application* app, const String& name, Vector3f offset, 
+    static PRenderComponent Create(const CubicSpline* spline, Engine& engine, const String& name, Vector3f offset, 
                                    const VertexDeclaration& vertexDeclaration, s32 priority);
 
   private:

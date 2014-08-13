@@ -15,11 +15,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(MessageBox)
 EGE_DEFINE_DELETE_OPERATORS(MessageBox)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MessageBox::MessageBox(const Text& title, const Text& content, MessageBoxButtons buttons) : Object(NULL),
-                                                                                            m_p(NULL),
-                                                                                            m_title(title),
-                                                                                            m_content(content),
-                                                                                            m_buttons(buttons)
+MessageBox::MessageBox(const Text& title, const Text& content, MessageBoxButtons buttons) : Object()
+                                                                                          , m_p(NULL)
+                                                                                          , m_title(title)
+                                                                                          , m_content(content)
+                                                                                          , m_buttons(buttons)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

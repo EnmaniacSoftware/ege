@@ -15,7 +15,7 @@ class DebugDraw : public b2DebugDraw
 {
   public:
 
-    DebugDraw(Application* app, PhysicsManagerPrivate* managerPrivate);
+    DebugDraw(Engine& engine, PhysicsManagerPrivate* managerPrivate);
    ~DebugDraw();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -36,15 +36,15 @@ class DebugDraw : public b2DebugDraw
 
   private:
 
-    /*! Reutns pointer to application. */
-    Application* app() const { return m_app; }
+    /*! Returns engine object. */
+    Engine& engine() const;
     /*! Returns pointer to Box2D physics manager. */
     PhysicsManagerPrivate* manager() const { return m_managerPrivate; }
 
   private:
 
-    /*! Pointer to application. */
-    Application* m_app;
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! Pointer to Box2D physics manager. */
     PhysicsManagerPrivate* m_managerPrivate;
 };

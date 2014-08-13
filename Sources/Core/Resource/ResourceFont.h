@@ -41,9 +41,9 @@ class ResourceFont : public IResource
     EGE_DECLARE_DELETE_OPERATORS
 
     /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Application* app, ResourceGroup* group);
+    static PResource Create(Engine& engine, ResourceGroup* group);
     /*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
-    static PResource Create(Application* app, ResourceGroup* group, const String& name, PFont font);
+    static PResource Create(Engine& engine, ResourceGroup* group, const String& name, PFont font);
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -59,7 +59,7 @@ class ResourceFont : public IResource
 
   private:
 
-    ResourceFont(Application* app, ResourceGroup* group);
+    ResourceFont(Engine& engine, ResourceGroup* group);
     /*! Returns material name. */
     const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */
