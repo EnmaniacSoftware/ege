@@ -3,7 +3,7 @@
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #include "iOS/String/Interface/StringHelper.h"
 #include "Core/Services/Interface/SpecialURLs.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGEDebug.h"
 #import <UIKit/UIKit.h>
@@ -67,8 +67,9 @@ static NSData* SearchDictionary(NSString* keyValue)
   return valueData;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServicesIOS::DeviceServicesIOS(Application* application) : DeviceServices(application)
-                                                               , m_mailComposeDelegate(nil)
+DeviceServicesIOS::DeviceServicesIOS(Engine& engine)
+: DeviceServices(engine)
+, m_mailComposeDelegate(nil)
 {
   m_mailComposeDelegate = [[MailComposeDelegate alloc] initWithObject: this];
 }
@@ -124,7 +125,7 @@ bool DeviceServicesIOS::mailTo(const Text& recipient, const Text& title, const T
     [controller setMessageBody: nsBody isHTML: YES];
     
     // show window
-    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine().graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
     EGE_ASSERT(NULL != renderWindow);
     
     UIWindow* window = renderWindow->window();

@@ -17,11 +17,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderWindowOGLIOS : public RenderWindow, public IEventListener
+class RenderWindowOGLIOS : public RenderWindow
+                         , public IEventListener
 {
   public:
 
-    RenderWindowOGLIOS(Application* app, const Dictionary& params);
+    RenderWindowOGLIOS(Engine& engine, const Dictionary& params);
     virtual ~RenderWindowOGLIOS();
 
     /*! Creates object. */
@@ -53,6 +54,9 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
     /*! Detects rendering capabilities. */
     void detectCapabilities();
 
+    /*! Returns engine object. */
+    Engine& engine() const;
+  
   private:
   
     /*! @see IEventListener::onEventRecieved. */
@@ -64,6 +68,8 @@ class RenderWindowOGLIOS : public RenderWindow, public IEventListener
   
   private:
 
+    /*! Reference to engine. */
+    Engine& m_engine;
     /*! iOS window view. */
     OGLView* m_view;
     /*! iOS view controller. */

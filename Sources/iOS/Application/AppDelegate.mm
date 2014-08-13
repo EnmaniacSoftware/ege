@@ -12,6 +12,8 @@
 #import "iOS/Application/AppDelegate.h"
 #import "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #import "iOS/Graphics/OpenGL/ViewOGL.h"
+#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInternal.h"
 #include "EGEDictionary.h"
 #include "EGEStringList.h"
 #include "EGECommandLine.h"
@@ -29,8 +31,8 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) dealloc
 {
-  // clean up
-  Application::DestroyInstance(egeApplication);
+  // delete engine
+  EGE_DELETE(engine);
   
   // deinitialize memory manager
   MemoryManager::Deinitialize();
@@ -60,10 +62,10 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   
   egeDebug(KAppDelegateDebugName) << "Device orientation has changed:" << nativeOrientation;
 
-  assert(egeApplication);
+  assert(engine);
   
   // send event
-  EventManager* eventManager = egeApplication->eventManager();
+  EventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // map orientation to EGE compilant value
@@ -121,20 +123,27 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
       argumentList << arg;
     }
   
-    // parse command line
-    CommandLineParser commandLineParser(argumentList);
-  
     EGEResult value = EGE_ERROR;
-
-    // create application instance
-    egeApplication = Application::CreateInstance();
-    if (NULL != egeApplication)
+    
+    try
     {
-      // construct application
-      value = egeApplication->construct(commandLineParser.dictionary());
+      CommandLineParser commandLineParser(argumentList);
+  
+      // create engine
+      engine = ege_new EngineInstance(commandLineParser.dictionary());
+    
+      // construct it
+      value = engine->construct();
     }
-
-    // check for error
+    catch (std::bad_alloc&)
+    {
+      value = EGE_ERROR_NO_MEMORY;
+    }
+    catch (...)
+    {
+      value = EGE_ERROR;
+    }
+    
     if (EGE_SUCCESS != value)
     {
       // error!
@@ -170,17 +179,17 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   // phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
   // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
 
-  assert(egeApplication);
+  assert(engine);
 
   // send event
-  EventManager* eventManager = egeApplication->eventManager();
+  EventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // pause application immediately
     eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE, true);
     
     // disable rendering
-    egeApplication->graphics()->setRenderingEnabled(false);
+    engine->graphics()->setRenderingEnabled(false);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -201,16 +210,16 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   // Restart any tasks that were paused (or not yet started) while the application was inactive.
   // If the application was previously in the background, optionally refresh the user interface.
 
-  assert(egeApplication);
+  assert(engine);
   
   // send event
-  EventManager* eventManager = egeApplication->eventManager();
+  EventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
 
     // enable rendering
-    egeApplication->graphics()->setRenderingEnabled(true);
+    engine->graphics()->setRenderingEnabled(true);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -224,7 +233,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesBegan: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
   assert(renderWindow);
   
   // go thru all touches
@@ -247,7 +256,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesEnded: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
   assert(renderWindow);
  
   // go thru all touches
@@ -276,7 +285,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) touchesMoved: (NSSet*) touches withEvent: (UIEvent*) event
 {
-  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(egeApplication->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
   assert(renderWindow);
 
   // go thru all touches
@@ -300,7 +309,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 /*! Sends internal pointer notification. */
 - (void) notifyPointerEvent: (Action) action withButton: (Button) button atPoint: (CGPoint) point
 {
-  EventManager* eventManager = egeApplication->eventManager();
+  EventManager* eventManager = engine->eventManager();
   
   if (NULL != eventManager)
   {
@@ -316,8 +325,22 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 /*! Method called due to timer ticks. */
 - (void) tick: (CADisplayLink*) displayLink
 {
-  // NOTE: this call returns
-  egeApplication->run();
+  EngineInternal* engineInternal = static_cast<EngineInternal*>(reinterpret_cast<EngineInstance*>(engine));
+  
+  if ( ! engineInternal->isShutDown())
+  {
+    // send begin of frame signal
+    emit engine->signalFrameBegin();
+    
+    // update
+    engineInternal->update();
+    
+    // render
+    engineInternal->render();
+    
+    // send end of frame signal
+    emit engine->signalFrameEnd();
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -23,7 +23,7 @@ EGEResult GraphicsPrivate::construct()
   EGEResult result = EGE_SUCCESS;
 
   // allocate render window
-  RenderWindowOGLIOS* renderWindow = ege_new RenderWindowOGLIOS(d_func()->app(), d_func()->m_params);
+  RenderWindowOGLIOS* renderWindow = ege_new RenderWindowOGLIOS(d_func()->engine(), d_func()->m_params);
   if (NULL == renderWindow)
   {
     // error!
@@ -38,9 +38,9 @@ EGEResult GraphicsPrivate::construct()
 
   // create render system
 #if EGE_RENDERING_OPENGL_FIXED
-  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->app());
+  d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->engine());
 #else
-  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->app());
+  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->engine());
 #endif // EGE_RENDERING_OPENGL_FIXED
   if (NULL == d_func()->m_renderSystem)
   {

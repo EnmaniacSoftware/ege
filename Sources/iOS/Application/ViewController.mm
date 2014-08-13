@@ -30,13 +30,13 @@ EGE_NAMESPACE
 //  return YES;
 //}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-- (id) initWithApplication: (Application*) application
+- (id) initWithApplication: (Engine*) egeEngine
 {
   self = [super initWithNibName: nil bundle: nil];
   if (self)
   {
     // store pointer
-    egeApplication = application;
+    engine = egeEngine;
   }
   
   return self;
@@ -67,10 +67,10 @@ EGE_NAMESPACE
   // get current UI orientation
   UIInterfaceOrientation nativeOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 
-  assert(egeApplication);
+  assert(engine);
 
   // send event
-  EventManager* eventManager = egeApplication->eventManager();
+  EventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // map orientation to EGE compilant value

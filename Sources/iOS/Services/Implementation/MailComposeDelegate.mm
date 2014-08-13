@@ -7,7 +7,7 @@
 //
 
 #import "MailComposeDelegate.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 
@@ -29,7 +29,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) mailComposeController: (MFMailComposeViewController*) controller didFinishWithResult: (MFMailComposeResult) result error: (NSError*) error
 {
-  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(m_object->app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+  RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(m_object->engine().graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
   EGE_ASSERT(NULL != renderWindow);
   
   UIWindow* window = renderWindow->window();

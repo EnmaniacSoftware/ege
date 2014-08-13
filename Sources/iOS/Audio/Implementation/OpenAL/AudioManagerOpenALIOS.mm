@@ -1,6 +1,6 @@
-#include "Core/Application/Application.h"
 #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
 #include "iOS/Audio/Implementation/OpenAL/SoundOpenALIOS.h"
+#include "EGEEngine.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE
@@ -9,7 +9,7 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(AudioManagerOpenALIOS)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerOpenALIOS)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerOpenALIOS::AudioManagerOpenALIOS(Application* app) : AudioManagerOpenAL(app)
+AudioManagerOpenALIOS::AudioManagerOpenALIOS(Engine& engine) : AudioManagerOpenAL(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

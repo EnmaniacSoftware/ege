@@ -6,17 +6,17 @@
 //  Copyright (c) 2013 Little Bee Studios. All rights reserved.
 //
 
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #import <UIKit/UIKit.h>
 
 @interface ViewController : UIViewController
 {
-  /*! Pointer to application object. */
-  EGE::Application* egeApplication;
+  /*! Pointer to engine object. */
+  EGE::Engine* engine;
 }
 
 /*! Initializes object. */
-- (id) initWithApplication: (EGE::Application*) application;
+- (id) initWithApplication: (EGE::Engine*) engine;
 /*! Converts native UI orientation into framework equivalent. */
 - (int) convertUIOrientation: (UIInterfaceOrientation) orientation;
 /*! Returns whether status bar should be hidden or not. */

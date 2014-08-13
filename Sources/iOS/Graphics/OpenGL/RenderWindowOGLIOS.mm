@@ -1,6 +1,6 @@
 #include "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #include "Core/ComplexTypes.h"
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEMath.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
@@ -16,14 +16,16 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLIOS::RenderWindowOGLIOS(Application* app, const Dictionary& params) : RenderWindow(app, params),
-                                                                                     m_view(nil),
-                                                                                     m_viewController(nil),
-                                                                                     m_window(nil),
-                                                                                     m_EAGLContext(nil),
-                                                                                     m_colorBuffer(0),
-                                                                                     m_depthBuffer(0),
-                                                                                     m_frameBuffer(0)
+RenderWindowOGLIOS::RenderWindowOGLIOS(Engine& engine, const Dictionary& params)
+: RenderWindow(params)
+, m_engine(engine)
+, m_view(nil)
+, m_viewController(nil)
+, m_window(nil)
+, m_EAGLContext(nil)
+, m_colorBuffer(0)
+, m_depthBuffer(0)
+, m_frameBuffer(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,7 +66,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
   }
 
   // create controller view
-  m_viewController = [[ViewController alloc] initWithApplication: app()];
+  m_viewController = [[ViewController alloc] initWithApplication: &engine()];
   if (nil == m_view)
   {
     // error!
@@ -185,7 +187,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 //  }
 
   // register for events
-  if ( ! app()->eventManager()->addListener(this))
+  if ( ! engine().eventManager()->addListener(this))
   {
     // error!
     return EGE_ERROR;
@@ -202,7 +204,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 void RenderWindowOGLIOS::destroy()
 {
   // unregister from events
-  app()->eventManager()->removeListener(this);
+  engine().eventManager()->removeListener(this);
   
   if (0 != m_frameBuffer)
   {
@@ -483,8 +485,8 @@ void RenderWindowOGLIOS::setOrientation(DeviceOrientation orientation)
   }
   
   // propagate to rest of the framework
-  EGE_ASSERT(app() && app()->eventManager());
-  app()->eventManager()->send(EGE_EVENT_ID_CORE_ORIENTATION_CHANGED);
+  EGE_ASSERT(engine().eventManager());
+  engine().eventManager()->send(EGE_EVENT_ID_CORE_ORIENTATION_CHANGED);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderWindowOGLIOS::resizeRenderBuffers()
@@ -529,6 +531,11 @@ void RenderWindowOGLIOS::resizeRenderBuffers()
 UIWindow* RenderWindowOGLIOS::window() const
 {
   return m_window;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& RenderWindowOGLIOS::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

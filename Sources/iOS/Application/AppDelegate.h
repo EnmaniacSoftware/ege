@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
-  /*! Pointer to application object. */
-  EGE::Application* egeApplication;
+  /*! Pointer to engine object. */
+  EGE::Engine* engine;
   /*! Display scale factor. */
   EGE::float32 scaleFactor;
 }

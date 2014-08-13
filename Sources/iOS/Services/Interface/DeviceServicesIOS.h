@@ -15,9 +15,11 @@ class DeviceServicesIOS : public DeviceServices
 {
   public:
 
-    DeviceServicesIOS(Application* application);
+    DeviceServicesIOS(Engine& engine);
    ~DeviceServicesIOS();
 
+    using DeviceServices::engine;
+  
   public:
   
     /*! @see DeviceServices::openUrl. */

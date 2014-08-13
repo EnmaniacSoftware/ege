@@ -1,4 +1,4 @@
-#include "EGEApplication.h"
+#include "EGEEngine.h"
 #include "EGEGraphics.h"
 #include "EGESocialServices.h"
 #include "EGEDebug.h"
@@ -11,11 +11,10 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-extern const char* KSocialServicesDebugName;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SocialServicesIOS::SocialServicesIOS(Application* application) : SocialServices(application)
-                                                               , m_delegate(NULL)
-                                                               , m_authenticated(false)
+SocialServicesIOS::SocialServicesIOS(Engine& engine)
+: SocialServices(engine)
+, m_delegate(NULL)
+, m_authenticated(false)
 {
   m_delegate = [[GameCenterDelegate alloc] initWithObject: this];
 }
@@ -38,7 +37,7 @@ EGEResult SocialServicesIOS::startAuthentication()
     if (nil != viewController)
     {
       // show window
-      RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+      RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine().graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
       
       UIWindow* window = renderWindow->window();
       
@@ -224,7 +223,7 @@ EGEResult SocialServicesIOS::showScores(const String& scoreTable)
     NSString* leaderboardID = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
 
     // show window
-    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(app()->graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
+    RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine().graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));
     EGE_ASSERT(NULL != renderWindow);
     
     UIWindow* window = renderWindow->window();

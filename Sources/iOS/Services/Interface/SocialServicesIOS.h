@@ -16,9 +16,11 @@ class SocialServicesIOS : public SocialServices
 {
   public:
     
-    SocialServicesIOS(Application* application);
+    SocialServicesIOS(Engine& engine);
    ~SocialServicesIOS();
 
+    using SocialServices::engine;
+  
   protected:
 
     /*! @see SocialServices::startAuthentication. */

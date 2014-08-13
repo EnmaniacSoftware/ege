@@ -33,7 +33,7 @@
   #include "Airplay/Application/ApplicationAirplay_p.h"
   #include "Airplay/Audio/AudioManagerAirplay.h"
 #elif EGE_PLATFORM_IOS
-  #include "iOS/Application/ApplicationIOS_p.h"
+  //#include "iOS/Application/ApplicationIOS_p.h"
   #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
 #endif // EGE_PLATFORM_WIN32
 
@@ -228,10 +228,10 @@ EGEResult EngineInstance::construct()
   // create audio manager
   // TAGE - make a decision based on some data, to figure out yet
 #if EGE_AUDIO_NULL
-  m_audioManager = ege_new AudioManagerNull(m_application);
+  m_audioManager = ege_new AudioManagerNull(*this);
 #elif EGE_AUDIO_OPENAL
   #if EGE_PLATFORM_IOS
-    m_audioManager = ege_new AudioManagerOpenALIOS(m_application);
+    m_audioManager = ege_new AudioManagerOpenALIOS(*this);
   #else
     m_audioManager = ege_new AudioManagerOpenAL(*this);
   #endif // EGE_PLATFORM_IOS

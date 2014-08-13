@@ -16,7 +16,7 @@ class AudioManagerOpenALIOS : public AudioManagerOpenAL
 {
   public:
     
-    AudioManagerOpenALIOS(Application* app);
+    AudioManagerOpenALIOS(Engine& engine);
    ~AudioManagerOpenALIOS();
 
     EGE_DECLARE_NEW_OPERATORS

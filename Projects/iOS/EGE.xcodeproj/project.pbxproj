@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		450E126619351E2E00B9F785 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450E126519351E2E00B9F785 /* Device.cpp */; };
 		450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 450E126919351E4C00B9F785 /* DeviceIOS.mm */; };
-		4514710718C5231900AAC617 /* Application.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146ED518C5231800AAC617 /* Application.cpp */; };
 		4514711518C5231900AAC617 /* ComplexTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146EFB18C5231800AAC617 /* ComplexTypes.cpp */; };
 		4514711618C5231900AAC617 /* Component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146EFF18C5231800AAC617 /* Component.cpp */; };
 		4514711718C5231900AAC617 /* ComponentHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146F0018C5231800AAC617 /* ComponentHost.cpp */; };
@@ -164,7 +163,6 @@
 		451471E118C5231900AAC617 /* XmlDocument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470FE18C5231900AAC617 /* XmlDocument.cpp */; };
 		451471E218C5231900AAC617 /* XmlElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470FF18C5231900AAC617 /* XmlElement.cpp */; };
 		4514722418C5236200AAC617 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471E718C5236200AAC617 /* AppDelegate.mm */; };
-		4514722518C5236200AAC617 /* ApplicationIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471E918C5236200AAC617 /* ApplicationIOS_p.mm */; };
 		4514722618C5236200AAC617 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471EB18C5236200AAC617 /* ViewController.mm */; };
 		4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F518C5236200AAC617 /* DebugIOS.mm */; };
 		4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471FA18C5236200AAC617 /* DirectoryIOS.mm */; };
@@ -178,7 +176,6 @@
 		4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720D18C5236200AAC617 /* MemoryIOS.cpp */; };
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
 		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
-		45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */; };
 		452EF2F919729E83006D5876 /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2F819729E83006D5876 /* StringHelper.mm */; };
 		452EF2FB1972A455006D5876 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */; };
 		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
@@ -230,11 +227,6 @@
 		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
 		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
 		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
-		45C3AD2E18CDF4380009ABA3 /* DeviceServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */; };
-		45C3AD2F18CDF4380009ABA3 /* PurchaseServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */; };
-		45C3AD3018CDF4380009ABA3 /* PurchaseServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */; };
-		45C3AD3118CDF4380009ABA3 /* SocialServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */; };
-		45C3AD3218CDF4380009ABA3 /* SocialServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */; };
 		45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */; };
 		45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */; };
 		45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */; };
@@ -243,6 +235,16 @@
 		45E0F0C81909AFBC0003E15F /* DataBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */; };
 		45E0F0C91909AFBC0003E15F /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C31909AFBC0003E15F /* Node.cpp */; };
 		45E0F0CE1909B0DD0003E15F /* ImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */; };
+		45E4DC0E199BF930000FB4B8 /* EngineApplication.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC07199BF930000FB4B8 /* EngineApplication.cpp */; };
+		45E4DC0F199BF930000FB4B8 /* EngineInstance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC08199BF930000FB4B8 /* EngineInstance.cpp */; };
+		45E4DC34199C0395000FB4B8 /* AdNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC23199C0395000FB4B8 /* AdNetwork.cpp */; };
+		45E4DC35199C0395000FB4B8 /* AdNetworkRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC24199C0395000FB4B8 /* AdNetworkRegistry.cpp */; };
+		45E4DC36199C0395000FB4B8 /* DeviceServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC25199C0395000FB4B8 /* DeviceServices.cpp */; };
+		45E4DC37199C0395000FB4B8 /* PurchaseServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC26199C0395000FB4B8 /* PurchaseServices.cpp */; };
+		45E4DC38199C0395000FB4B8 /* PurchaseServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC27199C0395000FB4B8 /* PurchaseServicesNull.cpp */; };
+		45E4DC39199C0395000FB4B8 /* SocialServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC28199C0395000FB4B8 /* SocialServices.cpp */; };
+		45E4DC3A199C0395000FB4B8 /* SocialServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC29199C0395000FB4B8 /* SocialServicesNull.cpp */; };
+		45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -390,8 +392,6 @@
 		45146ECD18C522EA00AAC617 /* EGEVertexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEVertexBuffer.h; path = ../../Sources/EGEVertexBuffer.h; sourceTree = "<group>"; };
 		45146ECE18C522EA00AAC617 /* EGEWaitCondition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEWaitCondition.h; path = ../../Sources/EGEWaitCondition.h; sourceTree = "<group>"; };
 		45146ECF18C522EA00AAC617 /* EGEXml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEXml.h; path = ../../Sources/EGEXml.h; sourceTree = "<group>"; };
-		45146ED518C5231800AAC617 /* Application.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Application.cpp; sourceTree = "<group>"; };
-		45146ED618C5231800AAC617 /* Application.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Application.h; sourceTree = "<group>"; };
 		45146EFA18C5231800AAC617 /* CachedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CachedObject.h; sourceTree = "<group>"; };
 		45146EFB18C5231800AAC617 /* ComplexTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ComplexTypes.cpp; sourceTree = "<group>"; };
 		45146EFC18C5231800AAC617 /* ComplexTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComplexTypes.h; sourceTree = "<group>"; };
@@ -745,8 +745,6 @@
 		4514710318C5231900AAC617 /* XmlElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XmlElement.h; sourceTree = "<group>"; };
 		451471E618C5236200AAC617 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		451471E718C5236200AAC617 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		451471E818C5236200AAC617 /* ApplicationIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplicationIOS_p.h; sourceTree = "<group>"; };
-		451471E918C5236200AAC617 /* ApplicationIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ApplicationIOS_p.mm; sourceTree = "<group>"; };
 		451471EA18C5236200AAC617 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		451471EB18C5236200AAC617 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		451471F518C5236200AAC617 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
@@ -769,8 +767,6 @@
 		4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
 		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
-		45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialURLs.cpp; sourceTree = "<group>"; };
-		45296E04192A8BC300F3E9EA /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
 		452EF2F219729CE4006D5876 /* StringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringHelper.h; sourceTree = "<group>"; };
 		452EF2F819729E83006D5876 /* StringHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StringHelper.mm; sourceTree = "<group>"; };
 		452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtilsIOS.cpp; sourceTree = "<group>"; };
@@ -879,16 +875,6 @@
 		45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlQuery.cpp; sourceTree = "<group>"; };
 		45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResult.cpp; sourceTree = "<group>"; };
 		45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResultSqlite.cpp; sourceTree = "<group>"; };
-		45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceServices.cpp; sourceTree = "<group>"; };
-		45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServices.cpp; sourceTree = "<group>"; };
-		45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServicesNull.cpp; sourceTree = "<group>"; };
-		45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServices.cpp; sourceTree = "<group>"; };
-		45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServicesNull.cpp; sourceTree = "<group>"; };
-		45C3AD2918CDF4380009ABA3 /* DeviceServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServices.h; sourceTree = "<group>"; };
-		45C3AD2A18CDF4380009ABA3 /* PurchaseServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServices.h; sourceTree = "<group>"; };
-		45C3AD2B18CDF4380009ABA3 /* PurchaseServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesNull.h; sourceTree = "<group>"; };
-		45C3AD2C18CDF4380009ABA3 /* SocialServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServices.h; sourceTree = "<group>"; };
-		45C3AD2D18CDF4380009ABA3 /* SocialServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull.h; sourceTree = "<group>"; };
 		45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
 		45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
 		45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = DeviceServicesIOS.mm; sourceTree = "<group>"; wrapsLines = 0; };
@@ -906,6 +892,30 @@
 		45E0F0C71909AFBC0003E15F /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagedAnimation.cpp; sourceTree = "<group>"; };
 		45E0F0CD1909B0DD0003E15F /* ImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagedAnimation.h; sourceTree = "<group>"; };
+		45E4DC07199BF930000FB4B8 /* EngineApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineApplication.cpp; sourceTree = "<group>"; };
+		45E4DC08199BF930000FB4B8 /* EngineInstance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineInstance.cpp; sourceTree = "<group>"; };
+		45E4DC09199BF930000FB4B8 /* EngineInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineInstance.h; sourceTree = "<group>"; };
+		45E4DC0B199BF930000FB4B8 /* Engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Engine.h; sourceTree = "<group>"; };
+		45E4DC0C199BF930000FB4B8 /* EngineApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineApplication.h; sourceTree = "<group>"; };
+		45E4DC0D199BF930000FB4B8 /* EngineInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineInternal.h; sourceTree = "<group>"; };
+		45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAdNetwork.h; path = ../../Sources/EGEAdNetwork.h; sourceTree = "<group>"; };
+		45E4DC11199BF950000FB4B8 /* EGEEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEEngine.h; path = ../../Sources/EGEEngine.h; sourceTree = "<group>"; };
+		45E4DC23199C0395000FB4B8 /* AdNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdNetwork.cpp; sourceTree = "<group>"; };
+		45E4DC24199C0395000FB4B8 /* AdNetworkRegistry.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdNetworkRegistry.cpp; sourceTree = "<group>"; };
+		45E4DC25199C0395000FB4B8 /* DeviceServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DeviceServices.cpp; sourceTree = "<group>"; };
+		45E4DC26199C0395000FB4B8 /* PurchaseServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServices.cpp; sourceTree = "<group>"; };
+		45E4DC27199C0395000FB4B8 /* PurchaseServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PurchaseServicesNull.cpp; sourceTree = "<group>"; };
+		45E4DC28199C0395000FB4B8 /* SocialServices.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServices.cpp; sourceTree = "<group>"; };
+		45E4DC29199C0395000FB4B8 /* SocialServicesNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SocialServicesNull.cpp; sourceTree = "<group>"; };
+		45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpecialURLs.cpp; sourceTree = "<group>"; };
+		45E4DC2C199C0395000FB4B8 /* AdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdNetwork.h; sourceTree = "<group>"; };
+		45E4DC2D199C0395000FB4B8 /* AdNetworkRegistry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdNetworkRegistry.h; sourceTree = "<group>"; };
+		45E4DC2E199C0395000FB4B8 /* DeviceServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServices.h; sourceTree = "<group>"; };
+		45E4DC2F199C0395000FB4B8 /* PurchaseServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServices.h; sourceTree = "<group>"; };
+		45E4DC30199C0395000FB4B8 /* PurchaseServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesNull.h; sourceTree = "<group>"; };
+		45E4DC31199C0395000FB4B8 /* SocialServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServices.h; sourceTree = "<group>"; };
+		45E4DC32199C0395000FB4B8 /* SocialServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull.h; sourceTree = "<group>"; };
+		45E4DC33199C0395000FB4B8 /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -956,6 +966,8 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
+				45E4DC11199BF950000FB4B8 /* EGEEngine.h */,
 				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
 				4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
@@ -1057,6 +1069,7 @@
 		45146ED118C5231800AAC617 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				45E4DC05199BF930000FB4B8 /* Engine */,
 				45146EFB18C5231800AAC617 /* ComplexTypes.cpp */,
 				45146EFC18C5231800AAC617 /* ComplexTypes.h */,
 				45146F0D18C5231800AAC617 /* ConfigParams.h */,
@@ -1066,7 +1079,6 @@
 				4514705618C5231900AAC617 /* Platform.h */,
 				45146F5318C5231800AAC617 /* FeatureList.txt */,
 				45146ED218C5231800AAC617 /* Animation */,
-				45146ED418C5231800AAC617 /* Application */,
 				45146ED718C5231800AAC617 /* Audio */,
 				45146EF818C5231800AAC617 /* Cache */,
 				45146EFD18C5231800AAC617 /* Component */,
@@ -1111,15 +1123,6 @@
 				4563A4D71971FB5C0002D632 /* Interface */,
 			);
 			path = Animation;
-			sourceTree = "<group>";
-		};
-		45146ED418C5231800AAC617 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				45146ED518C5231800AAC617 /* Application.cpp */,
-				45146ED618C5231800AAC617 /* Application.h */,
-			);
-			path = Application;
 			sourceTree = "<group>";
 		};
 		45146ED718C5231800AAC617 /* Audio */ = {
@@ -1880,8 +1883,8 @@
 		4514709F18C5231900AAC617 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				45C3AD2218CDF4380009ABA3 /* Implementation */,
-				45C3AD2818CDF4380009ABA3 /* Interface */,
+				45E4DC22199C0395000FB4B8 /* Implementation */,
+				45E4DC2B199C0395000FB4B8 /* Interface */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2089,8 +2092,6 @@
 			children = (
 				451471E618C5236200AAC617 /* AppDelegate.h */,
 				451471E718C5236200AAC617 /* AppDelegate.mm */,
-				451471E818C5236200AAC617 /* ApplicationIOS_p.h */,
-				451471E918C5236200AAC617 /* ApplicationIOS_p.mm */,
 				451471EA18C5236200AAC617 /* ViewController.h */,
 				451471EB18C5236200AAC617 /* ViewController.mm */,
 			);
@@ -2596,32 +2597,6 @@
 			path = Implementation;
 			sourceTree = "<group>";
 		};
-		45C3AD2218CDF4380009ABA3 /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
-				45296DFD192A8BBE00F3E9EA /* SpecialURLs.cpp */,
-				45C3AD2318CDF4380009ABA3 /* DeviceServices.cpp */,
-				45C3AD2418CDF4380009ABA3 /* PurchaseServices.cpp */,
-				45C3AD2518CDF4380009ABA3 /* PurchaseServicesNull.cpp */,
-				45C3AD2618CDF4380009ABA3 /* SocialServices.cpp */,
-				45C3AD2718CDF4380009ABA3 /* SocialServicesNull.cpp */,
-			);
-			path = Implementation;
-			sourceTree = "<group>";
-		};
-		45C3AD2818CDF4380009ABA3 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				45296E04192A8BC300F3E9EA /* SpecialURLs.h */,
-				45C3AD2918CDF4380009ABA3 /* DeviceServices.h */,
-				45C3AD2A18CDF4380009ABA3 /* PurchaseServices.h */,
-				45C3AD2B18CDF4380009ABA3 /* PurchaseServicesNull.h */,
-				45C3AD2C18CDF4380009ABA3 /* SocialServices.h */,
-				45C3AD2D18CDF4380009ABA3 /* SocialServicesNull.h */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
 		45C3AD3318CDF4520009ABA3 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2679,6 +2654,65 @@
 			isa = PBXGroup;
 			children = (
 				45E0F0CD1909B0DD0003E15F /* ImagedAnimation.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45E4DC05199BF930000FB4B8 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				45E4DC06199BF930000FB4B8 /* Implementation */,
+				45E4DC0A199BF930000FB4B8 /* Interface */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		45E4DC06199BF930000FB4B8 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45E4DC07199BF930000FB4B8 /* EngineApplication.cpp */,
+				45E4DC08199BF930000FB4B8 /* EngineInstance.cpp */,
+				45E4DC09199BF930000FB4B8 /* EngineInstance.h */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45E4DC0A199BF930000FB4B8 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45E4DC0B199BF930000FB4B8 /* Engine.h */,
+				45E4DC0C199BF930000FB4B8 /* EngineApplication.h */,
+				45E4DC0D199BF930000FB4B8 /* EngineInternal.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45E4DC22199C0395000FB4B8 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45E4DC23199C0395000FB4B8 /* AdNetwork.cpp */,
+				45E4DC24199C0395000FB4B8 /* AdNetworkRegistry.cpp */,
+				45E4DC25199C0395000FB4B8 /* DeviceServices.cpp */,
+				45E4DC26199C0395000FB4B8 /* PurchaseServices.cpp */,
+				45E4DC27199C0395000FB4B8 /* PurchaseServicesNull.cpp */,
+				45E4DC28199C0395000FB4B8 /* SocialServices.cpp */,
+				45E4DC29199C0395000FB4B8 /* SocialServicesNull.cpp */,
+				45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45E4DC2B199C0395000FB4B8 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45E4DC2C199C0395000FB4B8 /* AdNetwork.h */,
+				45E4DC2D199C0395000FB4B8 /* AdNetworkRegistry.h */,
+				45E4DC2E199C0395000FB4B8 /* DeviceServices.h */,
+				45E4DC2F199C0395000FB4B8 /* PurchaseServices.h */,
+				45E4DC30199C0395000FB4B8 /* PurchaseServicesNull.h */,
+				45E4DC31199C0395000FB4B8 /* SocialServices.h */,
+				45E4DC32199C0395000FB4B8 /* SocialServicesNull.h */,
+				45E4DC33199C0395000FB4B8 /* SpecialURLs.h */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -2794,7 +2828,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4514710718C5231900AAC617 /* Application.cpp in Sources */,
 				4514711518C5231900AAC617 /* ComplexTypes.cpp in Sources */,
 				4514711618C5231900AAC617 /* Component.cpp in Sources */,
 				4514711718C5231900AAC617 /* ComponentHost.cpp in Sources */,
@@ -2866,6 +2899,7 @@
 				4514716B18C5231900AAC617 /* AxisAlignedBox.cpp in Sources */,
 				4514716C18C5231900AAC617 /* Math.cpp in Sources */,
 				4514716D18C5231900AAC617 /* CubicSpline.cpp in Sources */,
+				45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */,
 				4514716E18C5231900AAC617 /* Spline.cpp in Sources */,
 				4514716F18C5231900AAC617 /* BackTweener.cpp in Sources */,
 				4514717018C5231900AAC617 /* LinearTweener.cpp in Sources */,
@@ -2891,6 +2925,7 @@
 				4514719618C5231900AAC617 /* PhysicsJoint.cpp in Sources */,
 				4514719718C5231900AAC617 /* PhysicsJointAttract.cpp in Sources */,
 				4514719818C5231900AAC617 /* PhysicsJointDistance.cpp in Sources */,
+				45E4DC38199C0395000FB4B8 /* PurchaseServicesNull.cpp in Sources */,
 				4514719918C5231900AAC617 /* PhysicsJointPulley.cpp in Sources */,
 				4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */,
 				453C83F7193E6AD200FBA4AA /* AudioCodec.cpp in Sources */,
@@ -2909,6 +2944,7 @@
 				451471A518C5231900AAC617 /* ResourceManager.cpp in Sources */,
 				451471A618C5231900AAC617 /* ResourceMaterial.cpp in Sources */,
 				451471A718C5231900AAC617 /* ResourceParticleAffector.cpp in Sources */,
+				45E4DC36199C0395000FB4B8 /* DeviceServices.cpp in Sources */,
 				451471A818C5231900AAC617 /* ResourceParticleEmitter.cpp in Sources */,
 				451471A918C5231900AAC617 /* ResourceProgram.cpp in Sources */,
 				451471AA18C5231900AAC617 /* ResourceSequencer.cpp in Sources */,
@@ -2917,6 +2953,7 @@
 				451471AD18C5231900AAC617 /* ResourceSpriteAnimation.cpp in Sources */,
 				451471AE18C5231900AAC617 /* ResourceSpritesheet.cpp in Sources */,
 				451471AF18C5231900AAC617 /* ResourceText.cpp in Sources */,
+				45E4DC3A199C0395000FB4B8 /* SocialServicesNull.cpp in Sources */,
 				451471B018C5231900AAC617 /* ResourceTexture.cpp in Sources */,
 				451471B118C5231900AAC617 /* ResourceTextureImage.cpp in Sources */,
 				451471B218C5231900AAC617 /* ResourceWidget.cpp in Sources */,
@@ -2926,7 +2963,6 @@
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
 				451471B718C5231900AAC617 /* Screen.cpp in Sources */,
-				45296DFE192A8BBE00F3E9EA /* SpecialURLs.cpp in Sources */,
 				451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */,
 				451471BF18C5231900AAC617 /* String.cpp in Sources */,
 				451471C018C5231900AAC617 /* Text.cpp in Sources */,
@@ -2943,6 +2979,7 @@
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
 				452EF2F919729E83006D5876 /* StringHelper.mm in Sources */,
 				451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */,
+				45E4DC37199C0395000FB4B8 /* PurchaseServices.cpp in Sources */,
 				451471CF18C5231900AAC617 /* Dialog.cpp in Sources */,
 				451471D018C5231900AAC617 /* Label.cpp in Sources */,
 				451471D118C5231900AAC617 /* PushButton.cpp in Sources */,
@@ -2963,11 +3000,11 @@
 				451471DE18C5231900AAC617 /* XmlDocumentTinyXml_p.cpp in Sources */,
 				451471DF18C5231900AAC617 /* XmlElementTinyXml_p.cpp in Sources */,
 				451471E018C5231900AAC617 /* XmlAttribute.cpp in Sources */,
+				45E4DC34199C0395000FB4B8 /* AdNetwork.cpp in Sources */,
 				453C8403193E6AD200FBA4AA /* Sound.cpp in Sources */,
 				451471E118C5231900AAC617 /* XmlDocument.cpp in Sources */,
 				451471E218C5231900AAC617 /* XmlElement.cpp in Sources */,
 				4514722418C5236200AAC617 /* AppDelegate.mm in Sources */,
-				4514722518C5236200AAC617 /* ApplicationIOS_p.mm in Sources */,
 				4514722618C5236200AAC617 /* ViewController.mm in Sources */,
 				4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */,
 				4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */,
@@ -2975,8 +3012,10 @@
 				4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */,
 				4514722F18C5236200AAC617 /* ExtensionsOGLIOS.cpp in Sources */,
 				4514723018C5236200AAC617 /* RenderWindowOGLIOS.mm in Sources */,
+				45E4DC39199C0395000FB4B8 /* SocialServices.cpp in Sources */,
 				4514723118C5236200AAC617 /* ViewOGL.mm in Sources */,
 				4514723218C5236200AAC617 /* PointerIOS_p.mm in Sources */,
+				45E4DC0E199BF930000FB4B8 /* EngineApplication.cpp in Sources */,
 				453C83FE193E6AD200FBA4AA /* AudioManagerNull.cpp in Sources */,
 				4514723318C5236200AAC617 /* main.mm in Sources */,
 				4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */,
@@ -2988,12 +3027,7 @@
 				453C8420193E6BF000FBA4AA /* SoundOpenALIOS.mm in Sources */,
 				45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */,
 				45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */,
-				45C3AD2E18CDF4380009ABA3 /* DeviceServices.cpp in Sources */,
 				453C83FC193E6AD200FBA4AA /* SoundEffectFadeIn.cpp in Sources */,
-				45C3AD2F18CDF4380009ABA3 /* PurchaseServices.cpp in Sources */,
-				45C3AD3018CDF4380009ABA3 /* PurchaseServicesNull.cpp in Sources */,
-				45C3AD3118CDF4380009ABA3 /* SocialServices.cpp in Sources */,
-				45C3AD3218CDF4380009ABA3 /* SocialServicesNull.cpp in Sources */,
 				453C8401193E6AD200FBA4AA /* AudioThreadOpenAL.cpp in Sources */,
 				45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */,
 				45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */,
@@ -3008,10 +3042,12 @@
 				4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */,
 				455A2FF518F48D9D00CD9581 /* IndexBufferVAOGL.cpp in Sources */,
 				455A2FF618F48D9D00CD9581 /* IndexBufferVBOOGL.cpp in Sources */,
+				45E4DC35199C0395000FB4B8 /* AdNetworkRegistry.cpp in Sources */,
 				455A2FF718F48D9D00CD9581 /* ProgramOGL.cpp in Sources */,
 				455A2FF818F48D9D00CD9581 /* RenderTextureCopyOGL.cpp in Sources */,
 				455A2FF918F48D9D00CD9581 /* RenderTextureFBOOGL.cpp in Sources */,
 				4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */,
+				45E4DC0F199BF930000FB4B8 /* EngineInstance.cpp in Sources */,
 				455A2FFA18F48D9D00CD9581 /* ShaderOGL.cpp in Sources */,
 				453C841F193E6BF000FBA4AA /* AudioManagerOpenALIOS.mm in Sources */,
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,

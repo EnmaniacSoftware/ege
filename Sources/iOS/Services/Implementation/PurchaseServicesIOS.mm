@@ -11,8 +11,9 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 extern const char* KPurchaseServicesDebugName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PurchaseServicesIOS::PurchaseServicesIOS(Application* application) : PurchaseServices(application)
-                                                                   , m_observer(NULL)
+PurchaseServicesIOS::PurchaseServicesIOS(Engine& engine)
+: PurchaseServices(engine)
+, m_observer(NULL)
 {
   // create transaction observer
   m_observer = [[AppStoreTransactionObserver alloc] initWithObject: this];

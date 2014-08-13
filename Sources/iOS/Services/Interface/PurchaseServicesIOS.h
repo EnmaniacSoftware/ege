@@ -17,7 +17,7 @@ class PurchaseServicesIOS : public PurchaseServices
 {
   public:
     
-    PurchaseServicesIOS(Application* application);
+    PurchaseServicesIOS(Engine& engine);
    ~PurchaseServicesIOS();
 
   public:
