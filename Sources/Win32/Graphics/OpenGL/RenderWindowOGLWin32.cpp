@@ -1,3 +1,4 @@
+#include "Core/Engine/Implementation/EngineInstance.h"
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include "EGEOpenGL.h"
 #include "EGEEvent.h"
@@ -10,11 +11,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindowOGLWin32::RenderWindowOGLWin32(Engine& engine, const Dictionary& params) : RenderWindow(params)
-                                                                                     , m_engine(engine)
-                                                                                     , m_hWnd(NULL)
-                                                                                     , m_hDC(NULL)
-                                                                                     , m_hRC(NULL)
+RenderWindowOGLWin32::RenderWindowOGLWin32(Engine& engine, const Dictionary& params) 
+: RenderWindow(params)
+, m_engine(engine)
+, m_hWnd(NULL)
+, m_hDC(NULL)
+, m_hRC(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -259,9 +261,12 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 {
   RenderWindowOGLWin32* me = reinterpret_cast<RenderWindowOGLWin32*>(GetWindowLongPtr(hWnd, 0));
 
+  EngineInstance* engineInstance = NULL;
   EventManager* eventManager = NULL;
+
   if (NULL != me)
   {
+    engineInstance = reinterpret_cast<EngineInstance*>(&me->engine());
     eventManager = me->engine().eventManager();
   }
 
@@ -374,7 +379,9 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 
     case WM_SETFOCUS:
 
-      if (NULL != eventManager)
+      // NOTE: This message is initially sent after window creation. We dont want to propagate this at this moment.
+      //       Making sure this only gets called when really got suspended some time ago.
+      if ((NULL != eventManager) && (NULL != engineInstance) && (EStatePaused == engineInstance->state()))
       {
         eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
       }

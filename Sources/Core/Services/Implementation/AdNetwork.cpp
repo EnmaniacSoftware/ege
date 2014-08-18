@@ -9,7 +9,8 @@ const char* KAdNetworkDebugName = "EGEAdNetwork";
 EGE_DEFINE_NEW_OPERATORS(AdNetwork)
 EGE_DEFINE_DELETE_OPERATORS(AdNetwork)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetwork::AdNetwork(Engine& engine) : m_engine(engine)
+AdNetwork::AdNetwork(Engine& engine) 
+: m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

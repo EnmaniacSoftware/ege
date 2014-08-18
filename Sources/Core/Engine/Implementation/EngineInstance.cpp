@@ -288,7 +288,7 @@ void EngineInstance::update()
   eventManager()->update(m_updateInterval);
 
   // check if quitting
-  if (EStateQuitting == m_state)
+  if (EStateQuitting == state())
   {
     // update only object which needs time to shut down
     graphics()->update();
@@ -306,7 +306,7 @@ void EngineInstance::update()
       m_state = EStateClosed;
     }
   }
-  else if (EStateRunning == m_state)
+  else if (EStateRunning == state())
   {
     // update accumulator for updates
     m_updateAccumulator += timeInterval;
@@ -339,7 +339,7 @@ void EngineInstance::update()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::render()
 {
-  if (EStateRunning == m_state)
+  if (EStateRunning == state())
   {
     // do render
     graphics()->render();
@@ -353,12 +353,12 @@ void EngineInstance::shutdown()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool EngineInstance::isShuttingDown() const
 {
-  return (EStateQuitting == m_state);
+  return (EStateQuitting == state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool EngineInstance::isShutDown() const
 {
-  return (EStateClosed == m_state);
+  return (EStateClosed == state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Graphics* EngineInstance::graphics() const 
@@ -461,22 +461,27 @@ void EngineInstance::onEventRecieved(PEvent event)
       shutdown();
       break;
       
-    /*case EGE_EVENT_ID_CORE_APP_PAUSE:
+    case EGE_EVENT_ID_CORE_APP_PAUSE:
 
-      if (STATE_RUNNING == state())
-      {
-        m_state = STATE_PAUSED;
-      }
+      EGE_ASSERT(EStateRunning == state());
+
+      m_application->onSuspend();
+      m_state = EStatePaused;
       break;
 
     case EGE_EVENT_ID_CORE_APP_RESUME:
 
-      if (STATE_PAUSED == state())
-      {
-        m_state = STATE_RUNNING;
-      }
-      break;*/
+      EGE_ASSERT(EStatePaused == state());
+
+      m_application->onResume();
+      m_state = EStateRunning;
+      break;
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EngineState EngineInstance::state() const
+{
+  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

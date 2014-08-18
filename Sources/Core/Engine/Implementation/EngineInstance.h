@@ -27,6 +27,11 @@ class EngineInstance : public Engine
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    /*! Returns current state. */
+    EngineState state() const;
+
   private:
 
     /*! @see Engine::commandLineDictionary. */

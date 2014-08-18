@@ -41,6 +41,9 @@ class EngineApplication
 
   public:
 
+    /*! Returns reference to engine. */
+    Engine& engine() const;
+
     /*! Constructs object. 
      *  @return EGE_SUCCESS on success. Otherwise, one of available error codes.
      */
@@ -58,8 +61,11 @@ class EngineApplication
 
     /*! Requests quit. */
     virtual void close();
-    /*! Returns reference to engine. */
-    Engine& engine() const;
+
+    /*! Called when application is about to be suspended. */
+    virtual void onSuspend() = 0;
+    /*! Called when application is about to be resumed. */
+    virtual void onResume() = 0;
     
   private:
 

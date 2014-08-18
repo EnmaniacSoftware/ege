@@ -1,6 +1,7 @@
-#include "Core/Input/Pointer.h"
-#include "Core/ListenerContainer.h"
 #include "Win32/Input/PointerWin32_p.h"
+#include "Core/Input/Pointer.h"
+#include "Core/Engine/Interface/EngineInternal.h"
+#include "Core/Engine/Implementation/EngineInstance.h"
 #include "EGEEngine.h"
 
 EGE_NAMESPACE_BEGIN
@@ -32,13 +33,14 @@ EGEResult PointerPrivate::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PointerPrivate::onEventRecieved(PEvent event)
 {
-  // TAGE - port
+  EngineInternal& engineInternal = static_cast<EngineInternal&>(reinterpret_cast<EngineInstance&>(d_func()->engine()));
+
   // check if quitting already
-  //if (d_func()->engine().isQuitting())
-  //{
-  //  // do not propagate
-  //  return;
-  //}
+  if (engineInternal.isShuttingDown())
+  {
+    // do not propagate
+    return;
+  }
 
   switch (event->id())
   {
