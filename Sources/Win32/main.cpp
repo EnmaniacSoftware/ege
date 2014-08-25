@@ -1,5 +1,5 @@
-#include "Core/Engine/Implementation/EngineInstance.h"
 #include "Core/Engine/Interface/EngineInternal.h"
+#include "Win32/Engine/Interface/EngineInstanceWin32.h"
 #include "EGECommandLine.h"
 #include "EGEDictionary.h"
 #include <windows.h>
@@ -50,10 +50,10 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR strCmdLine, INT)
       CommandLineParser commandLineParser(strCmdLine);
 
       // create engine
-      Engine* engine = ege_new EngineInstance(commandLineParser.dictionary());
+      Engine* engine = ege_new EngineInstanceWin32();
 
       // construct it
-      if (EGE_SUCCESS == (result = engine->construct()))
+      if (EGE_SUCCESS == (result = engine->construct(commandLineParser.dictionary())))
       {
         // run
         run(*engine);

@@ -8,6 +8,7 @@
 #include "EGETime.h"
 #include "EGEDictionary.h"
 #include "EGEEvent.h"
+#include "Core/Audio/Interface/AudioManagerFactory.h"
 #include "Core/Engine/Interface/EngineInternal.h"
 
 EGE_NAMESPACE_BEGIN
@@ -21,8 +22,8 @@ class EngineInstance : public Engine
 {
   public:
 
-    explicit EngineInstance(const Dictionary& commandLineDictionary);
-   ~EngineInstance();
+    EngineInstance();
+    virtual ~EngineInstance();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -32,12 +33,12 @@ class EngineInstance : public Engine
     /*! Returns current state. */
     EngineState state() const;
 
-  private:
+  protected:
 
-    /*! @see Engine::commandLineDictionary. */
-    const Dictionary& commandLineDictionary() const override;
-    /*! @see Engine::con  truct. */
-    EGEResult construct() override;
+    /*! @see Engine::configurationDictionary. */
+    const Dictionary& configurationDictionary() const override;
+    /*! @see Engine::contruct. */
+    EGEResult construct(const Dictionary& configParamDictionary) override;
     /*! @see Engine::graphics. */
     Graphics* graphics() const override;
     /*! @see Engine::eventManager. */
@@ -77,6 +78,10 @@ class EngineInstance : public Engine
     void render() override;
     /*! @see EngineInternal::adNetworkRegistry. */
     AdNetworkRegistry* adNetworkRegistry() const override;
+    /*! @see EngineInternal::adNetwork. */
+    AdNetwork* adNetwork() const override;
+    /*! @see EngineInternal::audioManagerFactory. */
+    AudioManagerFactory* audioManagerFactory() const override;
     /*! @see EngineInternal::shutdown. */
     void shutdown() override;
     /*! @see EngineInternal::isShuttingDown.*/
@@ -87,12 +92,17 @@ class EngineInstance : public Engine
     /*! @see IEventListener::onEventRecieved. */
     void onEventRecieved(PEvent pEvent) override;
 
+  protected:
+
+    /*! Social services object. */
+    SocialServices* m_socialServices;
+
   private:
 
     /*! State. */
     EngineState m_state;
-    /*! Commandline dictionary. */
-    Dictionary m_commandLineDictionary;
+    /*! Configuration dictionary. */
+    Dictionary m_configurationDictionary;
     /*! Application. */
     EngineApplication* m_application;
     /*! Scene manager. */
@@ -121,10 +131,12 @@ class EngineInstance : public Engine
     DeviceServices* m_deviceServices;
     /*! Purchase services object. */
     PurchaseServices* m_purchaseServices;
-    /*! Social services object. */
-    SocialServices* m_socialServices;
     /*! Ad network registry. */
     AdNetworkRegistry* m_adNetworkRegistry;
+    /*! Audio manager factory. */
+    AudioManagerFactory* m_audioManagerFactory;
+    /*! Available ad network solution. */
+    AdNetwork* m_adNetwork;
     /*! Time at which last update was done. */
     Time m_lastUpdateTime;
     /*! Time interval between updates. */

@@ -31,6 +31,12 @@ EGE_NAMESPACE_BEGIN
 
 /*! Real world to physics world scale factor. */
 #define EGE_PHYSICS_PARAM_SCALE_FACTOR "physics:scale-factor"
+
+// ad network specific
+#define KConfigParamAdNetworkTypeName "config-param-ad-network-typename"
+
+// audio specific
+#define KConfigParamAudioManagerTypeName "config-param-audio-manager-typename"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

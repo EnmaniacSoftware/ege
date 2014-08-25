@@ -1,6 +1,6 @@
 #include "Core/Engine/Interface/EngineApplication.h"
 #include "Core/Engine/Interface/EngineInternal.h"
-#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInstance.h"
 #include "EGEEngine.h"
 
 EGE_NAMESPACE_BEGIN

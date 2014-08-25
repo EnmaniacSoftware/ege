@@ -21,6 +21,8 @@ enum EngineState
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AdNetworkRegistry;
+class AdNetwork;
+class AudioManagerFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineInternal
 {
@@ -34,8 +36,14 @@ class EngineInternal
     virtual void update() = 0;
     /*! Renders frame. */
     virtual void render() = 0;
-    /*! Ad network registry. */
+    
+    /*! Returns pointer to ad network registry. */
     virtual AdNetworkRegistry* adNetworkRegistry() const = 0;
+    /*! Returns pointer to available ad network solution. */
+    virtual AdNetwork* adNetwork() const = 0;
+    /*! Returns pointer to audio manager factory. */
+    virtual AudioManagerFactory* audioManagerFactory() const = 0;
+
     /*! Requests engine shutdown. */
     virtual void shutdown() = 0;
     /*! Returns TRUE if engine is in shutting down sequence. */

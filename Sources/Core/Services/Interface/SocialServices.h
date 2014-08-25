@@ -68,8 +68,8 @@ class SocialServices
     virtual EGEResult showScores(const String& scoreTable) = 0;
     /*! Returns TRUE if services are authenticated and ready to be used. */
     virtual bool isAuthenticated() const = 0;
-    /*! Returns list of advertisment network solutions available. */
-    virtual AdNetworkList adNetworksAvailable() const;
+    /*! Returns advertisement network solution available. */
+    AdNetwork* adNetwork() const;
 
   protected:
 

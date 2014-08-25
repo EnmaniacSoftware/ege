@@ -1,26 +1,24 @@
-#ifndef EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
-#define EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
+#ifndef EGE_CORE_AUDIO_AUDIOMANAGERFACTORY_H
+#define EGE_CORE_AUDIO_AUDIOMANAGERFACTORY_H
 
-/*! Registry object for all suppliers of Advertisement Network soulutions.
+/*! Factory for audio manager instances.
  */
 
 #include "EGE.h"
 #include "EGEEngine.h"
-#include "EGEAdNetwork.h"
-#include "EGEMap.h"
 #include "Core/Factory/Interface/Factory.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef AdNetwork* (*AdNetworkCreateFunc)(Engine& engine);
+typedef IAudioManager* (*AudioManagerCreateFunc)(Engine& engine);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AdNetworkRegistry : public Factory<AdNetwork*, AdNetworkCreateFunc>
+class AudioManagerFactory : public Factory<IAudioManager*, AudioManagerCreateFunc>
 {
   public:
 
-    AdNetworkRegistry(Engine& engine);
-    virtual ~AdNetworkRegistry();
+    AudioManagerFactory(Engine& engine);
+    virtual ~AudioManagerFactory();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -29,4 +27,4 @@ class AdNetworkRegistry : public Factory<AdNetwork*, AdNetworkCreateFunc>
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
+#endif // EGE_CORE_AUDIO_AUDIOMANAGERFACTORY_H

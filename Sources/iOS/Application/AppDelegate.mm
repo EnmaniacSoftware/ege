@@ -12,7 +12,7 @@
 #import "iOS/Application/AppDelegate.h"
 #import "iOS/Graphics/OpenGL/RenderWindowOGLIOS.h"
 #import "iOS/Graphics/OpenGL/ViewOGL.h"
-#include "Core/Engine/Implementation/EngineInstance.h"
+#include "iOS/Engine/Interface/EngineInstanceIOS.h"
 #include "Core/Engine/Interface/EngineInternal.h"
 #include "EGEDictionary.h"
 #include "EGEStringList.h"
@@ -130,7 +130,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
       CommandLineParser commandLineParser(argumentList);
   
       // create engine
-      engine = ege_new EngineInstance(commandLineParser.dictionary());
+      engine = ege_new EngineInstanceIOS(commandLineParser.dictionary());
     
       // construct it
       value = engine->construct();

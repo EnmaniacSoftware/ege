@@ -1,4 +1,8 @@
 #include "Core/Services/Interface/SocialServices.h"
+#include "Core/Services/Interface/AdNetworkRegistry.h"
+#include "Core/Engine/Interface/EngineInternal.h"
+#include "Core/Engine/Interface/EngineInstance.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -22,10 +26,11 @@ Engine& SocialServices::engine() const
   return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetworkList SocialServices::adNetworksAvailable() const
+AdNetwork* SocialServices::adNetwork() const
 {
-  AdNetworkList list;
-  return list;
+  EngineInternal& engineInternal = static_cast<EngineInternal&>(reinterpret_cast<EngineInstance&>(engine()));
+
+  return engineInternal.adNetwork();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

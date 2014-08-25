@@ -26,6 +26,14 @@ class AudioManagerNull : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
+    /*! Creates instance of this implementation of AudioManager interface. 
+     *  @param  engine  Reference to engine.
+     *  @return Created instance. NULL if error occured.
+     */
+    static IAudioManager* Create(Engine& engine);
+
   private:
 
     /*! @see IAudioManagerBase::requestPlay. */

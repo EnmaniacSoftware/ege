@@ -1,7 +1,7 @@
 #include "Win32/Input/PointerWin32_p.h"
 #include "Core/Input/Pointer.h"
 #include "Core/Engine/Interface/EngineInternal.h"
-#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInstance.h"
 #include "EGEEngine.h"
 
 EGE_NAMESPACE_BEGIN

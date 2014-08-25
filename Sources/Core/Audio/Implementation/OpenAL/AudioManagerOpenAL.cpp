@@ -9,16 +9,18 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KAudioManagerOpenALDebugName = "EGEAudioManagerOpenAL";
+
+const char* KOpenALAudioManagerName = "openal";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AudioManagerOpenAL)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerOpenAL::AudioManagerOpenAL(Engine& engine) : Object()
-                                                       , m_engine(engine)
-                                                       , m_state(IAudioManager::StateNone)
-                                                       , m_device(NULL)
-                                                       , m_context(NULL)
-                                                       , m_enabled(true)
+AudioManagerOpenAL::AudioManagerOpenAL(Engine& engine) 
+: m_engine(engine)
+, m_state(IAudioManager::StateNone)
+, m_device(NULL)
+, m_context(NULL)
+, m_enabled(true)
 {
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 }
@@ -47,6 +49,11 @@ AudioManagerOpenAL::~AudioManagerOpenAL()
   }
 
   engine().eventManager()->removeListener(this);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IAudioManager* AudioManagerOpenAL::Create(Engine& engine)
+{
+  return ege_new AudioManagerOpenAL(engine);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerOpenAL::construct()

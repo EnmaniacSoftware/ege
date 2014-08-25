@@ -10,15 +10,20 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(AudioManagerNull)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerNull)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerNull::AudioManagerNull(Engine& engine) : Object()
-                                                   , IAudioManagerBase()
-                                                   , IAudioManager()
-                                                   , m_state(IAudioManager::StateNone)
+const char* KDefaultAudioManagerName = "default";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AudioManagerNull::AudioManagerNull(Engine& engine) 
+: m_state(IAudioManager::StateNone)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerNull::~AudioManagerNull()
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IAudioManager* AudioManagerNull::Create(Engine& engine)
+{
+  return ege_new AudioManagerNull(engine);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerNull::construct()

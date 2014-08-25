@@ -1,4 +1,4 @@
-#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInstance.h"
 #include "Win32/Graphics/OpenGL/RenderWindowOGLWin32.h"
 #include "EGEOpenGL.h"
 #include "EGEEvent.h"

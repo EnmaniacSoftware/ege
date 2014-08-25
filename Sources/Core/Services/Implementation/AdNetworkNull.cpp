@@ -1,41 +1,25 @@
-#ifndef EGE_CORE_SERVICES_ADNETWORK_H
-#define EGE_CORE_SERVICES_ADNETWORK_H
-
-/*! Base class for specific Advertisement Network soulutions.
- */
-
-#include "EGE.h"
-#include "EGEList.h"
+#include "Core/Services/Implementation/AdNetworkNull.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(AdNetwork, PAdNetwork)
+const char* KDefaultAdNetworkName = "default-ad-network";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AdNetwork : public Object
+AdNetworkNull::AdNetworkNull(Engine& engine) 
+: AdNetwork(engine)
 {
-  public:
-
-    AdNetwork(Engine& engine);
-    virtual ~AdNetwork();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-  
-  public:
-  
-    /*! Returns pointer to application object. */
-    Engine& engine() const;
-
-  private:
-  
-    /*! Reference to engine. */
-    Engine& m_engine;
-};
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef List<AdNetwork*> AdNetworkList;
+AdNetworkNull::~AdNetworkNull()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AdNetwork* AdNetworkNull::Create(Engine& engine)
+{
+  return ege_new AdNetworkNull(engine);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SERVICES_ADNETWORK_H

@@ -151,9 +151,6 @@
     <Filter Include="Core\Tools">
       <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Crypto">
-      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Graphics\Image\Single Thread">
       <UniqueIdentifier>{3d81d51d-0e70-4bf9-a2d1-7ec995b97a2f}</UniqueIdentifier>
     </Filter>
@@ -268,18 +265,6 @@
     <Filter Include="Core\Math\Implementation\Tweeners">
       <UniqueIdentifier>{9fc12d36-7a6c-416e-b7e9-e1214a013483}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Crypto\Implementation">
-      <UniqueIdentifier>{39cfc047-f5a1-4e08-8e9c-a66aaffe95f8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Crypto\Interface">
-      <UniqueIdentifier>{ed169b3f-a3ad-434d-9d4f-6e15e291f036}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Crypto\Implementation\Cipher">
-      <UniqueIdentifier>{8a16cc41-8313-491d-a515-ed10229ea0f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Crypto\Interface\Cipher">
-      <UniqueIdentifier>{a2fa8305-250f-4e72-872a-99bd387bc61f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Database">
       <UniqueIdentifier>{95b8818a-5b5f-4236-a221-b639032ad978}</UniqueIdentifier>
     </Filter>
@@ -393,6 +378,36 @@
     </Filter>
     <Filter Include="Core\Engine\Interface">
       <UniqueIdentifier>{09eadef2-6404-48f0-97e2-25a1bd7e8246}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Engine">
+      <UniqueIdentifier>{7230e84e-099c-4cc1-bf6c-574bb8eecb68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Engine\Implementation">
+      <UniqueIdentifier>{078673dd-cc2e-4ac2-bfd2-d09f035fdcd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Factory">
+      <UniqueIdentifier>{9420b896-2adc-44cf-977e-f8013c0cf7d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Factory\Interface">
+      <UniqueIdentifier>{dfe3df14-a0cb-4fab-abcc-cea589703583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto">
+      <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto\Implementation">
+      <UniqueIdentifier>{39cfc047-f5a1-4e08-8e9c-a66aaffe95f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto\Implementation\Cipher">
+      <UniqueIdentifier>{8a16cc41-8313-491d-a515-ed10229ea0f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto\Interface">
+      <UniqueIdentifier>{ed169b3f-a3ad-434d-9d4f-6e15e291f036}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Data\Crypto\Interface\Cipher">
+      <UniqueIdentifier>{a2fa8305-250f-4e72-872a-99bd387bc61f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Engine\Interface">
+      <UniqueIdentifier>{bf2a9223-0174-499f-8498-5e33b51e2d51}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -898,25 +913,25 @@
       <Filter>Core\Math\Implementation\Splines</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Hash.cpp">
-      <Filter>Core\Crypto\Implementation</Filter>
+      <Filter>Core\Data\Crypto\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\Cipher.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherKey.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherXOR.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHashMD5.cpp">
-      <Filter>Core\Crypto\Implementation</Filter>
+      <Filter>Core\Data\Crypto\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\CryptographicHash.cpp">
-      <Filter>Core\Crypto\Implementation</Filter>
+      <Filter>Core\Data\Crypto\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Implementation\Cipher\CipherAES.cpp">
-      <Filter>Core\Crypto\Implementation\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Implementation\Cipher</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\DatabaseSqlite.cpp">
       <Filter>Core\Database\Implementation</Filter>
@@ -1061,6 +1076,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineApplication.cpp">
       <Filter>Core\Engine\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetworkNull.cpp">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp">
+      <Filter>Win32\Engine\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioManagerFactory.cpp">
+      <Filter>Core\Audio\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1765,25 +1789,25 @@
       <Filter>Core\Math\Interface\Splines</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Hash.h">
-      <Filter>Core\Crypto\Interface</Filter>
+      <Filter>Core\Data\Crypto\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHash.h">
-      <Filter>Core\Crypto\Interface</Filter>
+      <Filter>Core\Data\Crypto\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h">
-      <Filter>Core\Crypto\Interface\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Interface\Cipher</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h">
-      <Filter>Core\Crypto\Interface\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Interface\Cipher</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherXOR.h">
-      <Filter>Core\Crypto\Interface\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Interface\Cipher</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\CryptographicHashMD5.h">
-      <Filter>Core\Crypto\Interface</Filter>
+      <Filter>Core\Data\Crypto\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h">
-      <Filter>Core\Crypto\Interface\Cipher</Filter>
+      <Filter>Core\Data\Crypto\Interface\Cipher</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Database\Interface\Database.h">
       <Filter>Core\Database\Interface</Filter>
@@ -1825,7 +1849,6 @@
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\SocialServicesWin32.h">
       <Filter>Win32\Services\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\Implementation\Fixed\RenderSystemFixedOGL.h">
       <Filter>Core\Graphics\OpenGL\Implementation\Fixed</Filter>
     </ClInclude>
@@ -1948,10 +1971,25 @@
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineInternal.h">
       <Filter>Core\Engine\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.h">
-      <Filter>Core\Engine\Implementation</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineApplication.h">
+      <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Services\Implementation\AdNetworkNull.h">
+      <Filter>Core\Services\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Factory\Interface\Factory.h">
+      <Filter>Core\Factory\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Audio\Interface\AudioManagerFactory.h">
+      <Filter>Core\Audio\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Engine\Interface\EngineInstanceWin32.h">
+      <Filter>Win32\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\TypesWin32.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineInstance.h">
       <Filter>Core\Engine\Interface</Filter>
     </ClInclude>
   </ItemGroup>

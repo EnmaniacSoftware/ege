@@ -48,11 +48,15 @@ class Engine
 
   public:
 
-    /*! Initializes engine. */
-    virtual EGEResult construct() = 0;
+    /*! Initializes engine. 
+     *  @param  configurationDictionary Config parameters dictionary.
+     *  @return EGE_SUCCESS if engine was successfully constructed. Otherwise, one of the existing error codes.
+     *  @note This method can throw.
+     */
+    virtual EGEResult construct(const Dictionary& configurationDictionary) = 0;
 
-    /*! Returns command line dictionary. */
-    virtual const Dictionary& commandLineDictionary() const = 0;
+    /*! Returns configuration dictionary. */
+    virtual const Dictionary& configurationDictionary() const = 0;
     /*! Returns graphics subsystem object. */
     virtual Graphics* graphics() const = 0;
     /*! Returns event manager. */

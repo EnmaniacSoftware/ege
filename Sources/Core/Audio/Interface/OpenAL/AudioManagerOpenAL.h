@@ -33,6 +33,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define CHANNELS_COUNT 24
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+extern const char* KOpenALAudioManagerName;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManagerOpenAL : public Object
@@ -47,6 +49,14 @@ class AudioManagerOpenAL : public Object
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+  public:
+
+    /*! Creates instance of this implementation of AudioManager interface. 
+     *  @param  engine  Reference to engine.
+     *  @return Created instance. NULL if error occured.
+     */
+    static IAudioManager* Create(Engine& engine);
 
   public:
 

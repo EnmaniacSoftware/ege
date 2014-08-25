@@ -1,4 +1,4 @@
-#include "Core/Engine/Implementation/EngineInstance.h"
+#include "Core/Engine/Interface/EngineInstance.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -13,7 +13,6 @@
 #include "Core/Input/Pointer.h"
 #include "Core/Screen/ScreenManager.h"
 #include "Core/Audio/Interface/AudioManager.h"
-#include "Core/Audio/Interface/Null/AudioManagerNull.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
 #include "EGEEvent.h"
@@ -26,17 +25,6 @@
 #include "EGEResources.h"
 #include "EGEDebug.h"
 
-#ifdef EGE_PLATFORM_WIN32
-  //#include "Win32/Application/ApplicationWin32_p.h"
-  #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
-#elif EGE_PLATFORM_AIRPLAY
-  #include "Airplay/Application/ApplicationAirplay_p.h"
-  #include "Airplay/Audio/AudioManagerAirplay.h"
-#elif EGE_PLATFORM_IOS
-  //#include "iOS/Application/ApplicationIOS_p.h"
-  #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
-#endif // EGE_PLATFORM_WIN32
-
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -45,8 +33,8 @@ const char* KEngineDebugName = "EGEEngine";
 EGE_DEFINE_NEW_OPERATORS(EngineInstance)
 EGE_DEFINE_DELETE_OPERATORS(EngineInstance)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineInstance::EngineInstance(const Dictionary& commandLineDictionary)
-: m_commandLineDictionary(commandLineDictionary)
+EngineInstance::EngineInstance()
+: m_socialServices(NULL)
 , m_state(EStateInvalid)
 , m_application(NULL)
 , m_sceneManager(NULL)
@@ -61,13 +49,16 @@ EngineInstance::EngineInstance(const Dictionary& commandLineDictionary)
 , m_debug(NULL)
 , m_deviceServices(NULL)
 , m_purchaseServices(NULL)
-, m_socialServices(NULL)
 , m_imageLoader(NULL)
 , m_adNetworkRegistry(NULL)
+, m_audioManagerFactory(NULL)
+, m_adNetwork(NULL)
 , m_lastUpdateTime(0LL)
 , m_updateAccumulator(0LL)
 , m_language("en")
 {
+  m_adNetworkRegistry = ege_new AdNetworkRegistry(*this);
+  m_audioManagerFactory = ege_new AudioManagerFactory(*this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstance::~EngineInstance()
@@ -75,6 +66,8 @@ EngineInstance::~EngineInstance()
   EngineApplication::DestroyInstance(m_application);
   m_application = NULL;
 
+  EGE_DELETE(m_audioManagerFactory);
+  EGE_DELETE(m_adNetwork);
   EGE_DELETE(m_adNetworkRegistry);
   EGE_DELETE(m_imageLoader);
   EGE_DELETE(m_sceneManager);
@@ -92,35 +85,37 @@ EngineInstance::~EngineInstance()
   EGE_DELETE(m_eventManager);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const Dictionary& EngineInstance::commandLineDictionary() const
+const Dictionary& EngineInstance::configurationDictionary() const
 {
-  return m_commandLineDictionary;
+  return m_configurationDictionary;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult EngineInstance::construct()
+EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
 {
   EGEResult result;
+
+  String typeName;
 
   // create application instance
   m_application = EngineApplication::CreateInstance(*this);
 
   // retrieve engine configuration
-  Dictionary configuration(commandLineDictionary());
-  configuration.merge(m_application->engineConfiguration());
+  m_configurationDictionary = commandLineDictionary;
+  m_configurationDictionary.merge(m_application->engineConfiguration());
 
   // decompose param list
-  Dictionary::const_iterator iterLandscape  = configuration.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
-  Dictionary::const_iterator iterUPS        = configuration.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
-  Dictionary::const_iterator iterFPS        = configuration.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
+  Dictionary::const_iterator iterLandscape  = m_configurationDictionary.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
+  Dictionary::const_iterator iterUPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
+  Dictionary::const_iterator iterFPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
 
   // check if update rate is given
-  if (iterUPS != configuration.end())
+  if (iterUPS != m_configurationDictionary.end())
   {
     m_updateInterval.fromMiliseconds(1000 / iterUPS->second.toInt());
   }
 
   // check if render rate is given
-  if (iterFPS != configuration.end())
+  if (iterFPS != m_configurationDictionary.end())
   {
     m_renderInterval.fromMiliseconds(1000 / iterFPS->second.toInt());
   }
@@ -140,8 +135,11 @@ EGEResult EngineInstance::construct()
   // create purchase services
   m_purchaseServices = ege_new PLATFORM_CLASSNAME(PurchaseServices)(*this);
 
-  // create social services
-  m_socialServices = ege_new PLATFORM_CLASSNAME(SocialServices)(*this);
+  // create social services if not created yet
+  if (NULL == m_socialServices)
+  {
+    m_socialServices = ege_new SocialServicesNull(*this);
+  }
 
   // create event manager
   m_eventManager = ege_new EventManager();
@@ -163,7 +161,7 @@ EGEResult EngineInstance::construct()
 
   // create graphics
   // NOTE: must be before ResourceManager
-  m_graphics = ege_new Graphics(*this, configuration);
+  m_graphics = ege_new Graphics(*this, m_configurationDictionary);
 
   if (EGE_SUCCESS != (result = m_graphics->construct()))
   {
@@ -183,7 +181,7 @@ EGEResult EngineInstance::construct()
   // create physics manager
   m_physicsManager = ege_new PhysicsManager();
 
-  if (EGE_SUCCESS != (result = m_physicsManager->construct(configuration)))
+  if (EGE_SUCCESS != (result = m_physicsManager->construct(m_configurationDictionary)))
   {
     // error!
     return result;
@@ -226,18 +224,8 @@ EGEResult EngineInstance::construct()
   }
 
   // create audio manager
-  // TAGE - make a decision based on some data, to figure out yet
-#if EGE_AUDIO_NULL
-  m_audioManager = ege_new AudioManagerNull(*this);
-#elif EGE_AUDIO_OPENAL
-  #if EGE_PLATFORM_IOS
-    m_audioManager = ege_new AudioManagerOpenALIOS(*this);
-  #else
-    m_audioManager = ege_new AudioManagerOpenAL(*this);
-  #endif // EGE_PLATFORM_IOS
-#else
-  m_audioManager = ege_new AudioManagerAirplay(m_application);
-#endif // EGE_AUDIO_NULL
+  typeName = configurationDictionary().value(KConfigParamAudioManagerTypeName, KDefaultAudioManagerName);
+  m_audioManager = audioManagerFactory()->createInstance(typeName);
 
   if (EGE_SUCCESS != (result = m_audioManager->construct()))
   {
@@ -245,7 +233,15 @@ EGEResult EngineInstance::construct()
     return result;
   }
 
-  m_adNetworkRegistry = ege_new AdNetworkRegistry(*this);
+  // create ad netowkr
+  typeName = configurationDictionary().value(KConfigParamAdNetworkTypeName, KDefaultAdNetworkName);
+  m_adNetwork = adNetworkRegistry()->createInstance(typeName);
+
+  //if (EGE_SUCCESS != (result = m_adNetwork->construct()))
+  //{
+  //  // error!
+  //  return result;
+  //}
 
   // subscribe for event notifications
   if ( ! eventManager()->addListener(this))
@@ -298,7 +294,7 @@ void EngineInstance::update()
 
     // check if ready to quit
     if ((ResourceManager::STATE_CLOSED == resourceManager()->state()) &&
-        (IAudioManager::StateClosed == audioManager()->state()) &&
+        ((IAudioManager::StateClosed == audioManager()->state()) || (IAudioManager::StateNone == audioManager()->state())) &&
         (ImageLoader::STATE_CLOSED == imageLoader()->state()) &&
         (RenderSystem::STATE_CLOSED == graphics()->renderSystem()->state()))
     {
@@ -452,6 +448,11 @@ AdNetworkRegistry* EngineInstance::adNetworkRegistry() const
   return m_adNetworkRegistry;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AudioManagerFactory* EngineInstance::audioManagerFactory() const
+{
+  return m_audioManagerFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::onEventRecieved(PEvent event)
 {
   switch (event->id())
@@ -463,10 +464,11 @@ void EngineInstance::onEventRecieved(PEvent event)
       
     case EGE_EVENT_ID_CORE_APP_PAUSE:
 
-      EGE_ASSERT(EStateRunning == state());
-
-      m_application->onSuspend();
-      m_state = EStatePaused;
+      if (EStateRunning == state())
+      {
+        m_application->onSuspend();
+        m_state = EStatePaused;
+      }
       break;
 
     case EGE_EVENT_ID_CORE_APP_RESUME:
@@ -482,6 +484,11 @@ void EngineInstance::onEventRecieved(PEvent event)
 EngineState EngineInstance::state() const
 {
   return m_state;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+AdNetwork* EngineInstance::adNetwork() const
+{
+  return m_adNetwork;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

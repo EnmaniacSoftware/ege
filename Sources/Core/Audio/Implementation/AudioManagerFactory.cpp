@@ -1,26 +1,27 @@
-#include "Core/Services/Interface/AdNetwork.h"
+#include "Core/Audio/Interface/AudioManagerFactory.h"
+#include "Core/Audio/Interface/Null/AudioManagerNull.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const char* KAdNetworkDebugName = "EGEAdNetwork";
+const char* KAudioManagerFactoryDebugName = "EGEAudioManagerFactory";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AdNetwork)
-EGE_DEFINE_DELETE_OPERATORS(AdNetwork)
+EGE_DEFINE_NEW_OPERATORS(AudioManagerFactory)
+EGE_DEFINE_DELETE_OPERATORS(AudioManagerFactory)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetwork::AdNetwork(Engine& engine)
-: m_engine(engine)
+AudioManagerFactory::AudioManagerFactory(Engine& engine) 
+: Factory<IAudioManager*, AudioManagerCreateFunc>(engine)
 {
+  // register default interfaces
+  if (EGE_SUCCESS != registerInterface(KDefaultAudioManagerName, AudioManagerNull::Create))
+  {
+    egeWarning(KAudioManagerFactoryDebugName) << "Could not register default AudioManager interfaces!";
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetwork::~AdNetwork()
+AudioManagerFactory::~AudioManagerFactory()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Engine& AdNetwork::engine() const
-{
-  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
