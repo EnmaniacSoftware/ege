@@ -15,7 +15,7 @@ class EngineInstanceIOS : public EngineInstance
 {
   public:
 
-    explicit EngineInstanceIOS();
+    EngineInstanceIOS();
    ~EngineInstanceIOS();
 
   private:

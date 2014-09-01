@@ -122,7 +122,7 @@ StringList Factory<Type, CreateFuncDeclaration>::registeredInterfaces() const
 {
   StringList list;
 
-  for (Registry::const_iterator it = m_registry.begin(); it != m_registry.end(); ++it)
+  for (typename Registry::const_iterator it = m_registry.begin(); it != m_registry.end(); ++it)
   {
     list << it->first;
   }

@@ -130,10 +130,10 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
       CommandLineParser commandLineParser(argumentList);
   
       // create engine
-      engine = ege_new EngineInstanceIOS(commandLineParser.dictionary());
+      engine = ege_new EngineInstanceIOS();
     
       // construct it
-      value = engine->construct();
+      value = engine->construct(commandLineParser.dictionary());
     }
     catch (std::bad_alloc&)
     {
@@ -187,10 +187,10 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   {
     // pause application immediately
     eventManager->send(EGE_EVENT_ID_CORE_APP_PAUSE, true);
-    
-    // disable rendering
-    engine->graphics()->setRenderingEnabled(false);
   }
+
+  // disable rendering
+  engine->graphics()->setRenderingEnabled(false);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationDidEnterBackground: (UIApplication*) application
@@ -211,16 +211,19 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   // If the application was previously in the background, optionally refresh the user interface.
 
   assert(engine);
+
+  EngineInstance* engineInstance = reinterpret_cast<EngineInstance*>(engine);
   
-  // send event
+  // NOTE: This message is initially sent after application creation. We dont want to propagate this at this moment.
+  //       Making sure this only gets called when really got suspended some time ago.
   EventManager* eventManager = engine->eventManager();
-  if (NULL != eventManager)
+  if ((NULL != eventManager) && (EStatePaused == engineInstance->state()))
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
-
-    // enable rendering
-    engine->graphics()->setRenderingEnabled(true);
   }
+
+  // enable rendering
+  engine->graphics()->setRenderingEnabled(true);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void) applicationWillTerminate: (UIApplication*) application

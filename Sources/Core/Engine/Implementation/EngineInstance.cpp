@@ -15,6 +15,7 @@
 #include "Core/Audio/Interface/AudioManager.h"
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
+#include "Core/Services/Interface/SocialServicesNull.h"
 #include "EGEEvent.h"
 #include "EGEApplication.h"
 #include "EGEDeviceServices.h"
