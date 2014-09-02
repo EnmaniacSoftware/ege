@@ -2,6 +2,7 @@
 #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
 #include "iOS/Engine/Interface/EngineInstanceIOS.h"
 #include "iOS/Services/Interface/SocialServicesIOS.h"
+#include "iOS/Services/Interface/AdNetworkChartboost.h"
 #include "EGEDictionary.h"
 #include "EGEDebug.h"
 
@@ -40,6 +41,13 @@ EGEResult EngineInstanceIOS::construct(const Dictionary& configParamDictionary)
     }
   }
 
+  // register AdNetwork interfaces
+  result = adNetworkRegistry()->registerInterface(KChartboostAdNetworkName, AdNetworkChartboost::Create);
+  if (EGE_SUCCESS != result)
+  {
+    egeWarning(KEngineDebugName) << "Could not register AdNetworkChartboost instance!";
+  }
+  
   // create social services
   m_socialServices = ege_new SocialServicesIOS(*this);
 

@@ -25,6 +25,11 @@ class AdNetworkChartboost : public AdNetwork
      *  @return Created instance. NULL if error occured.
      */
     static AdNetwork* Create(Engine& engine);
+
+  private:
+
+    /*! @see AdNetwork::initialize. */
+    bool initialize() override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

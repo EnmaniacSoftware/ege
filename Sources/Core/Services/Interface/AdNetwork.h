@@ -27,6 +27,11 @@ class AdNetwork : public Object
     /*! Returns pointer to application object. */
     Engine& engine() const;
 
+    /*! Initializes object. 
+     *  @return TRUE if initialized successfully. Otherwise, FALSE.
+     */
+    virtual bool initialize() = 0;
+
   private:
   
     /*! Reference to engine. */
