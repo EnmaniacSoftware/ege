@@ -1,20 +1,29 @@
 #include "iOS/Services/Interface/AdNetworkChartboost.h"
+#include "iOS/Services/Implementation/AdNetworkChartboostDelegate.h"
 #include "EGEDebug.h"
 
+#import <UIKit/UIKit.h>
 #import "Chartboost.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const char* KChartboostAdNetworkName = "chartboots-ad-network";
+const char* KChartboostAdNetworkName = "chartboost-ad-network";
+
+static const NSString* KEGEChartboostAppIdKey        = @"ege-chartboost-app-id";
+static const NSString* KEGEChartboostAppSignatureKey = @"ege-chartboost-app-signature";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AdNetworkChartboost::AdNetworkChartboost(Engine& engine) 
 : AdNetwork(engine)
+, m_delegate(nil)
 {
+  m_delegate = [[AdNetworkChartboostDelegate alloc] initWithObject: this];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AdNetworkChartboost::~AdNetworkChartboost()
 {
+  [(AdNetworkChartboostDelegate*) m_delegate release];
+  m_delegate = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AdNetwork* AdNetworkChartboost::Create(Engine& engine)
@@ -24,13 +33,27 @@ AdNetwork* AdNetworkChartboost::Create(Engine& engine)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool AdNetworkChartboost::initialize()
 {
-  // initialize the Chartboost library
-  [Chartboost startWithAppId: @"YOUR_CHARTBOOST_APP_ID" appSignature: @"YOUR_CHARTBOOST_APP_SIGNATURE" delegate: self];
+  bool result = false;
+  
+  // retrieve data from .plist file
+  NSDictionary* infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  
+  NSString* appId        = [infoDictionary objectForKey: KEGEChartboostAppIdKey];
+  NSString* appSignature = [infoDictionary objectForKey: KEGEChartboostAppSignatureKey];
+  
+  if ((nil != appId) && (nil != appSignature))
+  {
+    // initialize the Chartboost library
+    [Chartboost startWithAppId: appId appSignature: appSignature delegate: (AdNetworkChartboostDelegate*) m_delegate];
+    
+    // show an interstitial ad
+    [[Chartboost sharedChartboost] showInterstitial: CBLocationHomeScreen];
+    
+    // done
+    result = true;
+  }
 
-  // show an interstitial ad
-  [[Chartboost sharedChartboost] showInterstitial: CBLocationHomeScreen];
-
-  return true;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

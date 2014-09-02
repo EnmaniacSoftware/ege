@@ -234,7 +234,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
     return result;
   }
 
-  // create ad netowkr
+  // create ad network instance
   typeName = configurationDictionary().value(KConfigParamAdNetworkTypeName, KDefaultAdNetworkName);
   m_adNetwork = adNetworkRegistry()->createInstance(typeName);
 

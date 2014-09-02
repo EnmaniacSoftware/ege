@@ -30,6 +30,11 @@ class AdNetworkChartboost : public AdNetwork
 
     /*! @see AdNetwork::initialize. */
     bool initialize() override;
+  
+  private:
+  
+    /*! Delegate. */
+    void* m_delegate;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

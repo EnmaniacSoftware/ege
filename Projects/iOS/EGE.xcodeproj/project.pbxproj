@@ -249,6 +249,8 @@
 		45E246BE19ABD54C00A538B0 /* EngineInstanceIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E246BB19ABD54C00A538B0 /* EngineInstanceIOS.cpp */; };
 		45E246C119ABDA2A00A538B0 /* AdNetworkNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E246C019ABDA2A00A538B0 /* AdNetworkNull.cpp */; };
 		45E246C319ABDA4A00A538B0 /* AudioManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E246C219ABDA4A00A538B0 /* AudioManagerFactory.cpp */; };
+		45E2656619B66D60003E5B14 /* AdNetworkChartboost.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45E2656519B66D60003E5B14 /* AdNetworkChartboost.mm */; };
+		45E2657019B67615003E5B14 /* AdNetworkChartboostDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45E2656F19B67615003E5B14 /* AdNetworkChartboostDelegate.mm */; };
 		45E4DC34199C0395000FB4B8 /* AdNetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC23199C0395000FB4B8 /* AdNetwork.cpp */; };
 		45E4DC35199C0395000FB4B8 /* AdNetworkRegistry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC24199C0395000FB4B8 /* AdNetworkRegistry.cpp */; };
 		45E4DC36199C0395000FB4B8 /* DeviceServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC25199C0395000FB4B8 /* DeviceServices.cpp */; };
@@ -925,6 +927,10 @@
 		45E246C019ABDA2A00A538B0 /* AdNetworkNull.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdNetworkNull.cpp; sourceTree = "<group>"; };
 		45E246C219ABDA4A00A538B0 /* AudioManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioManagerFactory.cpp; sourceTree = "<group>"; };
 		45E246C419ABDA5100A538B0 /* AudioManagerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManagerFactory.h; sourceTree = "<group>"; };
+		45E2656519B66D60003E5B14 /* AdNetworkChartboost.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdNetworkChartboost.mm; sourceTree = "<group>"; };
+		45E2656C19B66D69003E5B14 /* AdNetworkChartboost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdNetworkChartboost.h; sourceTree = "<group>"; };
+		45E2656E19B67615003E5B14 /* AdNetworkChartboostDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdNetworkChartboostDelegate.h; sourceTree = "<group>"; };
+		45E2656F19B67615003E5B14 /* AdNetworkChartboostDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AdNetworkChartboostDelegate.mm; sourceTree = "<group>"; };
 		45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAdNetwork.h; path = ../../Sources/EGEAdNetwork.h; sourceTree = "<group>"; };
 		45E4DC11199BF950000FB4B8 /* EGEEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEEngine.h; path = ../../Sources/EGEEngine.h; sourceTree = "<group>"; };
 		45E4DC23199C0395000FB4B8 /* AdNetwork.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AdNetwork.cpp; sourceTree = "<group>"; };
@@ -2648,6 +2654,9 @@
 		45C3AD3318CDF4520009ABA3 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45E2656E19B67615003E5B14 /* AdNetworkChartboostDelegate.h */,
+				45E2656F19B67615003E5B14 /* AdNetworkChartboostDelegate.mm */,
+				45E2656519B66D60003E5B14 /* AdNetworkChartboost.mm */,
 				45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */,
 				45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */,
 				45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */,
@@ -2664,6 +2673,7 @@
 		45C3AD3B18CDF4520009ABA3 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45E2656C19B66D69003E5B14 /* AdNetworkChartboost.h */,
 				45C3AD3C18CDF4520009ABA3 /* DeviceServicesIOS.h */,
 				45C3AD3D18CDF4520009ABA3 /* PurchaseServicesIOS.h */,
 				45C3AD3E18CDF4520009ABA3 /* SocialServicesIOS.h */,
@@ -3037,6 +3047,7 @@
 				451471B218C5231900AAC617 /* ResourceWidget.cpp in Sources */,
 				451471B318C5231900AAC617 /* ResourceManagerST_p.cpp in Sources */,
 				453C8400193E6AD200FBA4AA /* AudioManagerOpenAL.cpp in Sources */,
+				45E2656619B66D60003E5B14 /* AdNetworkChartboost.mm in Sources */,
 				451471B418C5231900AAC617 /* SceneManager.cpp in Sources */,
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
@@ -3109,6 +3120,7 @@
 				453C8401193E6AD200FBA4AA /* AudioThreadOpenAL.cpp in Sources */,
 				45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */,
 				45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */,
+				45E2657019B67615003E5B14 /* AdNetworkChartboostDelegate.mm in Sources */,
 				45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */,
 				45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */,
 				45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */,

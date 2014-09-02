@@ -1,4 +1,5 @@
 #include "Core/Audio/Interface/AudioManagerFactory.h"
+#include "Core/Services/Interface/AdNetworkRegistry.h"
 #include "iOS/Audio/Interface/OpenAL/AudioManagerOpenALIOS.h"
 #include "iOS/Engine/Interface/EngineInstanceIOS.h"
 #include "iOS/Services/Interface/SocialServicesIOS.h"
