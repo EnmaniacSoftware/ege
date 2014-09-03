@@ -5,6 +5,7 @@
  */
 
 #include "EGEAdNetwork.h"
+#include "EGEEvent.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -12,6 +13,7 @@ EGE_NAMESPACE_BEGIN
 extern const char* KChartboostAdNetworkName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AdNetworkChartboost : public AdNetwork
+                          , public IEventListener
 {
   public:
 
@@ -28,8 +30,10 @@ class AdNetworkChartboost : public AdNetwork
 
   private:
 
-    /*! @see AdNetwork::initialize. */
-    bool initialize() override;
+    /*! Initializes the object. */
+    void initialize();
+    /*! @see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent pEvent) override;
   
   private:
   
