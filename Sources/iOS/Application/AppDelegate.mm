@@ -211,13 +211,9 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   // If the application was previously in the background, optionally refresh the user interface.
 
   assert(engine);
-
-  EngineInstance* engineInstance = reinterpret_cast<EngineInstance*>(engine);
   
-  // NOTE: This message is initially sent after application creation. We dont want to propagate this at this moment.
-  //       Making sure this only gets called when really got suspended some time ago.
   EventManager* eventManager = engine->eventManager();
-  if ((NULL != eventManager) && (EStatePaused == engineInstance->state()))
+  if (NULL != eventManager)
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
   }

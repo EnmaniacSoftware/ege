@@ -4,7 +4,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const char* KAdNetworkDebugName = "EGEAdNetwork";
+const char* KAdNetworkDebugName   = "EGEAdNetwork";
+const char* KDefaultAdNetworkName = "default-ad-network";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(AdNetwork)
 EGE_DEFINE_DELETE_OPERATORS(AdNetwork)

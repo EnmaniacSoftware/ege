@@ -1,5 +1,7 @@
 #include "iOS/Services/Interface/AdNetworkChartboost.h"
 #include "iOS/Services/Implementation/AdNetworkChartboostDelegate.h"
+#include "EGEAdNetwork.h"
+#include "EGEEngine.h"
 #include "EGEDebug.h"
 
 #import <UIKit/UIKit.h>

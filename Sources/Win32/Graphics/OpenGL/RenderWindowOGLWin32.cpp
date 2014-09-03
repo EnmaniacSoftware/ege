@@ -379,9 +379,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 
     case WM_SETFOCUS:
 
-      // NOTE: This message is initially sent after window creation. We dont want to propagate this at this moment.
-      //       Making sure this only gets called when really got suspended some time ago.
-      if ((NULL != eventManager) && (NULL != engineInstance) && (EStatePaused == engineInstance->state()))
+      if (NULL != eventManager)
       {
         eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
       }

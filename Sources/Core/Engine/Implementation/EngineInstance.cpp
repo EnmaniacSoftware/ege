@@ -16,6 +16,7 @@
 #include "Core/Graphics/Image/ImageLoader.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
 #include "Core/Services/Interface/SocialServicesNull.h"
+#include "Core/Services/Interface/AdNetwork.h"
 #include "EGEEvent.h"
 #include "EGEApplication.h"
 #include "EGEDeviceServices.h"
@@ -474,10 +475,11 @@ void EngineInstance::onEventRecieved(PEvent event)
 
     case EGE_EVENT_ID_CORE_APP_RESUME:
 
-      EGE_ASSERT(EStatePaused == state());
-
-      m_application->onResume();
-      m_state = EStateRunning;
+      if (EStatePaused == state())
+      {
+        m_application->onResume();
+        m_state = EStateRunning;
+      }
       break;
   }
 }
