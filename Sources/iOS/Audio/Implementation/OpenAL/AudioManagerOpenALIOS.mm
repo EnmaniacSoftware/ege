@@ -17,6 +17,11 @@ AudioManagerOpenALIOS::~AudioManagerOpenALIOS()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IAudioManager* AudioManagerOpenALIOS::Create(Engine& engine)
+{
+  return ege_new AudioManagerOpenALIOS(engine);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSound AudioManagerOpenALIOS::createSound(const String& name, PDataBuffer& data) const
 {
   SoundOpenALIOS* object = ege_new SoundOpenALIOS(const_cast<AudioManagerOpenALIOS*>(this), name, data);

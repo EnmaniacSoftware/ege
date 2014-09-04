@@ -23,6 +23,14 @@ class AudioManagerOpenALIOS : public AudioManagerOpenAL
     EGE_DECLARE_DELETE_OPERATORS
 
   public:
+  
+    /*! Creates instance of this implementation of AudioManager interface.
+     *  @param  engine  Reference to engine.
+     *  @return Created instance. NULL if error occured.
+     */
+    static IAudioManager* Create(Engine& engine);
+  
+  public:
 
     /*! @see AudioManagerOpenAL::createSound. */
     PSound createSound(const String& name, PDataBuffer& data) const override;
