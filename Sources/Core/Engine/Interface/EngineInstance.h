@@ -99,6 +99,11 @@ class EngineInstance : public Engine
 
   private:
 
+    /*! Loads extra configuration from the file. */
+    void loadConfig();
+
+  private:
+
     /*! State. */
     EngineState m_state;
     /*! Configuration dictionary. */

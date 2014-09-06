@@ -106,7 +106,6 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   m_configurationDictionary.merge(m_application->engineConfiguration());
 
   // decompose param list
-  Dictionary::const_iterator iterLandscape  = m_configurationDictionary.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
   Dictionary::const_iterator iterUPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
   Dictionary::const_iterator iterFPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
 
@@ -121,15 +120,9 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   {
     m_renderInterval.fromMiliseconds(1000 / iterFPS->second.toInt());
   }
-
-  // check landscape mode
-  //if (iterLandscape != params.end())
-  //{
-  //  m_landscapeMode = iterLandscape->second.toBool();
-  //}
   
-  //// load configuration
-  //loadConfig();
+  // load configuration
+  loadConfig();
 
   // create device services
   m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)(*this);
@@ -492,6 +485,58 @@ EngineState EngineInstance::state() const
 AdNetwork* EngineInstance::adNetwork() const
 {
   return m_adNetwork;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void EngineInstance::loadConfig()
+{
+  const char* KConfigFileName     = "config.xml";
+  const char* KRootElement        = "config";
+  const char* KLogElement         = "log";
+  const char* KLogNameAttribute   = "name";
+  const char* KLogEnableAttribute = "enabled";
+
+  StringList enabledDebugNames;
+
+  // compose path to potential config file
+  String configPath = Directory::Join(Directory::Path(Directory::EDocuments), String(KConfigFileName));
+
+  XmlDocument xml;
+  if (EGE_SUCCESS == xml.load(configPath))
+  {
+    // find the root element
+    PXmlElement root = xml.firstChild(KRootElement);
+    if ((NULL != root) && root->isValid())
+    {
+      // go thru all children and read as much as we can
+      PXmlElement child = root->firstChild();
+      while (child->isValid())
+      {
+        // get child name
+        const String childName = child->name();
+
+        // check if LOG node
+        if (KLogElement == childName)
+        {
+          // process data
+          String sectionName = child->attribute(KLogNameAttribute, "");
+          bool enabled       = child->attribute(KLogEnableAttribute, false);
+
+          // check if section is enabled
+          if (enabled)
+          {
+            // add to pool
+            enabledDebugNames << sectionName;
+          }
+        }
+  
+        // go to next child
+        child = child->nextChild();
+      }
+    }
+  }
+
+  // enable debug info
+  Debug::EnableNames(enabledDebugNames);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
