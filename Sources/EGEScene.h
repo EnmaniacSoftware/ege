@@ -3,8 +3,6 @@
 
 #include "Core/Scene/SceneNode.h"
 #include "Core/Scene/SceneNodeObject.h"
-#include "Core/Scene/SceneManager.h"
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#include "Core/Scene/Interface/ISceneManager.h"
 
 #endif // EGE_SCENE_H

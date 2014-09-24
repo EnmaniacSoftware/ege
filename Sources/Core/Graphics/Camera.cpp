@@ -3,6 +3,7 @@
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Component/Physics/PhysicsComponent.h"
 #include "Core/Graphics/Viewport.h"
+#include "EGEEngine.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -10,12 +11,13 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Camera)
 EGE_DEFINE_DELETE_OPERATORS(Camera)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Camera::Camera(const String& name, SceneManager* sceneManager) : Frustum(m_viewMatrix)
-                                                               , m_sceneManager(sceneManager)
-                                                               , m_name(name)
+Camera::Camera(Engine& engine, const String& name) 
+: Frustum(m_viewMatrix)
+, m_sceneManager(engine.sceneManager())
+, m_name(name)
 {
   // create new physics component
-  m_physics = ege_new PhysicsComponent(sceneManager->engine(), "camera");
+  m_physics = ege_new PhysicsComponent(engine, "camera");
 
   m_lookAt.set(0, 0, -1);
 }
@@ -90,6 +92,21 @@ void Camera::invalidateViewMatrix()
 bool Camera::isValid() const
 {
   return NULL != m_physics || !m_physics->isValid();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+PPhysicsComponent& Camera::physics() 
+{ 
+  return m_physics; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Vector3f& Camera::getLookAt() const 
+{ 
+  return m_lookAt; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& Camera::name() const 
+{ 
+  return m_name; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

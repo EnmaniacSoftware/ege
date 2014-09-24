@@ -262,7 +262,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
   RenderWindowOGLWin32* me = reinterpret_cast<RenderWindowOGLWin32*>(GetWindowLongPtr(hWnd, 0));
 
   EngineInstance* engineInstance = NULL;
-  EventManager* eventManager = NULL;
+  IEventManager* eventManager = NULL;
 
   if (NULL != me)
   {

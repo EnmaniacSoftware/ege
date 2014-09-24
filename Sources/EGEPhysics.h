@@ -41,7 +41,7 @@ EGE_NAMESPACE_END
 
 #include "Core/Memory/Memory.h"
 #include "Core/Component/Physics/PhysicsComponent.h"
-#include "Core/Physics/PhysicsManager.h"
+#include "Core/Physics/Interface/IPhysicsManager.h"
 #include "Core/Physics/PhysicsJoint.h"
 #include "Core/Physics/PhysicsJointDistance.h"
 #include "Core/Physics/PhysicsJointAttract.h"

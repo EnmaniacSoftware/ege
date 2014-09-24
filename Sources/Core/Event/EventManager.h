@@ -11,17 +11,19 @@
 #include "EGEList.h"
 #include "EGEMutex.h"
 #include "EGETime.h"
+#include "Core/Event/Interface/IEventManager.h"
 #include "Core/Event/EventListener.h"
 #include "Core/ListenerContainer.h"
+#include "Core/Engine/Interface/EngineModule.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(EventManager, PEventManager)
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class EventManager : public Object
+class EventManager : public EngineModule<IEventManager>
                    , public ListenerContainer<IEventListener>
+
 {
   public:
 
@@ -31,41 +33,30 @@ class EventManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
+  private:
 
-    /*! Constructs object. */
-    EGEResult construct();
-    /*! Updates object. 
-     *  @param  time  Time interval since last frame.
-     */
-    void update(const Time& time);
-    /*! Sends event with given ID without any data associated with it. 
-     *  @param  id        Event id.
-     *  @param  immediate TRUE if even is supposed to be dispatched immediately.
-     *  @return EGE_SUCCESS on success.
-     */
-    EGEResult send(s32 id, bool immediate = false);
-    /*! Sends event with given ID and associates integral value. 
-     *  @param  id        Event id.
-     *  @param  data      Integer associated with event.
-     *  @param  immediate TRUE if even is supposed to be dispatched immediately.
-     *  @return EGE_SUCCESS on success.
-     */
-    EGEResult send(s32 id, s32 data, bool immediate = false);
-    /*! Sends event with given ID and associates floating value. 
-     *  @param  id        Event id.
-     *  @param  data      Floating point data associated with event.
-     *  @param  immediate TRUE if even is supposed to be dispatched immediately.
-     *  @return EGE_SUCCESS on success.
-     */
-    EGEResult send(s32 id, float32 data, bool immediate = false);
-    /*! Sends event with given ID and associates arbitrary data. 
-     *  @param  id        Event id.
-     *  @param  data      Generic data associated with event.
-     *  @param  immediate TRUE if even is supposed to be dispatched immediately.
-     *  @return EGE_SUCCESS on success.
-     */
-    EGEResult send(s32 id, PObject data, bool immediate = false);
+    /*! @see IEventManager::registerListener. */
+    bool registerListener(IEventListener* listener) override;
+    /*! @see IEventManager::unregisterListener. */
+    void unregisterListener(IEventListener* listener) override;
+    /*! @see IEventManager::send. */
+    EGEResult send(s32 id, bool immediate = false) override;
+    /*! @see IEventManager::send. */
+    EGEResult send(s32 id, s32 data, bool immediate = false) override;
+    /*! @see IEventManager::send. */
+    EGEResult send(s32 id, float32 data, bool immediate = false) override;
+    /*! @see IEventManager::send. */
+    EGEResult send(s32 id, PObject data, bool immediate = false) override;
+
+  private:
+
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
+
+    /*! Sends event. */
+    void notify(PEvent event);
 
   private:
 
@@ -74,8 +65,6 @@ class EventManager : public Object
 
   private:
 
-    /*! Sends event. */
-    void notify(PEvent event);
     /*! List of all pending events to send. */
     EventList m_pendingEvents;
     /*! List access mutex. */

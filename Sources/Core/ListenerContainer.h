@@ -12,23 +12,30 @@ class ListenerContainer
   protected:
 
     typedef Tree<T*> ListenersContainer;
-    //typedef typename Tree<T*> ListenersContainerIterator;
    
   public:
 
     ListenerContainer();
     virtual ~ListenerContainer();
 
-    /*! Adds object to listeners pool. */
+    /*! Adds object to listeners pool. 
+     *  @param  object  Object to be added into the pool.
+     *  @return TRUE if object has been added into the pool. Otherwise, FALSE.
+     */
     virtual bool addListener(T* const object);
-    /*! Returns TRUE if given object is in listeners pool. */
+    /*! Checks if given object is in the listsners pool.
+     *  @param  object  Object to check against the pool.
+     *  @return TRUE if object is in the pool. Otherwise, FALSE.
+     */
     bool isListening(const T* object) const;
-    /*! Removes given pbject from listeners pool. */
+    /*! Removes object from listeners pool. 
+     *  @param  object  Object to be removed from pool.
+     */
     void removeListener(const T* object);
     /*! Removes all objects from listeners pool. */
     void removeAllListeners();
     /*! Returns pool of listeners. */
-    const ListenersContainer& listeners() const { return m_listeners; }
+    const ListenersContainer& listeners() const;
 
   private:
 
@@ -69,7 +76,7 @@ void ListenerContainer<T>::removeListener(const T* object)
     return;
   }
 
-  typename Tree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
+  ListenersContainer::const_iterator iter = m_listeners.find(const_cast<T*>(object));
   if (iter != m_listeners.end())
   {
     m_listeners.erase(iter);
@@ -85,8 +92,14 @@ void ListenerContainer<T>::removeAllListeners()
 template<typename T>
 bool ListenerContainer<T>::isListening(const T* object) const
 {
-  typename Tree<T*>::const_iterator iter = m_listeners.find(const_cast<T*>(object));
+  ListenersContainer::const_iterator iter = m_listeners.find(const_cast<T*>(object));
   return (iter != m_listeners.end());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template<typename T>
+typename const ListenerContainer<T>::ListenersContainer& ListenerContainer<T>::listeners() const 
+{ 
+  return m_listeners; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -5,6 +5,7 @@
 #include "Core/Resource/ResourceProgram.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
+#include "EGEEngine.h"
 #include "EGETexture.h"
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
@@ -117,7 +118,8 @@ EGEGraphics::BlendFactor MapBlendFactor(const String& name, EGEGraphics::BlendFa
 EGE_DEFINE_NEW_OPERATORS(ResourceMaterial)
 EGE_DEFINE_DELETE_OPERATORS(ResourceMaterial)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceMaterial::ResourceMaterial(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_MATERIAL)
+ResourceMaterial::ResourceMaterial(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_MATERIAL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -319,14 +321,14 @@ void ResourceMaterial::unload()
 
         textureImageData.textureImage = NULL;
 
-        PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
+        PResourceTextureImage textureImageRes = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
         if (textureImageRes)
         {
           textureImageRes->unload();
         }
         else
         {
-          PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
+          PResourceTexture textureRes = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
           if (textureRes)
           {
             textureRes->unload();
@@ -335,7 +337,7 @@ void ResourceMaterial::unload()
       }
 
       // unload all program for current pass
-      PResourceProgram resource = group()->manager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
+      PResourceProgram resource = engine().resourceManager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
       if (NULL != resource)
       {
         resource->unload();
@@ -612,7 +614,7 @@ EGEResult ResourceMaterial::loadDependencies()
       // NOTE: Material can refer to Texture or TextureImage (ie. from atlas)
 
       // try to find TextureImage of a given name
-      PResourceTextureImage textureImageRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
+      PResourceTextureImage textureImageRes = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureImageData.name);
       if (textureImageRes)
       {
         // load texture image
@@ -639,7 +641,7 @@ EGEResult ResourceMaterial::loadDependencies()
       else
       {
         // try to find Texture of a given name
-        PResourceTexture textureRes = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
+        PResourceTexture textureRes = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE, textureImageData.name);
         if (textureRes)
         {
           // load texture
@@ -682,7 +684,7 @@ EGEResult ResourceMaterial::loadDependencies()
     if ((NULL == pass.m_program) && ! pass.m_programName.empty())
     {
       // try to find program resource of a given name
-      PResourceProgram resource = group()->manager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
+      PResourceProgram resource = engine().resourceManager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);
       if (NULL == resource)
       {
         // error!

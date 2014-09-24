@@ -16,9 +16,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SceneManager)
 EGE_DEFINE_DELETE_OPERATORS(SceneManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneManager::SceneManager(Engine& engine) : m_engine(engine)
-                                           , m_rootNode(NULL)
+SceneManager::SceneManager(Engine& engine) 
+: m_engine(engine)
 {
+  m_rootNode = ege_new SceneNode("root", NULL, this);
+
   // initialize
   //if (EGE_SUCCESS != (eResult = m_rootNode->initialize()))
   //{
@@ -43,22 +45,15 @@ SceneManager::~SceneManager()
   EGE_DELETE(m_rootNode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult SceneManager::construct()
-{
-  // create root node
-  m_rootNode = ege_new SceneNode("root", NULL, this);
-  if (NULL == m_rootNode)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  return EGE_SUCCESS;
+SceneNode* SceneManager::rootNode() const 
+{ 
+  return m_rootNode; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void SceneManager::render(PCamera camera, PViewport viewport)
 {
-  RenderSystem* renderSystem = engine().graphics()->renderSystem();
+  IRenderSystem* renderSystem = engine().graphics()->renderSystem();
+  IRenderer* renderer = engine().graphics()->renderer();
 
   renderSystem->setViewport(viewport);
   renderSystem->setProjectionMatrix(camera->projectionMatrix());
@@ -77,12 +72,12 @@ void SceneManager::render(PCamera camera, PViewport viewport)
   //findLightsAffectingFrustum();
 
   // traverse the graph and add all visible object for rendering
-  addForRendering(camera, renderSystem);
+  addForRendering(camera, renderer);
 
   // check if overlays are to be rendered
   if (viewport->overlaysEnabled())
   {
-    engine().overlayManager()->render(viewport, renderSystem);
+    engine().overlayManager()->render(viewport, renderer);
 
     //// find visible GUI elements
     //CGUIManager::GetSingletonPtr()->findVisibleElements( pcViewport, m_pcRenderQueue );
@@ -91,7 +86,7 @@ void SceneManager::render(PCamera camera, PViewport viewport)
     //queueMouseCursorForRendering();
   }
 
-  engine().screenManager()->render(viewport, renderSystem);
+  engine().screenManager()->render(viewport, renderer);
 
   //// queue skybox for rendering
   //queueSkyForRendering();
@@ -563,6 +558,11 @@ void SceneManager::addForRendering(PCamera& camera, IRenderer* renderer)
 Engine& SceneManager::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 SceneManager::uid() const
+{
+  return EGE_OBJECT_UID_SCENE_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

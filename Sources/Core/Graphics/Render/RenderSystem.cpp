@@ -37,40 +37,24 @@ u32 CalculateRenderQueueHash(u32 priority, EGEGraphics::RenderPrimitiveType prim
 EGE_DEFINE_NEW_OPERATORS(RenderSystem)
 EGE_DEFINE_DELETE_OPERATORS(RenderSystem)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystem::RenderSystem(Engine& engine) : Object()
-                                           , m_engine(engine)
-                                           , m_state(STATE_NONE)
-                                           , m_textureMinFilter(TF_NEAREST)
-                                           , m_textureMagFilter(TF_NEAREST)
-                                           , m_textureAddressingModeS(AM_CLAMP)
-                                           , m_textureAddressingModeT(AM_CLAMP)
-                                           , m_textureMipMapping(false)
+RenderSystem::RenderSystem(Engine& engine) 
+: m_engine(engine)
+, m_textureMinFilter(TF_NEAREST)
+, m_textureMagFilter(TF_NEAREST)
+, m_textureAddressingModeS(AM_CLAMP)
+, m_textureAddressingModeT(AM_CLAMP)
+, m_textureMipMapping(false)
 {
+  // create access mutex
+  m_requestsMutex = ege_new Mutex();
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderSystem::~RenderSystem()
 {
-  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderSystem::construct()
 {
-  // create access mutex
-  m_requestsMutex = ege_new Mutex();
-  if (NULL == m_requestsMutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // subscribe for event notifications
-  if ( ! engine().eventManager()->addListener(this))
-  {
-    // error!
-    egeCritical(KRenderSystemDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
-    return EGE_ERROR;
-  }
-
   // add render system statistics component
   if (EGE_SUCCESS != addComponent(ege_new RenderSystemStatistics(engine())))
   {
@@ -78,15 +62,12 @@ EGEResult RenderSystem::construct()
     return EGE_ERROR_NO_MEMORY;
   }
 
-  // set state
-  m_state = STATE_READY;
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::update()
+void RenderSystem::update(const Time& time)
 {
-  if ((STATE_READY == m_state) && ! m_requests.empty())
+  if ( ! m_requests.empty())
   {
     // copy for processing
     m_requestsMutex->lock();
@@ -181,14 +162,6 @@ void RenderSystem::update()
           emit request.callbackSlot(NULL);
         }
       }
-    }
-  }
-  else if (STATE_CLOSING == m_state)
-  {
-    // NOTE: wait till resource manager is done processing
-    if (ResourceManager::STATE_CLOSED == engine().resourceManager()->state())
-    {
-      m_state = STATE_CLOSED;
     }
   }
 }
@@ -550,22 +523,6 @@ void RenderSystem::setTextureMipMapping(bool set)
 PRenderTarget RenderSystem::currentRenderTarget() const 
 { 
   return m_renderTarget; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderSystem::State RenderSystem::state() const
-{
-  return m_state;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void RenderSystem::onEventRecieved(PEvent event)
-{
-  switch (event->id())
-  {
-    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
-
-      m_state = STATE_CLOSING;
-      break;
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::setActiveRenderComponent(const PRenderComponent& component)

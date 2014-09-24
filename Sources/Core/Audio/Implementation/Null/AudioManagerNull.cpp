@@ -1,7 +1,6 @@
 #include "Core/Audio/Interface/Null/AudioManagerNull.h"
 #include "Core/Audio/Implementation/Null/SoundNull.h"
 #include "Core/Audio/Interface/Sound.h"
-#include "EGEEvent.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -12,8 +11,7 @@ EGE_DEFINE_DELETE_OPERATORS(AudioManagerNull)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KDefaultAudioManagerName = "default";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioManagerNull::AudioManagerNull(Engine& engine) 
-: m_state(IAudioManager::StateNone)
+AudioManagerNull::AudioManagerNull(Engine& engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,14 +19,9 @@ AudioManagerNull::~AudioManagerNull()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager* AudioManagerNull::Create(Engine& engine)
+EngineModule<IAudioManager>* AudioManagerNull::Create(Engine& engine)
 {
   return ege_new AudioManagerNull(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult AudioManagerNull::construct()
-{
-  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerNull::update(const Time& time)
@@ -74,9 +67,9 @@ PSound AudioManagerNull::createSound(const String& name, PDataBuffer& data) cons
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager::EState AudioManagerNull::state() const
+u32 AudioManagerNull::uid() const
 {
-  return m_state;
+  return EGE_OBJECT_UID_AUDIO_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

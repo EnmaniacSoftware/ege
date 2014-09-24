@@ -15,6 +15,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineApplication;
+class IEngineModule;
+class IGraphics;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineInstance : public Engine
                      , public EngineInternal
@@ -40,21 +42,21 @@ class EngineInstance : public Engine
     /*! @see Engine::contruct. */
     EGEResult construct(const Dictionary& configParamDictionary) override;
     /*! @see Engine::graphics. */
-    Graphics* graphics() const override;
+    IGraphics* graphics() const override;
     /*! @see Engine::eventManager. */
-    EventManager* eventManager() const override;
+    IEventManager* eventManager() const override;
     /*! @see Engine::physicsManager. */
-    PhysicsManager* physicsManager() const override;
+    IPhysicsManager* physicsManager() const override;
     /*! @see Engine::sceneManager. */
-    SceneManager* sceneManager() const override;
+    ISceneManager* sceneManager() const override;
     /*! @see Engine::resourceManager. */
-    ResourceManager* resourceManager() const override;
+    IResourceManager* resourceManager() const override;
     /*! @see Engine::pointer. */
     Pointer* pointer() const override;
     /*! @see Engine::overlayManager. */
-    OverlayManager* overlayManager() const override;
+    IOverlayManager* overlayManager() const override;
     /*! @see Engine::screenManager. */
-    ScreenManager* screenManager() const override;
+    IScreenManager* screenManager() const override;
     /*! @see Engine::audioManager. */
     IAudioManager* audioManager() const override;
     /*! @see Engine::debug. */
@@ -101,6 +103,17 @@ class EngineInstance : public Engine
 
     /*! Loads extra configuration from the file. */
     void loadConfig();
+    /*! Creates all modules. */
+    void createModules();
+    /*! Constructs all modules. */
+    EGEResult constructModules();
+
+  private:
+
+    /*! Engine modules pool, ordered by priority. */
+    typedef Map<u32, IEngineModule*> EngineModulesPool;
+    /*! Mapping from engine module ID to engine module itself. */
+    typedef Map<u32, IEngineModule*> EngineModuleUIDToObject;
 
   private:
 
@@ -110,24 +123,8 @@ class EngineInstance : public Engine
     Dictionary m_configurationDictionary;
     /*! Application. */
     EngineApplication* m_application;
-    /*! Scene manager. */
-    SceneManager* m_sceneManager;
-    /*! Physics manager. */
-    PhysicsManager* m_physicsManager;
-    /*! Event manager. */
-    EventManager* m_eventManager;
-    /*! Graphics subsystem obejct. */
-    Graphics* m_graphics;
-    /*! Resource manager. */
-    ResourceManager* m_resourceManager;
     /*! Pointer input. */
-    Pointer* m_pointer;
-    /*! Overlay manager. */
-    OverlayManager* m_overlayManager;
-    /*! Screen manager. */
-    ScreenManager* m_screenManager;
-    /*! Audio manager. */
-    IAudioManager* m_audioManager;
+    Pointer* m_pointer;                   //// encapsulate in Input class aggregate ?
     /*! Image loader. */
     ImageLoader* m_imageLoader;
     /*! Debug object. */
@@ -152,6 +149,14 @@ class EngineInstance : public Engine
     Time m_updateAccumulator;
     /*! Current language identifier. */
     String m_language;
+    /*! Pool of all available engine modules. 
+     *  @note Objects stored here should not be deallocated directly! TAGE - ideally would like to have this pool only.
+     */
+    EngineModulesPool m_modules;
+    /*! Mapping of engine module unique ids to engine modules themselves. 
+     *  @note This is used for quick lookups.
+     */
+    EngineModuleUIDToObject m_modulesUIDToObjects;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceMaterial.h"
 #include "Core/Graphics/Font.h"
+#include "EGEEngine.h"
 #include "EGEResources.h"
 
 EGE_NAMESPACE_BEGIN
@@ -12,8 +13,9 @@ static const char* KResourceFontDebugName = "EGEResourceFont";
 EGE_DEFINE_NEW_OPERATORS(ResourceFont)
 EGE_DEFINE_DELETE_OPERATORS(ResourceFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceFont::ResourceFont(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_FONT)
-                                                                 , m_height(0)
+ResourceFont::ResourceFont(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_FONT)
+, m_height(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -116,7 +118,7 @@ EGEResult ResourceFont::load()
   if (STATE_LOADED != m_state)
   {
     // get material
-    PResourceMaterial materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, materialName());
+    PResourceMaterial materialResource = engine().resourceManager()->resource(RESOURCE_NAME_MATERIAL, materialName());
     if (materialResource)
     {
       // load material

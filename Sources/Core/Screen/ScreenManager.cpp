@@ -9,8 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ScreenManager)
 EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScreenManager::ScreenManager(Engine& engine) : Object()
-                                             , m_engine(engine)
+ScreenManager::ScreenManager(Engine& engine) 
+: m_engine(engine)
 {
   ege_connect(engine.pointer(), eventSignal, this, ScreenManager::pointerEvent);
 }
@@ -21,11 +21,6 @@ ScreenManager::~ScreenManager()
 
   // remove all
   removeAll();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ScreenManager::construct()
-{
-  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ScreenManager::update(const Time& time)
@@ -297,6 +292,11 @@ u32 ScreenManager::screenCount() const
 Engine& ScreenManager::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 ScreenManager::uid() const
+{
+  return EGE_OBJECT_UID_SCREEN_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

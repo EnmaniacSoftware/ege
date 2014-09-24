@@ -1,6 +1,7 @@
 #include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
+#include "Core/Physics/PhysicsManager.h"
 
 #ifdef EGE_PHYSICS_BOX2D
   #include "Core/Physics/Box2D/PhysicsJointPulleyBox2D_p.h"
@@ -22,7 +23,7 @@ PhysicsJointPulley::PhysicsJointPulley(Engine& engine, PPhysicsComponent bodyA, 
   m_groundAnchorA(groundAnchorA), 
   m_groundAnchorB(groundAnchorB)
 {
-  m_p = ege_new PhysicsJointPulleyPrivate(this, engine.physicsManager()->p_func());
+  m_p = ege_new PhysicsJointPulleyPrivate(this, dynamic_cast<PhysicsManager*>(engine.physicsManager())->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointPulley::~PhysicsJointPulley()

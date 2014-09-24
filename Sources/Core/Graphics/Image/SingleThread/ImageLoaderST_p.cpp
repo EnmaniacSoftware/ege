@@ -3,43 +3,19 @@
 #include "Core/Graphics/Image/SingleThread/ImageLoaderST_p.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ImageLoaderPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ImageLoaderPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageLoaderPrivate::ImageLoaderPrivate(ImageLoader* base) : m_d(base)
-                                                          , m_state(ImageLoader::STATE_NONE)
+ImageLoaderPrivate::ImageLoaderPrivate(ImageLoader* base) 
+: m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ImageLoaderPrivate::~ImageLoaderPrivate()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ImageLoaderPrivate::construct()
-{
-  // set state
-  m_state = ImageLoader::STATE_READY;
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageLoaderPrivate::update(const Time& time)
-{
-  EGE_UNUSED(time)
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ImageLoaderPrivate::shutDown()
-{
-  // we are done
-  m_state = ImageLoader::STATE_CLOSED;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageLoader::State ImageLoaderPrivate::state() const
-{
-  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ImageLoaderPrivate::load(PObject userData, const String& fileName, PixelFormat format)
@@ -58,5 +34,12 @@ void ImageLoaderPrivate::load(PObject userData, const String& fileName, PixelFor
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ImageLoaderPrivate::update(const Time& time)
+{
+  EGE_UNUSED(time)
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END
 
 #endif // EGE_IMAGEMANAGER_SINGLE_THREAD

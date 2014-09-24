@@ -6,14 +6,15 @@
 
 #include "EGE.h"
 #include "EGEEngine.h"
+#include "Core/Engine/Interface/EngineModule.h"
 #include "Core/Factory/Interface/Factory.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef IAudioManager* (*AudioManagerCreateFunc)(Engine& engine);
+typedef EngineModule<IAudioManager>* (*AudioManagerCreateFunc)(Engine& engine);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerFactory : public Factory<IAudioManager*, AudioManagerCreateFunc>
+class AudioManagerFactory : public Factory<EngineModule<IAudioManager>*, AudioManagerCreateFunc>
 {
   public:
 

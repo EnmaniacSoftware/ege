@@ -2,7 +2,6 @@
 #include "Core/Audio/Implementation/OpenAL/SoundOpenAL.h"
 #include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
 #include "EGEEngine.h"
-#include "EGEEvent.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -17,11 +16,16 @@ EGE_DEFINE_DELETE_OPERATORS(AudioManagerOpenAL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerOpenAL::AudioManagerOpenAL(Engine& engine) 
 : m_engine(engine)
-, m_state(IAudioManager::StateNone)
 , m_device(NULL)
 , m_context(NULL)
 , m_enabled(true)
 {
+  m_thread = ege_new AudioThreadOpenAL(this);
+  m_mutex  = ege_new Mutex(EGEMutex::Recursive);
+
+  // connect
+  ege_connect(m_thread, finished, this, AudioManagerOpenAL::onThreadFinished);
+
   EGE_MEMSET(m_channels, 0, sizeof (m_channels));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -47,35 +51,15 @@ AudioManagerOpenAL::~AudioManagerOpenAL()
     alcCloseDevice(m_device);
     m_device = NULL;
   }
-
-  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager* AudioManagerOpenAL::Create(Engine& engine)
+EngineModule<IAudioManager>* AudioManagerOpenAL::Create(Engine& engine)
 {
   return ege_new AudioManagerOpenAL(engine);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerOpenAL::construct()
 {
-  // create thread
-  m_thread = ege_new AudioThreadOpenAL(this);
-  if (NULL == m_thread)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  ege_connect(m_thread, finished, this, AudioManagerOpenAL::onThreadFinished);
-
-  // create access mutex
-  m_mutex = ege_new Mutex(EGEMutex::Recursive);
-  if (NULL == m_mutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-  
   // create audio device
   m_device = alcOpenDevice(NULL);
   if (NULL == m_device)
@@ -98,13 +82,6 @@ EGEResult AudioManagerOpenAL::construct()
     return EGE_ERROR;
   }
 
-  // subscribe for event notifications
-  if ( ! engine().eventManager()->addListener(this))
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
   // start thread
   if ( ! m_thread->start())
   {
@@ -112,7 +89,7 @@ EGEResult AudioManagerOpenAL::construct()
     return EGE_ERROR;
   }
 
-  return EGE_SUCCESS;
+  return EngineModule::construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerOpenAL::update(const Time& time)
@@ -218,19 +195,28 @@ PSound AudioManagerOpenAL::createSound(const String& name, PDataBuffer& data) co
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager::EState AudioManagerOpenAL::state() const
+void AudioManagerOpenAL::onShutdown()
 {
-  return m_state;
+  if ((EModuleStateShuttingDown != state()) && (EModuleStateClosed != state()))
+  {
+    // set state
+    setState(EModuleStateShuttingDown);
+
+    if (NULL != m_thread)
+    {
+      m_thread->stop(0); 
+    }
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerOpenAL::threadUpdate(const Time& time)
 {
-  if (IAudioManager::StateClosing == state())
+  if (EModuleStateShuttingDown == state())
   {
     if (m_thread->isFinished() || ! m_thread->isRunning())
     {
       // set state
-      m_state = IAudioManager::StateClosed;
+      setState(EModuleStateClosed);
       return;
     }
   }
@@ -310,7 +296,7 @@ void AudioManagerOpenAL::onThreadFinished(const PThread& thread)
   EGE_UNUSED(thread);
 
   // set state
-  m_state = IAudioManager::StateClosed;
+  setState(EModuleStateClosed);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerOpenAL::queueForStop(PSound& sound)
@@ -355,27 +341,14 @@ ALuint AudioManagerOpenAL::findAvailableChannel() const
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AudioManagerOpenAL::onEventRecieved(PEvent event)
-{
-  switch (event->id())
-  {
-    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
-
-      if ((StateClosing != state()) && (StateClosed != state()))
-      {
-        // do shouting down
-        if (NULL != m_thread)
-        {
-          m_thread->stop(0); 
-        }
-      }
-      break;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Engine& AudioManagerOpenAL::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 AudioManagerOpenAL::uid() const
+{
+  return EGE_OBJECT_UID_AUDIO_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

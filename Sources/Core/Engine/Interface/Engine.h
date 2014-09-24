@@ -11,14 +11,14 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ScreenManager;
-class Graphics;
-class EventManager;
-class ResourceManager;
-class PhysicsManager;
+class IScreenManager;
+class IGraphics;
+class IEventManager;
+class IResourceManager;
+class IPhysicsManager;
 class Pointer;
-class SceneManager;
-class OverlayManager;
+class ISceneManager;
+class IOverlayManager;
 class Debug;
 class DeviceServices;
 class ImageLoader;
@@ -58,21 +58,21 @@ class Engine
     /*! Returns configuration dictionary. */
     virtual const Dictionary& configurationDictionary() const = 0;
     /*! Returns graphics subsystem object. */
-    virtual Graphics* graphics() const = 0;
+    virtual IGraphics* graphics() const = 0;
     /*! Returns event manager. */
-    virtual EventManager* eventManager() const = 0;
+    virtual IEventManager* eventManager() const = 0;
     /*! Returns physics manager. */
-    virtual PhysicsManager* physicsManager() const = 0;
+    virtual IPhysicsManager* physicsManager() const = 0;
     /*! Returns scene manager. */
-    virtual SceneManager* sceneManager() const = 0;
+    virtual ISceneManager* sceneManager() const = 0;
     /*! Returns resource manager. */
-    virtual ResourceManager* resourceManager() const = 0;
+    virtual IResourceManager* resourceManager() const = 0;
     /*! Returns pointer input. */
     virtual Pointer* pointer() const = 0;
     /*! Returns overlay manager. */
-    virtual OverlayManager* overlayManager() const = 0;
+    virtual IOverlayManager* overlayManager() const = 0;
     /*! Returns screen manager. */
-    virtual ScreenManager* screenManager() const = 0;
+    virtual IScreenManager* screenManager() const = 0;
     /*! Returns audio manager. */
     virtual IAudioManager* audioManager() const = 0;
     /*! Returns debug object. */

@@ -1,4 +1,5 @@
 #include "Core/Input/Pointer.h"
+#include "EGEDebug.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include "Win32/Input/PointerWin32_p.h"
@@ -16,35 +17,13 @@ EGE_DEFINE_DELETE_OPERATORS(Pointer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Pointer::Pointer(Engine& engine)
 : m_engine(engine)
-, m_p(NULL)
 {
+  m_p = ege_new PointerPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Pointer::~Pointer()
 {
   EGE_DELETE(m_p);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult Pointer::construct()
-{
-  EGEResult result;
-
-  // create private implementation
-  m_p = ege_new PointerPrivate(this);
-  if (NULL == m_p)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  // construct private implementation
-  if (EGE_SUCCESS != (result = m_p->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Engine& Pointer::engine() const

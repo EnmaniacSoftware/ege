@@ -1,6 +1,7 @@
 #include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
+#include "Core/Physics/PhysicsManager.h"
 
 #ifdef EGE_PHYSICS_BOX2D
   #include "Core/Physics/Box2D/PhysicsJointDistanceBox2D_p.h"
@@ -17,7 +18,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsJointDistance)
 PhysicsJointDistance::PhysicsJointDistance(Engine& engine, PPhysicsComponent bodyA, PPhysicsComponent bodyB) 
 : PhysicsJoint(bodyA, bodyB, EGE_OBJECT_UID_PHYSICS_JOINT_DISTANCE)
 {
-  m_p = ege_new PhysicsJointDistancePrivate(this, engine.physicsManager()->p_func());
+  m_p = ege_new PhysicsJointDistancePrivate(this, dynamic_cast<PhysicsManager*>(engine.physicsManager())->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointDistance::~PhysicsJointDistance()

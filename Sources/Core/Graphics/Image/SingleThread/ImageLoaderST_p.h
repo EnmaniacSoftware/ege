@@ -35,17 +35,10 @@ class ImageLoaderPrivate
     EGEResult construct();
     /*! @see ImageLoader::update. */
     void update(const Time& time);
-    /*! @see ImageLoader::state. */
-    ImageLoader::State state() const;
     /*! @see ImageLoader::load. */
     void load(PObject userData, const String& fileName, PixelFormat format);
     /*! @see ImageLoader::shutDown. */
     void shutDown();
-
-  private:
-
-    /*! Current state. */
-    ImageLoader::State m_state;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

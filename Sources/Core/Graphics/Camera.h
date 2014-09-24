@@ -9,7 +9,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SceneManager;
+class ISceneManager;
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
@@ -19,7 +19,7 @@ class Camera : public Object
 {
   public:
 
-    Camera(const String& name, SceneManager* sceneManager);
+    Camera(Engine& engine, const String& name);
     virtual ~Camera();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -30,13 +30,13 @@ class Camera : public Object
     /*! Returns TRUE if object is valid(). */
     bool isValid() const;
     /*! Returns camera's name. */
-    const String& name() const { return m_name; }
+    const String& name() const;
     /*! Returns camera's physics component. */
-    PPhysicsComponent& physics() { return m_physics; }
+    PPhysicsComponent& physics();
     /*! Sets look-at vector. */
     void setLookAt(const Vector3f& point);
     /*! Returns look-at vector. */
-    const Vector3f& getLookAt() const { return m_lookAt; }
+    const Vector3f& getLookAt() const;
     /*! Returns camera's view matrix. */
     const Matrix4f& viewMatrix();
     /*! Renders associated scene from camera's point of view onto given viewport. */
@@ -52,7 +52,7 @@ class Camera : public Object
     /*! Position the camera is looking at (world coords). */
     Vector3f m_lookAt;
     /*! Scene manager camera is bound to. */
-    SceneManager* m_sceneManager;
+    ISceneManager* m_sceneManager;
     /*! TRUE if view matrix needs to be recalculated. */
     bool m_viewMatrixNeedsUpdate;
     /*! View matrix (model->world). */

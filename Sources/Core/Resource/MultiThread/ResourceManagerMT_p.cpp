@@ -13,8 +13,8 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) : m_d(base),
-                                                                        m_state(ResourceManager::STATE_NONE)
+ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) 
+: m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -64,9 +64,6 @@ EGEResult ResourceManagerPrivate::construct()
     return EGE_ERROR;
   }
 
-  // set state
-  m_state = ResourceManager::STATE_READY;
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -74,7 +71,7 @@ void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  if (ResourceManager::STATE_READY == m_state)
+  if (EModuleStateRunning == d_func()->state())
   {
     // check if any signals are to be emitted
     if ( ! m_emissionRequests.empty())
@@ -115,7 +112,7 @@ void ResourceManagerPrivate::update(const Time& time)
       m_emissionRequests.clear();
     }
   }
-  else if ((ResourceManager::STATE_CLOSING == m_state) && m_workThread->isFinished())
+  else if ((EModuleStateShuttingDown == d_func()->state()) && m_workThread->isFinished())
   {
     // clean up
     // NOTE: this should be repeated until all groups are unloaded and removed
@@ -124,7 +121,7 @@ void ResourceManagerPrivate::update(const Time& time)
     if (d_func()->m_groups.empty())
     {
       // done
-      m_state = ResourceManager::STATE_CLOSED;
+      d_func()->setState(EModuleStateClosed);
     }
   }
 }
@@ -225,7 +222,7 @@ void ResourceManagerPrivate::threadUpdate()
 {
   // check if nothing left to process
   // NOTE: stop processing when not ready (ie closing)
-  while (m_pendingList.empty() && (ResourceManager::STATE_READY == m_state))
+  while (m_pendingList.empty() && (EModuleStateRunning == d_func()->state()))
   {
     // check if no more data to process
     if (m_scheduledList.empty())
@@ -306,7 +303,7 @@ void ResourceManagerPrivate::processBatches()
 {
   // add new data to processing list
   // NOTE: stop processing if not ready anymore (ie closing)
-  while ( ! m_pendingList.empty() && (ResourceManager::STATE_READY == m_state))
+  while ( ! m_pendingList.empty() && (EModuleStateRunning == d_func()->state()))
   {
     ProcessingBatch& data = m_pendingList.front();
 
@@ -359,19 +356,11 @@ ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPo
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::shutDown()
 {
-  // mark we are to be closed
-  m_state = ResourceManager::STATE_CLOSING;
-  
   // request stop
   m_workThread->stop(0);
 
   // wake up any awaiters
   m_commandsToProcess->wakeOne();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::State ResourceManagerPrivate::state() const
-{
-  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::onWorkThreadFinished(const PThread& thread)

@@ -19,7 +19,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class PhysicsManager;
+class IPhysicsManager;
 
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
@@ -107,7 +107,7 @@ class PhysicsComponent : public Component
   private:
 
     /*! Returns pointer to physics manager. */
-    PhysicsManager* manager() const { return m_manager; }
+    IPhysicsManager* manager() const;
     /*! Returns engine object. */
     Engine& engine() const;
 
@@ -142,7 +142,7 @@ class PhysicsComponent : public Component
     /*! List of joints attached. */
     List<PhysicsJoint*> m_joints;
     /*! Pointer to physics manager. Can be NULL if component is not managable. */
-    PhysicsManager* m_manager;
+    IPhysicsManager* m_manager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

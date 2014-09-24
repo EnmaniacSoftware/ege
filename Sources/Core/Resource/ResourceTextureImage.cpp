@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceTexture.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Graphics/TextureImage.h"
+#include "EGEEngine.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
@@ -15,7 +16,8 @@ static const char* KResourceTextureImageDebugName = "EGEResourceTextureImage";
 EGE_DEFINE_NEW_OPERATORS(ResourceTextureImage)
 EGE_DEFINE_DELETE_OPERATORS(ResourceTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTextureImage::ResourceTextureImage(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_TEXTURE_IMAGE)
+ResourceTextureImage::ResourceTextureImage(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_TEXTURE_IMAGE)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +70,7 @@ EGEResult ResourceTextureImage::load()
   if (STATE_LOADED != m_state)
   {
     // load texture
-    PResourceTexture textureResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE, m_textureName);
+    PResourceTexture textureResource = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE, m_textureName);
     if (NULL != textureResource)
     {
       // load texture

@@ -409,6 +409,30 @@
     <Filter Include="Win32\Engine\Interface">
       <UniqueIdentifier>{bf2a9223-0174-499f-8498-5e33b51e2d51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Event\Interface">
+      <UniqueIdentifier>{1ae9f42a-9645-4d13-942b-7a37eb74d492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Physics\Interface">
+      <UniqueIdentifier>{65138917-187c-4800-80bb-f1282658295b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Scene\Interface">
+      <UniqueIdentifier>{b1ea9385-6d73-478d-a40d-0218c3e7367e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Overlay\Interface">
+      <UniqueIdentifier>{cdacff87-6690-4c22-a1d9-285d45ead545}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Screen\Interface">
+      <UniqueIdentifier>{f9f93794-a8ec-45c4-acd7-b922068f9672}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Base">
+      <UniqueIdentifier>{8a3ca006-d23b-440f-bd6c-587263f04d59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Base\Interface">
+      <UniqueIdentifier>{228c8700-9d79-4d31-878a-8f237d13ed0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Graphics\Interface">
+      <UniqueIdentifier>{55797d27-ab1b-4afb-aaeb-d28c08303d51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
@@ -1991,6 +2015,42 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineInstance.h">
       <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineModule.h">
+      <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\IEventManager.h">
+      <Filter>Core\Event\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Engine\Interface\IEngineModule.h">
+      <Filter>Core\Engine\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Physics\Interface\IPhysicsManager.h">
+      <Filter>Core\Physics\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\IRenderSystem.h">
+      <Filter>Core\Graphics\Render\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Scene\Interface\ISceneManager.h">
+      <Filter>Core\Scene\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Overlay\Interface\IOverlayManager.h">
+      <Filter>Core\Overlay\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Screen\Interface\IScreenManager.h">
+      <Filter>Core\Screen\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Base\Interface\ISuspendable.h">
+      <Filter>Core\Base\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Base\Interface\IUpdateable.h">
+      <Filter>Core\Base\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Graphics\Interface\IGraphics.h">
+      <Filter>Core\Graphics\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

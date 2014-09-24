@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceSpritesheet.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceTextureImage.h"
+#include "EGEEngine.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
 #include "EGEResources.h"
@@ -13,7 +14,8 @@ static const char* KResourceSpriteSheetDebugName = "EGEResourceSpriteSheet";
 EGE_DEFINE_NEW_OPERATORS(ResourceSpritesheet)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpritesheet)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpritesheet::ResourceSpritesheet(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SPRITE_SHEET)
+ResourceSpritesheet::ResourceSpritesheet(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_SPRITE_SHEET)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,7 +70,7 @@ EGEResult ResourceSpritesheet::load()
   if (STATE_LOADED != m_state)
   {
     // get texture image...
-    PResourceTextureImage textureImageResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
+    PResourceTextureImage textureImageResource = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE_IMAGE, textureName());
     if (textureImageResource)
     {
       // load texture
@@ -84,7 +86,7 @@ EGEResult ResourceSpritesheet::load()
     else
     {
       // try texture...
-      PResourceTexture textureResource = group()->manager()->resource(RESOURCE_NAME_TEXTURE, textureName());
+      PResourceTexture textureResource = engine().resourceManager()->resource(RESOURCE_NAME_TEXTURE, textureName());
       if (NULL != textureResource)
       {
         // load texture

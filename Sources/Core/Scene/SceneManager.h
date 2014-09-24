@@ -3,17 +3,18 @@
 
 #include "EGE.h"
 #include "EGETime.h"
+#include "Core/Engine/Interface/EngineModule.h"
+#include "Core/Scene/Interface/ISceneManager.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer;
 class SceneNode;
-EGE_DECLARE_SMART_CLASS(SceneManager, PSceneManager)
 EGE_DECLARE_SMART_CLASS(Camera, PCamera)
 EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SceneManager
+class SceneManager : public EngineModule<ISceneManager>
 {
   public:
 
@@ -25,10 +26,6 @@ class SceneManager
 
   public:
 
-    /*! Creates object. */
-    EGEResult construct();
-    /*! Updates manager. */
-    void update(const Time& time);
     /*! Destroys manager data effectively resetting it. */
     void destroy();
 
@@ -38,17 +35,8 @@ class SceneManager
 //    typedef vector<SceneNode*> SceneNodesVector;
  //   typedef vector<CLight*> LightsVector;
 
-    /*! Returns root node. */
-    SceneNode* rootNode() const { return m_rootNode; }
-
     //u32               getVisibleNodeCount( void ) const;                                      // gets number of visible objects
     //SceneNodesVector& getVisibleNodesVector( void );                                          // gets vector of visible nodes
-
-    /*! Renders scene. 
-     *  @param  camera    Camera from which point of view rendering is to be done.
-     *  @param  viewport  Viewport for rendering.
-     */
-    void render(PCamera camera, PViewport viewport);
 
     //// render system related methods
     //void setRenderSystem( CRenderSystem* pcRenderSystem );                                    // sets render system
@@ -142,6 +130,23 @@ class SceneManager
     //// matrix related methods
     //void useRenderableMatrices( const CRenderable* pcRenderable );  // applies transformation matrices of given renderable
     //void resetMatrices( void );                                     // resets transformation matrices to default ones (of camera)
+
+  private:
+
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
+
+    /*! @see ISceneManager::rootNode. */
+    SceneNode* rootNode() const override;
+    /*! @see ISceneManager::render. */
+    void render(PCamera camera, PViewport viewport) override;
+
+  private:
+
+    /*! Current state. */
+    EngineModuleState m_state;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

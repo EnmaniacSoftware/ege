@@ -1,4 +1,5 @@
 #include "Core/Engine/Interface/EngineInstance.h"
+#include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Viewport.h"
 #include "Core/Graphics/Camera.h"
 #include "Core/Graphics/Render/RenderWindow.h"
@@ -17,6 +18,7 @@
 #include "Core/Services/Interface/AdNetworkRegistry.h"
 #include "Core/Services/Interface/SocialServicesNull.h"
 #include "Core/Services/Interface/AdNetwork.h"
+#include "Core/Event/EventManager.h"
 #include "EGEEvent.h"
 #include "EGEApplication.h"
 #include "EGEDeviceServices.h"
@@ -39,15 +41,7 @@ EngineInstance::EngineInstance()
 : m_socialServices(NULL)
 , m_state(EStateInvalid)
 , m_application(NULL)
-, m_sceneManager(NULL)
-, m_physicsManager(NULL) 
-, m_eventManager(NULL)
-, m_graphics(NULL)
-, m_resourceManager(NULL) 
 , m_pointer(NULL)
-, m_overlayManager(NULL) 
-, m_screenManager(NULL)
-, m_audioManager(NULL)
 , m_debug(NULL)
 , m_deviceServices(NULL)
 , m_purchaseServices(NULL)
@@ -72,19 +66,17 @@ EngineInstance::~EngineInstance()
   EGE_DELETE(m_adNetwork);
   EGE_DELETE(m_adNetworkRegistry);
   EGE_DELETE(m_imageLoader);
-  EGE_DELETE(m_sceneManager);
-  EGE_DELETE(m_imageLoader);
-  EGE_DELETE(m_screenManager);
-  EGE_DELETE(m_overlayManager);
-  EGE_DELETE(m_resourceManager);
-  EGE_DELETE(m_graphics);
   EGE_DELETE(m_pointer);
-  EGE_DELETE(m_physicsManager);
-  EGE_DELETE(m_audioManager);
   EGE_DELETE(m_deviceServices);
   EGE_DELETE(m_purchaseServices);
   EGE_DELETE(m_socialServices);
-  EGE_DELETE(m_eventManager);
+
+  for (EngineModulesPool::reverse_iterator it = m_modules.rbegin(); it != m_modules.rend(); ++it)
+  {
+    delete it->second;
+  }
+  m_modules.clear();
+  m_modulesUIDToObjects.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const Dictionary& EngineInstance::configurationDictionary() const
@@ -106,144 +98,43 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   m_configurationDictionary.merge(m_application->engineConfiguration());
 
   // decompose param list
-  Dictionary::const_iterator iterUPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_UPDATES_PER_SECOND);
-  Dictionary::const_iterator iterFPS        = m_configurationDictionary.find(EGE_ENGINE_PARAM_RENDERS_PER_SECOND);
+  const s32 updatesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_UPDATES_PER_SECOND, "0").toInt();
+  const s32 framesPerSecond  = m_configurationDictionary.value(EGE_ENGINE_PARAM_RENDERS_PER_SECOND, "0").toInt();
 
   // check if update rate is given
-  if (iterUPS != m_configurationDictionary.end())
+  if (0 < updatesPerSecond)
   {
-    m_updateInterval.fromMiliseconds(1000 / iterUPS->second.toInt());
+    m_updateInterval.fromMiliseconds(1000 / updatesPerSecond);
   }
 
   // check if render rate is given
-  if (iterFPS != m_configurationDictionary.end())
+  if (0 < framesPerSecond)
   {
-    m_renderInterval.fromMiliseconds(1000 / iterFPS->second.toInt());
+    m_renderInterval.fromMiliseconds(1000 / framesPerSecond);
   }
   
   // load configuration
   loadConfig();
 
-  // create device services
-  m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)(*this);
+  // create modules
+  createModules();
 
-  // create purchase services
-  m_purchaseServices = ege_new PLATFORM_CLASSNAME(PurchaseServices)(*this);
-
-  // create social services if not created yet
-  if (NULL == m_socialServices)
-  {
-    m_socialServices = ege_new SocialServicesNull(*this);
-  }
-
-  // create event manager
-  m_eventManager = ege_new EventManager();
-
-  if (EGE_SUCCESS != (result = m_eventManager->construct()))
+  // construct
+  if (EGE_SUCCESS != (result = constructModules()))
   {
     // error!
     return result;
   }
-
-  // create image loader
-  m_imageLoader = ege_new ImageLoader(*this);
-
-  if (EGE_SUCCESS != (result = m_imageLoader->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create graphics
-  // NOTE: must be before ResourceManager
-  m_graphics = ege_new Graphics(*this, m_configurationDictionary);
-
-  if (EGE_SUCCESS != (result = m_graphics->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create resource manager
-  m_resourceManager = ege_new ResourceManager(*this);
-
-  if (EGE_SUCCESS != (result = m_resourceManager->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create physics manager
-  m_physicsManager = ege_new PhysicsManager();
-
-  if (EGE_SUCCESS != (result = m_physicsManager->construct(m_configurationDictionary)))
-  {
-    // error!
-    return result;
-  }
-
-  // create scene manager
-  m_sceneManager = ege_new SceneManager(*this);
-
-  if (EGE_SUCCESS != (result = m_sceneManager->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create overlay manager
-  m_overlayManager = ege_new OverlayManager();
-
-  if (EGE_SUCCESS != (result = m_overlayManager->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create pointer input
-  m_pointer = ege_new Pointer(*this);
-
-  if (EGE_SUCCESS != (result = m_pointer->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create screen manager
-  m_screenManager = ege_new ScreenManager(*this);
-
-  if (EGE_SUCCESS != (result = m_screenManager->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create audio manager
-  typeName = configurationDictionary().value(KConfigParamAudioManagerTypeName, KDefaultAudioManagerName);
-  m_audioManager = audioManagerFactory()->createInstance(typeName);
-
-  if (EGE_SUCCESS != (result = m_audioManager->construct()))
-  {
-    // error!
-    return result;
-  }
-
-  // create ad network instance
-  typeName = configurationDictionary().value(KConfigParamAdNetworkTypeName, KDefaultAdNetworkName);
-  m_adNetwork = adNetworkRegistry()->createInstance(typeName);
-
-  //if (EGE_SUCCESS != (result = m_adNetwork->construct()))
-  //{
-  //  // error!
-  //  return result;
-  //}
 
   // subscribe for event notifications
-  if ( ! eventManager()->addListener(this))
+  if ( ! eventManager()->registerListener(this))
   {
     // error!
     return EGE_ERROR;
   }
+
+  // set state
+  m_state = EStatePaused;
 
   // construct application
   return m_application->construct();
@@ -255,9 +146,6 @@ void EngineInstance::update()
   if (0 == m_lastUpdateTime.microseconds())
   {
     m_lastUpdateTime = Timer::GetMicroseconds();
-
-    // set state
-    m_state = EStateRunning;
   }
 
   // get current time
@@ -275,57 +163,39 @@ void EngineInstance::update()
     timeInterval = 0.25f;
   }
   
-  // always update event manager first so all event are delivered
-  eventManager()->update(m_updateInterval);
+  // update accumulator for updates
+  m_updateAccumulator += timeInterval;
+
+  // update as much as requested
+  bool canClose = false;
+  while (m_updateAccumulator > m_updateInterval)
+  {
+    canClose = true;
+
+    m_updateAccumulator -= m_updateInterval;
+
+    // process all modules
+    for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+    {
+      IEngineModule* module = it->second;
+
+      // update
+      module->update(m_updateInterval);
+
+      // check if can close
+      canClose &= (EModuleStateClosed == module->state());
+    }
+
+    // TAGE - make module ?
+    m_application->update(m_updateInterval);
+  }
 
   // check if quitting
-  if (EStateQuitting == state())
+  if ((EStateQuitting == state()) && canClose)
   {
-    // update only object which needs time to shut down
-    graphics()->update();
-    resourceManager()->update(m_updateInterval);
-    audioManager()->update(m_updateInterval);
-    imageLoader()->update(m_updateInterval);
-
-    // check if ready to quit
-    if ((ResourceManager::STATE_CLOSED == resourceManager()->state()) &&
-        ((IAudioManager::StateClosed == audioManager()->state()) || (IAudioManager::StateNone == audioManager()->state())) &&
-        (ImageLoader::STATE_CLOSED == imageLoader()->state()) &&
-        (RenderSystem::STATE_CLOSED == graphics()->renderSystem()->state()))
-    {
-      // change state
-      m_state = EStateClosed;
-    }
+    // change state
+    m_state = EStateClosed;
   }
-  else if (EStateRunning == state())
-  {
-    // update accumulator for updates
-    m_updateAccumulator += timeInterval;
-
-    // update as much as requested
-    while (m_updateAccumulator > m_updateInterval)
-    {
-      m_updateAccumulator -= m_updateInterval;
-      physicsManager()->update(m_updateInterval);
-    }
-
-    graphics()->update();
-    imageLoader()->update(m_updateInterval);
-    resourceManager()->update(timeInterval);
-
-    audioManager()->update(timeInterval);
-    screenManager()->update(timeInterval);
-    sceneManager()->update(timeInterval);
-    overlayManager()->update(timeInterval);
-
-    m_application->update(timeInterval);
-
-    // interpolate physics by remaining value
-    // ..
-  }
-
-  // store update duration
- // m_lastFrameUpdateDuration = Timer::GetMicroseconds() - m_lastUpdateTime.microseconds();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::render()
@@ -339,7 +209,19 @@ void EngineInstance::render()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::shutdown()
 {
-  m_state = EStateQuitting;
+  if ((EStateQuitting != m_state) && (EStateClosed != m_state))
+  {
+    // notify modules
+    for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+    {
+      IEngineModule* module = it->second;
+
+      module->onShutdown();
+    }
+
+    // set state
+    m_state = EStateQuitting;
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool EngineInstance::isShuttingDown() const
@@ -352,29 +234,34 @@ bool EngineInstance::isShutDown() const
   return (EStateClosed == state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics* EngineInstance::graphics() const 
+IGraphics* EngineInstance::graphics() const 
 { 
-  return m_graphics; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_GRAPHICS_MODULE));
+  return static_cast<EngineModule<IGraphics>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_GRAPHICS_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EventManager* EngineInstance::eventManager() const 
+IEventManager* EngineInstance::eventManager() const 
 { 
-  return m_eventManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_EVENT_MANAGER_MODULE));
+  return static_cast<EngineModule<IEventManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_EVENT_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager* EngineInstance::physicsManager() const 
+IPhysicsManager* EngineInstance::physicsManager() const 
 { 
-  return m_physicsManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE));
+  return static_cast<EngineModule<IPhysicsManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SceneManager* EngineInstance::sceneManager() const 
+ISceneManager* EngineInstance::sceneManager() const 
 { 
-  return m_sceneManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_SCENE_MANAGER_MODULE));
+  return static_cast<EngineModule<ISceneManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCENE_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager* EngineInstance::resourceManager() const 
+IResourceManager* EngineInstance::resourceManager() const 
 { 
-  return m_resourceManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE));
+  return static_cast<EngineModule<IResourceManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Pointer* EngineInstance::pointer() const 
@@ -382,19 +269,22 @@ Pointer* EngineInstance::pointer() const
   return m_pointer; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-OverlayManager* EngineInstance::overlayManager() const 
+IOverlayManager* EngineInstance::overlayManager() const 
 { 
-  return m_overlayManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_OVERLAY_MANAGER_MODULE));
+  return static_cast<EngineModule<IOverlayManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_OVERLAY_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ScreenManager* EngineInstance::screenManager() const 
+IScreenManager* EngineInstance::screenManager() const 
 { 
-  return m_screenManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_SCREEN_MANAGER_MODULE));
+  return static_cast<EngineModule<IScreenManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCREEN_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IAudioManager* EngineInstance::audioManager() const 
 { 
-  return m_audioManager; 
+  EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_AUDIO_MANAGER_MODULE));
+  return static_cast<EngineModule<IAudioManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_AUDIO_MANAGER_MODULE, NULL))->iface(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Debug* EngineInstance::debug() const 
@@ -454,6 +344,7 @@ void EngineInstance::onEventRecieved(PEvent event)
   {
     case EGE_EVENT_ID_CORE_QUIT_REQUEST:
 
+      egeDebug(KEngineDebugName) << "QUIT request received";
       shutdown();
       break;
       
@@ -461,7 +352,18 @@ void EngineInstance::onEventRecieved(PEvent event)
 
       if (EStateRunning == state())
       {
+        egeDebug(KEngineDebugName) << "SUSPEND request received";
+
         m_application->onSuspend();
+
+        // notify modules
+        for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+        {
+          IEngineModule* module = it->second;
+
+          module->onSuspend();
+        }
+
         m_state = EStatePaused;
       }
       break;
@@ -470,7 +372,18 @@ void EngineInstance::onEventRecieved(PEvent event)
 
       if (EStatePaused == state())
       {
+        egeDebug(KEngineDebugName) << "RESUME request received";
+
+        // notify modules
+        for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+        {
+          IEngineModule* module = it->second;
+
+          module->onResume();
+        }
+
         m_application->onResume();
+
         m_state = EStateRunning;
       }
       break;
@@ -537,6 +450,107 @@ void EngineInstance::loadConfig()
 
   // enable debug info
   Debug::EnableNames(enabledDebugNames);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void EngineInstance::createModules()
+{
+  String typeName;
+
+  const u32 KModulePriorityEventManager     = 0;
+  const u32 KModulePriorityGraphics         = 5;
+  const u32 KModulePriorityResourceManager  = 10;
+  const u32 KModulePriorityPhysicsManager   = 15;
+  const u32 KModulePrioritySceneManager     = 20;
+  const u32 KModulePriorityOverlayManager   = 25;
+  const u32 KModulePriorityScreenManager    = 30;
+  const u32 KModulePriorityAudioManager     = 35;
+
+  // create device services
+  m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)(*this);
+
+  // create purchase services
+  m_purchaseServices = ege_new PLATFORM_CLASSNAME(PurchaseServices)(*this);
+
+  // create social services if not created yet
+  if (NULL == m_socialServices)
+  {
+    m_socialServices = ege_new SocialServicesNull(*this);
+  }
+
+  IEngineModule* module;
+
+  // create event manager
+  module = ege_new EventManager();
+  m_modules.insert(KModulePriorityEventManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create image loader
+  m_imageLoader = ege_new ImageLoader(*this);
+
+  // create graphics
+  // NOTE: must be before ResourceManager
+  module = ege_new Graphics(*this, m_configurationDictionary);
+  m_modules.insert(KModulePriorityGraphics, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create resource manager
+  module = ege_new ResourceManager(*this);
+  m_modules.insert(KModulePriorityResourceManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create physics manager
+  module = ege_new PhysicsManager(m_configurationDictionary);
+  m_modules.insert(KModulePriorityPhysicsManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create scene manager
+  module = ege_new SceneManager(*this);
+  m_modules.insert(KModulePrioritySceneManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create overlay manager
+  module = ege_new OverlayManager();
+  m_modules.insert(KModulePriorityOverlayManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create pointer input
+  m_pointer = ege_new Pointer(*this);
+
+  // create screen manager
+  module = ege_new ScreenManager(*this);
+  m_modules.insert(KModulePriorityScreenManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create audio manager
+  typeName = configurationDictionary().value(KConfigParamAudioManagerTypeName, KDefaultAudioManagerName);
+  module = audioManagerFactory()->createInstance(typeName);
+  m_modules.insert(KModulePriorityAudioManager, module);
+  m_modulesUIDToObjects.insert(module->uid(), module);
+
+  // create ad network instance
+  typeName = configurationDictionary().value(KConfigParamAdNetworkTypeName, KDefaultAdNetworkName);
+  m_adNetwork = adNetworkRegistry()->createInstance(typeName);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult EngineInstance::constructModules()
+{
+  EGEResult result = EGE_SUCCESS;
+
+  // construct modules
+  for (EngineModulesPool::iterator it = m_modules.begin(); (it != m_modules.end()) && (EGE_SUCCESS == result); ++it)
+  {
+    IEngineModule* module = it->second;
+
+    result = module->construct();
+  }
+
+  //if (EGE_SUCCESS != (result = m_adNetwork->construct()))
+  //{
+  //  // error!
+  //  return result;
+  //}
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

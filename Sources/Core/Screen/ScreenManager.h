@@ -9,6 +9,8 @@
 #include "EGETime.h"
 #include "EGEList.h"
 #include "EGEInput.h"
+#include "Core/Engine/Interface/EngineModule.h"
+#include "Core/Screen/Interface/IScreenManager.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,7 +19,7 @@ class IRenderer;
 class Viewport;
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ScreenManager : public Object
+class ScreenManager : public EngineModule<IScreenManager>
 {
   public:
 
@@ -27,58 +29,37 @@ class ScreenManager : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
-
-    /*! Creates object. */
-    EGEResult construct();
-    /*! Renders all screens. */
-    void render(Viewport* viewport, IRenderer* renderer);
-    /*! Updates manager. */
-    void update(const Time& time);
-    /*! Shows given screen adding it on top of the rest ones. 
-     *  @note New screen should be added (always) (to ensure other can query visibility correctly)
-     *        current top screen should be COVERED (always)
-     *        if new and top screen are BOTH transparent do nothing (visibility does not change)
-     *        if new and top screens are BOTH opaque do nothing (visibility does not change)
-     *        if new screen is transparent and top screen is opaque do nothing (visibility does not change)
-     *        if new screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
-     *        ENTER new
-     */
-    void show(PScreen screen);
-    /*! Hides current (top) screen. 
-     *  @note Current top screen should be LEAVED (always)
-     *        Top screen should be removed (always)
-     *        Below screen should always be ENTERED
-     *        If popped and top screens are BOTH transparent do nothing (visibility does not change)
-     *        If popped and top screens are BOTH opaque do nothing (visibility does not change)
-     *        If popped screen is transparent and top screen is opaque do nothing (visibility does not change)
-     *        If popped screen is opaque and top screen is transparent then cover all transparent ones going from top to bottom
-     */
-    void hide();
-    /*! Hides all screens. */
-    void hideAll();
-    /*! Removes given screen from stack. 
-     *  @note This does not call leave on screen being removed.
-     */
-    void remove(PScreen screen);
-    /*! Remoes all screens from stack. 
-     *  @note This does not call leave on screens being removed.
-     */
-    void removeAll();
-
-    /*! Returns first screen with given name. */
-    PScreen screen(const String& name) const;
-    /*! Returns top screen. */
-    PScreen top() const;
-    /*! Returns TRUE if given screen is visible. */
-    bool isVisible(const PScreen& screen) const;
-    /*! Returns current number of screens on stack. */
-    u32 screenCount() const;
-
   private:
 
     /*! Returns engine object. */
     Engine& engine() const;
+
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
+
+    /*! @see IScreenManager::render. */
+    void render(Viewport* viewport, IRenderer* renderer) override;
+    /*! @see IScreenManager::show. */
+    void show(PScreen screen) override;
+    /*! @see IScreenManager::hide. */
+    void hide() override;
+    /*! @see IScreenManager::hideAll. */
+    void hideAll() override;
+    /*! @see IScreenManager::remove. */
+    void remove(PScreen screen) override;
+    /*! @see IScreenManager::removeAll. */
+    void removeAll() override;
+
+    /*! @see IScreenManager::screen. */
+    PScreen screen(const String& name) const override;
+    /*! @see IScreenManager::top. */
+    PScreen top() const override;
+    /*! @see IScreenManager::isVisible. */
+    bool isVisible(const PScreen& screen) const override;
+    /*! @see IScreenManager::screenCount. */
+    u32 screenCount() const override;
 
   private slots:
 

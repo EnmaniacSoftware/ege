@@ -51,8 +51,6 @@ class ResourceManagerPrivate
     ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const;
     /*! Shuts down. */
     void shutDown();
-    /*! Returns current state. */
-    ResourceManager::State state() const;
 
   private:
 
@@ -90,8 +88,6 @@ class ResourceManagerPrivate
 
     /*! List of all pending batches to load/unload. */
     ProcessingBatchList m_processList;
-    /*! Current state. */
-    ResourceManager::State m_state;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

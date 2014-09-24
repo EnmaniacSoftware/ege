@@ -2,6 +2,7 @@
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceTextureImage.h"
 #include "Core/Resource/ResourceSequencer.h"
+#include "EGEEngine.h"
 #include "EGESpriteAnimation.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
@@ -17,8 +18,9 @@ static const char* KResourceSpriteAnimationDebugName = "EGEResourceSpriteAnimati
 EGE_DEFINE_NEW_OPERATORS(ResourceSpriteAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceSpriteAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceSpriteAnimation::ResourceSpriteAnimation(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_SPRITE_ANIMATION)
-                                                                                       , m_frameDataInvalid(false)
+ResourceSpriteAnimation::ResourceSpriteAnimation(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_SPRITE_ANIMATION)
+, m_frameDataInvalid(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -98,7 +100,7 @@ EGEResult ResourceSpriteAnimation::load()
   if (STATE_LOADED != m_state)
   {
     // get sheet resource
-    m_sheet = group()->manager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
+    m_sheet = engine().resourceManager()->resource(RESOURCE_NAME_SPRITE_SHEET, sheetName());
     if (NULL != m_sheet)
     {
       // load sheet

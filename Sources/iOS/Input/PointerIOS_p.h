@@ -21,11 +21,6 @@ class PointerPrivate : public IEventListener
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(Pointer)
 
-  public:
-
-    /*! Creates object. */
-    EGEResult construct();
-
   private:
   
     /*! @see IEventListener::onEventRecieved. */

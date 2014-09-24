@@ -10,7 +10,7 @@
 #include "EGEThread.h"
 #include "EGEAudio.h"
 #include "Core/Audio/Implementation/AudioManagerBase.h"
-#include "Core/Event/EventListener.h"
+#include "Core/Engine/Interface/EngineModule.h"
 
 #ifdef EGE_PLATFORM_WIN32
   #include <al.h>
@@ -37,10 +37,8 @@ extern const char* KOpenALAudioManagerName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerOpenAL : public Object
-                         , public IAudioManagerBase
-                         , public IAudioManager
-                         , public IEventListener 
+class AudioManagerOpenAL : public IAudioManagerBase
+                         , public EngineModule<IAudioManager>
 {
   public:
     
@@ -56,7 +54,7 @@ class AudioManagerOpenAL : public Object
      *  @param  engine  Reference to engine.
      *  @return Created instance. NULL if error occured.
      */
-    static IAudioManager* Create(Engine& engine);
+    static EngineModule<IAudioManager>* Create(Engine& engine);
 
   public:
 
@@ -75,21 +73,12 @@ class AudioManagerOpenAL : public Object
     /*! @see IAudioManagerBase::requestPause. */    
     void requestPause(PSound sound) override;
 
-    /*! @see IAudioManager::construct. */
-    EGEResult construct() override;
-    /*! @see IAudioManager::update. */
-    void update(const Time& time) override;
     /*! @see IAudioManager::setEnabled. */
     void setEnable(bool set) override;
     /*! @see IAudioManager::isEnabled. */
     bool isEnabled() const override;
     /*! @see IAudioManager::createSound. */
     PSound createSound(const String& name, PDataBuffer& data) const override;
-    /*! @see IAudioManager::state. */
-    EState state() const override;
-
-    /*! @ see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent event) override;
 
     /*! Queues given sound for stop. 
      *  @param  sound Sound to be stopped.
@@ -116,6 +105,15 @@ class AudioManagerOpenAL : public Object
     /*! Returns engine object. */
     Engine& engine() const;
 
+    /*! @see EngineModule::construct. */
+    EGEResult construct() override;
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
+    /*! @see EngineModule::onShutdown. */
+    void onShutdown() override;
+
   private slots:
 
     /*! Slot called when audio thread is finished. */
@@ -127,8 +125,6 @@ class AudioManagerOpenAL : public Object
 
     /*! Reference to engine. */
     Engine& m_engine;
-    /*! Current state. */
-    IAudioManager::EState m_state;
     /*! Audio device. */
     ALCdevice* m_device;
     /*! Audio context. */

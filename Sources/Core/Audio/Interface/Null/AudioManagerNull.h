@@ -8,6 +8,7 @@
 #include "EGETime.h"
 #include "Core/Audio/Implementation/AudioManagerBase.h"
 #include "Core/Audio/Interface/AudioManager.h"
+#include "Core/Engine/Interface/EngineModule.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -16,7 +17,7 @@ EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManagerNull : public Object 
                        , public IAudioManagerBase
-                       , public IAudioManager
+                       , public EngineModule<IAudioManager>
 {
   public:
     
@@ -32,7 +33,7 @@ class AudioManagerNull : public Object
      *  @param  engine  Reference to engine.
      *  @return Created instance. NULL if error occured.
      */
-    static IAudioManager* Create(Engine& engine);
+    static EngineModule<IAudioManager>* Create(Engine& engine);
 
   private:
 
@@ -43,23 +44,17 @@ class AudioManagerNull : public Object
     /*! @see IAudioManagerBase::requestPause. */    
     void requestPause(PSound sound) override;
 
-    /*! @see IAudioManager::construct. */
-    EGEResult construct() override;
-    /*! @see IAudioManager::update. */
-    void update(const Time& time) override;
     /*! @see IAudioManager::setEnabled. */
     void setEnable(bool set) override;
     /*! @see IAudioManager::isEnabled. */
     bool isEnabled() const override;
     /*! @see IAudioManager::createSound. */
     PSound createSound(const String& name, PDataBuffer& data) const override;
-    /*! @see IAudioManager::state. */
-    EState state() const override;
 
-  private:
-
-    /*! Current state. */
-    IAudioManager::EState m_state;
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

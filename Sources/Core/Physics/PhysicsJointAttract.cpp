@@ -1,6 +1,7 @@
 #include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
+#include "Core/Physics/PhysicsManager.h"
 
 #ifdef EGE_PHYSICS_BOX2D
   #include "Core/Physics/Box2D/PhysicsJointAttractBox2D_p.h"
@@ -16,7 +17,7 @@ EGE_DEFINE_DELETE_OPERATORS(PhysicsJointAttract)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointAttract::PhysicsJointAttract(Engine& engine, PPhysicsComponent body) : PhysicsJoint(body, NULL, EGE_OBJECT_UID_PHYSICS_JOINT_ATTRACT)
 {
-  m_p = ege_new PhysicsJointAttractPrivate(this, engine.physicsManager()->p_func());
+  m_p = ege_new PhysicsJointAttractPrivate(this, dynamic_cast<PhysicsManager*>(engine.physicsManager())->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsJointAttract::~PhysicsJointAttract()

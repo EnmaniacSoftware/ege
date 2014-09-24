@@ -6,6 +6,8 @@
 #include "EGEDictionary.h"
 #include "EGEVector4.h"
 #include "Core/Physics/PhysicsJoint.h"
+#include "Core/Physics/Interface/IPhysicsManager.h"
+#include "Core/Engine/Interface/EngineModule.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -18,9 +20,8 @@ class PhysicsJointPulley;
 class PhysicsJointPulleyPrivate;
 class PhysicsComponent;
 class PhysicsComponentPrivate;
-EGE_DECLARE_SMART_CLASS(PhysicsManager, PPhysicsManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class PhysicsManager : public Object
+class PhysicsManager : public EngineModule<IPhysicsManager>
 {
     /* For registration. */
     friend class PhysicsComponent;
@@ -30,7 +31,7 @@ class PhysicsManager : public Object
 
   public:
 
-    PhysicsManager();
+    PhysicsManager(const Dictionary& params);
     virtual ~PhysicsManager();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -38,18 +39,27 @@ class PhysicsManager : public Object
 
   public:
 
-    /*! Creates object. */
-    EGEResult construct(const Dictionary& params);
-    /*! Updates manager. */
-    void update(const Time& time);
-    /*! Renders data. */
-    void render();
     /*! Sets gravity. */
     void setGravity(const Vector4f& gravity);
 
   private:
 
+    /*! @see IPhysicsManager::render. */
+    void render() override;
+
+    /*! @see EngineModule::construct. */
+    EGEResult construct() override;
+    /*! @see EngineModule::uid. */
+    u32 uid() const override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
+
+  private:
+
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(PhysicsManager)
+
+    /*! Parameters. */
+    Dictionary m_params;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

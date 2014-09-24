@@ -27,11 +27,6 @@ class Pointer
      */
     Signal1<PPointerData> eventSignal; 
 
-  public:
-
-    /*! Creates object. */
-    EGEResult construct();
-
   protected:
 
     /*! Returns engine object. */

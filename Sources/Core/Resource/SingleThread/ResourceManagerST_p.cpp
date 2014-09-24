@@ -12,8 +12,8 @@ EGE_NAMESPACE
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) : m_d(base),
-                                                                        m_state(ResourceManager::STATE_NONE)
+ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) 
+: m_d(base)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,9 +23,6 @@ ResourceManagerPrivate::~ResourceManagerPrivate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManagerPrivate::construct()
 {
-  // set state
-  m_state = ResourceManager::STATE_READY;
-
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +30,7 @@ void ResourceManagerPrivate::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  if ( ! m_processList.empty() && (ResourceManager::STATE_READY == m_state))
+  if ( ! m_processList.empty() && (EModuleStateRunning == d_func()->state()))
   {
     ProcessingBatch& data = m_processList.front();
 
@@ -77,7 +74,7 @@ void ResourceManagerPrivate::update(const Time& time)
       }
     }
   }
-  else if (ResourceManager::STATE_CLOSING == m_state)
+  else if (EModuleStateShuttingDown == d_func()->state())
   {
     // clean up
     // NOTE: this should be repeated until all groups are unloaded and removed
@@ -86,7 +83,7 @@ void ResourceManagerPrivate::update(const Time& time)
     if (d_func()->m_groups.empty())
     {
       // done
-      m_state = ResourceManager::STATE_CLOSED;
+      d_func()->m_state = EModuleStateClosed;
     }
   }
 }
@@ -242,13 +239,7 @@ ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPo
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::shutDown()
 {
-  // we are done
-  m_state = ResourceManager::STATE_CLOSING;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::State ResourceManagerPrivate::state() const
-{
-  return m_state;
+  // do nothing
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerPrivate::onGroupLoaded(const PResourceGroup& group)

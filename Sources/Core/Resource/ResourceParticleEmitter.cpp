@@ -101,7 +101,7 @@ EGEResult ResourceParticleEmitter::load()
   if (STATE_LOADED != m_state)
   {
     // get material resource
-    m_materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, m_parameters["material"]);
+    m_materialResource = engine().resourceManager()->resource(RESOURCE_NAME_MATERIAL, m_parameters["material"]);
     if (m_materialResource)
     {
       // load material
@@ -122,7 +122,7 @@ EGEResult ResourceParticleEmitter::load()
     for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
-      PResourceParticleAffector affectorResource = group()->manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      PResourceParticleAffector affectorResource = engine().resourceManager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
       if (affectorResource)
       {
         // load it
@@ -174,7 +174,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
-      PResourceParticleAffector affectorResource = group()->manager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
+      PResourceParticleAffector affectorResource = engine().resourceManager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
       EGE_ASSERT(affectorResource);
 
       // create instance

@@ -10,10 +10,12 @@
 #include "EGEMap.h"
 #include "EGERenderComponent.h"
 #include "EGEComponent.h"
+#include "Core/Base/Interface/IUpdateable.h"
+#include "Core/Engine/Interface/EngineModule.h"
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/Interface/Renderer.h"
+#include "Core/Graphics/Render/Interface/IRenderSystem.h"
 #include "Core/Graphics/Render/Implementation/ComponentRenderer.h"
-#include "Core/Event/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -28,12 +30,12 @@ EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class RenderSystem : public Object
-                   , public ComponentHost
+class RenderSystem : public ComponentHost
                    , public IRenderer
                    , public IComponentRenderer
                    , public IHardwareResourceProvider
-                   , public IEventListener
+                   , public IUpdateable
+                   , public IRenderSystem
 {
   public:
 
@@ -45,71 +47,15 @@ class RenderSystem : public Object
 
   public:
 
-    /*! Available states. */
-    enum State
-    {
-      STATE_NONE = -1,      /*!< Uninitialized. */
-      STATE_READY,          /*!< Ready to use. */
-      STATE_CLOSING,        /*!< Closing. */
-      STATE_CLOSED          /*!< Closed. */
-    };
-
-  public:
-
-    /*! Creates object. */
+    /*! @see EngineModule::construct. */
     EGEResult construct();
-    /*! Returns current state. */
-    State state() const;
-    /*! Updates object. */
-    void update();
-
-    /*! Sends all geometry through the geometry pipeline to hardware. */
-    virtual void flush() = 0;
-    /*! Clears given viewport. 
-     *  @param  viewport  Viewport to clear.
-     */
-    virtual void clearViewport(const PViewport& viewport) = 0;
-    /*! Sets given viewport. 
-     *  @param  viewport  Viewport to set.
-     */
-    virtual void setViewport(const PViewport& viewport);
-
-    /*! Sets texture minifying function filter. 
-     *  @param  filter  Texture minifying filter to set.
-     */
-    void setTextureMinFilter(TextureFilter filter);
-    /*! Sets texture magnification function filter. 
-     *  @param  filter  Texture magnification filter to set.
-     */
-    void setTextureMagFilter(TextureFilter filter);
-    /*! Sets texture addressing mode for S texture coordinate. 
-     *  @param  mode  Texture addressing mode for S coordinate.
-     */
-    void setTextureAddressingModeS(TextureAddressingMode mode);
-    /*! Sets texture addressing mode for T texture coordinate. 
-     *  @param  mode  Texture addressing mode for T coordinate.
-     */
-    void setTextureAddressingModeT(TextureAddressingMode mode);
-    /*! Enables/disables texture mipmapping for newly created textures. 
-     *  @param  set If set, enables mipmapping.
-     */
-    void setTextureMipMapping(bool set);
-
-    /*! Sets view matrix. 
-     *  @param  matrix  View matrix.
-     */
-    void setViewMatrix(const Matrix4f& matrix);
-    /*! Returns view matrix. */
-    const Matrix4f& viewMatrix() const;
-    /*! Sets projection matrix. 
-     *  @param  matrix  Project matrix.
-     */
-    void setProjectionMatrix(const Matrix4f& matrix);
-
     /*! Returns current render target. */
     PRenderTarget currentRenderTarget() const;
 
   protected:
+
+    /*! @see IRenderSystem::setViewport. */
+    void setViewport(const PViewport& viewport) override;
 
     /*! Returns engine object. */
     Engine& engine() const;
@@ -126,12 +72,6 @@ class RenderSystem : public Object
     void setActiveRenderComponent(const PRenderComponent& component);
     /*! Returns render component currently being processed. */
     const PRenderComponent& activeRenderComponent() const;
-    /*! Applies pass specific parameters.
-     *  @param  pass      Render pass currently being processed.
-     */
-    virtual void applyPassParams(const PRenderPass& pass) = 0;
-    /*! Applies generic parameters for component currently being rendered. */
-    virtual void applyGeneralParams() = 0;
 
   protected:
 
@@ -212,15 +152,30 @@ class RenderSystem : public Object
     /*! @see IHardwareResourceProvider::requestDestroyProgram. */
     bool requestDestroyProgram(PProgram program, const HardwareResourceProviderSlot& slot = HardwareResourceProviderSlot()) override;
 
-    /*! @see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent event) override;
- 
+    /*! @see IUpdateable::update. */
+    void update(const Time& time) override;
+
+    /*! @see IRenderSystem::setViewMatrix. */
+    void setViewMatrix(const Matrix4f& matrix) override;
+    /*! @see IRenderSystem::viewMatrix. */
+    const Matrix4f& viewMatrix() const override;
+    /*! @see IRenderSystem::setProjectionMatrix. */
+    void setProjectionMatrix(const Matrix4f& matrix) override;
+    /*! @see IRenderSystem::setTextureMinFilter. */
+    void setTextureMinFilter(TextureFilter filter) override;
+    /*! @see IRenderSystem::setTextureMagFilter. */
+    void setTextureMagFilter(TextureFilter filter) override;
+    /*! @see IRenderSystem::setTextureAddressingModeS. */
+    void setTextureAddressingModeS(TextureAddressingMode mode) override;
+    /*! @see IRenderSystem::setTextureAddressingModeT. */
+    void setTextureAddressingModeT(TextureAddressingMode mode) override;
+    /*! @see IRenderSystem::setTextureMipMapping. */
+    void setTextureMipMapping(bool set) override;
+
   private:
 
     /*! Reference to engine. */
     Engine& m_engine;
-    /*! Current state. */
-    State m_state;
     /*! Currently active render target. */
     PRenderTarget m_renderTarget;
     /*! List of pending requests. */

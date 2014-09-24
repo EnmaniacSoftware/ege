@@ -11,7 +11,7 @@ EGE_DEFINE_NEW_OPERATORS(AudioManagerFactory)
 EGE_DEFINE_DELETE_OPERATORS(AudioManagerFactory)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioManagerFactory::AudioManagerFactory(Engine& engine) 
-: Factory<IAudioManager*, AudioManagerCreateFunc>(engine)
+: Factory<EngineModule<IAudioManager>*, AudioManagerCreateFunc>(engine)
 {
   // register default interfaces
   if (EGE_SUCCESS != registerInterface(KDefaultAudioManagerName, AudioManagerNull::Create))

@@ -12,9 +12,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PhysicsManager)
 EGE_DEFINE_DELETE_OPERATORS(PhysicsManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PhysicsManager::PhysicsManager() : Object()
-                                 , m_p(NULL)
+PhysicsManager::PhysicsManager(const Dictionary& params) 
+: m_params(params)
 {
+  // create private implementation
+  m_p = ege_new PhysicsManagerPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsManager::~PhysicsManager()
@@ -22,25 +24,17 @@ PhysicsManager::~PhysicsManager()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult PhysicsManager::construct(const Dictionary& params)
+EGEResult PhysicsManager::construct()
 {
   EGEResult result;
 
-  // create private implementation
-  m_p = ege_new PhysicsManagerPrivate(this);
-  if (NULL == m_p)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-
-  if (EGE_SUCCESS != (result = m_p->construct(params)))
+  if (EGE_SUCCESS != (result = m_p->construct(m_params)))
   {
     // error!
     return result;
   }
 
-  return EGE_SUCCESS;
+  return EngineModule::construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PhysicsManager::update(const Time& time)
@@ -76,6 +70,11 @@ void PhysicsManager::setGravity(const Vector4f& gravity)
 void PhysicsManager::render()
 {
   p_func()->render();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 PhysicsManager::uid() const
+{
+  return EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -127,7 +127,7 @@ void ResourceProgram::unload()
     for (ShaderMap::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
     {
       const String& name = it->first;
-      PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, name);
+      PResourceShader resource = engine().resourceManager()->resource(RESOURCE_NAME_SHADER, name);
       if (NULL != resource)
       {
         resource->unload();
@@ -187,7 +187,7 @@ EGEResult ResourceProgram::loadDependencies()
     }
 
     // try to find shader resource of a given name
-    PResourceShader resource = group()->manager()->resource(RESOURCE_NAME_SHADER, name);
+    PResourceShader resource = engine().resourceManager()->resource(RESOURCE_NAME_SHADER, name);
     if (NULL == resource)
     {
       // error!

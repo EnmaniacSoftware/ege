@@ -67,6 +67,11 @@ void* MemoryManager::Malloc(size_t size, const char* fileName, int line)
   }
 #endif // EGE_FEATURE_MEMORY_DEBUG
 
+  if (NULL == data)
+  {
+    throw std::bad_alloc();
+  }
+
   return data;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

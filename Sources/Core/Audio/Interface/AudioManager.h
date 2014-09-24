@@ -19,27 +19,10 @@ class IAudioManager
 {
   public:
 
-    IAudioManager() {}
     virtual ~IAudioManager() {}
 
   public:
 
-    /*! Available states. */
-    enum EState
-    {
-      StateNone = -1,
-      StateInitializing,
-      StateReady,
-      StateClosing,
-      StateClosed
-    };
-
-  public:
-
-    /*! Creates object. */
-    virtual EGEResult construct() = 0;
-    /*! Updates manager. */
-    virtual void update(const Time& time) = 0;
     /*! Enables/disables manager. 
      *  @note Disabling manager stops all currently played sounds and prevents any sound from being played. Enabling manager will allow sound to be played.
      *        However, it will not resume playback of any sounds stopped during last disabling request.
@@ -53,8 +36,6 @@ class IAudioManager
      *  @return Returns created sound.
      */
     virtual PSound createSound(const String& name, PDataBuffer& data) const = 0;
-    /*! Returns current state. */
-    virtual EState state() const = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceImagedAnimation.h"
 #include "Core/Resource/ResourceManager.h"
 #include "Core/Resource/ResourceSequencer.h"
+#include "EGEEngine.h"
 #include "EGEImagedAnimation.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
@@ -21,7 +22,8 @@ static const char* KResourceImagedAnimationDebugName = "EGEResourceImagedAnimati
 EGE_DEFINE_NEW_OPERATORS(ResourceImagedAnimation)
 EGE_DEFINE_DELETE_OPERATORS(ResourceImagedAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceImagedAnimation::ResourceImagedAnimation(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_IMAGED_ANIMATION)
+ResourceImagedAnimation::ResourceImagedAnimation(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_IMAGED_ANIMATION)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -117,7 +119,7 @@ EGEResult ResourceImagedAnimation::load()
       {
         ObjectChildData& childData = *itChild;
 
-        childData.materialResource = group()->manager()->resource(RESOURCE_NAME_MATERIAL, childData.materialName);
+        childData.materialResource = engine().resourceManager()->resource(RESOURCE_NAME_MATERIAL, childData.materialName);
         if (childData.materialResource)
         {
           // load material

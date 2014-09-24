@@ -97,8 +97,6 @@ class ResourceManagerPrivate
     ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const;
     /*! Shuts down. */
     void shutDown();
-    /*! Returns current state. */
-    ResourceManager::State state() const;
 
   private:
 
@@ -148,8 +146,6 @@ class ResourceManagerPrivate
     PMutex m_mutex;
     /*! Wait condition signaled when any commands are to be processed. */
     PWaitCondition m_commandsToProcess;
-    /*! Current state. */
-    ResourceManager::State m_state;
     /*! Emit requests pool mutex. */
     PMutex m_emitRequstsMutex;
     /*! Pool of emission requests to send. */

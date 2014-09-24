@@ -1,3 +1,4 @@
+#include "Core/Physics/PhysicsManager.h"
 #include "EGEEngine.h"
 #include "EGEPhysics.h"
 #include "EGEDebug.h"
@@ -48,11 +49,11 @@ PhysicsComponent::PhysicsComponent(Engine& engine, const String& name, EGEPhysic
 , m_scale(Vector4f::ONE)
 , m_awake(true)
 , m_allowSleep(true)
+, m_manager(engine.physicsManager())
 {
-  m_manager = engine.physicsManager();
-
+  // TAGE - FIX!!
   // create private thru manager
-  m_p = ege_new PhysicsComponentPrivate(this, engine.physicsManager()->p_func());
+  m_p = ege_new PhysicsComponentPrivate(this, dynamic_cast<PhysicsManager*>(m_manager)->p_func());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PhysicsComponent::~PhysicsComponent()
@@ -302,6 +303,11 @@ const Matrix4f& PhysicsComponent::transformationMatrix() const
   }
 
   return m_transformationMatrix;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IPhysicsManager* PhysicsComponent::manager() const 
+{ 
+  return m_manager; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

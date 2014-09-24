@@ -12,23 +12,12 @@ EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
 {
+  d_func()->engine().eventManager()->registerListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PointerPrivate::~PointerPrivate()
 {
-  d_func()->engine().eventManager()->removeListener(this);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult PointerPrivate::construct()
-{
-  // subscribe for notifications
-  if ( ! d_func()->engine().eventManager()->addListener(this))
-  {
-    // error!
-    return EGE_ERROR;
-  }
-  
-  return EGE_SUCCESS;
+  d_func()->engine().eventManager()->unregisterListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PointerPrivate::onEventRecieved(PEvent event)

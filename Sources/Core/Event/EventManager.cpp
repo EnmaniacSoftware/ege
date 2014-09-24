@@ -1,6 +1,5 @@
 #include "Core/Event/EventManager.h"
 #include "Core/Event/Event.h"
-#include "EGETypes.h"
 #include "Core/ComplexTypes.h"
 #include "EGEDebug.h"
 
@@ -12,7 +11,8 @@ const char* KEventManagerDebugName = "EGEEventManager";
 EGE_DEFINE_NEW_OPERATORS(EventManager)
 EGE_DEFINE_DELETE_OPERATORS(EventManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EventManager::EventManager() : Object()
+EventManager::EventManager()
+: m_mutex(ege_new Mutex())
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,19 +20,6 @@ EventManager::~EventManager()
 {
   m_mutex = NULL;
   m_pendingEvents.clear();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult EventManager::construct()
-{
-  // create mutex
-  m_mutex = ege_new Mutex();
-  if (NULL == m_mutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
- 
-  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EventManager::update(const Time& time)
@@ -195,6 +182,21 @@ void EventManager::notify(PEvent event)
   {
     (*iter)->onEventRecieved(event);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool EventManager::registerListener(IEventListener* listener)
+{
+  return addListener(listener);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void EventManager::unregisterListener(IEventListener* listener)
+{
+  removeListener(listener);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 EventManager::uid() const
+{
+  return EGE_OBJECT_UID_EVENT_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

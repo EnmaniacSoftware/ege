@@ -72,12 +72,14 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_PROGRAM, ResourceProgram::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceManager(Engine& engine) : Object()
-                                                 , m_p(NULL)
-                                                 , m_engine(engine)
-                                                 , m_totalResourcesToProcess(0)
-                                                 , m_processedResourcesCount(0)
+ResourceManager::ResourceManager(Engine& engine) 
+: m_p(NULL)
+, m_engine(engine)
+, m_totalResourcesToProcess(0)
+, m_processedResourcesCount(0)
 {
+  m_p = ege_new ResourceManagerPrivate(this);
+
   ege_connect(&engine, signalFrameEnd, this, ResourceManager::onFrameEnd);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -89,21 +91,11 @@ ResourceManager::~ResourceManager()
   EGE_ASSERT(m_groups.empty());
 
   EGE_DELETE(m_p);
-
-  engine().eventManager()->removeListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
 {
   EGEResult result = EGE_SUCCESS;
-
-  // allocate private
-  m_p = ege_new ResourceManagerPrivate(this);
-  if (NULL == m_p)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
 
   // construct private
   if (EGE_SUCCESS != (result = m_p->construct()))
@@ -125,6 +117,9 @@ EGEResult ResourceManager::construct()
     }
   }
 
+  // set state
+  setState(EModuleStateRunning);
+
   // create default resources
   if ( ! createDefaultResources())
   {
@@ -133,15 +128,7 @@ EGEResult ResourceManager::construct()
     return EGE_ERROR;
   }
 
-  // subscribe for event notifications
-  if ( ! engine().eventManager()->addListener(this))
-  {
-    // error!
-    egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not register for notifications!";
-    return EGE_ERROR;
-  }
-
-  return EGE_SUCCESS;
+  return EngineModule::construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::registerResource(const String& typeName, egeResourceCreateFunc createFunc)
@@ -379,7 +366,7 @@ PResourceGroup ResourceManager::group(const String& name) const
 EGEResult ResourceManager::loadGroup(const String& name)
 {
   // check if can NOT accept loading
-  if (STATE_READY != state())
+  if (EModuleStateRunning != state())
   {
     return EGE_ERROR;
   }
@@ -619,26 +606,6 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onEventRecieved(PEvent event)
-{
-  switch (event->id())
-  {
-    case EGE_EVENT_ID_CORE_QUIT_REQUEST:
-
-      if ((STATE_CLOSING != p_func()->state()) && (STATE_CLOSED != p_func()->state()))
-      {
-        // do shouting down
-        shutDown();
-      }
-      break;
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::shutDown()
-{
-  p_func()->shutDown();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::processCommands()
 {
   p_func()->processCommands();
@@ -649,14 +616,9 @@ ResourceManager::ResourceProcessPolicy ResourceManager::resourceProcessPolicy() 
   return p_func()->resourceProcessPolicy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::State ResourceManager::state() const
-{
-  return p_func()->state();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onFrameEnd()
 {
-  if (STATE_READY == p_func()->state())
+  if (EModuleStateRunning == state())
   {
     processCommands();
   }
@@ -665,6 +627,23 @@ void ResourceManager::onFrameEnd()
 Engine& ResourceManager::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onShutdown()
+{
+  if ((EModuleStateClosed != state()) && (EModuleStateShuttingDown != state()))
+  {
+    // set state
+    setState(EModuleStateShuttingDown);
+
+    // do shutting down
+    p_func()->shutDown();
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 ResourceManager::uid() const
+{
+  return EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

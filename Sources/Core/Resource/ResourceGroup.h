@@ -81,9 +81,9 @@ class ResourceGroup : public Object
     /*! Is group loaded. */
     bool isLoaded() const { return m_loaded; }
     /*! Returns list of dependancy group names. */
-    const StringList& dependancies() const { return m_dependancies; }
+    const StringList& dependancies() const;
     /*! Gets owning manager */
-    ResourceManager* manager() const { return m_manager; }
+    ResourceManager* manager() const;
     /*! Overrides resources by another group ones. 
      *  @param group Group which resources should override current ones.
      *  @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)

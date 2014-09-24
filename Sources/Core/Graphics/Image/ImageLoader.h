@@ -9,14 +9,14 @@
 #include "EGETime.h"
 #include "EGEImage.h"
 #include "EGESignal.h"
-#include "Core/Event/EventListener.h"
+#include "Core/Engine/Interface/EngineModule.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ImageLoader : public Object, public IEventListener
+class ImageLoader
 {
   public:
 
@@ -43,23 +43,8 @@ class ImageLoader : public Object, public IEventListener
 
   public:
 
-    /*! Available states. */
-    enum State
-    {
-      STATE_NONE = -1,      /*!< Uninitialized. */
-      STATE_READY,          /*!< Ready to use. */
-      STATE_CLOSING,        /*!< Closing. */
-      STATE_CLOSED          /*!< Closed. */
-    };
-
-  public:
-
-    /*! Creates object. */
-    EGEResult construct();
     /*! Updates object. */
     void update(const Time& time);
-    /*! Returns current state. */
-    State state() const;
     /*! Loads image from given file converting it's pixel format to requested one if possible. 
      *  @param userData  User data which can be used to identify image.
      *  @param fileName  File name to load image from.
@@ -71,10 +56,6 @@ class ImageLoader : public Object, public IEventListener
 
   private:
 
-    /*! @see IEventListener::onEventRecieved. */
-    void onEventRecieved(PEvent event) override;
-    /*! Shuts down. */
-    void shutDown();
     /*! Returns engine object. */
     Engine& engine() const;
 

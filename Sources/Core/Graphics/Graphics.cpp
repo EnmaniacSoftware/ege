@@ -2,7 +2,6 @@
 #include "Core/Graphics/Render/RenderTarget.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Render/RenderWindow.h"
-#include "Core/Physics/PhysicsManager.h"
 #include "Core/Graphics/Particle/ParticleFactory.h"
 #include "Core/UI/WidgetFactory.h"
 #include "EGEEngine.h"
@@ -24,12 +23,13 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Graphics)
 EGE_DEFINE_DELETE_OPERATORS(Graphics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Graphics::Graphics(Engine& engine, const Dictionary& params) : m_p(NULL)
-                                                             , m_engine(engine)
-                                                             , m_renderSystem(NULL)
-                                                             , m_particleFactory(NULL)
-                                                             , m_widgetFactory(NULL)
-                                                             , m_renderingEnabled(true)
+Graphics::Graphics(Engine& engine, const Dictionary& params) 
+: m_p(NULL)
+, m_engine(engine)
+, m_renderSystem(NULL)
+, m_particleFactory(NULL)
+, m_widgetFactory(NULL)
+, m_renderingEnabled(true)
 {
   m_params = params;
 }
@@ -190,9 +190,12 @@ void Graphics::setRenderingEnabled(bool set)
   m_renderingEnabled = set;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Graphics::update()
+void Graphics::update(const Time& time)
 {
-  m_renderSystem->update();
+  if (EModuleStateRunning == state())
+  {
+    static_cast<IUpdateable*>(m_renderSystem)->update(time);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IRenderer* Graphics::renderer()
@@ -208,6 +211,26 @@ IHardwareResourceProvider* Graphics::hardwareResourceProvider()
 Engine& Graphics::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IRenderSystem* Graphics::renderSystem() const 
+{ 
+  return m_renderSystem; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ParticleFactory* Graphics::particleFactory() const 
+{ 
+  return m_particleFactory; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+WidgetFactory* Graphics::widgetFactory() const 
+{ 
+  return m_widgetFactory; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 Graphics::uid() const
+{
+  return EGE_OBJECT_UID_GRAPHICS_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

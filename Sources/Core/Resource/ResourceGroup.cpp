@@ -14,11 +14,12 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_DEPENDANCY "dependancy"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(ResourceManager* manager, const String& name) : Object()
-                                                                           , m_manager(manager)
-                                                                           , m_name(name)
-                                                                           , m_loaded(false)
-                                                                           , m_overridable(false)
+ResourceGroup::ResourceGroup(ResourceManager* manager, const String& name) 
+: Object()
+, m_manager(manager)
+, m_name(name)
+, m_loaded(false)
+, m_overridable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -66,7 +67,7 @@ EGEResult ResourceGroup::create(const String& path,  const PXmlElement& tag)
     else
     {
       // create resource instance
-      PResource resource = manager()->createResource(child->name(), this);
+      PResource resource = static_cast<IResourceManager*>(manager())->createResource(child->name(), this);
       if (resource)
       {
         // initialize from XML
@@ -387,6 +388,16 @@ EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
 const String& ResourceGroup::path() const
 {
   return m_path;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const StringList& ResourceGroup::dependancies() const 
+{ 
+  return m_dependancies; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManager* ResourceGroup::manager() const 
+{ 
+  return m_manager; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
