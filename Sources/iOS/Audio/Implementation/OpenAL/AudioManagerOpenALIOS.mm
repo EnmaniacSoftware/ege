@@ -17,7 +17,7 @@ AudioManagerOpenALIOS::~AudioManagerOpenALIOS()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager* AudioManagerOpenALIOS::Create(Engine& engine)
+EngineModule<IAudioManager>* AudioManagerOpenALIOS::Create(Engine& engine)
 {
   return ege_new AudioManagerOpenALIOS(engine);
 }

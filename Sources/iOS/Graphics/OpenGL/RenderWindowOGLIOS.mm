@@ -187,7 +187,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 //  }
 
   // register for events
-  if ( ! engine().eventManager()->addListener(this))
+  if ( ! engine().eventManager()->registerListener(this))
   {
     // error!
     return EGE_ERROR;
@@ -204,7 +204,7 @@ EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 void RenderWindowOGLIOS::destroy()
 {
   // unregister from events
-  engine().eventManager()->removeListener(this);
+  engine().eventManager()->unregisterListener(this);
   
   if (0 != m_frameBuffer)
   {

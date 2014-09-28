@@ -824,6 +824,18 @@
 		453C841A193E6BF000FBA4AA /* SoundDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundDelegate.mm; sourceTree = "<group>"; };
 		453C841D193E6BF000FBA4AA /* AudioManagerOpenALIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioManagerOpenALIOS.h; sourceTree = "<group>"; };
 		453C841E193E6BF000FBA4AA /* SoundDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundDelegate.h; sourceTree = "<group>"; };
+		454BCF3519D84BB3004E462C /* ISuspendable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISuspendable.h; sourceTree = "<group>"; };
+		454BCF3619D84BB3004E462C /* IUpdateable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IUpdateable.h; sourceTree = "<group>"; };
+		454BCF3C19D85D31004E462C /* EngineModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EngineModule.h; sourceTree = "<group>"; };
+		454BCF3D19D85D31004E462C /* IEngineModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEngineModule.h; sourceTree = "<group>"; };
+		454BCF3F19D85D3D004E462C /* IEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEventManager.h; sourceTree = "<group>"; };
+		454BCF4119D85D4E004E462C /* IGraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IGraphics.h; sourceTree = "<group>"; };
+		454BCF4219D85D6A004E462C /* IRenderSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IRenderSystem.h; sourceTree = "<group>"; };
+		454BCF4419D85D80004E462C /* IOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOverlayManager.h; sourceTree = "<group>"; };
+		454BCF4619D85D8A004E462C /* IPhysicsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhysicsManager.h; sourceTree = "<group>"; };
+		454BCF4819D85D9D004E462C /* IResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceManager.h; sourceTree = "<group>"; };
+		454BCF4A19D85DA6004E462C /* ISceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISceneManager.h; sourceTree = "<group>"; };
+		454BCF4C19D85DAD004E462C /* IScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreenManager.h; sourceTree = "<group>"; };
 		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
 		4558970918C54686002C4C8B /* pnglib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pnglib.xcodeproj; path = ../../External/PNGLib/pnglib.xcodeproj; sourceTree = "<group>"; };
 		4558971318C54848002C4C8B /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../External/Zlib/zlib.xcodeproj; sourceTree = "<group>"; };
@@ -1111,6 +1123,7 @@
 		45146ED118C5231800AAC617 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF3319D84BB3004E462C /* Base */,
 				45146EFB18C5231800AAC617 /* ComplexTypes.cpp */,
 				45146EFC18C5231800AAC617 /* ComplexTypes.h */,
 				45146F0D18C5231800AAC617 /* ConfigParams.h */,
@@ -1398,6 +1411,7 @@
 		45146F4C18C5231800AAC617 /* Event */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF3E19D85D3D004E462C /* Interface */,
 				45146F4D18C5231800AAC617 /* Event.cpp */,
 				45146F4E18C5231800AAC617 /* Event.h */,
 				45146F4F18C5231800AAC617 /* EventIDs.h */,
@@ -1420,6 +1434,7 @@
 		45146F5818C5231800AAC617 /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4019D85D4E004E462C /* Interface */,
 				45146F5918C5231800AAC617 /* Camera.cpp */,
 				45146F6018C5231800AAC617 /* Font.cpp */,
 				45146F6218C5231800AAC617 /* Frustum.cpp */,
@@ -1594,6 +1609,7 @@
 		45146FB518C5231900AAC617 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4219D85D6A004E462C /* IRenderSystem.h */,
 				45146FB618C5231900AAC617 /* RenderComponent.h */,
 				45146FB718C5231900AAC617 /* Renderer.h */,
 				45146FB818C5231900AAC617 /* RenderQueue.h */,
@@ -1738,6 +1754,7 @@
 		4514702C18C5231900AAC617 /* Overlay */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4319D85D80004E462C /* Interface */,
 				4514702D18C5231900AAC617 /* ImageOverlay.cpp */,
 				4514702E18C5231900AAC617 /* ImageOverlay.h */,
 				4514702F18C5231900AAC617 /* Overlay.cpp */,
@@ -1753,6 +1770,7 @@
 		4514703718C5231900AAC617 /* Physics */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4519D85D8A004E462C /* Interface */,
 				4514703818C5231900AAC617 /* Box2D */,
 				4514704318C5231900AAC617 /* Null */,
 				4514704C18C5231900AAC617 /* PhysicsJoint.cpp */,
@@ -1823,6 +1841,7 @@
 		4514705D18C5231900AAC617 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4719D85D9D004E462C /* Interface */,
 				4514705E18C5231900AAC617 /* Implementation */,
 				4514706018C5231900AAC617 /* MultiThread */,
 				4514706518C5231900AAC617 /* Resource.cpp */,
@@ -1901,6 +1920,7 @@
 		4514709018C5231900AAC617 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4919D85DA6004E462C /* Interface */,
 				4514709118C5231900AAC617 /* SceneManager.cpp */,
 				4514709218C5231900AAC617 /* SceneManager.h */,
 				4514709318C5231900AAC617 /* SceneNode.cpp */,
@@ -1914,6 +1934,7 @@
 		4514709718C5231900AAC617 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF4B19D85DAD004E462C /* Interface */,
 				4514709818C5231900AAC617 /* Screen.cpp */,
 				4514709918C5231900AAC617 /* Screen.h */,
 				4514709A18C5231900AAC617 /* ScreenManager.cpp */,
@@ -2455,6 +2476,79 @@
 			path = OpenAL;
 			sourceTree = "<group>";
 		};
+		454BCF3319D84BB3004E462C /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF3419D84BB3004E462C /* Interface */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		454BCF3419D84BB3004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF3519D84BB3004E462C /* ISuspendable.h */,
+				454BCF3619D84BB3004E462C /* IUpdateable.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF3E19D85D3D004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF3F19D85D3D004E462C /* IEventManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4019D85D4E004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4119D85D4E004E462C /* IGraphics.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4319D85D80004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4419D85D80004E462C /* IOverlayManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4519D85D8A004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4619D85D8A004E462C /* IPhysicsManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4719D85D9D004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4819D85D9D004E462C /* IResourceManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4919D85DA6004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4A19D85DA6004E462C /* ISceneManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		454BCF4B19D85DAD004E462C /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				454BCF4C19D85DAD004E462C /* IScreenManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		4558970418C54679002C4C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2728,6 +2822,8 @@
 		45E246B219ABD52B00A538B0 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				454BCF3C19D85D31004E462C /* EngineModule.h */,
+				454BCF3D19D85D31004E462C /* IEngineModule.h */,
 				45E246B319ABD52B00A538B0 /* Engine.h */,
 				45E246B419ABD52B00A538B0 /* EngineApplication.h */,
 				45E246B519ABD52B00A538B0 /* EngineInstance.h */,

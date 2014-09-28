@@ -65,7 +65,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   assert(engine);
   
   // send event
-  EventManager* eventManager = engine->eventManager();
+  IEventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // map orientation to EGE compilant value
@@ -182,7 +182,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
   assert(engine);
 
   // send event
-  EventManager* eventManager = engine->eventManager();
+  IEventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // pause application immediately
@@ -212,7 +212,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 
   assert(engine);
   
-  EventManager* eventManager = engine->eventManager();
+  IEventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     eventManager->send(EGE_EVENT_ID_CORE_APP_RESUME);
@@ -308,7 +308,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 /*! Sends internal pointer notification. */
 - (void) notifyPointerEvent: (Action) action withButton: (Button) button atPoint: (CGPoint) point
 {
-  EventManager* eventManager = engine->eventManager();
+  IEventManager* eventManager = engine->eventManager();
   
   if (NULL != eventManager)
   {

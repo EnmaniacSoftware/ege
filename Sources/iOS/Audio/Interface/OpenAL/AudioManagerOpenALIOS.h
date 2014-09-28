@@ -28,7 +28,7 @@ class AudioManagerOpenALIOS : public AudioManagerOpenAL
      *  @param  engine  Reference to engine.
      *  @return Created instance. NULL if error occured.
      */
-    static IAudioManager* Create(Engine& engine);
+    static EngineModule<IAudioManager>* Create(Engine& engine);
   
   public:
 

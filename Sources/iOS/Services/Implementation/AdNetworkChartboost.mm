@@ -22,7 +22,7 @@ AdNetworkChartboost::AdNetworkChartboost(Engine& engine)
   m_delegate = [[AdNetworkChartboostDelegate alloc] initWithObject: this];
 
   // subscribe for event notifications
-  if ( ! engine.eventManager()->addListener(this))
+  if ( ! engine.eventManager()->registerListener(this))
   {
     // error!
     egeWarning(KAdNetworkDebugName) << EGE_FUNC_INFO << "Could not register for event notifications!";
@@ -35,7 +35,7 @@ AdNetworkChartboost::~AdNetworkChartboost()
   m_delegate = nil;
 
   // remove from event notifications
-  engine().eventManager()->removeListener(this);
+  engine().eventManager()->unregisterListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AdNetwork* AdNetworkChartboost::Create(Engine& engine)

@@ -70,7 +70,7 @@ EGE_NAMESPACE
   assert(engine);
 
   // send event
-  EventManager* eventManager = engine->eventManager();
+  IEventManager* eventManager = engine->eventManager();
   if (NULL != eventManager)
   {
     // map orientation to EGE compilant value
