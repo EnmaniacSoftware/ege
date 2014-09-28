@@ -166,9 +166,12 @@ void EngineInstance::update()
   // update accumulator for updates
   m_updateAccumulator += timeInterval;
 
+  // update next render intervals
+  m_nextRenderTimeLeft -= timeInterval;
+
   // update as much as requested
   bool canClose = false;
-  while (m_updateAccumulator > m_updateInterval)
+  while (m_updateAccumulator >= m_updateInterval)
   {
     canClose = true;
 
@@ -200,10 +203,16 @@ void EngineInstance::update()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::render()
 {
-  if (EStateRunning == state())
+  // check if can render
+  if (0 >= m_nextRenderTimeLeft.microseconds())
   {
-    // do render
-    graphics()->render();
+    m_nextRenderTimeLeft += m_renderInterval;
+
+    if (EStateRunning == state())
+    {
+      // do render
+      graphics()->render();
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

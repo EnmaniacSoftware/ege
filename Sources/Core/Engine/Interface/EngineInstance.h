@@ -145,12 +145,14 @@ class EngineInstance : public Engine
     Time m_updateInterval;
     /*! Time interval between renders. */
     Time m_renderInterval;
+    /*! Time left to next render. */
+    Time m_nextRenderTimeLeft;
     /*! Currently accumulated update duration. */
     Time m_updateAccumulator;
     /*! Current language identifier. */
     String m_language;
     /*! Pool of all available engine modules. 
-     *  @note Objects stored here should not be deallocated directly! TAGE - ideally would like to have this pool only.
+     *  @note Objects stored here should not be deallocated directly!
      */
     EngineModulesPool m_modules;
     /*! Mapping of engine module unique ids to engine modules themselves. 
