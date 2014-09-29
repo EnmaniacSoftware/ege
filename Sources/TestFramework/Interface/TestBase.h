@@ -1,3 +1,6 @@
+#ifndef EGE_CORE_TESTFRAMEWORK_TESTBASE_H
+#define EGE_CORE_TESTFRAMEWORK_TESTBASE_H
+
 #include <gtest/gtest.h>
 #include <limits>
 #include <EGE.h>
@@ -53,3 +56,5 @@ class TestBase : public ::testing::Test
     float32 m_epsilon;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#endif // EGE_CORE_TESTFRAMEWORK_TESTBASE_H

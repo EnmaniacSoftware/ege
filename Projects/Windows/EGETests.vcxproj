@@ -33,10 +33,12 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="EGEDebug.props" />
+    <Import Project="..\..\External\gmock-1.7.0\msvc\2010\gmock_config.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="EGERelease.props" />
+    <Import Project="..\..\External\gmock-1.7.0\msvc\2010\gmock_config.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -52,7 +54,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_USE_MATH_DEFINES;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\gtest-1.7.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\gmock-1.7.0\include;..\..\External\gmock-1.7.0\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <FloatingPointModel>Strict</FloatingPointModel>
     </ClCompile>
     <Link>
@@ -71,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_USE_MATH_DEFINES;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\Sources;..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\gtest-1.7.0\include;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\gmock-1.7.0\include;..\..\External\gmock-1.7.0\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,11 +121,14 @@
     <ProjectReference Include="..\..\External\Box2D 2.1.2\Box2D\Build\Box2D\Box2D.vcxproj">
       <Project>{90b6c2e4-0188-4552-ad48-15c26ce84838}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\External\gtest-1.7.0\msvc\gtest.vcxproj">
-      <Project>{c8f6c172-56f2-4e76-b5fa-c3b423b31be7}</Project>
+    <ProjectReference Include="..\..\External\gmock-1.7.0\msvc\2010\gmock.vcxproj">
+      <Project>{34681f0d-ce45-415d-b5f2-5c662dfe3bd5}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\External\gtest-1.7.0\msvc\gtest_main.vcxproj">
-      <Project>{3af54c8a-10bf-4332-9147-f68ed9862032}</Project>
+    <ProjectReference Include="..\..\External\gmock-1.7.0\msvc\2010\gmock_main.vcxproj">
+      <Project>{e4ef614b-30df-4954-8c53-580a0bf6b589}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\gmock-1.7.0\msvc\2010\gmock_test.vcxproj">
+      <Project>{f10d22f8-ac7b-4213-8720-608e7d878cd2}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\External\JpegLib\JpegLib.vcxproj">
       <Project>{9e7ecddf-c76e-4013-83a0-7d67125d7511}</Project>
@@ -150,6 +155,7 @@
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\VectorHelper.h" />
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\EngineMock.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

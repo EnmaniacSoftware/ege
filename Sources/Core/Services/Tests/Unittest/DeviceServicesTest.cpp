@@ -1,4 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
+#include "TestFramework/Interface/EngineMock.h"
 #include <EGEMemory.h>
 #include <EGEDebug.h>
 #include <EGEString.h>
@@ -28,11 +29,14 @@ class DeviceServicesTest : public TestBase
 
   protected:
 
+    /*! Engine mock. */
+    EngineMock* m_engine;
     /*! Device services object. */
     DeviceServices* m_services;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 DeviceServicesTest::DeviceServicesTest() : TestBase()
+                                         , m_engine(NULL)
                                          , m_services(NULL)
 {
 }
@@ -51,9 +55,12 @@ void DeviceServicesTest::TearDownTestCase()
 void DeviceServicesTest::SetUp()
 {
   EXPECT_TRUE(NULL == m_services);
+  EXPECT_TRUE(NULL == m_engine);
 
   // allocate
-  m_services = ege_new PLATFORM_CLASSNAME(DeviceServices)();
+  m_engine = new EngineMock();
+
+  m_services = ege_new PLATFORM_CLASSNAME(DeviceServices)(*m_engine);
   EXPECT_TRUE(NULL != m_services);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,6 +68,9 @@ void DeviceServicesTest::TearDown()
 {
   EXPECT_TRUE(NULL != m_services);
   EGE_DELETE(m_services);
+
+  EXPECT_TRUE(NULL != m_engine);
+  EGE_DELETE(m_engine);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DeviceServicesTest, StoreAndRetrieveConfidentialStringValue)

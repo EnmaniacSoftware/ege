@@ -8,7 +8,7 @@
       <PreprocessorDefinitions>EGE_STRING_STL;EGE_CONTAINERS_STL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <BrowseInformation>false</BrowseInformation>
-      <AdditionalIncludeDirectories>$(PROJECTS_DIR)\Cpp\Ege\Sources</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(PROJECTS_DIR)\Cpp\Ege\Sources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>false</GenerateDebugInformation>

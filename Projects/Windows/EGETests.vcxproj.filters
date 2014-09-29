@@ -152,5 +152,8 @@
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.h">
       <Filter>Tests\Math\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\EngineMock.h">
+      <Filter>TestFramework\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

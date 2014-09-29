@@ -63,7 +63,7 @@ TEST_F(TimeLineTest, SingleForward)
   const float32 KDuration = 1.0f;
 
   // setup (default loop count which is 1)
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(10);
@@ -95,7 +95,7 @@ TEST_F(TimeLineTest, LoopedForward)
   const s32 KLoopCount = 2;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(10);
@@ -140,7 +140,7 @@ TEST_F(TimeLineTest, Stop)
   const float32 KDuration = 1.0f;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(10);
@@ -185,7 +185,7 @@ TEST_F(TimeLineTest, SingleFinished)
   const float32 KDuration = 1.0f;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(10);
@@ -226,7 +226,7 @@ TEST_F(TimeLineTest, LoopedFinished)
   const s32 KLoopCount = 20;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(10);
@@ -268,7 +268,7 @@ TEST_F(TimeLineTest, SingleLoopFramesChanged)
   const s32 KFrameCount = 5;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(KFrameCount);
@@ -320,7 +320,7 @@ TEST_F(TimeLineTest, MultipleLoopFramesChanged)
   const s32 KLoopCount  = 2;
 
   // setup
-  TimeLine timeLine(NULL);
+  TimeLine timeLine;
   timeLine.setDuration(KDuration);
   timeLine.setStartFrame(0);
   timeLine.setEndFrame(KFrameCount);
