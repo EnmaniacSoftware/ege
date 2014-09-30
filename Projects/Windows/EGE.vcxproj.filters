@@ -436,6 +436,18 @@
     <Filter Include="Core\Event\Implementation">
       <UniqueIdentifier>{e22632d0-2c82-4b5a-b80a-68d9a39d7d68}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\File\Implementation">
+      <UniqueIdentifier>{4aaf6be3-d46a-41ab-9415-64140e2d476f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\File\Interface">
+      <UniqueIdentifier>{857185a6-cc75-422a-803b-2c4bf6929003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File\Implementation">
+      <UniqueIdentifier>{9f4dcec3-ef2b-4e5f-8bb9-b4d1de740863}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\File\Interface">
+      <UniqueIdentifier>{e423fb6e-c7c7-4c01-8228-1d7187217412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -513,9 +525,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp">
       <Filter>Core\Physics\Box2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\File.cpp">
-      <Filter>Core\File</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
       <Filter>Win32\Debug</Filter>
     </ClCompile>
@@ -524,9 +533,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp">
       <Filter>Win32\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp">
-      <Filter>Win32\File</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
       <Filter>Core\Resource</Filter>
@@ -1113,6 +1119,12 @@
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp">
       <Filter>Core\Event\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Implementation\File.cpp">
+      <Filter>Core\File\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp">
+      <Filter>Win32\File\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -1229,17 +1241,11 @@
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\File\File.h">
-      <Filter>Core\File</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Graphics.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h">
       <Filter>Win32\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h">
-      <Filter>Win32\File</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h">
       <Filter>Core\Resource</Filter>
@@ -2054,6 +2060,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Implementation\EventManager.h">
       <Filter>Core\Event\Implementation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\File\Interface\File.h">
+      <Filter>Core\File\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h">
+      <Filter>Win32\File\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

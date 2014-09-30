@@ -73,7 +73,7 @@
     <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\File\File.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Implementation\File.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\Color.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\ColorTransform.cpp" />
@@ -237,6 +237,7 @@
     <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
@@ -306,6 +307,7 @@
     <ClInclude Include="..\..\Sources\Core\Event\Interface\EventListener.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Interface\IEventManager.h" />
     <ClInclude Include="..\..\Sources\Core\Factory\Interface\Factory.h" />
+    <ClInclude Include="..\..\Sources\Core\File\Interface\File.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
@@ -502,7 +504,6 @@
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\File\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
@@ -516,7 +517,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
-    <ClInclude Include="..\..\Sources\Core\File\File.h" />
     <ClInclude Include="..\..\Sources\Core\Flags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Font.h" />
@@ -620,7 +620,7 @@
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
     <ClInclude Include="..\..\Sources\Win32\Engine\Interface\EngineInstanceWin32.h" />
-    <ClInclude Include="..\..\Sources\Win32\File\FileWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />

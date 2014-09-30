@@ -57,13 +57,11 @@
  */
 
 #include "EGE.h"
-#include "EGEFile.h"
+#include "Core/File/Interface/File.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(File, PFile)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class FilePrivate
 {
@@ -80,7 +78,7 @@ class FilePrivate
     /*! @see File::isValid. */
     bool isValid() const;
     /*! @see File::open. */
-    EGEResult open(EGEFile::EMode mode);
+    EGEResult open(FileMode mode);
     /*! @see File::close. */
     void close();
     /*! @see File::read. */
@@ -88,7 +86,7 @@ class FilePrivate
     /*! @see File::write. */
     s64 write(const PDataBuffer& src, s64 size);
     /*! @see File::seek. */
-    s64 seek(s64 offset, EGEFile::ESeekMode mode);
+    s64 seek(s64 offset, FileSeek mode);
     /*! @see File::tell. */
     s64 tell();
     /*! @see File::isOpen. */

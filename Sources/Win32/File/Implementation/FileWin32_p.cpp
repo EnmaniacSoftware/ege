@@ -1,4 +1,4 @@
-#include "Win32/File/FileWin32_p.h"
+#include "Win32/File/Interface/FileWin32_p.h"
 #include "EGEDataBuffer.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
@@ -9,8 +9,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
 EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) : m_d(base), 
-                                       m_file(NULL)
+FilePrivate::FilePrivate(File* base) 
+: m_d(base) 
+, m_file(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ bool FilePrivate::isValid() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult FilePrivate::open(EGEFile::EMode mode)
+EGEResult FilePrivate::open(FileMode mode)
 {
   close();
 
@@ -32,9 +33,9 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
   String modeInternal;
   switch (mode)
   {
-    case EGEFile::MODE_READ_ONLY:  modeInternal = "rb"; break;
-    case EGEFile::MODE_WRITE_ONLY: modeInternal = "wb"; break;
-    case EGEFile::MODE_APPEND:     modeInternal = "a+"; break;
+    case EFileModeReadOnly:     modeInternal = "rb"; break;
+    case EFileModeWriteOnly:    modeInternal = "wb"; break;
+    case EFileModeWriteAppend:  modeInternal = "a+"; break;
 
     default:
 
@@ -135,7 +136,7 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   return static_cast<s64>(fwrite(src->data(readOffset), 1, (size_t) size, m_file));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
+s64 FilePrivate::seek(s64 offset, FileSeek mode) 
 {
   if ( ! isOpen())
   {
@@ -147,9 +148,9 @@ s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode)
   int modeInternal;
   switch (mode)
   {
-    case EGEFile::SEEK_MODE_BEGIN:   modeInternal = SEEK_SET; break;
-    case EGEFile::SEEK_MODE_CURRENT: modeInternal = SEEK_CUR; break;
-    case EGEFile::SEEK_MODE_END:     modeInternal = SEEK_END; break;
+    case EFileSeekBegin:   modeInternal = SEEK_SET; break;
+    case EFileSeekCurrent: modeInternal = SEEK_CUR; break;
+    case EFileSeekEnd:     modeInternal = SEEK_END; break;
 
     default:
 
@@ -197,13 +198,13 @@ s64 FilePrivate::size()
   s64 curPos = tell();
   
   // try to skip to end of the file
-  if ((-1 != curPos) && (-1 != seek(0, EGEFile::SEEK_MODE_END)))
+  if ((-1 != curPos) && (-1 != seek(0, EFileSeekEnd)))
   {
     // store position
     s64 endPos = tell();
 
     // return to previous position
-    if (-1 != seek(curPos, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != seek(curPos, EFileSeekBegin))
     {
       return endPos;
     }

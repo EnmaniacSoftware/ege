@@ -2,12 +2,27 @@
 #define EGE_CORE_FILE_H
 
 #include "EGE.h"
-#include "EGEFile.h"
 #include "EGEString.h"
 #include "EGEDataBuffer.h"
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available file open modes. */
+enum FileMode
+{
+  EFileModeReadOnly = 0,            /*!< Read only. File needs to exist. */
+  EFileModeWriteOnly,               /*!< Write only. File will be created if does not exist. Otherwise, content is reset. */
+  EFileModeWriteAppend              /*!< Write only, File needs to exist. File pointer moved to an end of content. */
+};
+
+/*! Available file seek modes. */
+enum FileSeek
+{
+  EFileSeekBegin = 0,
+  EFileSeekCurrent,
+  EFileSeekEnd
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(File, PFile)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -32,22 +47,34 @@ class File : public Object
 
     /*! Returns TRUE if object is valid. */
     bool isValid() const;
-    /*! Opens the given file with requested mode. */
-    EGEResult open(EGEFile::EMode mode);
+    /*! Opens the given. 
+     *  @param  mode  File open mode.
+     *  @return EGE_SUCCESS on success. Otherwise, one of the other error codes.
+     */
+    EGEResult open(FileMode mode);
     /*! Closes file. */
     void close();
-    /*! Reads given amount of data into destination buffer.
-     *  @return Returns number of bytes read.
+    /*! Reads data from file into buffer.
+     *  @param  dst   Buffer to write aquired data to.
+     *  @param  size  Size of data (in bytes) to read from the file.
+     *  @return Returns number of bytes read. This corresponds to number of bytes written to the buffer.
      */
     s64 read(const PDataBuffer& dst, s64 size);
     /*! Writes given amount of data from destination buffer.
-     *  @return Returns number of bytes written.
-     *  @note If size is negative all data from source buffer is written.
+     *  @param  src   Buffer the data is to be read from.
+     *  @param  size  Number of bytes to read from the buffer. If negative, all data will be read.
+     *  @return Returns number of bytes written to a file.
      */
     s64 write(const PDataBuffer& src, s64 size = -1);
-    /*! Sets new position within file. Returns old position or -1 if error occured. */
-    s64 seek(s64 offset, EGEFile::ESeekMode mode);
-    /*! Returns current position in file. Returns -1 if error occured. */
+    /*! Sets new position within file. 
+     *  @param  offset  Offset to move the file pointer by. This can be negative.
+     *  @param  mode    Initial origin from where the offset is to be applied.
+     *  @return Old file pointer position. In case of an error, negative value is returned.
+     */
+    s64 seek(s64 offset, FileSeek mode);
+    /*! Returns current position in file. 
+     *  @note Negative value is returned in case of an error. 
+     */
     s64 tell();
     /*! Returns TRUE if file is opened. */
     bool isOpen() const;

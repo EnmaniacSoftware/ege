@@ -1,4 +1,4 @@
-#include "iOS/File/FileIOS_p.h"
+#include "iOS/File/Interface/FileIOS_p.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
 #import <Foundation/NSFileHandle.h>
@@ -19,8 +19,9 @@ NSString* FilePathToNative(const String& path)
   return filePath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) : m_d(base),
-                                       m_file(nil)
+FilePrivate::FilePrivate(File* base) 
+: m_d(base)
+, m_file(nil)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,20 +35,20 @@ bool FilePrivate::isValid() const
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult FilePrivate::open(EGEFile::EMode mode)
+EGEResult FilePrivate::open(FileMode mode)
 {
   close();
   
   // open file
   switch (mode)
   {
-    case EGEFile::MODE_READ_ONLY:
+    case EFileModeReadOnly:
       
       // first try to open file in Documents folder
       m_file = [NSFileHandle fileHandleForReadingAtPath: FilePathToNative(d_func()->filePath())];
       break;
       
-    case EGEFile::MODE_WRITE_ONLY:
+    case EFileModeWriteOnly:
     
       // check if file exists
       if ( ! exists())
@@ -63,7 +64,7 @@ EGEResult FilePrivate::open(EGEFile::EMode mode)
       [(id) m_file truncateFileAtOffset: 0];
       break;
     
-    case EGEFile::MODE_APPEND:
+    case EFileModeWriteAppend:
       
       m_file = [NSFileHandle fileHandleForUpdatingAtPath: FilePathToNative(d_func()->filePath())];
       break;
@@ -177,7 +178,7 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   return tell() - curPos;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode) 
+s64 FilePrivate::seek(s64 offset, FileSeek mode) 
 {
   if ( ! isOpen())
   {
@@ -190,17 +191,17 @@ s64 FilePrivate::seek(s64 offset, EGEFile::ESeekMode mode)
   {
     switch (mode)
     {
-      case EGEFile::SEEK_MODE_BEGIN:
+      case EFileSeekBegin:
         
         [(id) m_file seekToFileOffset: offset];
         break;
         
-      case EGEFile::SEEK_MODE_CURRENT:
+      case EFileSeekCurrent:
         
         [(id) m_file seekToFileOffset: tell() + offset];
         break;
         
-      case EGEFile::SEEK_MODE_END:
+      case EFileSeekEnd:
         
         [(id) m_file seekToFileOffset: size() + offset];
         break;

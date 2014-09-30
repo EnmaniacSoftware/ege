@@ -25,7 +25,7 @@ bool ImageHandlerJPG::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
-    if (-1 != file->seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u32 id;
       *file >> id;

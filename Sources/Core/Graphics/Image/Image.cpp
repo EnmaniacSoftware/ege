@@ -42,7 +42,7 @@ PImage Image::Load(const String& fileName, PixelFormat format)
   PImage image;
 
   File file(fileName);
-  if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
+  if (EGE_SUCCESS != file.open(EFileModeReadOnly))
   {
     // error!
     return NULL;
@@ -51,7 +51,7 @@ PImage Image::Load(const String& fileName, PixelFormat format)
   // check if JPG
   if (ImageHandlerJPG::IsValidFormat(file))
   {
-    if (-1 != file.seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file.seek(0L, EFileSeekBegin))
     {
       // load it
       image = ImageHandlerJPG::Load(file, format);
@@ -60,7 +60,7 @@ PImage Image::Load(const String& fileName, PixelFormat format)
   // check if PNG
   else if (ImageHandlerPNG::IsValidFormat(file))
   {
-    if (-1 != file.seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file.seek(0L, EFileSeekBegin))
     {
       // load it
       image = ImageHandlerPNG::Load(file, format);
@@ -69,7 +69,7 @@ PImage Image::Load(const String& fileName, PixelFormat format)
   // check if PVR
   else if (ImageHandlerPVR::IsValidFormat(file))
   {
-    if (-1 != file.seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file.seek(0L, EFileSeekBegin))
     {
       // load it
       image = ImageHandlerPVR::Load(file, format);

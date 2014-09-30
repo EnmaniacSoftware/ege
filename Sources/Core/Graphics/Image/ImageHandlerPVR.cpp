@@ -33,7 +33,7 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
-    if (-1 != file->seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u32 version;
       *file >> version;
@@ -109,7 +109,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
     *file >> header.metaDataSize;
 
     // skip meta data
-    if (-1 == file->seek(header.metaDataSize, EGEFile::SEEK_MODE_CURRENT))
+    if (-1 == file->seek(header.metaDataSize, EFileSeekCurrent))
     {
       // error!
       return NULL;

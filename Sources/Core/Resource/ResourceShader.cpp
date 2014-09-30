@@ -120,7 +120,7 @@ EGEResult ResourceShader::create()
 
   // read shader file into buffer
   File file(path());
-  if (EGE_SUCCESS != (result = file.open(EGEFile::MODE_READ_ONLY)))
+  if (EGE_SUCCESS != (result = file.open(EFileModeReadOnly)))
   {
     // error!
     return result;

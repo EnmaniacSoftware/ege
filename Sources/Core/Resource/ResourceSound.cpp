@@ -79,7 +79,7 @@ EGEResult ResourceSound::load()
 
     // open sound file for reading
     File file(m_path);
-    if (EGE_SUCCESS != file.open(EGEFile::MODE_READ_ONLY))
+    if (EGE_SUCCESS != file.open(EFileModeReadOnly))
     {
       // error!
       return EGE_ERROR_IO;

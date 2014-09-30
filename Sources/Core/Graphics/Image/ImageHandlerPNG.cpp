@@ -85,7 +85,7 @@ bool ImageHandlerPNG::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
-    if (-1 != file->seek(0L, EGEFile::SEEK_MODE_BEGIN))
+    if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u8 header[8];
       *file >> header[0];
@@ -271,7 +271,7 @@ EGEResult ImageHandlerPNG::Save(PImage image, const String& fileName, PixelForma
 
   // open file for writing
   File file(fileName);
-  if (EGE_SUCCESS != (result = file.open(EGEFile::MODE_WRITE_ONLY)))
+  if (EGE_SUCCESS != (result = file.open(EFileModeWriteOnly)))
   {
     // error!
     return result;

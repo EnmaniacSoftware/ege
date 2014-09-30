@@ -80,7 +80,7 @@ EGEResult XmlDocumentPrivate::save(const String& fileName)
   {
     // open file for writting
     File file(fileName);
-    if (EGE_SUCCESS == (result = file.open(EGEFile::MODE_WRITE_ONLY)))
+    if (EGE_SUCCESS == (result = file.open(EFileModeWriteOnly)))
     {
       // write buffer into file
       s64 written = file.write(buffer, -1);

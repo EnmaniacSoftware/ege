@@ -1,13 +1,13 @@
-#include "Core/File/File.h"
+#include "Core/File/Interface/File.h"
 #include "EGEDebug.h"
 #include "EGEDataBuffer.h"
 
 #ifdef EGE_PLATFORM_WIN32
-  #include "Win32/File/FileWin32_p.h"
+  #include "Win32/File/Interface/FileWin32_p.h"
 #elif EGE_PLATFORM_AIRPLAY
   #include "Airplay/File/FileAirplay_p.h"
 #elif EGE_PLATFORM_IOS
-  #include "iOS/File/FileIOS_p.h"
+  #include "iOS/File/Interface/FileIOS_p.h"
 #endif
 
 EGE_NAMESPACE_BEGIN
@@ -16,9 +16,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(File)
 EGE_DEFINE_DELETE_OPERATORS(File)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-File::File(const String& filePath) : Object(EGE_OBJECT_UID_FILE)
-                                   , m_p(NULL)
-                                   , m_filePath(filePath)
+File::File(const String& filePath) 
+: Object(EGE_OBJECT_UID_FILE)
+, m_filePath(filePath)
 {
   m_p = ege_new FilePrivate(this);
 }
@@ -50,7 +50,7 @@ const String& File::filePath() const
   return m_filePath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult File::open(EGEFile::EMode mode)
+EGEResult File::open(FileMode mode)
 {
   if (isValid())
   {
@@ -78,7 +78,7 @@ s64 File::read(const PDataBuffer& dst, s64 size)
   return 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 File::seek(s64 offset, EGEFile::ESeekMode mode) 
+s64 File::seek(s64 offset, FileSeek mode) 
 {
   if (isValid())
   {

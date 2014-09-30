@@ -141,7 +141,7 @@ void Logger::write()
   File file(m_fileName);
   
   // open file
-  if (EGE_SUCCESS == file.open(EGEFile::MODE_APPEND))
+  if (EGE_SUCCESS == file.open(EFileModeWriteAppend))
   {
     // add new line character
     *m_buffer << "\n";
