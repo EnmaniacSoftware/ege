@@ -1,7 +1,4 @@
 #include "Core/Graphics/Image/ImageLoader.h"
-#include "Core/Event/Event.h"
-#include "Core/Event/EventIDs.h"
-#include "Core/Event/EventManager.h"
 #include "EGEEngine.h"
 #include "EGEDebug.h"
 

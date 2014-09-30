@@ -433,14 +433,11 @@
     <Filter Include="Core\Graphics\Interface">
       <UniqueIdentifier>{55797d27-ab1b-4afb-aaeb-d28c08303d51}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Event\Implementation">
+      <UniqueIdentifier>{e22632d0-2c82-4b5a-b80a-68d9a39d7d68}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Event\Event.cpp">
-      <Filter>Core\Event</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp">
-      <Filter>Core\Event</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
@@ -1110,20 +1107,14 @@
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioManagerFactory.cpp">
       <Filter>Core\Audio\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Event\Implementation\Event.cpp">
+      <Filter>Core\Event\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp">
+      <Filter>Core\Event\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Sources\Core\Event\Event.h">
-      <Filter>Core\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h">
-      <Filter>Core\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Event\EventListener.h">
-      <Filter>Core\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Event\EventManager.h">
-      <Filter>Core\Event</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
@@ -2051,6 +2042,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Interface\IGraphics.h">
       <Filter>Core\Graphics\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\Event.h">
+      <Filter>Core\Event\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\EventIDs.h">
+      <Filter>Core\Event\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\EventListener.h">
+      <Filter>Core\Event\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Event\Implementation\EventManager.h">
+      <Filter>Core\Event\Implementation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

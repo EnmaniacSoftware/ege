@@ -1,4 +1,4 @@
-#include "Core/Event/Event.h"
+#include "Core/Event/Interface/Event.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -6,8 +6,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Event)
 EGE_DEFINE_DELETE_OPERATORS(Event)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Event::Event(s32 id) : Object()
-                     , m_id(id)
+Event::Event(s32 id) 
+: Object()
+, m_id(id)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

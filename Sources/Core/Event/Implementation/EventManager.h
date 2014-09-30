@@ -11,10 +11,10 @@
 #include "EGEList.h"
 #include "EGEMutex.h"
 #include "EGETime.h"
-#include "Core/Event/Interface/IEventManager.h"
-#include "Core/Event/EventListener.h"
 #include "Core/ListenerContainer.h"
 #include "Core/Engine/Interface/EngineModule.h"
+#include "Core/Event/Interface/IEventManager.h"
+#include "Core/Event/Interface/EventListener.h"
 
 EGE_NAMESPACE_BEGIN
 

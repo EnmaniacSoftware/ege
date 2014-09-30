@@ -2,7 +2,7 @@
 #define EGE_CORE_EVENT_H
 
 #include "EGE.h"
-#include "Core/Event/EventIDs.h"
+#include "Core/Event/Interface/EventIDs.h"
 
 EGE_NAMESPACE_BEGIN
 

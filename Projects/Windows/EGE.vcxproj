@@ -71,8 +71,8 @@
     <ClCompile Include="..\..\Sources\Core\Directory\Implementation\Directory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineApplication.cpp" />
     <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Event\Event.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Event\EventManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Event\Implementation\Event.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\File.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\Color.cpp" />
@@ -300,6 +300,10 @@
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineInternal.h" />
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineModule.h" />
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\IEngineModule.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\Implementation\EventManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\Event.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\EventIDs.h" />
+    <ClInclude Include="..\..\Sources\Core\Event\Interface\EventListener.h" />
     <ClInclude Include="..\..\Sources\Core\Event\Interface\IEventManager.h" />
     <ClInclude Include="..\..\Sources\Core\Factory\Interface\Factory.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
@@ -512,10 +516,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
-    <ClInclude Include="..\..\Sources\Core\Event\Event.h" />
-    <ClInclude Include="..\..\Sources\Core\Event\EventIDs.h" />
-    <ClInclude Include="..\..\Sources\Core\Event\EventListener.h" />
-    <ClInclude Include="..\..\Sources\Core\Event\EventManager.h" />
     <ClInclude Include="..\..\Sources\Core\File\File.h" />
     <ClInclude Include="..\..\Sources\Core\Flags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h" />

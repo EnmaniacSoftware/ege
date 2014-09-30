@@ -1,5 +1,5 @@
-#include "Core/Event/EventManager.h"
-#include "Core/Event/Event.h"
+#include "Core/Event/Implementation/EventManager.h"
+#include "Core/Event/Interface/Event.h"
 #include "Core/ComplexTypes.h"
 #include "EGEDebug.h"
 
