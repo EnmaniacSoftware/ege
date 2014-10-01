@@ -74,13 +74,13 @@ void PushButton::pointerEvent(PPointerData data)
   {
     switch (data->action())
     {
-      case ACTION_BUTTON_DOWN:
+      case EPointerActionButtonDown:
 
         // store flag
         m_clicked = true;
         break;
 
-      case ACTION_BUTTON_UP:
+      case EPointerActionButtonUp:
 
         // check if was clicked
         if (m_clicked)
@@ -96,7 +96,7 @@ void PushButton::pointerEvent(PPointerData data)
   }
 
   // reset click flag if released
-  if (ACTION_BUTTON_UP == data->action())
+  if (EPointerActionButtonUp == data->action())
   {
     m_clicked = false;
   }

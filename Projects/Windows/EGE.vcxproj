@@ -129,8 +129,8 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexDeclaration.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\VertexElement.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Viewport.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\Pointer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerData.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Angle.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\AxisAlignedBox.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Implementation\Math.cpp" />
@@ -240,6 +240,7 @@
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Input\Implementation\PointerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
     <ClCompile Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Services\Implementation\DeviceServicesWin32.cpp" />
@@ -358,6 +359,8 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\Pointer.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerData.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\Line2Types.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\MatrixTypes.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Implementation\PlaneTypes.h" />
@@ -505,7 +508,6 @@
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp" />
   </ItemGroup>
@@ -531,8 +533,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\TextureImage.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Viewport.h" />
-    <ClInclude Include="..\..\Sources\Core\Input\Pointer.h" />
-    <ClInclude Include="..\..\Sources\Core\Input\PointerData.h" />
     <ClInclude Include="..\..\Sources\Core\ListenerContainer.h" />
     <ClInclude Include="..\..\Sources\Core\Memory\Memory.h" />
     <ClInclude Include="..\..\Sources\Core\Memory\MemoryManager.h" />
@@ -624,7 +624,7 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />
-    <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\Input\Interface\PointerWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\NativeUI\MessageBoxWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\DeviceServicesWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Services\Interface\PurchaseServicesWin32.h" />

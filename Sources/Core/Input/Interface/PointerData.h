@@ -2,10 +2,39 @@
 #define EGE_CORE_POINTERDATA_H
 
 #include "EGE.h"
-#include "EGEInput.h"
+#include "EGEFlags.h"
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Available buttons. */
+enum PointerButton
+{
+  EPointerButtonNone = 0,
+  EPointerButtonLeft,
+  EPointerButtonRight,
+  EPointerButtonWheelUp,
+  EPointerButtonWheelDown
+};
+
+/*! Available actions. */
+enum PointerAction
+{
+  EPointerActionButtonDown = 0,
+  EPointerActionButtonUp,
+  EPointerActionMove
+};
+
+/*! Available keyboard modifiers. */
+enum KeyboardModifiersFlags
+{
+  EKeyModifierNone  = 0x00,
+  EKeyModifierShift = 0x01,
+  EKeyModifierAlt   = 0x02,
+  EKeyModifierCtrl  = 0x04
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGE_DECLARE_FLAGS(KeyboardModifiers, KeyboardModifiersFlags)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(PointerData, PPointerData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -13,24 +42,26 @@ class PointerData : public Object
 {
   public:
 
-    PointerData(Action action, Button button, KeyboardModifiers modifiers, s32 x, s32 y, s32 index);
+    PointerData(PointerAction action, PointerButton button, KeyboardModifiers modifiers, s32 x, s32 y, s32 index);
    ~PointerData();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
+  public:
+
     /*! Returns button type. */
-    Button button() const { return m_button; }
+    PointerButton button() const;
     /*! Returns action type. */
-    Action action() const { return m_action; }
+    PointerAction action() const;
     /*! Returns X position. */
-    s32 x() const { return m_x; }
+    s32 x() const;
     /*! Returns Y position. */
-    s32 y() const { return m_y; }
+    s32 y() const;
     /*! Returns pointer index. */
-    s32 index() const { return m_index; }
+    s32 index() const;
     /*! Returns keyboard modifiers. */
-    const KeyboardModifiers& modifiers() const { return m_modifiers; }
+    const KeyboardModifiers& modifiers() const;
 
   private:
 
@@ -41,9 +72,9 @@ class PointerData : public Object
     /*! Y position of event. */
     s32 m_y;
     /*! Button type. */
-    Button m_button;
+    PointerButton m_button;
     /*! Action type. */
-    Action m_action;
+    PointerAction m_action;
     /*! Keyboard modifier. */
     KeyboardModifiers m_modifiers;
 };

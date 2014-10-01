@@ -271,20 +271,20 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
   }
 
   // detrmine current keyboard modifiers
-  KeyboardModifiers keyboardModifiers = KM_NONE;
+  KeyboardModifiers keyboardModifiers = EKeyModifierNone;
   if (GetAsyncKeyState(VK_MENU) & 0x8000)
   {
-    keyboardModifiers |= KM_ALT;
+    keyboardModifiers |= EKeyModifierAlt;
   }
 
   if (GetAsyncKeyState(VK_CONTROL) & 0x8000)
   {
-    keyboardModifiers |= KM_CTRL;
+    keyboardModifiers |= EKeyModifierCtrl;
   }
 
   if (GetAsyncKeyState(VK_SHIFT) & 0x8000)
   {
-    keyboardModifiers |= KM_SHIFT;
+    keyboardModifiers |= EKeyModifierShift;
   }
 
   s32 x;
@@ -300,7 +300,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
         x = static_cast<s32>(LOWORD(lParam) / me->zoom());
         y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-        PObject data = ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_LEFT, keyboardModifiers, x, y, 0);
+        PObject data = ege_new PointerData(EPointerActionButtonDown, EPointerButtonLeft, keyboardModifiers, x, y, 0);
         eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
       }
       return 0;
@@ -312,7 +312,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
         x = static_cast<s32>(LOWORD(lParam) / me->zoom());
         y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-        PObject data = ege_new PointerData(ACTION_BUTTON_UP, BUTTON_LEFT, keyboardModifiers, x, y, 0);
+        PObject data = ege_new PointerData(EPointerActionButtonUp, EPointerButtonLeft, keyboardModifiers, x, y, 0);
         eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, ege_pcast<PObject>(data));
       }
       return 0;
@@ -324,7 +324,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
         x = static_cast<s32>(LOWORD(lParam) / me->zoom());
         y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-        PObject data = ege_new PointerData(ACTION_BUTTON_DOWN, BUTTON_RIGHT, keyboardModifiers, x, y, 0);
+        PObject data = ege_new PointerData(EPointerActionButtonDown, EPointerButtonRight, keyboardModifiers, x, y, 0);
         eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
       }
       return 0;
@@ -336,7 +336,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
         x = static_cast<s32>(LOWORD(lParam) / me->zoom());
         y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-        PObject data = ege_new PointerData(ACTION_BUTTON_UP, BUTTON_RIGHT, keyboardModifiers, x, y, 0);
+        PObject data = ege_new PointerData(EPointerActionButtonUp, EPointerButtonRight, keyboardModifiers, x, y, 0);
         eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
       }
       return 0;
@@ -348,7 +348,7 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
         x = static_cast<s32>(LOWORD(lParam) / me->zoom());
         y = static_cast<s32>(HIWORD(lParam) / me->zoom());
 
-        PObject data = ege_new PointerData(ACTION_MOVE, BUTTON_NONE, keyboardModifiers, x, y, 0);
+        PObject data = ege_new PointerData(EPointerActionMove, EPointerButtonNone, keyboardModifiers, x, y, 0);
         eventManager->send(EGE_EVENT_ID_INTERNAL_POINTER_DATA, data);
       }
       return 0;

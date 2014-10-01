@@ -245,17 +245,17 @@ void UIScrollView::pointerEvent(PPointerData data)
   else
   {
     // process according to action
-    if (ACTION_BUTTON_DOWN == data->action())
+    if (EPointerActionButtonDown == data->action())
     {
       // begin move
       beginMove(data->x(), data->y());
     }
-    else if (ACTION_BUTTON_UP == data->action() && (STATE_DRAGGING == m_state))
+    else if (EPointerActionButtonUp == data->action() && (STATE_DRAGGING == m_state))
     {
       // end move
       endMove();
     }
-    else if ((ACTION_MOVE == data->action()) && (STATE_DRAGGING == m_state))
+    else if ((EPointerActionMove == data->action()) && (STATE_DRAGGING == m_state))
     {
       // store current pointer position
       m_currentPointerPosition.x = static_cast<float32>(data->x());

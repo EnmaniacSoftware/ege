@@ -448,6 +448,18 @@
     <Filter Include="Win32\File\Interface">
       <UniqueIdentifier>{e423fb6e-c7c7-4c01-8228-1d7187217412}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Input\Implementation">
+      <UniqueIdentifier>{459c62a2-7a8e-427b-aba0-1947480d1613}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Input\Interface">
+      <UniqueIdentifier>{929746ae-1c52-4c69-956f-36fd2ba6dd3a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Input\Implementation">
+      <UniqueIdentifier>{5ac48246-660d-465a-9dff-6a53ae13be61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Input\Interface">
+      <UniqueIdentifier>{db84b55e-74f0-4ffb-a3b9-9f811081170c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -536,15 +548,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
       <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Input\Pointer.cpp">
-      <Filter>Core\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Input\PointerWin32_p.cpp">
-      <Filter>Win32\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Input\PointerData.cpp">
-      <Filter>Core\Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp">
       <Filter>Core\Resource</Filter>
@@ -1125,6 +1128,15 @@
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp">
       <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Input\Implementation\PointerWin32_p.cpp">
+      <Filter>Win32\Input\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\Pointer.cpp">
+      <Filter>Core\Input\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerData.cpp">
+      <Filter>Core\Input\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -1254,17 +1266,8 @@
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
     <ClInclude Include="..\..\Sources\EGERandom.h" />
     <ClInclude Include="..\..\Sources\EGEInput.h" />
-    <ClInclude Include="..\..\Sources\Core\Input\Pointer.h">
-      <Filter>Core\Input</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Memory\SmartPointer.h">
       <Filter>Core\Memory</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\Input\PointerWin32_p.h">
-      <Filter>Win32\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Input\PointerData.h">
-      <Filter>Core\Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\Resource.h">
       <Filter>Core\Resource</Filter>
@@ -2066,6 +2069,15 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h">
       <Filter>Win32\File\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\Input\Interface\PointerWin32_p.h">
+      <Filter>Win32\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\Pointer.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerData.h">
+      <Filter>Core\Input\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

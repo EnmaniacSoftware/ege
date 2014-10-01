@@ -1,5 +1,5 @@
-#include "Win32/Input/PointerWin32_p.h"
-#include "Core/Input/Pointer.h"
+#include "Win32/Input/Interface/PointerWin32_p.h"
+#include "EGEInput.h"
 #include "EGEEngine.h"
 #include "EGEEvent.h"
 
@@ -9,7 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(PointerPrivate)
 EGE_DEFINE_DELETE_OPERATORS(PointerPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PointerPrivate::PointerPrivate(Pointer* base) : m_d(base)
+PointerPrivate::PointerPrivate(Pointer* base) 
+: m_d(base)
 {
   d_func()->engine().eventManager()->registerListener(this);
 }
