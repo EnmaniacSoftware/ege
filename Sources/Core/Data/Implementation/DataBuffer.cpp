@@ -309,18 +309,13 @@ ISerializable& DataBuffer::operator << (float64 value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& DataBuffer::operator << (const char* value)
 {
-  EGE_UNUSED(value);
-  
-  EGE_ASSERT_X(false, "Unsupported");
-  
+  write(value, strlen(value));
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ISerializable& DataBuffer::operator << (const String& value)
 {
-  EGE_UNUSED(value);
-
-  EGE_ASSERT_X(false, "Unsupported");
+  write(&value[0], value.length());
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
