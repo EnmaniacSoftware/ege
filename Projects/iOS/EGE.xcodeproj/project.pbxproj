@@ -65,8 +65,6 @@
 		4514716518C5231900AAC617 /* VertexDeclaration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FCF18C5231900AAC617 /* VertexDeclaration.cpp */; };
 		4514716618C5231900AAC617 /* VertexElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FD118C5231900AAC617 /* VertexElement.cpp */; };
 		4514716718C5231900AAC617 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FD318C5231900AAC617 /* Viewport.cpp */; };
-		4514716818C5231900AAC617 /* Pointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FD618C5231900AAC617 /* Pointer.cpp */; };
-		4514716918C5231900AAC617 /* PointerData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FD818C5231900AAC617 /* PointerData.cpp */; };
 		4514716A18C5231900AAC617 /* Angle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FDD18C5231900AAC617 /* Angle.cpp */; };
 		4514716B18C5231900AAC617 /* AxisAlignedBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FDE18C5231900AAC617 /* AxisAlignedBox.cpp */; };
 		4514716C18C5231900AAC617 /* Math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146FE018C5231900AAC617 /* Math.cpp */; };
@@ -167,7 +165,6 @@
 		4514722F18C5236200AAC617 /* ExtensionsOGLIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720218C5236200AAC617 /* ExtensionsOGLIOS.cpp */; };
 		4514723018C5236200AAC617 /* RenderWindowOGLIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720518C5236200AAC617 /* RenderWindowOGLIOS.mm */; };
 		4514723118C5236200AAC617 /* ViewOGL.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720718C5236200AAC617 /* ViewOGL.mm */; };
-		4514723218C5236200AAC617 /* PointerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720A18C5236200AAC617 /* PointerIOS_p.mm */; };
 		4514723318C5236200AAC617 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720B18C5236200AAC617 /* main.mm */; };
 		4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720D18C5236200AAC617 /* MemoryIOS.cpp */; };
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
@@ -261,6 +258,9 @@
 		45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
+		45FEFC8719E03F9000243B14 /* Pointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8219E03F9000243B14 /* Pointer.cpp */; };
+		45FEFC8819E03F9000243B14 /* PointerData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8319E03F9000243B14 /* PointerData.cpp */; };
+		45FEFC8D19E03FA300243B14 /* PointerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -532,10 +532,6 @@
 		45146FD218C5231900AAC617 /* VertexElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexElement.h; sourceTree = "<group>"; };
 		45146FD318C5231900AAC617 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		45146FD418C5231900AAC617 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
-		45146FD618C5231900AAC617 /* Pointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pointer.cpp; sourceTree = "<group>"; };
-		45146FD718C5231900AAC617 /* Pointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pointer.h; sourceTree = "<group>"; };
-		45146FD818C5231900AAC617 /* PointerData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointerData.cpp; sourceTree = "<group>"; };
-		45146FD918C5231900AAC617 /* PointerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerData.h; sourceTree = "<group>"; };
 		45146FDA18C5231900AAC617 /* ListenerContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListenerContainer.h; sourceTree = "<group>"; };
 		45146FDD18C5231900AAC617 /* Angle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Angle.cpp; sourceTree = "<group>"; };
 		45146FDE18C5231900AAC617 /* AxisAlignedBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AxisAlignedBox.cpp; sourceTree = "<group>"; };
@@ -763,8 +759,6 @@
 		4514720518C5236200AAC617 /* RenderWindowOGLIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RenderWindowOGLIOS.mm; sourceTree = "<group>"; };
 		4514720618C5236200AAC617 /* ViewOGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewOGL.h; sourceTree = "<group>"; };
 		4514720718C5236200AAC617 /* ViewOGL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewOGL.mm; sourceTree = "<group>"; };
-		4514720918C5236200AAC617 /* PointerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerIOS_p.h; sourceTree = "<group>"; };
-		4514720A18C5236200AAC617 /* PointerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PointerIOS_p.mm; sourceTree = "<group>"; };
 		4514720B18C5236200AAC617 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		4514720D18C5236200AAC617 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		4514720F18C5236200AAC617 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
@@ -963,6 +957,12 @@
 		45E4DC33199C0395000FB4B8 /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
+		45FEFC8219E03F9000243B14 /* Pointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pointer.cpp; sourceTree = "<group>"; };
+		45FEFC8319E03F9000243B14 /* PointerData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointerData.cpp; sourceTree = "<group>"; };
+		45FEFC8519E03F9000243B14 /* Pointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pointer.h; sourceTree = "<group>"; };
+		45FEFC8619E03F9000243B14 /* PointerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerData.h; sourceTree = "<group>"; };
+		45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PointerIOS_p.mm; sourceTree = "<group>"; };
+		45FEFC8C19E03FA300243B14 /* PointerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerIOS_p.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1625,10 +1625,8 @@
 		45146FD518C5231900AAC617 /* Input */ = {
 			isa = PBXGroup;
 			children = (
-				45146FD618C5231900AAC617 /* Pointer.cpp */,
-				45146FD718C5231900AAC617 /* Pointer.h */,
-				45146FD818C5231900AAC617 /* PointerData.cpp */,
-				45146FD918C5231900AAC617 /* PointerData.h */,
+				45FEFC8119E03F9000243B14 /* Implementation */,
+				45FEFC8419E03F9000243B14 /* Interface */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2233,8 +2231,8 @@
 		4514720818C5236200AAC617 /* Input */ = {
 			isa = PBXGroup;
 			children = (
-				4514720918C5236200AAC617 /* PointerIOS_p.h */,
-				4514720A18C5236200AAC617 /* PointerIOS_p.mm */,
+				45FEFC8919E03FA300243B14 /* Implementation */,
+				45FEFC8B19E03FA300243B14 /* Interface */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2938,6 +2936,40 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		45FEFC8119E03F9000243B14 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45FEFC8219E03F9000243B14 /* Pointer.cpp */,
+				45FEFC8319E03F9000243B14 /* PointerData.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45FEFC8419E03F9000243B14 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45FEFC8519E03F9000243B14 /* Pointer.h */,
+				45FEFC8619E03F9000243B14 /* PointerData.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		45FEFC8919E03FA300243B14 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45FEFC8B19E03FA300243B14 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45FEFC8C19E03FA300243B14 /* PointerIOS_p.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3079,6 +3111,7 @@
 				4514713B18C5231900AAC617 /* ImageHandlerPNG.cpp in Sources */,
 				4514713C18C5231900AAC617 /* ImageHandlerPVR.cpp in Sources */,
 				4514713D18C5231900AAC617 /* ImageLoader.cpp in Sources */,
+				45FEFC8819E03F9000243B14 /* PointerData.cpp in Sources */,
 				4514713E18C5231900AAC617 /* ImageUtils.cpp in Sources */,
 				4514713F18C5231900AAC617 /* ImageLoaderST_p.cpp in Sources */,
 				453C83FD193E6AD200FBA4AA /* SoundEffectFadeOut.cpp in Sources */,
@@ -3113,8 +3146,6 @@
 				453C8402193E6AD200FBA4AA /* SoundOpenAL.cpp in Sources */,
 				4514716618C5231900AAC617 /* VertexElement.cpp in Sources */,
 				4514716718C5231900AAC617 /* Viewport.cpp in Sources */,
-				4514716818C5231900AAC617 /* Pointer.cpp in Sources */,
-				4514716918C5231900AAC617 /* PointerData.cpp in Sources */,
 				4514716A18C5231900AAC617 /* Angle.cpp in Sources */,
 				4514716B18C5231900AAC617 /* AxisAlignedBox.cpp in Sources */,
 				4514716C18C5231900AAC617 /* Math.cpp in Sources */,
@@ -3160,6 +3191,7 @@
 				451471A018C5231900AAC617 /* ResourceCurve.cpp in Sources */,
 				451471A118C5231900AAC617 /* ResourceData.cpp in Sources */,
 				451471A218C5231900AAC617 /* ResourceFont.cpp in Sources */,
+				45FEFC8719E03F9000243B14 /* Pointer.cpp in Sources */,
 				451471A318C5231900AAC617 /* ResourceGroup.cpp in Sources */,
 				451471A418C5231900AAC617 /* ResourceImagedAnimation.cpp in Sources */,
 				453C83F9193E6AD200FBA4AA /* AudioCodecOgg.cpp in Sources */,
@@ -3183,6 +3215,7 @@
 				451471B218C5231900AAC617 /* ResourceWidget.cpp in Sources */,
 				451471B318C5231900AAC617 /* ResourceManagerST_p.cpp in Sources */,
 				453C8400193E6AD200FBA4AA /* AudioManagerOpenAL.cpp in Sources */,
+				45FEFC8D19E03FA300243B14 /* PointerIOS_p.mm in Sources */,
 				45E2656619B66D60003E5B14 /* AdNetworkChartboost.mm in Sources */,
 				451471B418C5231900AAC617 /* SceneManager.cpp in Sources */,
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
@@ -3240,7 +3273,6 @@
 				4514723018C5236200AAC617 /* RenderWindowOGLIOS.mm in Sources */,
 				45E4DC39199C0395000FB4B8 /* SocialServices.cpp in Sources */,
 				4514723118C5236200AAC617 /* ViewOGL.mm in Sources */,
-				4514723218C5236200AAC617 /* PointerIOS_p.mm in Sources */,
 				453C83FE193E6AD200FBA4AA /* AudioManagerNull.cpp in Sources */,
 				4514723318C5236200AAC617 /* main.mm in Sources */,
 				4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */,

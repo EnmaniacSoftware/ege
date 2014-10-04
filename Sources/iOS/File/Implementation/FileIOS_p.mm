@@ -180,9 +180,6 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   // convert data
   NSData* data = [NSData dataWithBytes: src->data(readOffset) length: size];
   
-  // get current file position
-  const s64 curPos = tell();
-  
   // store to file
   @try
   {

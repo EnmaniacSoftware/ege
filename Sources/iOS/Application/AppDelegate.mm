@@ -246,7 +246,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     point.y *= scaleFactor;
     
     // send pointer event
-    [self notifyPointerEvent: ACTION_BUTTON_DOWN withButton: BUTTON_LEFT atPoint: point];
+    [self notifyPointerEvent: EPointerActionButtonDown withButton: EPointerButtonLeft atPoint: point];
     
     egeDebug(KAppDelegateDebugName) << "Touch began at" << static_cast<float32>(point.x) << static_cast<float32>(point.y)
                                     << static_cast<float32>(touch.timestamp);
@@ -269,7 +269,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     point.y *= scaleFactor;
         
     // send pointer event
-    [self notifyPointerEvent: ACTION_BUTTON_UP withButton: BUTTON_LEFT atPoint: point];
+    [self notifyPointerEvent: EPointerActionButtonUp withButton: EPointerButtonLeft atPoint: point];
     
     egeDebug(KAppDelegateDebugName) << "Touch ended at" << static_cast<float32>(point.x) <<static_cast<float32>(point.y)
                                     << static_cast<float32>(touch.timestamp);
@@ -298,7 +298,7 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
     point.y *= scaleFactor;
     
     // send pointer event
-    [self notifyPointerEvent: ACTION_MOVE withButton: BUTTON_LEFT atPoint: point];
+    [self notifyPointerEvent: EPointerActionMove withButton: EPointerButtonLeft atPoint: point];
      
     egeDebug(KAppDelegateDebugName) << "Touch moved at" << static_cast<float32>(point.x) << static_cast<float32>(point.y)
                                     << static_cast<float32>(touch.timestamp);
@@ -306,14 +306,14 @@ const char* KAppDelegateDebugName = "EGEAppDelegate";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Sends internal pointer notification. */
-- (void) notifyPointerEvent: (Action) action withButton: (Button) button atPoint: (CGPoint) point
+- (void) notifyPointerEvent: (PointerAction) action withButton: (PointerButton) button atPoint: (CGPoint) point
 {
   IEventManager* eventManager = engine->eventManager();
   
   if (NULL != eventManager)
   {
     // detrmine current keyboard modifiers
-    KeyboardModifiers keyboardModifiers = KM_NONE;
+    KeyboardModifiers keyboardModifiers = EKeyModifierNone;
     
     // send pointer event
     PObject data = ege_new PointerData(action, button, keyboardModifiers, static_cast<s32>(point.x), static_cast<s32>(point.y), 0);
