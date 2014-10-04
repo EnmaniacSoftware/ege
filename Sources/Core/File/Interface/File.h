@@ -13,7 +13,7 @@ enum FileMode
 {
   EFileModeReadOnly = 0,            /*!< Read only. File needs to exist. */
   EFileModeWriteOnly,               /*!< Write only. File will be created if does not exist. Otherwise, content is reset. */
-  EFileModeWriteAppend              /*!< Write only, File needs to exist. File pointer moved to an end of content. */
+  EFileModeWriteAppend              /*!< Write only. File will be created if does not exist. File pointer moved to an end of content. */
 };
 
 /*! Available file seek modes. */
@@ -49,18 +49,18 @@ class File : public Object
     bool isValid() const;
     /*! Opens the given. 
      *  @param  mode  File open mode.
-     *  @return EGE_SUCCESS on success. Otherwise, one of the other error codes.
+     *  @return EGE_SUCCESS on success. Otherwise, EGE_ERROR_IO.
      */
     EGEResult open(FileMode mode);
     /*! Closes file. */
     void close();
     /*! Reads data from file into buffer.
      *  @param  dst   Buffer to write aquired data to.
-     *  @param  size  Size of data (in bytes) to read from the file.
+     *  @param  size  Size of data (in bytes) to read from the file. If negative, all data will be read.
      *  @return Returns number of bytes read. This corresponds to number of bytes written to the buffer.
      */
-    s64 read(const PDataBuffer& dst, s64 size);
-    /*! Writes given amount of data from destination buffer.
+    s64 read(const PDataBuffer& dst, s64 size = -1);
+    /*! Writes given amount of data from destination buffer to a file.
      *  @param  src   Buffer the data is to be read from.
      *  @param  size  Number of bytes to read from the buffer. If negative, all data will be read.
      *  @return Returns number of bytes written to a file.
@@ -80,13 +80,19 @@ class File : public Object
     bool isOpen() const;
     /*! Returns file path. */
     const String& filePath() const;
-    /*! Returns file size. Returns -1 if error occured. */
+    /*! Returns file size.
+     *  @return Size of the file in bytes. In case of an error, negative value is returned. 
+     *  @note File needs to be open before call to this method.
+     */
     s64 size();
+
+    // TAGE - to be removed. Only statics to be left.
     /*! Returns TRUE if file exists. */
     bool exists() const;
     /*! Removes file if possible. */
     bool remove();
 
+    // TAGE - remove as well ??
     File& operator << (u8 value);
     File& operator << (s8 value);
     File& operator << (u16 value);

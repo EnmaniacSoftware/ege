@@ -35,7 +35,7 @@ EGEResult FilePrivate::open(FileMode mode)
   {
     case EFileModeReadOnly:     modeInternal = "rb"; break;
     case EFileModeWriteOnly:    modeInternal = "wb"; break;
-    case EFileModeWriteAppend:  modeInternal = "a+"; break;
+    case EFileModeWriteAppend:  modeInternal = "ab"; break;
 
     default:
 
@@ -47,6 +47,19 @@ EGEResult FilePrivate::open(FileMode mode)
   {
     // error!
     return EGE_ERROR_IO;
+  }
+
+  // check if append mode requested
+  if (EFileModeWriteAppend == mode)
+  {
+    // move file pointer to the end
+    // NOTE: 'ab' mode does not move file pointer before first I\O operation happens
+    if (0 != seek(0, EFileSeekEnd))
+    {
+      // error!
+      close();
+      return EGE_ERROR_IO;
+    }
   }
 
   return EGE_SUCCESS;
@@ -63,7 +76,13 @@ void FilePrivate::close()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 {
-  EGE_ASSERT(dst && (0 <= size));
+  EGE_ASSERT(NULL != dst);
+
+  // check if entire file should be read
+  if (0 > size)
+  {
+    size = this->size();
+  }
 
   // store current write offset in data buffer
   s64 writeOffset = dst->writeOffset();
@@ -89,7 +108,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
     if (feof(m_file))
     {
       // this is not error, however, we need to reflect real number of bytes read in buffer itself
-      // NOTE: call below should never fail as we r effectively shirnking the data size
+      // NOTE: call below should never fail as we are effectively shirnking the data size
       EGEResult result = dst->setSize(writeOffset + readCount);
       EGE_ASSERT(EGE_SUCCESS == result);
     }
@@ -112,7 +131,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
-  EGE_ASSERT(src);
+  EGE_ASSERT(NULL != src);
 
   if (0 > size)
   {
@@ -128,12 +147,22 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   }
 
   // store current read offset from data buffer
-  s64 readOffset = src->readOffset();
+  const s64 readOffset = src->readOffset();
 
   // dont allow to read beyond the size boundary of buffer
   size = Math::Min(size, src->size() - src->readOffset());
 
-  return static_cast<s64>(fwrite(src->data(readOffset), 1, (size_t) size, m_file));
+  // write bytes
+  const size_t bytesWritten = fwrite(src->data(readOffset), 1, static_cast<size_t>(size), m_file);
+
+  // manually update read offset in the buffer
+  if (readOffset != src->setReadOffset(readOffset + bytesWritten))
+  {
+    // error!
+    return 0;
+  }
+
+  return static_cast<s64>(bytesWritten);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, FileSeek mode) 
@@ -158,9 +187,11 @@ s64 FilePrivate::seek(s64 offset, FileSeek mode)
   }
 
   // store current position
-  s64 curPos = tell();
+  const s64 curPos = tell();
 
   // try to change position
+  // NOTE: seeking beyond the the file content is NOT an error!
+  //       However, seeking to locations 'before' the content IS!
   if ((-1 == curPos) || (0 != _fseeki64(m_file, offset, modeInternal)))
   {
     // error!

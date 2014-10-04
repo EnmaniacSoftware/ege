@@ -92,6 +92,11 @@
     <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp" />
@@ -150,6 +155,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h" />

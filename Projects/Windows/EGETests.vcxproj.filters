@@ -37,6 +37,9 @@
     <Filter Include="Tests\Time">
       <UniqueIdentifier>{f8ec26f0-7cf1-4ab7-a778-c7dfe62bcf96}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\File">
+      <UniqueIdentifier>{cd36c7ef-8ae8-492e-925b-3b6ccc3e1d7c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
@@ -132,6 +135,21 @@
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeTest.cpp">
       <Filter>Tests\Time</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTest.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
@@ -154,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\EngineMock.h">
       <Filter>TestFramework\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h">
+      <Filter>Tests\File</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

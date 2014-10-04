@@ -66,7 +66,18 @@ EGEResult FilePrivate::open(FileMode mode)
     
     case EFileModeWriteAppend:
       
-      m_file = [NSFileHandle fileHandleForUpdatingAtPath: FilePathToNative(d_func()->filePath())];
+      // check if file exists
+      if ( ! exists())
+      {
+        // create new one
+        [[NSFileManager defaultManager] createFileAtPath: FilePathToNative(d_func()->filePath()) contents: nil attributes: nil];
+      }
+
+      // open
+      m_file = [NSFileHandle fileHandleForWritingAtPath: FilePathToNative(d_func()->filePath())];
+
+      // move file pointer to the end of the file
+      [(id) m_file seekToEndOfFile];
       break;
 
     default:
@@ -85,7 +96,13 @@ void FilePrivate::close()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 {
-  EGE_ASSERT(dst && (0 <= size));
+  EGE_ASSERT(NULL != dst);
+
+  // check if entire file should be read
+  if (0 > size)
+  {
+    size = this->size();
+  }
 
   // store current write offset in data buffer
   s64 writeOffset = dst->writeOffset();
@@ -138,8 +155,9 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::write(const PDataBuffer& src, s64 size)
 {
-  EGE_ASSERT(src);
+  EGE_ASSERT(NULL != src);
 
+  // check if entire buffer should be written
   if (0 > size)
   {
     size = src->size();
@@ -154,7 +172,7 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   }
 
   // store current read offset from data buffer
-  s64 readOffset = src->readOffset();
+  const s64 readOffset = src->readOffset();
 
   // dont allow to read beyond the size boundary of buffer
   size = Math::Min(size, src->size() - src->readOffset());
@@ -163,19 +181,28 @@ s64 FilePrivate::write(const PDataBuffer& src, s64 size)
   NSData* data = [NSData dataWithBytes: src->data(readOffset) length: size];
   
   // get current file position
-  s64 curPos = tell();
+  const s64 curPos = tell();
   
   // store to file
   @try
   {
     [(id) m_file writeData: data];
   }
-  @catch (NSException *exception)
+  @catch (NSException* exception)
   {
     return 0;
   }
   
-  return tell() - curPos;
+  // NOTE: at this point it is assumed 'all' requested data was managed to be written
+
+  // manually update read offset in the buffer
+  if (readOffset != src->setReadOffset(readOffset + size))
+  {
+    // error!
+    return 0;
+  }
+
+  return size;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, FileSeek mode) 
