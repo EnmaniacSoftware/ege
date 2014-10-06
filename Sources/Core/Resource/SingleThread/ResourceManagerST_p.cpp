@@ -83,7 +83,7 @@ void ResourceManagerPrivate::update(const Time& time)
     if (d_func()->m_groups.empty())
     {
       // done
-      d_func()->m_state = EModuleStateClosed;
+      d_func()->setState(EModuleStateClosed);
     }
   }
 }
