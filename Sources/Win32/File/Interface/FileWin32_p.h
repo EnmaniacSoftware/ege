@@ -20,8 +20,6 @@ class FilePrivate
 
     EGE_DECLARE_PUBLIC_IMPLEMENTATION(File)
 
-    /*! @see File::isValid. */
-    bool isValid() const;
     /*! @see File::open. */
     EGEResult open(FileMode mode);
     /*! @see File::close. */
@@ -36,12 +34,6 @@ class FilePrivate
     s64 tell();
     /*! @see File::isOpen. */
     bool isOpen() const;
-    /*! @see File::size. */
-    s64 size();
-    /*! @see File::exists. */
-    bool exists() const;
-    /*! @see File::remove. */
-    bool remove();
 
   private:
 

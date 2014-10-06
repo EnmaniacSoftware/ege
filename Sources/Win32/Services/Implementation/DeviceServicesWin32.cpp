@@ -1,6 +1,6 @@
 #include "Core/Services/Interface/SpecialURLs.h"
 #include "Win32/Services/Interface/DeviceServicesWin32.h"
-#include "EGEFile.h"
+#include "EGEFileUtils.h"
 #include "EGEDebug.h"
 #include <windows.h>
 
@@ -18,7 +18,7 @@ static const char* KConfidentialDBStoreTableColumnBlobs     = "Blob";
 DeviceServicesWin32::DeviceServicesWin32(Engine& engine) : DeviceServices(engine)
 {
   // open database
-  if (EGE_SUCCESS != m_database.open(KConfidentialDBName, false, ! File::Exists(KConfidentialDBName)))
+  if (EGE_SUCCESS != m_database.open(KConfidentialDBName, false, ! FileUtils::Exists(KConfidentialDBName)))
   {
     // error!
     egeWarning(KDeviceServicesDebugName) << "Could not open databse:" << KConfidentialDBName;

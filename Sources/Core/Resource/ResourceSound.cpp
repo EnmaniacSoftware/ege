@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceSound.h"
 #include "Core/Resource/ResourceManager.h"
 #include "EGEEngine.h"
+#include "EGEFileUtils.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEDebug.h"
@@ -86,7 +87,7 @@ EGEResult ResourceSound::load()
     }
 
     // find whats file size
-    s64 fileSize = file.size();
+    s64 fileSize = FileUtils::Size(file.filePath());
 
     // read data into buffer
     if (file.read(m_data, fileSize) != fileSize)

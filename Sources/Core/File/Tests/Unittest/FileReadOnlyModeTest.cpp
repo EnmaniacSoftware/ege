@@ -234,10 +234,10 @@ TEST_F(FileReadOnlyModeTest, FilePosition)
 
   // move file to the end of the file
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
-  EXPECT_EQ(file.size(), file.tell());
+  EXPECT_EQ(osFileSize(existingFilePath()), file.tell());
 
   // move file back to begining
-  EXPECT_EQ(file.size(), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(osFileSize(existingFilePath()), file.seek(0, EFileSeekBegin));
   EXPECT_EQ(0, file.tell());
 
   // close file
@@ -247,16 +247,4 @@ TEST_F(FileReadOnlyModeTest, FilePosition)
   EXPECT_TRUE(0 > file.tell());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileReadOnlyModeTest, Size)
-{
-  // open existing file
-  File file(existingFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
 
-  // verify size
-  EXPECT_EQ(osFileSize(existingFilePath()), file.size());
-
-  // close file
-  file.close();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------

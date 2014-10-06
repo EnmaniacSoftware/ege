@@ -1,4 +1,6 @@
 #include "iOS/File/Interface/FileIOS_p.h"
+#include "iOS/String/Interface/StringHelper.h"
+#include "EGEFileUtils.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
 #import <Foundation/NSFileHandle.h>
@@ -9,15 +11,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(FilePrivate)
 EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Local function for converting file path from EGE to iOS format. */
-NSString* FilePathToNative(const String& path)
-{
-  // convert file path
-  NSString* filePath = [NSString stringWithCString: path.c_str() encoding: NSASCIIStringEncoding];
-
-  return filePath;
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 FilePrivate::FilePrivate(File* base) 
 : m_d(base)
@@ -45,7 +38,7 @@ EGEResult FilePrivate::open(FileMode mode)
     case EFileModeReadOnly:
       
       // first try to open file in Documents folder
-      m_file = [NSFileHandle fileHandleForReadingAtPath: FilePathToNative(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForReadingAtPath: StringHelper::Convert(d_func()->filePath())];
       break;
       
     case EFileModeWriteOnly:
@@ -54,11 +47,11 @@ EGEResult FilePrivate::open(FileMode mode)
       if ( ! exists())
       {
         // create new one
-        [[NSFileManager defaultManager] createFileAtPath: FilePathToNative(d_func()->filePath()) contents: nil attributes: nil];
+        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
       }
 
       // open
-      m_file = [NSFileHandle fileHandleForWritingAtPath: FilePathToNative(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(d_func()->filePath())];
       
       // truncate to make sure no garbage gets through
       [(id) m_file truncateFileAtOffset: 0];
@@ -70,11 +63,11 @@ EGEResult FilePrivate::open(FileMode mode)
       if ( ! exists())
       {
         // create new one
-        [[NSFileManager defaultManager] createFileAtPath: FilePathToNative(d_func()->filePath()) contents: nil attributes: nil];
+        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
       }
 
       // open
-      m_file = [NSFileHandle fileHandleForWritingAtPath: FilePathToNative(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(d_func()->filePath())];
 
       // move file pointer to the end of the file
       [(id) m_file seekToEndOfFile];
@@ -101,7 +94,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // check if entire file should be read
   if (0 > size)
   {
-    size = this->size();
+    size = FileUtils::Size(d_func()->filePath());
   }
 
   // store current write offset in data buffer
@@ -257,41 +250,6 @@ s64 FilePrivate::tell()
 bool FilePrivate::isOpen() const
 {
   return (nil != m_file);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::size()
-{
-  if ( ! isOpen())
-  {
-    return -1;
-  }
-      
-  // first try to retrieve file info from documents folder
-  NSDictionary* dict = [[NSFileManager defaultManager] attributesOfItemAtPath: FilePathToNative(d_func()->filePath()) error: nil];
-  
-  // get file size attribute
-  s64 size = [dict fileSize];
-  
-  // check if not found
-  if (0 == size)
-  {
-    // error!
-    return -1;
-  }
-  
-  return size;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::exists() const
-{  
-  // check if exists
-  return (YES == [[NSFileManager defaultManager] fileExistsAtPath: FilePathToNative(d_func()->filePath())]);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::remove()
-{ 
-  // remove file
-  return (YES == [[NSFileManager defaultManager] removeItemAtPath: FilePathToNative(d_func()->filePath())  error: nil]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

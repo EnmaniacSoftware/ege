@@ -95,6 +95,7 @@
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.cpp" />
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileUtilsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp" />

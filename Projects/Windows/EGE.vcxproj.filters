@@ -1137,6 +1137,9 @@
     <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerData.cpp">
       <Filter>Core\Input\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp">
+      <Filter>Win32\File\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -2079,6 +2082,10 @@
     <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerData.h">
       <Filter>Core\Input\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\File\Interface\FileUtils.h">
+      <Filter>Core\File\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEFileUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

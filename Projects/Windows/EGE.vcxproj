@@ -237,6 +237,7 @@
     <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
@@ -309,6 +310,7 @@
     <ClInclude Include="..\..\Sources\Core\Event\Interface\IEventManager.h" />
     <ClInclude Include="..\..\Sources\Core\Factory\Interface\Factory.h" />
     <ClInclude Include="..\..\Sources\Core\File\Interface\File.h" />
+    <ClInclude Include="..\..\Sources\Core\File\Interface\FileUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\Color.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Color\ColorTransform.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\HardwareResourceProvider.h" />
@@ -483,6 +485,7 @@
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEDirectory.h" />
     <ClInclude Include="..\..\Sources\EGEEngine.h" />
+    <ClInclude Include="..\..\Sources\EGEFileUtils.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />

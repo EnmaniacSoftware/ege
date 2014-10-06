@@ -4,6 +4,7 @@
 #include "Core/Graphics/HardwareResourceProvider.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "EGEEngine.h"
+#include "EGEFileUtils.h"
 #include "EGEGraphics.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
@@ -126,7 +127,8 @@ EGEResult ResourceShader::create()
     return result;
   }
 
-  if (file.read(m_data, file.size()) != file.size())
+  const s64 fileSize = FileUtils::Size(file.filePath());
+  if (file.read(m_data, fileSize) != fileSize)
   {
     // error!
     result = EGE_ERROR_IO;

@@ -150,6 +150,9 @@
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp">
       <Filter>Tests\File</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileUtilsTest.cpp">
+      <Filter>Tests\File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">

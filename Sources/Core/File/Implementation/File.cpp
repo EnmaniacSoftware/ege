@@ -28,23 +28,6 @@ File::~File()
   EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool File::Exists(const String& filePath)
-{
-  File file(filePath);
-  return file.exists();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool File::Remove(const String& filePath)
-{
-  File file(filePath);
-  return file.remove();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool File::isValid() const
-{
-  return NULL != m_p;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& File::filePath() const
 {
   return m_filePath;
@@ -52,164 +35,112 @@ const String& File::filePath() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult File::open(FileMode mode)
 {
-  if (isValid())
-  {
-    return p_func()->open(mode);
-  }
-
-  return EGE_ERROR;
+  return p_func()->open(mode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void File::close()
 {
-  if (isValid())
-  {
-    p_func()->close();
-  }
+  p_func()->close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 File::read(const PDataBuffer& dst, s64 size)
 {
-  if (isValid())
-  {
-    return p_func()->read(dst, size);
-  }
-
-  return 0;
+  return p_func()->read(dst, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 File::seek(s64 offset, FileSeek mode) 
 {
-  if (isValid())
-  {
-    return p_func()->seek(offset, mode);
-  }
-
-  return -1;
+  return p_func()->seek(offset, mode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 File::tell()
 {
-  if (isValid())
-  {
-    return p_func()->tell();
-  }
-
-  return -1;
+  return p_func()->tell();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 File::write(const PDataBuffer& src, s64 size)
 {
-  if (isValid())
-  {
-    return p_func()->write(src, size);
-  }
-
-  return 0;
+  return p_func()->write(src, size);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (u8 value)
 {
-  if (isValid())
-  {
-    DataBuffer buf(&value, sizeof (value));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&value, sizeof (value));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (s8 value)
 {
-  if (isValid())
-  {
-    DataBuffer buf(&value, sizeof (value));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&value, sizeof (value));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (u16 value)
 {
-  if (isValid())
-  {
-    u8 data[2] = { static_cast<u8>(value & 0x00ff), static_cast<u8>((value & 0xff00) >> 8) };
+  u8 data[2] = { static_cast<u8>(value & 0x00ff), static_cast<u8>((value & 0xff00) >> 8) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (s16 value)
 {
-  if (isValid())
-  {
-    s8 data[2] = { static_cast<s8>(value & 0x00ff), static_cast<s8>((value & 0xff00) >> 8) };
+  s8 data[2] = { static_cast<s8>(value & 0x00ff), static_cast<s8>((value & 0xff00) >> 8) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (u32 value)
 {
-  if (isValid())
-  {
-    u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
+  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (s32 value)
 {
-  if (isValid())
-  {
-    u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
+  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (u64 value)
 {
-  if (isValid())
-  {
-    u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 00), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                   (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                   (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                   (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
+  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 00), (u8)((value & 0x000000000000ff00LL) >> 8), 
+                  (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
+                  (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
+                  (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (s64 value)
 {
-  if (isValid())
-  {
-    u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 0), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                   (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                   (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                   (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
+  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 0), (u8)((value & 0x000000000000ff00LL) >> 8), 
+                  (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
+                  (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
+                  (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
 
-    DataBuffer buf(&data, sizeof (data));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&data, sizeof (data));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
@@ -221,118 +152,88 @@ EGE::File& File::operator << (bool value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (float32 value)
 {
-  if (isValid())
-  {
-    DataBuffer buf(&value, sizeof (value));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&value, sizeof (value));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator << (float64 value)
 {
-  if (isValid())
-  {
-    DataBuffer buf(&value, sizeof (value));
-    p_func()->write(buf, sizeof (value));
-  }
+  DataBuffer buf(&value, sizeof (value));
+  p_func()->write(buf, sizeof (value));
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (u8& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (s8& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (u16& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (s16& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (u32& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (s32& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (u64& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (s64& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
@@ -348,66 +249,25 @@ EGE::File& File::operator >> (bool& value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (float32& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE::File& File::operator >> (float64& value)
 {
-  if (isValid())
-  {
-    DataBuffer buf;
-    p_func()->read(buf, sizeof (value));
-    buf >> value;
-  }
+  DataBuffer buf;
+  p_func()->read(buf, sizeof (value));
+  buf >> value;
 
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool File::isOpen() const
 {
-  if (isValid())
-  {
-    return p_func()->isOpen();
-  }
-
-  return false;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 File::size()
-{
-  if (isValid())
-  {
-    return p_func()->size();
-  }
-
-  return -1;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool File::exists() const
-{
-  if (isValid())
-  {
-    return p_func()->exists();
-  }
-
-  return false;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool File::remove()
-{
-  if (isValid())
-  {
-    return p_func()->remove();
-  }
-
-  return false;
+  return p_func()->isOpen();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

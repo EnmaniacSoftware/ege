@@ -1,6 +1,7 @@
 #include "Core/Resource/ResourceData.h"
 #include "Core/Resource/ResourceManager.h"
 #include "EGEFile.h"
+#include "EGEFileUtils.h"
 #include "EGEResources.h"
 #include "EGEDirectory.h"
 
@@ -12,8 +13,9 @@ static const char* KResourceDataDebugName = "ResourceData";
 EGE_DEFINE_NEW_OPERATORS(ResourceData)
 EGE_DEFINE_DELETE_OPERATORS(ResourceData)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceData::ResourceData(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_DATA)
-                                                                 , m_nulled(false)
+ResourceData::ResourceData(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_DATA)
+, m_nulled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -80,7 +82,7 @@ EGEResult ResourceData::load()
     }
 
     // get file size
-    s64 size = file.size();
+    s64 size = FileUtils::Size(file.filePath());
 
     // read entire file
     if ((-1 == size) || (size != file.read(buffer, size)))

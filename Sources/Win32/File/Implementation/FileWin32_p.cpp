@@ -1,4 +1,5 @@
 #include "Win32/File/Interface/FileWin32_p.h"
+#include "EGEFileUtils.h"
 #include "EGEDataBuffer.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"
@@ -18,11 +19,6 @@ FilePrivate::FilePrivate(File* base)
 FilePrivate::~FilePrivate()
 {
   close();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::isValid() const
-{
-  return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult FilePrivate::open(FileMode mode)
@@ -81,7 +77,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // check if entire file should be read
   if (0 > size)
   {
-    size = this->size();
+    size = FileUtils::Size(d_func()->filePath());
   }
 
   // store current write offset in data buffer
@@ -215,56 +211,6 @@ s64 FilePrivate::tell()
 bool FilePrivate::isOpen() const
 {
   return (NULL != m_file);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::size()
-{
-  if ( ! isOpen())
-  {
-    // error!
-    return -1;
-  }
-
-  // store current file position
-  s64 curPos = tell();
-  
-  // try to skip to end of the file
-  if ((-1 != curPos) && (-1 != seek(0, EFileSeekEnd)))
-  {
-    // store position
-    s64 endPos = tell();
-
-    // return to previous position
-    if (-1 != seek(curPos, EFileSeekBegin))
-    {
-      return endPos;
-    }
-  }
-
-  return -1;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::exists() const
-{
-  bool exists = false;
-
-  // try to open file
-  FILE* file = NULL;
-  if (0 == fopen_s(&file, d_func()->filePath().c_str(), "r"))
-  {
-    // exists
-    exists = true;
-
-    // close file
-    fclose(file);
-  }
-  
-  return exists;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::remove()
-{
-  return (0 == ::remove(d_func()->filePath().c_str()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

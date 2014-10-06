@@ -1,7 +1,7 @@
 #include "Core/XML/Interface/XMLDocument.h"
 #include "Core/XML/Interface/XMLElement.h"
 #include "EGEDataBuffer.h"
-#include "EGEFile.h"
+#include "EGEFileUtils.h"
 
 #if EGE_XML_TINYXML
   #include "Core/XML/Implementation/TinyXml/XMLDocumentTinyXML_p.h"
@@ -32,8 +32,7 @@ EGEResult XmlDocument::load(const String& fileName)
 {
   if (isValid())
   {
-    File file(fileName);
-    if (!file.exists())
+    if (!FileUtils::Exists(fileName))
     {
       // error!
       return EGE_ERROR_NOT_FOUND;

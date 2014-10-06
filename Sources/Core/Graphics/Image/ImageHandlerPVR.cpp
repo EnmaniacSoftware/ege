@@ -1,4 +1,5 @@
 #include "Core/Graphics/Image/ImageHandlerPVR.h"
+#include "EGEFileUtils.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -116,7 +117,7 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
     }
 
     // NOTE: Use 52 instead of sizeof (PVRHeader) to make sure no alignment is being applied (ie can be 8 - byte alignment which screws everything)
-    s64 pixelDataSize = file->size() - 52 - header.metaDataSize;
+    s64 pixelDataSize = FileUtils::Size(file->filePath()) - 52 - header.metaDataSize;
 
     // allocate buffer for pixel data
     if (EGE_SUCCESS != pixelData->setSize(pixelDataSize))

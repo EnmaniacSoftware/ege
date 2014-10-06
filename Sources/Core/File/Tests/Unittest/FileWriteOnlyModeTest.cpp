@@ -283,30 +283,3 @@ TEST_F(FileWriteOnlyModeTest, FilePosition)
   EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteOnlyModeTest, Size)
-{
-  // create data buffer
-  DataBuffer buffer;
-  buffer << generatedFileContent();
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // open file for writting
-  File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteOnly));
-
-  // write all data to a file
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.write(buffer, -1));
-
-  // verify size
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.size());
-
-  // close file
-  file.close();
-
-  // clean up
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------

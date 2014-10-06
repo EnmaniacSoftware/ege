@@ -38,15 +38,6 @@ class File : public Object
 
   public:
 
-    /*! Returns TRUE if file at given path exists. */
-    static bool Exists(const String& filePath);
-    /*! Removes file at given path is possible. */
-    static bool Remove(const String& filePath);
-
-  public:
-
-    /*! Returns TRUE if object is valid. */
-    bool isValid() const;
     /*! Opens the given. 
      *  @param  mode  File open mode.
      *  @return EGE_SUCCESS on success. Otherwise, EGE_ERROR_IO.
@@ -80,17 +71,6 @@ class File : public Object
     bool isOpen() const;
     /*! Returns file path. */
     const String& filePath() const;
-    /*! Returns file size.
-     *  @return Size of the file in bytes. In case of an error, negative value is returned. 
-     *  @note File needs to be open before call to this method.
-     */
-    s64 size();
-
-    // TAGE - to be removed. Only statics to be left.
-    /*! Returns TRUE if file exists. */
-    bool exists() const;
-    /*! Removes file if possible. */
-    bool remove();
 
     // TAGE - remove as well ??
     File& operator << (u8 value);
