@@ -23,11 +23,6 @@ FilePrivate::~FilePrivate()
   close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool FilePrivate::isValid() const
-{
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult FilePrivate::open(FileMode mode)
 {
   close();
@@ -44,7 +39,7 @@ EGEResult FilePrivate::open(FileMode mode)
     case EFileModeWriteOnly:
     
       // check if file exists
-      if ( ! exists())
+      if ( ! FileUtils::Exists(d_func()->filePath()))
       {
         // create new one
         [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
@@ -60,7 +55,7 @@ EGEResult FilePrivate::open(FileMode mode)
     case EFileModeWriteAppend:
       
       // check if file exists
-      if ( ! exists())
+      if ( ! FileUtils::Exists(d_func()->filePath()))
       {
         // create new one
         [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
@@ -203,6 +198,9 @@ s64 FilePrivate::seek(s64 offset, FileSeek mode)
     return -1;
   }
 
+  // get current file position
+  s64 oldPosition = tell();
+  
   // move position
   @try
   {
@@ -220,7 +218,7 @@ s64 FilePrivate::seek(s64 offset, FileSeek mode)
         
       case EFileSeekEnd:
         
-        [(id) m_file seekToFileOffset: size() + offset];
+        [(id) m_file seekToFileOffset: FileUtils::Size(d_func()->filePath()) + offset];
         break;
         
       default:
@@ -233,7 +231,7 @@ s64 FilePrivate::seek(s64 offset, FileSeek mode)
     return -1;
   }
 
-  return tell();
+  return oldPosition;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::tell()

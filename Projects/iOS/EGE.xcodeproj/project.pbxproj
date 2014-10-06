@@ -217,6 +217,7 @@
 		458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79718FF1F0E00333B67 /* Time.cpp */; };
 		458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79818FF1F0E00333B67 /* TimeLine.cpp */; };
 		458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 458AA7A918FF1F3100333B67 /* TimerIOS.mm */; };
+		45B6770919E307A7009DB9FC /* FileUtilsIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */; };
 		45B91A9419DB5BF6009856BD /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9119DB5BF6009856BD /* File.cpp */; };
 		45B91A9E19DB5C09009856BD /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9619DB5C09009856BD /* Event.cpp */; };
 		45B91A9F19DB5C09009856BD /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9719DB5C09009856BD /* EventManager.cpp */; };
@@ -878,6 +879,9 @@
 		458AA79B18FF1F0E00333B67 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
 		458AA79C18FF1F0E00333B67 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		458AA7A918FF1F3100333B67 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
+		45B6770119E30788009DB9FC /* EGEFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEFileUtils.h; path = ../../Sources/EGEFileUtils.h; sourceTree = "<group>"; };
+		45B6770719E30796009DB9FC /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
+		45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileUtilsIOS.mm; sourceTree = "<group>"; };
 		45B91A9119DB5BF6009856BD /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
 		45B91A9319DB5BF6009856BD /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		45B91A9619DB5C09009856BD /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
@@ -1020,6 +1024,7 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				45B6770119E30788009DB9FC /* EGEFileUtils.h */,
 				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
 				45E4DC11199BF950000FB4B8 /* EGEEngine.h */,
 				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
@@ -2122,23 +2127,23 @@
 		451471E418C5236200AAC617 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				45E246B919ABD54C00A538B0 /* Engine */,
-				4514722318C5236200AAC617 /* TypesIOS.h */,
-				4514720B18C5236200AAC617 /* main.mm */,
 				451471E518C5236200AAC617 /* Application */,
 				451471EC18C5236200AAC617 /* Audio */,
 				451471F418C5236200AAC617 /* Debug */,
 				451471F618C5236200AAC617 /* Device */,
 				451471F818C5236200AAC617 /* Directory */,
+				45E246B919ABD54C00A538B0 /* Engine */,
 				451471FB18C5236200AAC617 /* File */,
 				451471FE18C5236200AAC617 /* Graphics */,
 				4514720818C5236200AAC617 /* Input */,
+				4514720B18C5236200AAC617 /* main.mm */,
 				4514720C18C5236200AAC617 /* Memory */,
 				4514720E18C5236200AAC617 /* NativeUI */,
 				4514721118C5236200AAC617 /* Services */,
 				4514721C18C5236200AAC617 /* String */,
 				4514721E18C5236200AAC617 /* Threading */,
 				458AA7A718FF1F3100333B67 /* Time */,
+				4514722318C5236200AAC617 /* TypesIOS.h */,
 			);
 			name = iOS;
 			path = ../../Sources/iOS;
@@ -2741,6 +2746,7 @@
 		45B91A9219DB5BF6009856BD /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45B6770719E30796009DB9FC /* FileUtils.h */,
 				45B91A9319DB5BF6009856BD /* File.h */,
 			);
 			path = Interface;
@@ -2770,6 +2776,7 @@
 		45B91AA019DB5C21009856BD /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */,
 				45B91AA119DB5C21009856BD /* FileIOS_p.mm */,
 			);
 			path = Implementation;
@@ -3234,6 +3241,7 @@
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
 				451471C718C5231900AAC617 /* WaitCondition_p.cpp in Sources */,
 				451471C818C5231900AAC617 /* Thread.cpp in Sources */,
+				45B6770919E307A7009DB9FC /* FileUtilsIOS.mm in Sources */,
 				451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */,
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
 				452EF2F919729E83006D5876 /* StringHelper.mm in Sources */,
@@ -3432,7 +3440,7 @@
 				GCC_PREFIX_HEADER = "EGE-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					EGE_IMAGEMANAGER_SINGLE_THREAD,
-					EGE_RESOURCEMANAGER_SINGLE_THREAD,
+					EGE_RESOURCEMANAGER_MULTI_THREAD,
 					EGE_PHYSICS_NULL,
 					EGE_RENDERING_OPENGL_FIXED,
 					EGE_THREAD_PTHREAD,
