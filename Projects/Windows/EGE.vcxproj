@@ -277,6 +277,12 @@
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\DynamicArray.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\List.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Map.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiMap.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiTree.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h" />
@@ -517,11 +523,6 @@
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />
     <ClInclude Include="..\..\Sources\Core\ConfigParams.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Stl\DynamicArray.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Stl\List.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Map.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Stl\MultiMap.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Stl\Tree.h" />
     <ClInclude Include="..\..\Sources\Core\Flags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Font.h" />

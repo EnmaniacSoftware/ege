@@ -4,10 +4,8 @@
 #include "Core/Platform.h"
 
 #if EGE_CONTAINERS_STL
-#include "Core/Containers/Stl/List.h"
+  #include "Core/Containers/Interface/STL/List.h"
 #endif // EGE_CONTAINERS_STL
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_BEGIN
 

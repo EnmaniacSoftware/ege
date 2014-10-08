@@ -4,7 +4,7 @@
 #include "EGETypes.h"
 
 #if EGE_CONTAINERS_STL
-#include "Core/Containers/Stl/DynamicArray.h"
+  #include "Core/Containers/Interface/STL/DynamicArray.h"
 #endif // EGE_CONTAINERS_STL
 
 EGE_NAMESPACE_BEGIN
