@@ -97,7 +97,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   m_configurationDictionary.merge(m_application->engineConfiguration());
 
   // decompose param list
-  const s32 updatesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_UPDATES_PER_SECOND, "0").toInt();
+  const s32 updatesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_UPDATES_PER_SECOND, "60").toInt();
   const s32 framesPerSecond  = m_configurationDictionary.value(EGE_ENGINE_PARAM_RENDERS_PER_SECOND, "0").toInt();
 
   // check if update rate is given
