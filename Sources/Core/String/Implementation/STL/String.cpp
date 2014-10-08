@@ -1,11 +1,11 @@
-#include "Core/String/Stl/String.h"
+#include "Core/String/Interface/STL/String.h"
+#include "EGEStringArray.h"
+#include "EGEStringUtils.h"
+#include "EGEDebug.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
 #include <stdarg.h>
-#include "EGEStringArray.h"
-#include "EGEStringUtils.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

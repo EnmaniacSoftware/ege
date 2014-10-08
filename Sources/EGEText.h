@@ -4,9 +4,7 @@
 #include "Core/Platform.h"
 
 #if EGE_STRING_STL
-#include "Core/String/Stl/Text.h"
+  #include "Core/String/Interface/STL/Text.h"
 #endif // EGE_STRING_STL
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_TEXT_H

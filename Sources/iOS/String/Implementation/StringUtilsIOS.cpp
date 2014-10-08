@@ -1,4 +1,4 @@
-#include "Core/String/StringUtils.h"
+#include "Core/String/Interface/StringUtils.h"
 #include <stdlib.h>
 
 EGE_NAMESPACE_BEGIN

@@ -1,4 +1,4 @@
-#include "Core/String/StringBuffer.h"
+#include "Core/String/Interface/StringBuffer.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN

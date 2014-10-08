@@ -1,10 +1,10 @@
-#include "Core/String/Stl/Text.h"
+#include "Core/String/Interface/STL/Text.h"
+#include "EGEDynamicArray.h"
+#include "EGEMath.h"
 #include <sstream>
 #include <algorithm>
 #include <cctype>
 #include <stdarg.h>
-#include "EGEDynamicArray.h"
-#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 

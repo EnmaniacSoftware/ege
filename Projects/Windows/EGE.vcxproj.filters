@@ -37,9 +37,6 @@
     <Filter Include="Core\String">
       <UniqueIdentifier>{25259695-3d8e-4125-9c0e-1f352dc596d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\String\Stl">
-      <UniqueIdentifier>{49a4fa9e-ed2c-404a-9e7e-6e479528e8df}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\XML">
       <UniqueIdentifier>{544e98df-3ece-4500-a86c-f5e560734d1b}</UniqueIdentifier>
     </Filter>
@@ -463,6 +460,18 @@
     <Filter Include="Core\Containers\Interface\STL">
       <UniqueIdentifier>{34a47d82-3164-431f-961a-426174f3c28a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\String\Interface">
+      <UniqueIdentifier>{31e35aeb-9ac1-49c9-94b1-8286ecd8e5ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\String\Implementation">
+      <UniqueIdentifier>{801e87dc-d768-466b-ab43-7dc00f45bd94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\String\Interface\STL">
+      <UniqueIdentifier>{0ece8fe4-4a6b-41d1-8413-9efc2babb3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\String\Implementation\STL">
+      <UniqueIdentifier>{9b7d4f5e-a38e-41ab-9bff-4c2373845e30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -522,9 +531,6 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp">
       <Filter>Core\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\Stl\String.cpp">
-      <Filter>Core\String\Stl</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\ComplexTypes.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -566,9 +572,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Font.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\Stl\Text.cpp">
-      <Filter>Core\String\Stl</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.cpp">
       <Filter>Core\Physics\Box2D</Filter>
@@ -804,9 +807,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\ColorTransform.cpp">
       <Filter>Core\Graphics\Color</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\StringUtils.cpp">
-      <Filter>Core\String</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Shader.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
@@ -836,9 +836,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\StringBuffer.cpp">
-      <Filter>Core\String</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
       <Filter>Win32\Threading</Filter>
@@ -1143,6 +1140,18 @@
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp">
       <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\StringBuffer.cpp">
+      <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\StringUtils.cpp">
+      <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\String.cpp">
+      <Filter>Core\String\Implementation\STL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\Text.cpp">
+      <Filter>Core\String\Implementation\STL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -1210,9 +1219,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h">
       <Filter>Core\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\Stl\String.h">
-      <Filter>Core\String\Stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h">
       <Filter>Core</Filter>
@@ -1294,9 +1300,6 @@
     <ClInclude Include="..\..\Sources\EGEOverlay.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Font.h">
       <Filter>Core\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\Stl\Text.h">
-      <Filter>Core\String\Stl</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\DebugDrawBox2D.h">
       <Filter>Core\Physics\Box2D</Filter>
@@ -1477,9 +1480,6 @@
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h">
       <Filter>Core\Threading</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\StringUtils.h">
-      <Filter>Core\String</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h">
       <Filter>Core\Resource</Filter>
     </ClInclude>
@@ -1620,9 +1620,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h">
       <Filter>Win32\Graphics\OpenGL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\StringBuffer.h">
-      <Filter>Core\String</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEStringBuffer.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
@@ -2091,6 +2088,18 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h">
       <Filter>Core\Containers\Interface\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\STL\String.h">
+      <Filter>Core\String\Interface\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\STL\Text.h">
+      <Filter>Core\String\Interface\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h">
+      <Filter>Core\String\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\StringUtils.h">
+      <Filter>Core\String\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
