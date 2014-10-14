@@ -217,6 +217,10 @@
 		458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79718FF1F0E00333B67 /* Time.cpp */; };
 		458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 458AA79818FF1F0E00333B67 /* TimeLine.cpp */; };
 		458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 458AA7A918FF1F3100333B67 /* TimerIOS.mm */; };
+		459972FC19EDC798001B63C3 /* KeyEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F119EDC798001B63C3 /* KeyEvent.cpp */; };
+		459972FD19EDC798001B63C3 /* MouseEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F219EDC798001B63C3 /* MouseEvent.cpp */; };
+		459972FE19EDC798001B63C3 /* PointerEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F319EDC798001B63C3 /* PointerEvent.cpp */; };
+		459972FF19EDC798001B63C3 /* TouchEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F419EDC798001B63C3 /* TouchEvent.cpp */; };
 		45B6770919E307A7009DB9FC /* FileUtilsIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */; };
 		45B91A9419DB5BF6009856BD /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9119DB5BF6009856BD /* File.cpp */; };
 		45B91A9E19DB5C09009856BD /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9619DB5C09009856BD /* Event.cpp */; };
@@ -259,9 +263,6 @@
 		45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
-		45FEFC8719E03F9000243B14 /* Pointer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8219E03F9000243B14 /* Pointer.cpp */; };
-		45FEFC8819E03F9000243B14 /* PointerData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8319E03F9000243B14 /* PointerData.cpp */; };
-		45FEFC8D19E03FA300243B14 /* PointerIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -879,6 +880,16 @@
 		458AA79B18FF1F0E00333B67 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
 		458AA79C18FF1F0E00333B67 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		458AA7A918FF1F3100333B67 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
+		459972F119EDC798001B63C3 /* KeyEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyEvent.cpp; sourceTree = "<group>"; };
+		459972F219EDC798001B63C3 /* MouseEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseEvent.cpp; sourceTree = "<group>"; };
+		459972F319EDC798001B63C3 /* PointerEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointerEvent.cpp; sourceTree = "<group>"; };
+		459972F419EDC798001B63C3 /* TouchEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchEvent.cpp; sourceTree = "<group>"; };
+		459972F619EDC798001B63C3 /* Key.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Key.h; sourceTree = "<group>"; };
+		459972F719EDC798001B63C3 /* KeyEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyEvent.h; sourceTree = "<group>"; };
+		459972F819EDC798001B63C3 /* KeyModifiers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyModifiers.h; sourceTree = "<group>"; };
+		459972F919EDC798001B63C3 /* MouseEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MouseEvent.h; sourceTree = "<group>"; };
+		459972FA19EDC798001B63C3 /* PointerEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerEvent.h; sourceTree = "<group>"; };
+		459972FB19EDC798001B63C3 /* TouchEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchEvent.h; sourceTree = "<group>"; };
 		45B6770119E30788009DB9FC /* EGEFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEFileUtils.h; path = ../../Sources/EGEFileUtils.h; sourceTree = "<group>"; };
 		45B6770719E30796009DB9FC /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
 		45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileUtilsIOS.mm; sourceTree = "<group>"; };
@@ -961,12 +972,6 @@
 		45E4DC33199C0395000FB4B8 /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
-		45FEFC8219E03F9000243B14 /* Pointer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pointer.cpp; sourceTree = "<group>"; };
-		45FEFC8319E03F9000243B14 /* PointerData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointerData.cpp; sourceTree = "<group>"; };
-		45FEFC8519E03F9000243B14 /* Pointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pointer.h; sourceTree = "<group>"; };
-		45FEFC8619E03F9000243B14 /* PointerData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerData.h; sourceTree = "<group>"; };
-		45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PointerIOS_p.mm; sourceTree = "<group>"; };
-		45FEFC8C19E03FA300243B14 /* PointerIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PointerIOS_p.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1617,8 +1622,8 @@
 		45146FD518C5231900AAC617 /* Input */ = {
 			isa = PBXGroup;
 			children = (
-				45FEFC8119E03F9000243B14 /* Implementation */,
-				45FEFC8419E03F9000243B14 /* Interface */,
+				459972F019EDC798001B63C3 /* Implementation */,
+				459972F519EDC798001B63C3 /* Interface */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -2100,6 +2105,8 @@
 		451471E418C5236200AAC617 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				4514722318C5236200AAC617 /* TypesIOS.h */,
+				4514720B18C5236200AAC617 /* main.mm */,
 				451471E518C5236200AAC617 /* Application */,
 				451471EC18C5236200AAC617 /* Audio */,
 				451471F418C5236200AAC617 /* Debug */,
@@ -2108,15 +2115,12 @@
 				45E246B919ABD54C00A538B0 /* Engine */,
 				451471FB18C5236200AAC617 /* File */,
 				451471FE18C5236200AAC617 /* Graphics */,
-				4514720818C5236200AAC617 /* Input */,
-				4514720B18C5236200AAC617 /* main.mm */,
 				4514720C18C5236200AAC617 /* Memory */,
 				4514720E18C5236200AAC617 /* NativeUI */,
 				4514721118C5236200AAC617 /* Services */,
 				4514721C18C5236200AAC617 /* String */,
 				4514721E18C5236200AAC617 /* Threading */,
 				458AA7A718FF1F3100333B67 /* Time */,
-				4514722318C5236200AAC617 /* TypesIOS.h */,
 			);
 			name = iOS;
 			path = ../../Sources/iOS;
@@ -2204,15 +2208,6 @@
 				4514720718C5236200AAC617 /* ViewOGL.mm */,
 			);
 			path = OpenGL;
-			sourceTree = "<group>";
-		};
-		4514720818C5236200AAC617 /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				45FEFC8919E03FA300243B14 /* Implementation */,
-				45FEFC8B19E03FA300243B14 /* Interface */,
-			);
-			path = Input;
 			sourceTree = "<group>";
 		};
 		4514720C18C5236200AAC617 /* Memory */ = {
@@ -2767,6 +2762,30 @@
 			path = Implementation;
 			sourceTree = "<group>";
 		};
+		459972F019EDC798001B63C3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				459972F119EDC798001B63C3 /* KeyEvent.cpp */,
+				459972F219EDC798001B63C3 /* MouseEvent.cpp */,
+				459972F319EDC798001B63C3 /* PointerEvent.cpp */,
+				459972F419EDC798001B63C3 /* TouchEvent.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		459972F519EDC798001B63C3 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				459972F619EDC798001B63C3 /* Key.h */,
+				459972F719EDC798001B63C3 /* KeyEvent.h */,
+				459972F819EDC798001B63C3 /* KeyModifiers.h */,
+				459972F919EDC798001B63C3 /* MouseEvent.h */,
+				459972FA19EDC798001B63C3 /* PointerEvent.h */,
+				459972FB19EDC798001B63C3 /* TouchEvent.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 		45B91A9019DB5BF6009856BD /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2975,40 +2994,6 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
-		45FEFC8119E03F9000243B14 /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
-				45FEFC8219E03F9000243B14 /* Pointer.cpp */,
-				45FEFC8319E03F9000243B14 /* PointerData.cpp */,
-			);
-			path = Implementation;
-			sourceTree = "<group>";
-		};
-		45FEFC8419E03F9000243B14 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				45FEFC8519E03F9000243B14 /* Pointer.h */,
-				45FEFC8619E03F9000243B14 /* PointerData.h */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
-		45FEFC8919E03FA300243B14 /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
-				45FEFC8A19E03FA300243B14 /* PointerIOS_p.mm */,
-			);
-			path = Implementation;
-			sourceTree = "<group>";
-		};
-		45FEFC8B19E03FA300243B14 /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				45FEFC8C19E03FA300243B14 /* PointerIOS_p.h */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3124,6 +3109,7 @@
 				4514711618C5231900AAC617 /* Component.cpp in Sources */,
 				4514711718C5231900AAC617 /* ComponentHost.cpp in Sources */,
 				4514711818C5231900AAC617 /* PhysicsComponentBox2D_p.cpp in Sources */,
+				459972FF19EDC798001B63C3 /* TouchEvent.cpp in Sources */,
 				457C566619E5C29900E35A51 /* StringUtils.cpp in Sources */,
 				4514711918C5231900AAC617 /* PhysicsComponentNull_p.cpp in Sources */,
 				4514711A18C5231900AAC617 /* PhysicsComponent.cpp in Sources */,
@@ -3141,6 +3127,7 @@
 				4514712B18C5231900AAC617 /* Logger.cpp in Sources */,
 				4514712F18C5231900AAC617 /* Directory.cpp in Sources */,
 				4514713318C5231900AAC617 /* Camera.cpp in Sources */,
+				459972FE19EDC798001B63C3 /* PointerEvent.cpp in Sources */,
 				4514713418C5231900AAC617 /* Color.cpp in Sources */,
 				4514713518C5231900AAC617 /* ColorTransform.cpp in Sources */,
 				4514713618C5231900AAC617 /* Font.cpp in Sources */,
@@ -3152,7 +3139,6 @@
 				4514713B18C5231900AAC617 /* ImageHandlerPNG.cpp in Sources */,
 				4514713C18C5231900AAC617 /* ImageHandlerPVR.cpp in Sources */,
 				4514713D18C5231900AAC617 /* ImageLoader.cpp in Sources */,
-				45FEFC8819E03F9000243B14 /* PointerData.cpp in Sources */,
 				4514713E18C5231900AAC617 /* ImageUtils.cpp in Sources */,
 				4514713F18C5231900AAC617 /* ImageLoaderST_p.cpp in Sources */,
 				453C83FD193E6AD200FBA4AA /* SoundEffectFadeOut.cpp in Sources */,
@@ -3181,6 +3167,7 @@
 				4514716218C5231900AAC617 /* Texture2D.cpp in Sources */,
 				4514716318C5231900AAC617 /* TextureImage.cpp in Sources */,
 				4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */,
+				459972FD19EDC798001B63C3 /* MouseEvent.cpp in Sources */,
 				453C83F5193E6AD200FBA4AA /* AudioHelper.cpp in Sources */,
 				450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */,
 				4514716518C5231900AAC617 /* VertexDeclaration.cpp in Sources */,
@@ -3234,7 +3221,6 @@
 				451471A018C5231900AAC617 /* ResourceCurve.cpp in Sources */,
 				451471A118C5231900AAC617 /* ResourceData.cpp in Sources */,
 				451471A218C5231900AAC617 /* ResourceFont.cpp in Sources */,
-				45FEFC8719E03F9000243B14 /* Pointer.cpp in Sources */,
 				451471A318C5231900AAC617 /* ResourceGroup.cpp in Sources */,
 				451471A418C5231900AAC617 /* ResourceImagedAnimation.cpp in Sources */,
 				453C83F9193E6AD200FBA4AA /* AudioCodecOgg.cpp in Sources */,
@@ -3258,7 +3244,6 @@
 				451471B218C5231900AAC617 /* ResourceWidget.cpp in Sources */,
 				451471B318C5231900AAC617 /* ResourceManagerST_p.cpp in Sources */,
 				453C8400193E6AD200FBA4AA /* AudioManagerOpenAL.cpp in Sources */,
-				45FEFC8D19E03FA300243B14 /* PointerIOS_p.mm in Sources */,
 				45E2656619B66D60003E5B14 /* AdNetworkChartboost.mm in Sources */,
 				451471B418C5231900AAC617 /* SceneManager.cpp in Sources */,
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
@@ -3271,6 +3256,7 @@
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
 				451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */,
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
+				459972FC19EDC798001B63C3 /* KeyEvent.cpp in Sources */,
 				451471C718C5231900AAC617 /* WaitCondition_p.cpp in Sources */,
 				451471C818C5231900AAC617 /* Thread.cpp in Sources */,
 				45B6770919E307A7009DB9FC /* FileUtilsIOS.mm in Sources */,
