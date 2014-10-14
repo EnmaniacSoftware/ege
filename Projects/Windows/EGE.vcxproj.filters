@@ -2101,6 +2101,9 @@
     <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerEvent.h">
       <Filter>Core\Input\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\Key.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

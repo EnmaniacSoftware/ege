@@ -6,10 +6,144 @@
 #include "EGEMath.h"
 #include "EGEDevice.h"
 #include "EGEEngine.h"
+#include "EGEMap.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*! Local helper function for mapping Windows virtual keys into Framework equivalents. 
+ *  @param  virtualKey  Windows virtual key code to map.
+ *  @return EGE framework equivalent code. EKeyNone is returned if no conversion could be made.
+ */
+static Key MapVirtualKeyToFramework(DWORD virtualKey)
+{
+  static Map<DWORD, Key> mapping;
+  
+  // check if not filled yet
+  if (mapping.empty())
+  {
+    mapping[VK_BACK]   = EKeyBackspace;
+    mapping[VK_TAB]    = EKeyTab;
+    mapping[VK_RETURN] = EKeyEnter;
+    mapping[VK_ESCAPE] = EKeyEsc;
+    mapping[VK_SPACE]  = EKeySpace;
+    mapping[VK_PRIOR]  = EKeyPageUp;
+    mapping[VK_NEXT]   = EKeyPageDown;
+    mapping[VK_END]    = EKeyEnd;
+    mapping[VK_INSERT] = EKeyInsert;
+    mapping[VK_DELETE] = EKeyDelete;
+
+    mapping[VK_LEFT]  = EKeyArrowLeft;
+    mapping[VK_UP]    = EKeyArrowUp;
+    mapping[VK_RIGHT] = EKeyArrowRight;
+    mapping[VK_DOWN]  = EKeyArrowDown;
+
+    mapping['0'] = EKey0;
+    mapping['1'] = EKey1;
+    mapping['2'] = EKey2;
+    mapping['3'] = EKey3;
+    mapping['4'] = EKey4;
+    mapping['5'] = EKey5;
+    mapping['6'] = EKey6;
+    mapping['7'] = EKey7;
+    mapping['8'] = EKey8;
+    mapping['9'] = EKey9;
+
+    mapping['A'] = EKeyA;
+    mapping['B'] = EKeyB;
+    mapping['C'] = EKeyC;
+    mapping['D'] = EKeyD;
+    mapping['E'] = EKeyE;
+    mapping['F'] = EKeyF;
+    mapping['G'] = EKeyG;
+    mapping['H'] = EKeyH;
+    mapping['I'] = EKeyI;
+    mapping['J'] = EKeyJ;
+    mapping['K'] = EKeyK;
+    mapping['L'] = EKeyL;
+    mapping['M'] = EKeyM;
+    mapping['N'] = EKeyN;
+    mapping['O'] = EKeyO;
+    mapping['P'] = EKeyP;
+    mapping['Q'] = EKeyQ;
+    mapping['R'] = EKeyR;
+    mapping['S'] = EKeyS;
+    mapping['T'] = EKeyT;
+    mapping['U'] = EKeyU;
+    mapping['V'] = EKeyV;
+    mapping['W'] = EKeyW;
+    mapping['X'] = EKeyX;
+    mapping['Y'] = EKeyY;
+    mapping['Z'] = EKeyZ;
+
+    mapping[VK_NUMLOCK] = EKeyNumLock;
+    mapping[VK_NUMPAD0]  = EKeyNumpad0;
+    mapping[VK_NUMPAD1]  = EKeyNumpad1;
+    mapping[VK_NUMPAD2]  = EKeyNumpad2;
+    mapping[VK_NUMPAD3]  = EKeyNumpad3;
+    mapping[VK_NUMPAD4]  = EKeyNumpad4;
+    mapping[VK_NUMPAD5]  = EKeyNumpad5;
+    mapping[VK_NUMPAD6]  = EKeyNumpad6;
+    mapping[VK_NUMPAD7]  = EKeyNumpad7;
+    mapping[VK_NUMPAD8]  = EKeyNumpad8;
+    mapping[VK_NUMPAD9]  = EKeyNumpad9;
+    mapping[VK_MULTIPLY] = EKeyNumpadMultiple;
+    mapping[VK_ADD]      = EKeyNumpadAdd;
+    mapping[VK_SUBTRACT] = EKeyNumpadSubtract;
+    mapping[VK_DECIMAL]  = EKeyNumpadDecimal;
+    mapping[VK_DIVIDE]   = EKeyNumpadDivide;
+
+    mapping[VK_F1]  = EKeyF1;
+    mapping[VK_F2]  = EKeyF2;
+    mapping[VK_F3]  = EKeyF3;
+    mapping[VK_F4]  = EKeyF4;
+    mapping[VK_F5]  = EKeyF5;
+    mapping[VK_F6]  = EKeyF6;
+    mapping[VK_F7]  = EKeyF7;
+    mapping[VK_F8]  = EKeyF8;
+    mapping[VK_F9]  = EKeyF9;
+    mapping[VK_F10] = EKeyF10;
+    mapping[VK_F11] = EKeyF11;
+    mapping[VK_F12] = EKeyF12;
+
+    mapping[VK_SHIFT]   = EKeyLeftShift;
+    mapping[VK_CONTROL] = EKeyLeftCtrl;
+    mapping[VK_MENU]    = EKeyLeftAlt;
+
+    mapping[VK_OEM_1]      = EKeySemicolon;
+    mapping[VK_OEM_PLUS]   = EKeyEquals;
+    mapping[VK_OEM_COMMA]  = EKeyComma;
+    mapping[VK_OEM_MINUS]  = EKeyMinus;
+    mapping[VK_OEM_PERIOD] = EKeyPeriod;
+    mapping[VK_OEM_2]      = EKeySlash;
+    mapping[VK_OEM_3]      = EKeyTilde;
+    mapping[VK_OEM_4]      = EKeyLeftBracket;
+    mapping[VK_OEM_5]      = EKeyBackslash;
+    mapping[VK_OEM_6]      = EKeyRightBracket;
+    mapping[VK_OEM_7]      = EKeyApostrophe;
+  }
+
+  // do mapping
+  Key key = mapping.value(virtualKey, EKeyNone);
+
+  // check if one of the control keys
+  // NOTE: for control keys we need further investigation to determine exact key (left or right)
+  if ((EKeyLeftShift == key) && (GetAsyncKeyState(VK_RSHIFT) & 0x8000))
+  {
+    key = EKeyRightShift;
+  }
+  else if ((EKeyLeftCtrl == key) && (GetAsyncKeyState(VK_RCONTROL) & 0x8000))
+  {
+    key = EKeyRightCtrl;
+  }
+  else if ((EKeyLeftAlt == key) && (GetAsyncKeyState(VK_RMENU) & 0x8000))
+  {
+    key = EKeyRightAlt;
+  }
+
+  return key;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindowOGLWin32::RenderWindowOGLWin32(Engine& engine, const Dictionary& params) 
 : RenderWindow(params)
@@ -360,11 +494,34 @@ LRESULT CALLBACK RenderWindowOGLWin32::WinProc(HWND hWnd, UINT msg, WPARAM wPara
 
     case WM_MOUSEWHEEL:
 
-      // check if we are running Win32 mouse
-      //if ( ::pcMouse->getType() == MOUSETYPE_WIN32 )
-      //{
-      //  ( ( CEnmMouse_Win32* ) ::pcMouse )->setDisplacementZ( HIWORD( wParam ) );
-      //}
+      if (NULL != eventManager)
+      {
+        const short delta = GET_WHEEL_DELTA_WPARAM(wParam);
+
+        x = static_cast<s32>(LOWORD(lParam) / me->zoom());
+        y = static_cast<s32>(HIWORD(lParam) / me->zoom());
+
+        PObject data = ege_new MouseEvent(EPointerActionMove, (0 < delta) ? EMouseButtonWheelUp : EMouseButtonWheelDown, keyboardModifiers, x, y);
+        eventManager->send(EGE_EVENT_ID_CORE_INPUT_EVENT, data);
+      }
+      return 0;
+
+    case WM_KEYDOWN:
+    case WM_KEYUP:
+
+      if (NULL != eventManager)
+      {
+        // map the key
+        const Key key = MapVirtualKeyToFramework(wParam);
+        
+        // check if any valid key been pressed
+        if (EKeyNone != key)
+        {
+          // send event
+          PObject data = ege_new KeyEvent(key, (WM_KEYDOWN == msg) ? EKeyActionDown : EKeyActionUp, keyboardModifiers);
+          eventManager->send(EGE_EVENT_ID_CORE_INPUT_EVENT, data);
+        }
+      }
       return 0;
 
     case WM_CLOSE:

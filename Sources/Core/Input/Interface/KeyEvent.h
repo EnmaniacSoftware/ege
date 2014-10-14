@@ -2,6 +2,7 @@
 #define EGE_CORE_KEYEVENT_H
 
 #include "EGE.h"
+#include "Core/Input/Interface/Key.h"
 #include "Core/Input/Interface/KeyModifiers.h"
 
 EGE_NAMESPACE_BEGIN
@@ -10,8 +11,8 @@ EGE_NAMESPACE_BEGIN
 /*! Available actions. */
 enum KeyAction
 {
-  EKeyActionButtonDown = 0,
-  EKeyActionButtonUp
+  EKeyActionDown = 0,
+  EKeyActionUp
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(KeyEvent, PKeyEvent)
@@ -20,7 +21,7 @@ class KeyEvent : public Object
 {
   public:
 
-    KeyEvent(KeyAction action, KeyboardModifiers modifiers);
+    KeyEvent(Key key, KeyAction action, KeyboardModifiers modifiers);
    ~KeyEvent();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -30,13 +31,15 @@ class KeyEvent : public Object
 
     /*! Returns action type. */
     KeyAction action() const;
+    /*! Returns key. */
+    Key key() const;
     /*! Returns keyboard modifiers. */
     const KeyboardModifiers& modifiers() const;
 
   private:
 
-    /*! Button type. */
-//    PointerButton m_button;
+    /*! Key type. */
+    Key m_key;
     /*! Action type. */
     KeyAction m_action;
     /*! Keyboard modifier. */

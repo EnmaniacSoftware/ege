@@ -6,8 +6,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(KeyEvent)
 EGE_DEFINE_DELETE_OPERATORS(KeyEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-KeyEvent::KeyEvent(KeyAction action, KeyboardModifiers modifiers) 
+KeyEvent::KeyEvent(Key key, KeyAction action, KeyboardModifiers modifiers) 
 : Object(EGE_OBJECT_UID_INPUT_KEY_EVENT)
+, m_key(key)
 , m_action(action)
 , m_modifiers(modifiers)
 {
@@ -20,6 +21,11 @@ KeyEvent::~KeyEvent()
 KeyAction KeyEvent::action() const 
 { 
   return m_action; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Key KeyEvent::key() const
+{
+  return m_key;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const KeyboardModifiers& KeyEvent::modifiers() const 

@@ -368,6 +368,7 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Texture2D.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexDeclaration.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\VertexElement.h" />
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\Key.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Interface\KeyEvent.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Interface\KeyModifiers.h" />
     <ClInclude Include="..\..\Sources\Core\Input\Interface\MouseEvent.h" />
