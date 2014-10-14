@@ -15,7 +15,8 @@ EGE_DEFINE_DELETE_OPERATORS(Dialog)
 static const Rectf l_defaultTitleAreaRect = Rectf(0, 0.5f, 1.0f, 0.2f);
 static const Rectf l_defaultTextAreaRect  = Rectf(0, 0.2f, 1.0f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Dialog::Dialog(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
+Dialog::Dialog(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, EGE_OBJECT_UID_UI_DIALOG, deleteFunc)
 {
   // create vertex declaration
   VertexDeclaration declaration;
@@ -80,12 +81,6 @@ void Dialog::addForRendering(IRenderer* renderer, const Matrix4f& transform)
     // call base class
     Widget::addForRendering(renderer, transform);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Dialog::pointerEvent(PPointerData data)
-{
-  // call base class
-  Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Dialog::generateRenderData()

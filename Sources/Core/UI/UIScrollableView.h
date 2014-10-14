@@ -40,8 +40,6 @@ class UIScrollableView : public UIScrollView
 
     /*! @see Widget::update. */
     void update(const Time& time) override;
-    /*! @see Widget::pointerEvent. */
-    void pointerEvent(PPointerData data) override;
     /*! @see Widget::addForRendering. */
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Widget::construct. */

@@ -1,10 +1,12 @@
 #include "Core/Screen/Screen.h"
 #include "Core/Screen/ScreenManager.h"
 #include "EGEEngine.h"
-#include "EGESignal.h"
+#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const char* KScreenManagerDebugName = "EGEScreenManager";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ScreenManager)
 EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
@@ -12,12 +14,15 @@ EGE_DEFINE_DELETE_OPERATORS(ScreenManager)
 ScreenManager::ScreenManager(Engine& engine) 
 : m_engine(engine)
 {
-  ege_connect(engine.pointer(), eventSignal, this, ScreenManager::pointerEvent);
+  if ( ! engine.eventManager()->registerListener(this))
+  {
+    egeWarning(KScreenManagerDebugName) << "Could not register event listener!";
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ScreenManager::~ScreenManager()
 {
-  ege_disconnect(engine().pointer(), eventSignal, this, ScreenManager::pointerEvent);
+  engine().eventManager()->unregisterListener(this);
 
   // remove all
   removeAll();
@@ -214,7 +219,22 @@ void ScreenManager::removeAll()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ScreenManager::pointerEvent(PPointerData data)
+void ScreenManager::onEventRecieved(PEvent event)
+{
+  switch (event->id())
+  {
+    case EGE_EVENT_ID_CORE_INPUT_EVENT:
+
+      if ((EGE_OBJECT_UID_INPUT_TOUCH_EVENT == event->data()->uid()) ||
+          (EGE_OBJECT_UID_INPUT_MOUSE_EVENT == event->data()->uid()))
+      {
+        notifyPointerEvent(*ege_pcast<PPointerEvent>(event->data()).object());
+      }
+      break;
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ScreenManager::notifyPointerEvent(const PointerEvent& event)
 {
   // pass into top-level screen only
   if (!m_screens.empty())
@@ -226,7 +246,7 @@ void ScreenManager::pointerEvent(PPointerData data)
       PScreen& screen = *it;      
       if (screen->isEnabled())
       {
-        screen->pointerEvent(data);
+        screen->onPointerEvent(event);
         return;
       }
     }

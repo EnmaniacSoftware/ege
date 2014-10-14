@@ -51,8 +51,8 @@ class UIScrollView : public Widget
 
     /*! @see Widget::update. */
     void update(const Time& time) override;
-    /*! @see Widget::pointerEvent. */
-    void pointerEvent(PPointerData data) override;
+    /*! @see Widget::onPointerEvent. */
+    void onPointerEvent(const PointerEvent& event) override;
     /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
     /*! @see Widget::construct. */

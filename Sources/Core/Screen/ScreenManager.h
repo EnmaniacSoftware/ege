@@ -9,6 +9,7 @@
 #include "EGETime.h"
 #include "EGEList.h"
 #include "EGEInput.h"
+#include "EGEEvent.h"
 #include "Core/Engine/Interface/EngineModule.h"
 #include "Core/Screen/Interface/IScreenManager.h"
 
@@ -20,6 +21,7 @@ class Viewport;
 EGE_DECLARE_SMART_CLASS(Screen, PScreen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ScreenManager : public EngineModule<IScreenManager>
+                    , public IEventListener
 {
   public:
 
@@ -51,7 +53,6 @@ class ScreenManager : public EngineModule<IScreenManager>
     void remove(PScreen screen) override;
     /*! @see IScreenManager::removeAll. */
     void removeAll() override;
-
     /*! @see IScreenManager::screen. */
     PScreen screen(const String& name) const override;
     /*! @see IScreenManager::top. */
@@ -61,10 +62,13 @@ class ScreenManager : public EngineModule<IScreenManager>
     /*! @see IScreenManager::screenCount. */
     u32 screenCount() const override;
 
-  private slots:
+    /*! @see IEventListener::onEventRecieved. */
+    void onEventRecieved(PEvent event) override;
 
-    /*! Pointer event receiver. */
-    void pointerEvent(PPointerData data);
+    /*! Notifies all screens about pointer event.
+     *  @param  event Pointer event.
+     */
+    void notifyPointerEvent(const PointerEvent& event);
 
   private:
 

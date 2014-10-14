@@ -40,7 +40,6 @@ EngineInstance::EngineInstance()
 : m_socialServices(NULL)
 , m_state(EStateInvalid)
 , m_application(NULL)
-, m_pointer(NULL)
 , m_debug(NULL)
 , m_deviceServices(NULL)
 , m_purchaseServices(NULL)
@@ -65,7 +64,6 @@ EngineInstance::~EngineInstance()
   EGE_DELETE(m_adNetwork);
   EGE_DELETE(m_adNetworkRegistry);
   EGE_DELETE(m_imageLoader);
-  EGE_DELETE(m_pointer);
   EGE_DELETE(m_deviceServices);
   EGE_DELETE(m_purchaseServices);
   EGE_DELETE(m_socialServices);
@@ -188,8 +186,11 @@ void EngineInstance::update()
       canClose &= (EModuleStateClosed == module->state());
     }
 
-    // TAGE - make module ?
-    m_application->update(m_updateInterval);
+    // update an application only when running
+    if (EStateRunning == state())
+    {
+      m_application->update(m_updateInterval);
+    }
   }
 
   // check if quitting
@@ -270,11 +271,6 @@ IResourceManager* EngineInstance::resourceManager() const
 { 
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE));
   return static_cast<EngineModule<IResourceManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE, NULL))->iface(); 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Pointer* EngineInstance::pointer() const 
-{ 
-  return m_pointer; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 IOverlayManager* EngineInstance::overlayManager() const 
@@ -520,9 +516,6 @@ void EngineInstance::createModules()
   module = ege_new OverlayManager();
   m_modules.insert(KModulePriorityOverlayManager, module);
   m_modulesUIDToObjects.insert(module->uid(), module);
-
-  // create pointer input
-  m_pointer = ege_new Pointer(*this);
 
   // create screen manager
   module = ege_new ScreenManager(*this);

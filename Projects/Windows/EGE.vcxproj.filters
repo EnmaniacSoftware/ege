@@ -64,9 +64,6 @@
     <Filter Include="Core\Input">
       <UniqueIdentifier>{3e89d702-36f3-48ce-8b71-24222bda8208}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Input">
-      <UniqueIdentifier>{3275639c-3718-4f0b-9f6f-10ea15417f7f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Containers">
       <UniqueIdentifier>{8af4c0e9-7344-417c-85c3-aa9aeab5db9c}</UniqueIdentifier>
     </Filter>
@@ -447,12 +444,6 @@
     </Filter>
     <Filter Include="Core\Input\Interface">
       <UniqueIdentifier>{929746ae-1c52-4c69-956f-36fd2ba6dd3a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Win32\Input\Implementation">
-      <UniqueIdentifier>{5ac48246-660d-465a-9dff-6a53ae13be61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Win32\Input\Interface">
-      <UniqueIdentifier>{db84b55e-74f0-4ffb-a3b9-9f811081170c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Core\Containers\Interface">
       <UniqueIdentifier>{8abe4fce-e80c-4329-bba6-457bd86141ae}</UniqueIdentifier>
@@ -1128,15 +1119,6 @@
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp">
       <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Input\Implementation\PointerWin32_p.cpp">
-      <Filter>Win32\Input\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Input\Implementation\Pointer.cpp">
-      <Filter>Core\Input\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerData.cpp">
-      <Filter>Core\Input\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp">
       <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
@@ -1151,6 +1133,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\Text.cpp">
       <Filter>Core\String\Implementation\STL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\KeyEvent.cpp">
+      <Filter>Core\Input\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\MouseEvent.cpp">
+      <Filter>Core\Input\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\TouchEvent.cpp">
+      <Filter>Core\Input\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerEvent.cpp">
+      <Filter>Core\Input\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2058,15 +2052,6 @@
     <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h">
       <Filter>Win32\File\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\Input\Interface\PointerWin32_p.h">
-      <Filter>Win32\Input\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Input\Interface\Pointer.h">
-      <Filter>Core\Input\Interface</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerData.h">
-      <Filter>Core\Input\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\Interface\FileUtils.h">
       <Filter>Core\File\Interface</Filter>
     </ClInclude>
@@ -2100,6 +2085,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringUtils.h">
       <Filter>Core\String\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\KeyEvent.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\MouseEvent.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\TouchEvent.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\KeyModifiers.h">
+      <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Input\Interface\PointerEvent.h">
+      <Filter>Core\Input\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

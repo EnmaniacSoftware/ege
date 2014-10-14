@@ -67,8 +67,6 @@ class Engine
     virtual ISceneManager* sceneManager() const = 0;
     /*! Returns resource manager. */
     virtual IResourceManager* resourceManager() const = 0;
-    /*! Returns pointer input. */
-    virtual Pointer* pointer() const = 0;
     /*! Returns overlay manager. */
     virtual IOverlayManager* overlayManager() const = 0;
     /*! Returns screen manager. */

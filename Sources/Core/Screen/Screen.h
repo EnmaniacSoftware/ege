@@ -6,9 +6,9 @@
 */
 
 #include "EGE.h"
-#include "EGETime.h"
 #include "EGEInput.h"
 #include "EGEString.h"
+#include "EGETime.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -36,8 +36,6 @@ class Screen : public Object
      *  @return  Returns TRUE to consume the event. When consumed no underlying screens will be updated. 
      */
     virtual bool update(const Time& time);
-    /*! Pointer event. */
-    virtual void pointerEvent(PPointerData data);
     /*! Renders object. */
     virtual void render(const Viewport* viewport, IRenderer* renderer);
     /*! Screen is about to be shown for the first time. */
@@ -53,9 +51,14 @@ class Screen : public Object
     /*! Enables/disables screen. */
     void setEnable(bool enable);
     /*! Returns TRUE if screen is enabled. */
-    bool isEnabled() const { return !m_disabled; }
+    bool isEnabled() const;
     /*! Returns name. */
-    const String& name() const { return m_name; }
+    const String& name() const;
+
+    /*! Called when pointer event happens.
+     *  @param  event Pointer event.
+     */
+    virtual void onPointerEvent(const PointerEvent& event);
 
   protected:
 

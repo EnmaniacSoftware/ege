@@ -14,16 +14,17 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIScrollView)
 EGE_DEFINE_DELETE_OPERATORS(UIScrollView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIScrollView::UIScrollView(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, uid, deleteFunc)
-                                                                                                        , m_state(STATE_IDLE)
-                                                                                                        , m_contentSize(Vector2f::ZERO)
-                                                                                                        , m_maxOffset(Vector2f::ZERO)
-                                                                                                        , m_scrollDirections(DIRECTION_BOTH)
-                                                                                                        , m_offset(Vector2f::ZERO)
-                                                                                                        , m_decelerationRate(0.95f)
-                                                                                                        , m_animationDuration(0.75f)
-                                                                                                        , m_throwCoefficient(10.0f)
-                                                                                                        , m_scrollbarsNeedUpdate(true)
+UIScrollView::UIScrollView(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, uid, deleteFunc)
+, m_state(STATE_IDLE)
+, m_contentSize(Vector2f::ZERO)
+, m_maxOffset(Vector2f::ZERO)
+, m_scrollDirections(DIRECTION_BOTH)
+, m_offset(Vector2f::ZERO)
+, m_decelerationRate(0.95f)
+, m_animationDuration(0.75f)
+, m_throwCoefficient(10.0f)
+, m_scrollbarsNeedUpdate(true)
 {
   ege_connect(this, sizeChanged, this, UIScrollView::onSizeChanged);
   ege_connect(this, positionChanged, this, UIScrollView::onPositionChanged);
@@ -226,45 +227,48 @@ void UIScrollView::update(const Time& time)
   Widget::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollView::pointerEvent(PPointerData data)
+void UIScrollView::onPointerEvent(const PointerEvent& event)
 {
-  // check if inside widget
-  const Matrix4f& globalMatrix = globalTransformationMatrix();
-  Rectf rect(globalMatrix.translationX(), globalMatrix.translationY(), size().x, size().y);
-
-  bool inside = rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y()));
-  if (!inside)
+  if (isVisible())
   {
-    // terminate any drag ongoing
-    if (STATE_DRAGGING == m_state)
-    {
-      // end move
-      endMove();
-    }
-  }
-  else
-  {
-    // process according to action
-    if (EPointerActionButtonDown == data->action())
-    {
-      // begin move
-      beginMove(data->x(), data->y());
-    }
-    else if (EPointerActionButtonUp == data->action() && (STATE_DRAGGING == m_state))
-    {
-      // end move
-      endMove();
-    }
-    else if ((EPointerActionMove == data->action()) && (STATE_DRAGGING == m_state))
-    {
-      // store current pointer position
-      m_currentPointerPosition.x = static_cast<float32>(data->x());
-      m_currentPointerPosition.y = static_cast<float32>(data->y());
-    }
-  }
+    // check if inside widget
+    const Matrix4f& globalMatrix = globalTransformationMatrix();
+    Rectf rect(globalMatrix.translationX(), globalMatrix.translationY(), size().x, size().y);
 
-  // call base class
-  Widget::pointerEvent(data);
+    bool inside = rect.contains(static_cast<float32>(event.x()), static_cast<float32>(event.y()));
+    if (!inside)
+    {
+      // terminate any drag ongoing
+      if (STATE_DRAGGING == m_state)
+      {
+        // end move
+        endMove();
+      }
+    }
+    else
+    {
+      // process according to action
+      if (EPointerActionDown == event.action())
+      {
+        // begin move
+        beginMove(event.x(), event.y());
+      }
+      else if ((EPointerActionUp == event.action()) && (STATE_DRAGGING == m_state))
+      {
+        // end move
+        endMove();
+      }
+      else if ((EPointerActionMove == event.action()) && (STATE_DRAGGING == m_state))
+      {
+        // store current pointer position
+        m_currentPointerPosition.x = static_cast<float32>(event.x());
+        m_currentPointerPosition.y = static_cast<float32>(event.y());
+      }
+    }
+
+    // call base class
+    Widget::onPointerEvent(event);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void UIScrollView::beginMove(s32 x, s32 y)

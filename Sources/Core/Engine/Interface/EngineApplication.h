@@ -13,6 +13,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
+class PointerEvent;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineApplication
 {
@@ -67,6 +68,11 @@ class EngineApplication
     /*! Called when application is about to be resumed. */
     virtual void onResume() = 0;
     
+    /*! Called when application recieves a pointer event.
+     *  @param  event Pointer event.
+     */
+    virtual void onPointerEvent(const PointerEvent& event) = 0;
+
   private:
 
     /*! Reference to engine. */

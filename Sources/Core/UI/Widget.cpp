@@ -8,17 +8,18 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Widget)
 EGE_DEFINE_DELETE_OPERATORS(Widget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Widget::Widget(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Object(uid, deleteFunc)
-                                                                                            , m_engine(engine)
-                                                                                            , m_name(name)
-                                                                                            , m_physics(engine)
-                                                                                            , m_renderDataInvalid(true)
-                                                                                            , m_visible(true)
-                                                                                            , m_widgetFrame(NULL)
-                                                                                            , m_parent(NULL)
-                                                                                            , m_size(100.0f, 100.0f)
-                                                                                            , m_alignment(ALIGN_TOP_LEFT)
-                                                                                            , m_globalTransformationMatrixInvalid(true)
+Widget::Widget(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) 
+: Object(uid, deleteFunc)
+, m_engine(engine)
+, m_name(name)
+, m_physics(engine)
+, m_renderDataInvalid(true)
+, m_visible(true)
+, m_widgetFrame(NULL)
+, m_parent(NULL)
+, m_size(100.0f, 100.0f)
+, m_alignment(ALIGN_TOP_LEFT)
+, m_globalTransformationMatrixInvalid(true)
 {
   ege_connect(&m_physics, transformationChanged, this, Widget::onTransformationChanged);
 }
@@ -130,34 +131,6 @@ void Widget::setMaterial(const PMaterial& material)
 
   // invalidate render data
   m_renderDataInvalid = true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Widget::pointerEvent(PPointerData data)
-{
-  const Matrix4f& globalMatrix = globalTransformationMatrix();
-
-  Vector2f pos(globalMatrix.translationX(), globalMatrix.translationY());
-
-  Rectf rect(pos.x, pos.y, size().x, size().y);
-
-  // map to client area
-  //Vector2f pos(data->x() - m_physics.position().x, data->y() - m_physics.position().y);
-  
-  // check if inside
-  if (rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y())))
-  {
-    // pass to children
-    for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
-    {
-      const ChildData& childData = it->second;
-
-      // update position into local space of the child
-      // NOTE: content's position is in widget's local space
-      //PointerData localData(data->action(), data->button(), static_cast<s32>(pos.x), static_cast<s32>(pos.y), data->index());
-
-      childData.widget->pointerEvent(data);
-    }
-  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult Widget::addChild(PWidget widget)
@@ -423,6 +396,38 @@ EGEResult Widget::construct()
 Engine& Widget::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Widget::onPointerEvent(const PointerEvent& event)
+{
+  const Matrix4f& globalMatrix = globalTransformationMatrix();
+
+  Vector2f pos(globalMatrix.translationX(), globalMatrix.translationY());
+
+  Rectf rect(pos.x, pos.y, size().x, size().y);
+
+  // map to client area
+  //Vector2f pos(event.x() - m_physics.position().x, event.y() - m_physics.position().y);
+  
+  // check if inside
+  if (rect.contains(static_cast<float32>(event.x()), static_cast<float32>(event.y())))
+  {
+    notifyPointerEvent(event);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Widget::notifyPointerEvent(const PointerEvent& event)
+{
+  for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+  {
+    const ChildData& childData = it->second;
+
+    // update position into local space of the child
+    // NOTE: content's position is in widget's local space
+    //PointerData localData(event.action(), data->button(), static_cast<s32>(pos.x), static_cast<s32>(pos.y), data->index());
+
+    childData.widget->onPointerEvent(event);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

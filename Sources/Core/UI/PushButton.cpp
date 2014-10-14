@@ -13,8 +13,9 @@ EGE_DEFINE_DELETE_OPERATORS(PushButton)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const Rectf l_defaultTextAreaRect = Rectf(0.1f, 0.1f, 0.8f, 0.8f);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PushButton::PushButton(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_PUSH_BUTTON, deleteFunc)
-                                                                                           , m_clicked(false)
+PushButton::PushButton(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, EGE_OBJECT_UID_UI_PUSH_BUTTON, deleteFunc)
+, m_clicked(false)
 {
   PResourceFont fontResource = engine.resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
   if (fontResource)
@@ -61,48 +62,44 @@ void PushButton::addForRendering(IRenderer* renderer, const Matrix4f& transform)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void PushButton::pointerEvent(PPointerData data)
+void PushButton::onPointerEvent(const PointerEvent& event)
 {
-  const Matrix4f& globalMatrix = globalTransformationMatrix();
-
-  Vector2f pos(globalMatrix.translationX(), globalMatrix.translationY());
-
-  Rectf rect(pos.x, pos.y, size().x, size().y);
-
-  // check if inside
-  if (rect.contains(static_cast<float32>(data->x()), static_cast<float32>(data->y())))
+  if (isVisible())
   {
-    switch (data->action())
+    const Matrix4f& globalMatrix = globalTransformationMatrix();
+
+    Vector2f pos(globalMatrix.translationX(), globalMatrix.translationY());
+
+    Rectf rect(pos.x, pos.y, size().x, size().y);
+
+    // check if inside
+    if (rect.contains(static_cast<float32>(event.x()), static_cast<float32>(event.y())))
     {
-      case EPointerActionButtonDown:
-
-        // store flag
-        m_clicked = true;
-        break;
-
-      case EPointerActionButtonUp:
-
+      if (EPointerActionUp == event.action())
+      {
         // check if was clicked
         if (m_clicked)
         {
           // emit
           emit clicked(this);
         }
-        break;
-        
-      default:
-        break;
+      }
+      else
+      {
+        // store flag
+        m_clicked = true;
+      }
     }
-  }
 
-  // reset click flag if released
-  if (EPointerActionButtonUp == data->action())
-  {
-    m_clicked = false;
-  }
+    // reset click flag if released
+    if (EPointerActionUp == event.action())
+    {
+      m_clicked = false;
+    }
 
-  // call base class
-  Widget::pointerEvent(data);
+    // call base class
+    Widget::onPointerEvent(event);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PushButton::generateRenderData()

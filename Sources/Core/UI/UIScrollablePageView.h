@@ -42,8 +42,6 @@ class UIScrollablePageView : public UIScrollView
 
     /*! @see UIScrollView::update. */
     void update(const Time& time) override;
-    /*! @see UIScrollView::pointerEvent. */
-    void pointerEvent(PPointerData data) override;
     /*! @see UIScrollView::addForRendering. */
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see UIScrollView::construct. */
@@ -90,7 +88,7 @@ class UIScrollablePageView : public UIScrollView
 
     /*! @see Widget::initialize. */
     bool initialize(const Dictionary& params) override;
-    
+
     /*! Recalculates content area. */
     void recalculateContentArea();
     /*! Returns page size. */

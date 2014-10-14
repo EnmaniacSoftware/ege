@@ -52,8 +52,6 @@ class PushButton : public Widget
     void setSize(const Vector2f& size) override;
     /*! Sets alignment. */
     void setAlignment(Alignment align);
-    /*! Pointer event processor. */
-    void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
     /*! Returns current alignment. */
@@ -73,6 +71,8 @@ class PushButton : public Widget
     bool initialize(const Dictionary& params) override;
     /*! @see Widget::contentSize. */
     Vector2f contentSize();
+    /*! @see Widget::onPointerEvent. */
+    void onPointerEvent(const PointerEvent& event) override;
 
   private:
 

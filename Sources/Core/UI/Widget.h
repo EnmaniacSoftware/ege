@@ -9,6 +9,7 @@
 #include "EGEInput.h"
 #include "EGEMap.h"
 #include "EGESignal.h"
+#include "EGEEvent.h"
 #include "EGERenderComponent.h"
 #include "Core/UI/WidgetFrame.h"
 #include "Core/Component/Physics/PhysicsComponent.h"
@@ -46,8 +47,6 @@ class Widget : public Object
     virtual void update(const Time& time);
     /*! Renders widget. */
     virtual void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY);
-    /*! Pointer event processor. */
-    virtual void pointerEvent(PPointerData data);
     /*! Returns name. */
     const String& name() const { return m_name; }
     /*! Sets name. */
@@ -94,6 +93,11 @@ class Widget : public Object
     /*! Returns current widget alignment. */
     Alignment alignment() const { return m_alignment; }
 
+    /*! Called when pointer event happens.
+     *  @param  event Pointer event.
+     */
+    virtual void onPointerEvent(const PointerEvent& event);
+
   protected:
 
     Widget(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc = NULL);
@@ -105,6 +109,11 @@ class Widget : public Object
     virtual EGEResult construct();
     /*! Returns engine object. */
     Engine& engine() const;
+
+    /*! Notifies all children about pointer event.
+     *  @param  event Pointer event.
+     */
+    virtual void notifyPointerEvent(const PointerEvent& event);
 
   private:
 

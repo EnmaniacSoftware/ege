@@ -7,8 +7,6 @@
 #include "EGEString.h"
 #include "EGETime.h"
 #include "EGEAlignment.h"
-#include "EGEMap.h"
-#include "EGESignal.h"
 #include "EGEOverlay.h"
 #include "EGERenderComponent.h"
 #include "Core/UI/Widget.h"
@@ -45,8 +43,6 @@ class Label : public Widget
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Widget::setAlpha. */
     void setAlpha(float32 alpha) override;
-    /*! Pointer event processor. */
-    void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
     /*! Sets content text. */

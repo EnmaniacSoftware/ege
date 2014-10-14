@@ -85,18 +85,6 @@ void UIScrollableView::update(const Time& time)
   UIScrollView::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollableView::pointerEvent(PPointerData data)
-{
-  if (!isVisible())
-  {
-    // do nothing
-    return;
-  }
-
-  // call base class
-  UIScrollView::pointerEvent(data);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void UIScrollableView::addForRendering(IRenderer* renderer, const Matrix4f& transform)
 {
   if (!isVisible())

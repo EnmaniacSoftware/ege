@@ -10,14 +10,15 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(UIAbstractScrollbar)
 EGE_DEFINE_DELETE_OPERATORS(UIAbstractScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-UIAbstractScrollbar::UIAbstractScrollbar(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, uid, deleteFunc)
-                                                                                                                      , m_rangeStart(0)
-                                                                                                                      , m_rangeEnd(100)
-                                                                                                                      , m_pageSize(10)
-                                                                                                                      , m_offset(0)
-                                                                                                                      , m_state(STATE_HIDDEN)
-                                                                                                                      , m_fadeDuration(1.0f)
-                                                                                                                      , m_renderDataInvalid(true)
+UIAbstractScrollbar::UIAbstractScrollbar(Engine& engine, const String& name, u32 uid, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, uid, deleteFunc)
+, m_rangeStart(0)
+, m_rangeEnd(100)
+, m_pageSize(10)
+, m_offset(0)
+, m_state(STATE_HIDDEN)
+, m_fadeDuration(1.0f)
+, m_renderDataInvalid(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -43,8 +43,6 @@ class Dialog : public Widget
     void addForRendering(IRenderer* renderer, const Matrix4f& transform = Matrix4f::IDENTITY) override;
     /*! @see Widget::setAlpha. */
     void setAlpha(float32 alpha) override;
-    /*! Pointer event processor. */
-    void pointerEvent(PPointerData data);
     /*! Returns physics component. */
     PhysicsComponent& physics() { return m_physics; }
     /*! Sets title text. */

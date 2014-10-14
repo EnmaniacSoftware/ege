@@ -8,7 +8,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(WidgetFrame)
 EGE_DEFINE_DELETE_OPERATORS(WidgetFrame)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WidgetFrame::WidgetFrame(Engine& engine) : m_renderDataInvalid(true)
+WidgetFrame::WidgetFrame(Engine& engine) 
+: m_renderDataInvalid(true)
 {
   // create vertex declaration
   VertexDeclaration declaration;

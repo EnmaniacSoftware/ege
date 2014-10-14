@@ -6,10 +6,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Screen)
 EGE_DEFINE_DELETE_OPERATORS(Screen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Screen::Screen(Engine& engine, const String& name) : Object()
-                                                   , m_engine(engine)
-                                                   , m_name(name)
-                                                   , m_disabled(false)
+Screen::Screen(Engine& engine, const String& name) 
+: Object()
+, m_engine(engine)
+, m_name(name)
+, m_disabled(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -28,9 +29,10 @@ bool Screen::update(const Time& time)
   return false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Screen::pointerEvent(PPointerData data)
+void Screen::onPointerEvent(const PointerEvent& event)
 {
-  EGE_UNUSED(data);
+  // do nothing
+  EGE_UNUSED(event);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Screen::render(const Viewport* viewport, IRenderer* renderer)
@@ -68,6 +70,16 @@ void Screen::leave()
 Engine& Screen::engine() const
 {
   return m_engine;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Screen::isEnabled() const 
+{ 
+  return ! m_disabled; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& Screen::name() const 
+{ 
+  return m_name; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

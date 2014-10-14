@@ -173,18 +173,6 @@ void UIScrollablePageView::update(const Time& time)
   UIScrollView::update(time);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void UIScrollablePageView::pointerEvent(PPointerData data)
-{
-  if (!isVisible())
-  {
-    // do nothing
-    return;
-  }
-
-  // call base class
-  UIScrollView::pointerEvent(data);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void UIScrollablePageView::setPageIndicatorEnabled(bool set)
 {
   if (m_pageIndicator->isVisible() != set)

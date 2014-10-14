@@ -9,7 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Label)
 EGE_DEFINE_DELETE_OPERATORS(Label)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Label::Label(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Widget(engine, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
+Label::Label(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Widget(engine, name, EGE_OBJECT_UID_UI_LABEL, deleteFunc)
 {
   // set default font
   PResourceFont fontResource = engine.resourceManager()->resource(RESOURCE_NAME_FONT, "debug-font");
@@ -74,12 +75,6 @@ void Label::addForRendering(IRenderer* renderer, const Matrix4f& transform)
     // call base class
     Widget::addForRendering(renderer, transform);
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void Label::pointerEvent(PPointerData data)
-{
-  // call base class
-  Widget::pointerEvent(data);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Label::isFrameless() const

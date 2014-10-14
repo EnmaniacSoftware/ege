@@ -51,8 +51,6 @@ class EngineInstance : public Engine
     ISceneManager* sceneManager() const override;
     /*! @see Engine::resourceManager. */
     IResourceManager* resourceManager() const override;
-    /*! @see Engine::pointer. */
-    Pointer* pointer() const override;
     /*! @see Engine::overlayManager. */
     IOverlayManager* overlayManager() const override;
     /*! @see Engine::screenManager. */
@@ -123,8 +121,6 @@ class EngineInstance : public Engine
     Dictionary m_configurationDictionary;
     /*! Application. */
     EngineApplication* m_application;
-    /*! Pointer input. */
-    Pointer* m_pointer;                   //// encapsulate in Input class aggregate ?
     /*! Image loader. */
     ImageLoader* m_imageLoader;
     /*! Debug object. */
