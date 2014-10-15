@@ -122,8 +122,6 @@
 		451471B418C5231900AAC617 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709118C5231900AAC617 /* SceneManager.cpp */; };
 		451471B518C5231900AAC617 /* SceneNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709318C5231900AAC617 /* SceneNode.cpp */; };
 		451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709518C5231900AAC617 /* SceneNodeObject.cpp */; };
-		451471B718C5231900AAC617 /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709818C5231900AAC617 /* Screen.cpp */; };
-		451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514709A18C5231900AAC617 /* ScreenManager.cpp */; };
 		451471C318C5231900AAC617 /* Mutex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470B918C5231900AAC617 /* Mutex.cpp */; };
 		451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470BB18C5231900AAC617 /* MutexLocker.cpp */; };
 		451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470BE18C5231900AAC617 /* Mutex_p.cpp */; };
@@ -261,6 +259,8 @@
 		45E4DC39199C0395000FB4B8 /* SocialServices.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC28199C0395000FB4B8 /* SocialServices.cpp */; };
 		45E4DC3A199C0395000FB4B8 /* SocialServicesNull.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC29199C0395000FB4B8 /* SocialServicesNull.cpp */; };
 		45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */; };
+		45EE1AEF19EEF6E10036D0AA /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EE1AE919EEF6E10036D0AA /* Screen.cpp */; };
+		45EE1AF019EEF6E10036D0AA /* ScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EE1AEA19EEF6E10036D0AA /* ScreenManager.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -668,10 +668,6 @@
 		4514709418C5231900AAC617 /* SceneNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNode.h; sourceTree = "<group>"; };
 		4514709518C5231900AAC617 /* SceneNodeObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneNodeObject.cpp; sourceTree = "<group>"; };
 		4514709618C5231900AAC617 /* SceneNodeObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneNodeObject.h; sourceTree = "<group>"; };
-		4514709818C5231900AAC617 /* Screen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screen.cpp; sourceTree = "<group>"; };
-		4514709918C5231900AAC617 /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
-		4514709A18C5231900AAC617 /* ScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenManager.cpp; sourceTree = "<group>"; };
-		4514709B18C5231900AAC617 /* ScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenManager.h; sourceTree = "<group>"; };
 		451470AB18C5231900AAC617 /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
 		451470AC18C5231900AAC617 /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		451470AD18C5231900AAC617 /* Signal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Signal.h; sourceTree = "<group>"; };
@@ -806,7 +802,6 @@
 		454BCF4619D85D8A004E462C /* IPhysicsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IPhysicsManager.h; sourceTree = "<group>"; };
 		454BCF4819D85D9D004E462C /* IResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceManager.h; sourceTree = "<group>"; };
 		454BCF4A19D85DA6004E462C /* ISceneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ISceneManager.h; sourceTree = "<group>"; };
-		454BCF4C19D85DAD004E462C /* IScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreenManager.h; sourceTree = "<group>"; };
 		4558970318C54679002C4C8B /* sqlite3.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = sqlite3.xcodeproj; path = "/Users/enmaniac/Projects/C++/EGE/External/JpegLib/../Sqlite 3.8.3.1/sqlite3.xcodeproj"; sourceTree = "<absolute>"; };
 		4558970918C54686002C4C8B /* pnglib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pnglib.xcodeproj; path = ../../External/PNGLib/pnglib.xcodeproj; sourceTree = "<group>"; };
 		4558971318C54848002C4C8B /* zlib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zlib.xcodeproj; path = ../../External/Zlib/zlib.xcodeproj; sourceTree = "<group>"; };
@@ -970,6 +965,11 @@
 		45E4DC31199C0395000FB4B8 /* SocialServices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServices.h; sourceTree = "<group>"; };
 		45E4DC32199C0395000FB4B8 /* SocialServicesNull.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesNull.h; sourceTree = "<group>"; };
 		45E4DC33199C0395000FB4B8 /* SpecialURLs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpecialURLs.h; sourceTree = "<group>"; };
+		45EE1AE919EEF6E10036D0AA /* Screen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screen.cpp; sourceTree = "<group>"; };
+		45EE1AEA19EEF6E10036D0AA /* ScreenManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScreenManager.cpp; sourceTree = "<group>"; };
+		45EE1AEC19EEF6E10036D0AA /* IScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreenManager.h; sourceTree = "<group>"; };
+		45EE1AED19EEF6E10036D0AA /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
+		45EE1AEE19EEF6E10036D0AA /* ScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenManager.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1924,11 +1924,8 @@
 		4514709718C5231900AAC617 /* Screen */ = {
 			isa = PBXGroup;
 			children = (
-				454BCF4B19D85DAD004E462C /* Interface */,
-				4514709818C5231900AAC617 /* Screen.cpp */,
-				4514709918C5231900AAC617 /* Screen.h */,
-				4514709A18C5231900AAC617 /* ScreenManager.cpp */,
-				4514709B18C5231900AAC617 /* ScreenManager.h */,
+				45EE1AE819EEF6E10036D0AA /* Implementation */,
+				45EE1AEB19EEF6E10036D0AA /* Interface */,
 			);
 			path = Screen;
 			sourceTree = "<group>";
@@ -2499,14 +2496,6 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
-		454BCF4B19D85DAD004E462C /* Interface */ = {
-			isa = PBXGroup;
-			children = (
-				454BCF4C19D85DAD004E462C /* IScreenManager.h */,
-			);
-			path = Interface;
-			sourceTree = "<group>";
-		};
 		4558970418C54679002C4C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -2994,6 +2983,25 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		45EE1AE819EEF6E10036D0AA /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45EE1AE919EEF6E10036D0AA /* Screen.cpp */,
+				45EE1AEA19EEF6E10036D0AA /* ScreenManager.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		45EE1AEB19EEF6E10036D0AA /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				45EE1AEC19EEF6E10036D0AA /* IScreenManager.h */,
+				45EE1AED19EEF6E10036D0AA /* Screen.h */,
+				45EE1AEE19EEF6E10036D0AA /* ScreenManager.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -3164,6 +3172,7 @@
 				457C566419E5C29900E35A51 /* Text.cpp in Sources */,
 				4514715F18C5231900AAC617 /* RenderObjectFactory.cpp in Sources */,
 				4514716018C5231900AAC617 /* Shader.cpp in Sources */,
+				45EE1AF019EEF6E10036D0AA /* ScreenManager.cpp in Sources */,
 				4514716218C5231900AAC617 /* Texture2D.cpp in Sources */,
 				4514716318C5231900AAC617 /* TextureImage.cpp in Sources */,
 				4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */,
@@ -3210,6 +3219,7 @@
 				4514719818C5231900AAC617 /* PhysicsJointDistance.cpp in Sources */,
 				45E4DC38199C0395000FB4B8 /* PurchaseServicesNull.cpp in Sources */,
 				4514719918C5231900AAC617 /* PhysicsJointPulley.cpp in Sources */,
+				45EE1AEF19EEF6E10036D0AA /* Screen.cpp in Sources */,
 				4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */,
 				453C83F7193E6AD200FBA4AA /* AudioCodec.cpp in Sources */,
 				4514719A18C5231900AAC617 /* PhysicsManager.cpp in Sources */,
@@ -3248,8 +3258,6 @@
 				451471B418C5231900AAC617 /* SceneManager.cpp in Sources */,
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
-				451471B718C5231900AAC617 /* Screen.cpp in Sources */,
-				451471B818C5231900AAC617 /* ScreenManager.cpp in Sources */,
 				45B91A9419DB5BF6009856BD /* File.cpp in Sources */,
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
 				451471C318C5231900AAC617 /* Mutex.cpp in Sources */,
