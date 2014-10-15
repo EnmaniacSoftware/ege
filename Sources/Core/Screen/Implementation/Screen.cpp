@@ -1,4 +1,4 @@
-#include "Core/Screen/Screen.h"
+#include "Core/Screen/Interface/Screen.h"
 
 EGE_NAMESPACE_BEGIN
 

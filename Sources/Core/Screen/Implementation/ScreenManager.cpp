@@ -1,5 +1,5 @@
-#include "Core/Screen/Screen.h"
-#include "Core/Screen/ScreenManager.h"
+#include "Core/Screen/Interface/ScreenManager.h"
+#include "Core/Screen/Interface/Screen.h"
 #include "EGEEngine.h"
 #include "EGEDebug.h"
 

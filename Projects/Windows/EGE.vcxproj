@@ -190,8 +190,8 @@
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Screen\Implementation\Screen.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Screen\Implementation\ScreenManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetwork.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetworkNull.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\AdNetworkRegistry.cpp" />
@@ -434,6 +434,8 @@
     <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\Interface\ISceneManager.h" />
     <ClInclude Include="..\..\Sources\Core\Screen\Interface\IScreenManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Screen\Interface\Screen.h" />
+    <ClInclude Include="..\..\Sources\Core\Screen\Interface\ScreenManager.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Implementation\AdNetworkNull.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\AdNetwork.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\AdNetworkRegistry.h" />
@@ -572,8 +574,6 @@
     <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNode.h" />
     <ClInclude Include="..\..\Sources\Core\Scene\SceneNodeObject.h" />
-    <ClInclude Include="..\..\Sources\Core\Screen\Screen.h" />
-    <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h" />
     <ClInclude Include="..\..\Sources\Core\Signal\Delegate.h" />
     <ClInclude Include="..\..\Sources\Core\Signal\Signal.h" />
     <ClInclude Include="..\..\Sources\EGE.h" />

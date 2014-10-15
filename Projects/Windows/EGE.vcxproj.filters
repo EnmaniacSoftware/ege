@@ -463,6 +463,9 @@
     <Filter Include="Core\String\Implementation\STL">
       <UniqueIdentifier>{9b7d4f5e-a38e-41ab-9bff-4c2373845e30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Screen\Implementation">
+      <UniqueIdentifier>{70376f28-0674-41e9-9b3c-f10f2cabd076}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -575,12 +578,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Screen\ScreenManager.cpp">
-      <Filter>Core\Screen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Screen\Screen.cpp">
-      <Filter>Core\Screen</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\TextureImage.cpp">
       <Filter>Core\Graphics</Filter>
@@ -1146,6 +1143,12 @@
     <ClCompile Include="..\..\Sources\Core\Input\Implementation\PointerEvent.cpp">
       <Filter>Core\Input\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Screen\Implementation\Screen.cpp">
+      <Filter>Core\Screen\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Screen\Implementation\ScreenManager.cpp">
+      <Filter>Core\Screen\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -1305,12 +1308,6 @@
       <Filter>Core\Physics\Box2D</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEColor.h" />
-    <ClInclude Include="..\..\Sources\Core\Screen\ScreenManager.h">
-      <Filter>Core\Screen</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Screen\Screen.h">
-      <Filter>Core\Screen</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESignal.h" />
     <ClInclude Include="..\..\Sources\Core\Signal\Delegate.h">
       <Filter>Core\Signal</Filter>
@@ -2103,6 +2100,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Input\Interface\Key.h">
       <Filter>Core\Input\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Screen\Interface\Screen.h">
+      <Filter>Core\Screen\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Screen\Interface\ScreenManager.h">
+      <Filter>Core\Screen\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
