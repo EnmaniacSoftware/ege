@@ -1,5 +1,3 @@
-#ifdef EGE_AUDIO_OPENAL
-
 #include "Core/Audio/Implementation/OpenAL/AudioThreadOpenAL.h"
 #include "Core/Audio/Interface/OpenAL/AudioManagerOpenAL.h"
 #include "EGEDevice.h"
@@ -26,7 +24,7 @@ s32 AudioThreadOpenAL::run()
   Time updateTime;
   updateTime.fromMiliseconds(UPDATE_PERIOD);
 
-  while (!isStopping())
+  while ( ! isStopping())
   {   
     // update manager
     m_manager->threadUpdate(updateTime);
@@ -40,5 +38,3 @@ s32 AudioThreadOpenAL::run()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
-
-#endif // EGE_AUDIO_OPENAL

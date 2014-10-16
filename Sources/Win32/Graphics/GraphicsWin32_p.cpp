@@ -41,7 +41,7 @@ EGEResult GraphicsPrivate::construct()
 #if EGE_RENDERING_OPENGL_FIXED 
   d_func()->m_renderSystem = ege_new RenderSystemFixedOGL(d_func()->engine());
 #else
-  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->app());
+  d_func()->m_renderSystem = ege_new RenderSystemProgrammableOGL(d_func()->engine());
 #endif // EGE_RENDERING_OPENGL_FIXED
   if (NULL == d_func()->m_renderSystem)
   {
