@@ -92,7 +92,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
 
   // retrieve engine configuration
   m_configurationDictionary = commandLineDictionary;
-  m_configurationDictionary.merge(m_application->engineConfiguration());
+  m_configurationDictionary.merge(m_application->engineConfiguration(), true);
 
   // decompose param list
   const s32 updatesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_UPDATES_PER_SECOND, "60").toInt();
