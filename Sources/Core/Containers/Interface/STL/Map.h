@@ -20,10 +20,11 @@ class Map : public std::map<T, U>
     /*! Inserts value with given key to map. */
     void insert(const T& key, const U& value);
     /*! Merges another map into this one. 
-     *  @param  other Other map to merge with this one.
-     *  @note In case of duplicate entries, the ones present in current map have precedence.
+     *  @param  other               Other map to merge with this one.
+     *  @param  overrideDuplicated  If set, in case of key duplicates, original values will be overriden with new values. 
+                                    Otherwise, original values will be kept.
      */
-    void merge(const Map& other);
+    void merge(const Map& other, bool overrideDuplicates = false);
     /*! Returns value. */
     U& at(const T& key);
     /*! Returns value. */
@@ -54,9 +55,19 @@ void Map<T, U>::insert(const T& key, const U& value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-void Map<T, U>::merge(const Map& other)
+void Map<T, U>::merge(const Map& other, bool overrideDuplicates)
 {
-  std::map<T, U>::insert(other.begin(), other.end());
+  if (overrideDuplicates)
+  {
+    for (typename Map<T, U>::const_iterator it = other.begin(); it != other.end(); ++it)
+    {
+      this->operator[](it->first) = it->second;
+    }
+  }
+  else
+  {
+    std::map<T, U>::insert(other.begin(), other.end());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
