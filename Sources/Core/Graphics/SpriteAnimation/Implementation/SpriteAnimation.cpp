@@ -1,6 +1,6 @@
 #include "Core/Graphics/SpriteAnimation/Interface/SpriteAnimation.h"
-#include "Core/Resource/ResourceSpritesheet.h"
-#include "Core/Resource/ResourceTextureImage.h"
+#include "Core/Resource/Interface/ResourceSpritesheet.h"
+#include "Core/Resource/Interface/ResourceTextureImage.h"
 #include "EGESequencer.h"
 #include "EGEMaterial.h"
 #include "EGEPhysics.h"
@@ -14,12 +14,13 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KSpriteAnimationDebugName = "EGESpriteAnimation";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SpriteAnimation::SpriteAnimation(Engine& engine, const String& name) : KeyFrameAnimation(engine, name) 
-                                                                     , m_baseAlignment(ALIGN_TOP_LEFT)
-                                                                     , m_alpha(1.0f)
-                                                                     , m_renderDataNeedsUpdate(false)
-                                                                     , m_transform(Matrix4f::IDENTITY)
-                                                                     , m_displaySize(50, 50)
+SpriteAnimation::SpriteAnimation(Engine& engine, const String& name) 
+: KeyFrameAnimation(engine, name) 
+, m_baseAlignment(ALIGN_TOP_LEFT)
+, m_alpha(1.0f)
+, m_renderDataNeedsUpdate(false)
+, m_transform(Matrix4f::IDENTITY)
+, m_displaySize(50, 50)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

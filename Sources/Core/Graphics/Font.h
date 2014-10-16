@@ -4,7 +4,7 @@
 #include "EGE.h"
 #include "EGEText.h"
 #include "EGEMap.h"
-#include "Core/Resource/ResourceFont.h"
+#include "Core/Resource/Interface/ResourceFont.h"
 
 EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

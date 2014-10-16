@@ -10,7 +10,7 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Resource/ResourceManager.h"
+#include "Core/Resource/Interface/ResourceManager.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Screen/Interface/ScreenManager.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"

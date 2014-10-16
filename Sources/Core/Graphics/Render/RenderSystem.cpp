@@ -8,7 +8,6 @@
 #include "Core/Graphics/VertexBuffer.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/Render/Implementation/RenderSystemStatistics.h"
-#include "Core/Resource/ResourceManager.h"
 #include "Core/ObjectUIDs.h"
 #include "EGERenderQueues.h"
 #include "EGEOpenGL.h"

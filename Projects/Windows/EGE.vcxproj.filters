@@ -133,12 +133,6 @@
     <Filter Include="Win32\NativeUI">
       <UniqueIdentifier>{d4765eae-b506-4d5e-a245-231de9637e02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Resource\Single Thread">
-      <UniqueIdentifier>{d4663b92-9c1f-45ae-adc1-154ee2074414}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Resource\Multi Thread">
-      <UniqueIdentifier>{7872545c-3eee-4d33-8860-5a88f20a5b51}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Tools">
       <UniqueIdentifier>{f5c8dafe-d484-49e1-8244-af8492ad3398}</UniqueIdentifier>
     </Filter>
@@ -466,6 +460,12 @@
     <Filter Include="Core\Screen\Implementation">
       <UniqueIdentifier>{70376f28-0674-41e9-9b3c-f10f2cabd076}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resource\Implementation\Multi Thread">
+      <UniqueIdentifier>{05c65b10-59fb-4ff8-afc5-d26e3bc99645}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource\Implementation\Single Thread">
+      <UniqueIdentifier>{35590511-6861-4d5f-a4f0-4fae0038074a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -504,18 +504,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.cpp">
       <Filter>Core\Physics\Box2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceGroup.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceManager.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceMaterial.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTexture.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp">
       <Filter>Core\Scene</Filter>
     </ClCompile>
@@ -548,12 +536,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp">
       <Filter>Win32\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceData.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceFont.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Overlay\Overlay.cpp">
       <Filter>Core\Overlay</Filter>
@@ -600,32 +582,20 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageUtils.cpp">
       <Filter>Core\Graphics\Image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceTextureImage.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureFBOOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpritesheet.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\RenderObjectFactory.cpp">
       <Filter>Core\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceCurve.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\RenderPass.cpp">
       <Filter>Core\Graphics\Render</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.cpp">
       <Filter>Core\Graphics\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.cpp">
       <Filter>Core\Graphics\Particle</Filter>
@@ -638,15 +608,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.cpp">
       <Filter>Core\Graphics\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceParticleAffector.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceText.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSound.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\ByteOrder.cpp">
       <Filter>Core\Tools</Filter>
@@ -671,9 +632,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\Widget.cpp">
       <Filter>Core\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceWidget.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\UI\WidgetFactory.cpp">
       <Filter>Core\UI</Filter>
@@ -704,15 +662,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp">
       <Filter>Core\Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSequencer.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp">
       <Filter>Core\Random</Filter>
@@ -768,18 +717,6 @@
     <ClCompile Include="..\..\Sources\Core\NativeUI\MessageBox.cpp">
       <Filter>Core\NativeUI</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\Resource.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.cpp">
-      <Filter>Core\Resource\Single Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.cpp">
-      <Filter>Core\Resource\Multi Thread</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.cpp">
-      <Filter>Core\Resource\Multi Thread</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Image\ImageLoader.cpp">
       <Filter>Core\Graphics\Image</Filter>
     </ClCompile>
@@ -801,9 +738,6 @@
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceShader.cpp">
-      <Filter>Core\Resource</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClCompile>
@@ -812,9 +746,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\OpenGL\ProgramOGL.cpp">
       <Filter>Core\Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\ResourceProgram.cpp">
-      <Filter>Core\Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Tools\CommandLineParser.cpp">
       <Filter>Core\Tools</Filter>
@@ -1149,6 +1080,75 @@
     <ClCompile Include="..\..\Sources\Core\Screen\Implementation\ScreenManager.cpp">
       <Filter>Core\Screen\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Resource.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceCurve.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceData.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceFont.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceGroup.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceImagedAnimation.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceMaterial.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceParticleAffector.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceParticleEmitter.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceProgram.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceSequencer.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceShader.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceSound.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceSpriteAnimation.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceSpritesheet.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceText.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceTexture.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceTextureImage.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceWidget.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.cpp">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.cpp">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.cpp">
+      <Filter>Core\Resource\Implementation\Single Thread</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -1195,18 +1195,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Physics\Box2D\PhysicsManagerBox2D_p.h">
       <Filter>Core\Physics\Box2D</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceGroup.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceManager.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceMaterial.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTexture.h">
-      <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Scene\SceneManager.h">
       <Filter>Core\Scene</Filter>
@@ -1268,9 +1256,6 @@
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h">
       <Filter>Win32\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceData.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDebug.h" />
     <ClInclude Include="..\..\Sources\EGEDevice.h" />
     <ClInclude Include="..\..\Sources\EGERandom.h" />
@@ -1278,13 +1263,7 @@
     <ClInclude Include="..\..\Sources\Core\Memory\SmartPointer.h">
       <Filter>Core\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\Resource.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEList.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceFont.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Overlay\Overlay.h">
       <Filter>Core\Overlay</Filter>
     </ClInclude>
@@ -1348,9 +1327,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageUtils.h">
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceTextureImage.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESpline.h" />
     <ClInclude Include="..\..\Sources\EGEFlags.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\RenderTextureCopyOGL.h">
@@ -1360,26 +1336,17 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEOpenGL.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpritesheet.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\RenderObjectFactory.h">
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGETimeline.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceCurve.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\RenderPass.h">
       <Filter>Core\Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEParticle.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitter.h">
       <Filter>Core\Graphics\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleEmitter.h">
-      <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleEmitterPoint.h">
@@ -1393,15 +1360,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Particle\ParticleFactory.h">
       <Filter>Core\Graphics\Particle</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceParticleAffector.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceText.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSound.h">
-      <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\ByteOrder.h">
@@ -1433,9 +1391,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\Widget.h">
       <Filter>Core\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceWidget.h">
-      <Filter>Core\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\UI\WidgetFactory.h">
       <Filter>Core\UI</Filter>
@@ -1471,18 +1426,9 @@
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h">
       <Filter>Core\Threading</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceImagedAnimation.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSequencer.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESpriteAnimation.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceSpriteAnimation.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h">
       <Filter>Core\Random</Filter>
     </ClInclude>
@@ -1541,15 +1487,6 @@
       <Filter>Win32\NativeUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGELog.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\SingleThread\ResourceManagerST_p.h">
-      <Filter>Core\Resource\Single Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerMT_p.h">
-      <Filter>Core\Resource\Multi Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\MultiThread\ResourceManagerWorkThread.h">
-      <Filter>Core\Resource\Multi Thread</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Image\ImageLoader.h">
       <Filter>Core\Graphics\Image</Filter>
     </ClInclude>
@@ -1589,9 +1526,6 @@
     <ClInclude Include="..\..\Sources\Core\Graphics\OpenGL\ShaderOGL.h">
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceShader.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h">
       <Filter>Win32\Graphics\OpenGL</Filter>
     </ClInclude>
@@ -1602,9 +1536,6 @@
       <Filter>Core\Graphics\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEObjectList.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\ResourceProgram.h">
-      <Filter>Core\Resource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGECommandLine.h" />
     <ClInclude Include="..\..\Sources\Core\Tools\CommandLineParser.h">
       <Filter>Core\Tools</Filter>
@@ -2106,6 +2037,75 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Screen\Interface\ScreenManager.h">
       <Filter>Core\Screen\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Resource.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceCurve.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceData.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceFont.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceGroup.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceImagedAnimation.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManager.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceMaterial.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceParticleAffector.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceParticleEmitter.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceProgram.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceSequencer.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceShader.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceSound.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceSpriteAnimation.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceSpritesheet.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceText.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceTexture.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceTextureImage.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceWidget.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.h">
+      <Filter>Core\Resource\Implementation\Single Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

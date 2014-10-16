@@ -1,7 +1,4 @@
-#include "Core/Resource/ResourceManager.h"
 #include "Core/Overlay/ImageOverlay.h"
-#include "Core/Resource/ResourceMaterial.h"
-#include "EGEResources.h"
 #include "EGERenderer.h"
 
 EGE_NAMESPACE_BEGIN
@@ -10,7 +7,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ImageOverlay)
 EGE_DEFINE_DELETE_OPERATORS(ImageOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageOverlay::ImageOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
+ImageOverlay::ImageOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_IMAGE, deleteFunc)
 {
   initialize();
 }
