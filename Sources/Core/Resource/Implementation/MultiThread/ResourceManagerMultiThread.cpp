@@ -1,4 +1,4 @@
-#include "Core/Resource/Implementation/MultiThread/ResourceManagerMultiThread.h"
+#include "Core/Resource/Interface/MultiThread/ResourceManagerMultiThread.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerWorkThread.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
 #include "EGEResources.h"

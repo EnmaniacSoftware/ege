@@ -11,7 +11,7 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Resource/Implementation/SingleThread/ResourceManagerSingleThread.h"
+#include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "Core/Resource/Interface/ResourceManagerFactory.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Screen/Interface/ScreenManager.h"

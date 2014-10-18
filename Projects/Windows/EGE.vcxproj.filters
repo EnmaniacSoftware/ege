@@ -466,6 +466,12 @@
     <Filter Include="Core\Resource\Implementation\Single Thread">
       <UniqueIdentifier>{35590511-6861-4d5f-a4f0-4fae0038074a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resource\Interface\Multi Thread">
+      <UniqueIdentifier>{dc9ad5b7-70a5-4a78-b6e3-55d04cc52945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource\Interface\Single Thread">
+      <UniqueIdentifier>{e63d74cc-572d-436f-bfd8-e0c4dd72758c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -2108,11 +2114,11 @@
       <Filter>Core\Resource\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.h">
-      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\MultiThread\ResourceManagerMultiThread.h">
+      <Filter>Core\Resource\Interface\Multi Thread</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.h">
-      <Filter>Core\Resource\Implementation\Single Thread</Filter>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\SingleThread\ResourceManagerSingleThread.h">
+      <Filter>Core\Resource\Interface\Single Thread</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

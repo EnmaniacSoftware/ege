@@ -1,6 +1,6 @@
 #include "Core/Resource/Interface/ResourceManagerFactory.h"
-#include "Core/Resource/Implementation/MultiThread/ResourceManagerMultiThread.h"
-#include "Core/Resource/Implementation/SingleThread/ResourceManagerSingleThread.h"
+#include "Core/Resource/Interface/MultiThread/ResourceManagerMultiThread.h"
+#include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
