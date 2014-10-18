@@ -1,4 +1,4 @@
-#include "Core/Resource/Implementation/SingleThread/ResourceManagerST_p.h"
+#include "Core/Resource/Implementation/SingleThread/ResourceManagerSingleThread.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
 #include "EGEResources.h"
 #include "EGETimer.h"

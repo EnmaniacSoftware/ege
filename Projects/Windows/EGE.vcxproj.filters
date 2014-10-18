@@ -1140,17 +1140,17 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceWidget.cpp">
       <Filter>Core\Resource\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.cpp">
-      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.cpp">
       <Filter>Core\Resource\Implementation\Multi Thread</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.cpp">
-      <Filter>Core\Resource\Implementation\Single Thread</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceManagerFactory.cpp">
       <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.cpp">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.cpp">
+      <Filter>Core\Resource\Implementation\Single Thread</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2098,14 +2098,8 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceWidget.h">
       <Filter>Core\Resource\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.h">
-      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h">
       <Filter>Core\Resource\Implementation\Multi Thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.h">
-      <Filter>Core\Resource\Implementation\Single Thread</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManagerFactory.h">
       <Filter>Core\Resource\Interface</Filter>
@@ -2114,6 +2108,12 @@
       <Filter>Core\Resource\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.h">
+      <Filter>Core\Resource\Implementation\Single Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

@@ -1,4 +1,4 @@
-#include "Core/Resource/Implementation/MultiThread/ResourceManagerMT_p.h"
+#include "Core/Resource/Implementation/MultiThread/ResourceManagerMultiThread.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerWorkThread.h"
 #include "EGEGraphics.h"
 #include "EGEDebug.h"

@@ -160,7 +160,7 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Resource.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceCurve.cpp" />
@@ -183,7 +183,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceTexture.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceTextureImage.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceWidget.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNode.cpp" />
     <ClCompile Include="..\..\Sources\Core\Scene\SceneNodeObject.cpp" />
@@ -412,10 +412,10 @@
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\Resource.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceCurve.h" />
