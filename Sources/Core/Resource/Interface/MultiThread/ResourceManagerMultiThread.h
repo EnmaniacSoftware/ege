@@ -63,14 +63,6 @@ class ResourceManagerMultiThread : public ResourceManager
 
   public:
 
-    /*! Creates instance of this implementation of ResourceManager interface. 
-     *  @param  engine  Reference to engine.
-     *  @return Created instance. NULL if error occured.
-     */
-    static EngineModule<IResourceManager>* Create(Engine& engine);
-
-  public:
-
     /*! Updates manager. 
      *  @note This is called from worker thread.
      */

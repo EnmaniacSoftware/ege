@@ -21,11 +21,6 @@ ResourceManagerSingleThread::~ResourceManagerSingleThread()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineModule<IResourceManager>* ResourceManagerSingleThread::Create(Engine& engine)
-{
-  return ege_new ResourceManagerSingleThread(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerSingleThread::update(const Time& time)
 {
   EGE_UNUSED(time)

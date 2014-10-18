@@ -36,11 +36,6 @@ ResourceManagerMultiThread::~ResourceManagerMultiThread()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineModule<IResourceManager>* ResourceManagerMultiThread::Create(Engine& engine)
-{
-  return ege_new ResourceManagerMultiThread(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManagerMultiThread::construct()
 {
   // start thread

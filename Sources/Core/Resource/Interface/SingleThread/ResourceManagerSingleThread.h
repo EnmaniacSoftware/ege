@@ -29,14 +29,6 @@ class ResourceManagerSingleThread : public ResourceManager
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public:
-
-    /*! Creates instance of this implementation of ResourceManager interface. 
-     *  @param  engine  Reference to engine.
-     *  @return Created instance. NULL if error occured.
-     */
-    static EngineModule<IResourceManager>* Create(Engine& engine);
-
   private:
 
     /*! @see IResourceManager::loadGroup. */
