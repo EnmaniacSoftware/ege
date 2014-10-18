@@ -8,7 +8,6 @@
 #include "EGETime.h"
 #include "EGEDictionary.h"
 #include "EGEEvent.h"
-#include "Core/Audio/Interface/AudioManagerFactory.h"
 #include "Core/Engine/Interface/EngineInternal.h"
 
 EGE_NAMESPACE_BEGIN
@@ -17,6 +16,8 @@ EGE_NAMESPACE_BEGIN
 class EngineApplication;
 class IEngineModule;
 class IGraphics;
+class ResourceManagerFactory;
+class AudioManagerFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineInstance : public Engine
                      , public EngineInternal
@@ -82,6 +83,8 @@ class EngineInstance : public Engine
     AdNetwork* adNetwork() const override;
     /*! @see EngineInternal::audioManagerFactory. */
     AudioManagerFactory* audioManagerFactory() const override;
+    /*! @see EngineInternal::resourceManagerFactory. */
+    ResourceManagerFactory* resourceManagerFactory() const override;
     /*! @see EngineInternal::shutdown. */
     void shutdown() override;
     /*! @see EngineInternal::isShuttingDown.*/
@@ -131,6 +134,8 @@ class EngineInstance : public Engine
     PurchaseServices* m_purchaseServices;
     /*! Ad network registry. */
     AdNetworkRegistry* m_adNetworkRegistry;
+    /*! Resource manager factory. */
+    ResourceManagerFactory* m_resourceManagerFactory;
     /*! Audio manager factory. */
     AudioManagerFactory* m_audioManagerFactory;
     /*! Available ad network solution. */

@@ -52,7 +52,6 @@ EGE_NAMESPACE_END
 #include "Core/Resource/Interface/ResourceWidget.h"
 #include "Core/Resource/Interface/ResourceImagedAnimation.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
-#include "Core/Resource/Interface/ResourceManager.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_RESOURCES_H

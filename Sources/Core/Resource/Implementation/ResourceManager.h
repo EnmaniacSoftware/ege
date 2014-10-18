@@ -1,7 +1,7 @@
-#ifndef EGE_CORE_RESOURCEMANAGER_H
-#define EGE_CORE_RESOURCEMANAGER_H
+#ifndef EGE_CORE_RESOURCE_RESOURCEMANAGER_H
+#define EGE_CORE_RESOURCE_RESOURCEMANAGER_H
 
-/*! Resource manager class. This object is a root to entire resource management.
+/*! Resource manager base class. This object is a root to entire resource management.
  */
 
 #include "EGE.h"
@@ -31,14 +31,6 @@ class ResourceManager : public EngineModule<IResourceManager>
 {
   public:
 
-    ResourceManager(Engine& engine);
-   ~ResourceManager();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-  public:
-
     /*! Available resource processing policies. */
     enum ResourceProcessPolicy
     {
@@ -49,12 +41,69 @@ class ResourceManager : public EngineModule<IResourceManager>
   public:
 
     /*! Returns resource processing policy. */
-    ResourceProcessPolicy resourceProcessPolicy() const;
+    virtual ResourceProcessPolicy resourceProcessPolicy() const = 0;
+
+  protected:
+
+    ResourceManager(Engine& engine);
+    virtual ~ResourceManager();
+
+    /*! Returns engine object. */
+    Engine& engine() const;
+
+    /*! @see IResourceManager::loadGroup. */
+    PResourceGroup group(const String& name) const override;
+
+    /*! @see EngineModule::construct. */
+    virtual EGEResult construct() override;
+    /*! @see EngineModule::onShutdown. */
+    virtual void onShutdown() override;
+    /*! @see EngineModule::update. */
+    virtual void update(const Time& time) override;
+
+    /*! Processes commands. */
+    virtual void processCommands() = 0;
+
+    /*! Builds dependancy list for a given group. */
+    bool buildDependacyList(StringList& list, const String& groupName) const;
+    /*! Unloads all groups. This is called from ResourceManager thread. */
+    void unloadAll();
 
   protected slots:
 
     /*! Slot called at end of the frame. */
     void onFrameEnd();
+
+    /*! Slot called when group has been loaded. 
+     *  @param Group which has been loaded.
+     */
+    virtual void onGroupLoaded(const PResourceGroup& group);
+    /*! Slot called when group has been unloaded. 
+     *  @param Group which has been unloaded.
+     */
+    virtual void onGroupUnloaded(const PResourceGroup& group);
+
+    /*! Slot called when resource has been loaded. 
+     *  @param Resource which has been loaded.
+     */
+    virtual void onResourceLoaded(const PResource& resource);
+    /*! Slot called when resource has been unloaded. 
+     *  @param Resource which has been unloaded.
+     */
+    virtual void onResourceUnloaded(const PResource& resource);
+
+  protected:
+
+    /*! Data struct containing information regarding resources to process. */
+    struct ProcessingBatch
+    {
+      bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
+      Time startTime;               /*!< Start time of batch processing. */
+      StringList groups;            /*!< List of groups to be processed. Last group is the main group. */
+      u32 resourcesCount;           /*!< Total number of resource to be processed. */
+    };
+
+    typedef List<ProcessingBatch> ProcessingBatchList;
 
   private:
     
@@ -62,12 +111,6 @@ class ResourceManager : public EngineModule<IResourceManager>
     void addDataDirectory(const String& path) override;
     /*! @see IResourceManager::addResources. */
     EGEResult addResources(String filePath, bool autoDetect = true) override;
-    /*! @see IResourceManager::loadGroup. */
-    EGEResult loadGroup(const String& name) override;
-    /*! @see IResourceManager::unloadGroup. */
-    void unloadGroup(const String& name) override;
-    /*! @see IResourceManager::loadGroup. */
-    PResourceGroup group(const String& name) const override;
     /*! @see IResourceManager::resource. */
     PResource resource(const String& typeName, const String& name, const String& groupName = "") const override;
     /*! @see IResourceManager::materialResource. */
@@ -102,23 +145,9 @@ class ResourceManager : public EngineModule<IResourceManager>
      *  @param  tag       include element to process. 
      */
     EGEResult processInclude(const String& filePath, const PXmlElement& tag);
-    /*! Builds dependancy list for a given group. */
-    bool buildDependacyList(StringList& list, const String& groupName) const;
-    /*! Processes commands. */
-    void processCommands();
-    /*! Unloads all groups. This is called from ResourceManager thread. */
-    void unloadAll();
-    /*! Returns engine object. */
-    Engine& engine() const;
 
-    /*! @see EngineModule::construct. */
-    EGEResult construct() override;
     /*! @see EngineModule::uid. */
     u32 uid() const override;
-    /*! @see EngineModule::update. */
-    void update(const Time& time) override;
-    /*! @see EngineModule::onShutdown. */
-    void onShutdown() override;
 
   private:
 
@@ -130,12 +159,13 @@ class ResourceManager : public EngineModule<IResourceManager>
 
     typedef List<PResourceGroup> GroupList;
 
-  private:
-
-    EGE_DECLARE_PRIVATE_IMPLEMENTATION(ResourceManager)
+  private: 
 
     /*! Reference to engine. */
     Engine& m_engine;
+
+  protected:
+
     /*! List of resource data directories. */
     StringList m_dataDirs;
     /*! Resource groups defined */
@@ -146,9 +176,11 @@ class ResourceManager : public EngineModule<IResourceManager>
     u32 m_totalResourcesToProcess;
     /*! Number of resources processed so far. */
     u32 m_processedResourcesCount;
+    /*! List of all pending batches to load/unload. */
+    ProcessingBatchList m_processList;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_RESOURCEMANAGER_H
+#endif // EGE_CORE_RESOURCE_RESOURCEMANAGER_H

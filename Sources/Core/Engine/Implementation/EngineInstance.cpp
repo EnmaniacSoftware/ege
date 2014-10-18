@@ -1,5 +1,6 @@
 #include "Core/Engine/Interface/EngineInstance.h"
 #include "Core/Audio/Interface/AudioManager.h"
+#include "Core/Audio/Interface/AudioManagerFactory.h"
 #include "Core/Event/Implementation/EventManager.h"
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Viewport.h"
@@ -10,7 +11,8 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Resource/Interface/ResourceManager.h"
+#include "Core/Resource/Implementation/SingleThread/ResourceManagerST_p.h"
+#include "Core/Resource/Interface/ResourceManagerFactory.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Screen/Interface/ScreenManager.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
@@ -53,6 +55,7 @@ EngineInstance::EngineInstance()
 {
   m_adNetworkRegistry = ege_new AdNetworkRegistry(*this);
   m_audioManagerFactory = ege_new AudioManagerFactory(*this);
+  m_resourceManagerFactory = ege_new ResourceManagerFactory(*this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstance::~EngineInstance()
@@ -60,6 +63,7 @@ EngineInstance::~EngineInstance()
   EngineApplication::DestroyInstance(m_application);
   m_application = NULL;
 
+  EGE_DELETE(m_resourceManagerFactory);
   EGE_DELETE(m_audioManagerFactory);
   EGE_DELETE(m_adNetwork);
   EGE_DELETE(m_adNetworkRegistry);
@@ -342,6 +346,11 @@ AudioManagerFactory* EngineInstance::audioManagerFactory() const
   return m_audioManagerFactory;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManagerFactory* EngineInstance::resourceManagerFactory() const
+{
+  return m_resourceManagerFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::onEventRecieved(PEvent event)
 {
   switch (event->id())
@@ -498,7 +507,8 @@ void EngineInstance::createModules()
   m_modulesUIDToObjects.insert(module->uid(), module);
 
   // create resource manager
-  module = ege_new ResourceManager(*this);
+  typeName = configurationDictionary().value(KConfigParamResourceManagerTypeName, KResourceManagerSingleThreadName);
+  module = resourceManagerFactory()->createInstance(typeName);
   m_modules.insert(KModulePriorityResourceManager, module);
   m_modulesUIDToObjects.insert(module->uid(), module);
 

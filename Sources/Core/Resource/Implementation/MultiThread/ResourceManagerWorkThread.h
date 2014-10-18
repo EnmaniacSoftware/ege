@@ -1,7 +1,5 @@
-#ifndef EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H
-#define EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H
-
-#if EGE_RESOURCEMANAGER_MULTI_THREAD
+#ifndef EGE_CORE_RESOURCE_RESOURCEMANAGER_WORKTHREAD_H
+#define EGE_CORE_RESOURCE_RESOURCEMANAGER_WORKTHREAD_H
 
 /*! Resource manager's working thread responsible for processing of loading/unloading queues. 
  */
@@ -15,7 +13,7 @@ class ResourceManagerWorkThread : public Thread
 {
   public:
 
-    ResourceManagerWorkThread(ResourceManagerPrivate* manager);
+    ResourceManagerWorkThread(ResourceManagerMultiThread* manager);
    ~ResourceManagerWorkThread();
 
   private:
@@ -26,12 +24,10 @@ class ResourceManagerWorkThread : public Thread
   private:
 
     /*! Resource manager instance. */
-    ResourceManagerPrivate* m_manager;
+    ResourceManagerMultiThread* m_manager;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
 
-#endif // EGE_RESOURCEMANAGER_MULTI_THREAD
-
-#endif // EGE_CORE_RESOURCEMANAGER_WORKTHREAD_H
+#endif // EGE_CORE_RESOURCE_RESOURCEMANAGER_WORKTHREAD_H

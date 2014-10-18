@@ -1,4 +1,5 @@
 #include "EGEEngine.h"
+#include "EGEResourceManager.h"
 #include "EGEResources.h"
 #include "Core/Audio/Interface/AudioHelper.h"
 #include "Core/Audio/Interface/Sound.h"

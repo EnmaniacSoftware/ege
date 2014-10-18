@@ -173,6 +173,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceGroup.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceImagedAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceManagerFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceMaterial.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceParticleAffector.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceParticleEmitter.cpp" />
@@ -417,6 +418,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMT_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\Resource.h" />
@@ -425,7 +427,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceFont.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceGroup.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceImagedAnimation.h" />
-    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManagerFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceMaterial.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceParticleAffector.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceParticleEmitter.h" />
@@ -530,6 +532,7 @@
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
+    <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />

@@ -1,9 +1,7 @@
-#ifndef EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H
-#define EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H
+#ifndef EGE_CORE_RESOUECE_RESOURCEMANAGER_MULTITHREAD_H
+#define EGE_CORE_RESOUECE_RESOURCEMANAGER_MULTITHREAD_H
 
-#if EGE_RESOURCEMANAGER_MULTI_THREAD
-
-/*! Single threaded implementation for resource manager class.
+/*! Multi threaded implementation for resource manager class.
  */
 
 #include "EGE.h"
@@ -15,25 +13,18 @@
 #include "EGEThread.h"
 #include "EGEMutex.h"
 #include "EGEWaitCondition.h"
-#include "Core/Resource/Interface/ResourceManager.h"
+#include "Core/Resource/Implementation/ResourceManager.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+extern const char* KResourceManagerMultiThreadName;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManagerPrivate
+class ResourceManagerMultiThread : public ResourceManager
 {
   private:
-
-    /*! Data struct containing information regarding resources to process. */
-    struct ProcessingBatch
-    {
-      bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
-      Time startTime;               /*!< Start time of batch processing. */
-      StringList groups;            /*!< List of groups to be processed. Last group is the main group. */
-      u32 resourcesCount;           /*!< Total number of resource to be processed. */
-    };
 
     /*! Available request types. */
     enum RequestType
@@ -60,45 +51,49 @@ class ResourceManagerPrivate
       u32 total;                    /*!< Total number of resources to process. */
     };
 
-    typedef List<ProcessingBatch> ProcessingBatchList;
     typedef List<EmissionRequest> EmissionRequestList;
 
   public:
 
-    ResourceManagerPrivate(ResourceManager* base);
-   ~ResourceManagerPrivate();
+    ResourceManagerMultiThread(Engine& engine);
+   ~ResourceManagerMultiThread();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(ResourceManager)
+  public:
+
+    /*! Creates instance of this implementation of ResourceManager interface. 
+     *  @param  engine  Reference to engine.
+     *  @return Created instance. NULL if error occured.
+     */
+    static EngineModule<IResourceManager>* Create(Engine& engine);
 
   public:
 
-    /*! Creates object. */
-    EGEResult construct();
-    /*! Updates object. */
-    void update(const Time& time);
     /*! Updates manager. 
      *  @note This is called from worker thread.
      */
     void threadUpdate();
-    /*! Processes commands. */
-    void processCommands();
-    /*! Loads group with given name. 
-     *  @param name  Group name to be loaded.
-     *  @return  Returns EGE_SUCCESS if group has been scheduled for loading. EGE_ERROR_ALREADY_EXISTS if group is already loaded. Otherwise, EGE_ERROR.
-     *  @note  Given group, when found, is scheduled for loading rather than loaded immediately.
-     */
-    EGEResult loadGroup(const String& name);
-    /*! Unloads group with given name. */
-    void unloadGroup(const String& name);
-    /*! Returns resource processing policy. */
-    ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const;
-    /*! Shuts down. */
-    void shutDown();
 
   private:
+
+    /*! @see IResourceManager::loadGroup. */
+    EGEResult loadGroup(const String& name) override;
+    /*! @see IResourceManager::unloadGroup. */
+    void unloadGroup(const String& name) override;
+
+    /*! @see ResourceManager::processCommands. */
+    void processCommands() override;
+    /*! @see ResourceManager::resourceProcessPolicy. */
+    ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const override;
+
+    /*! @see EngineModule::construct. */
+    EGEResult construct() override;
+    /*! @see EngineModule::onShutdown. */
+    void onShutdown() override;
+    /*! @see EngineModule::update. */
+    void update(const Time& time) override;
 
     /*! Appends given batches for processing. */
     void appendBatchesForProcessing(ProcessingBatchList& batches);
@@ -113,22 +108,6 @@ class ResourceManagerPrivate
 
   private slots:
 
-    /*! Slot called when group has been loaded. 
-     *  @param Group which has been loaded.
-     */
-    void onGroupLoaded(const PResourceGroup& group);
-    /*! Slot called when group has been unloaded. 
-     *  @param Group which has been unloaded.
-     */
-    void onGroupUnloaded(const PResourceGroup& group);
-    /*! Slot called when resource has been loaded. 
-     *  @param Resource which has been loaded.
-     */
-    void onResourceLoaded(const PResource& resource);
-    /*! Slot called when resource has been unloaded. 
-     *  @param Resource which has been unloaded.
-     */
-    void onResourceUnloaded(const PResource& resource);
     /*! Slot called when work thread terminated its work. */
     void onWorkThreadFinished(const PThread& thread);
 
@@ -138,8 +117,6 @@ class ResourceManagerPrivate
      *  @note This is shared resource.
      */
     ProcessingBatchList m_scheduledList;
-    /*! List of all pending groups to load/unload. */
-    ProcessingBatchList m_pendingList;
     /*! Resource loading/unloading thread. */
     PThread m_workThread;
     /*! Resource data access mutex. */
@@ -155,6 +132,4 @@ class ResourceManagerPrivate
 
 EGE_NAMESPACE_END
 
-#endif // EGE_RESOURCEMANAGER_MULTI_THREAD
-
-#endif // EGE_CORE_RESOURCEMANAGER_MULTI_THREAD_PRIVATE_H
+#endif // EGE_CORE_RESOUECE_RESOURCEMANAGER_MULTITHREAD_H

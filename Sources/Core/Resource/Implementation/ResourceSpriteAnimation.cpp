@@ -6,6 +6,7 @@
 #include "EGEXml.h"
 #include "EGEDebug.h"
 #include "EGEResources.h"
+#include "EGEResourceManager.h"
 
 EGE_NAMESPACE_BEGIN
 

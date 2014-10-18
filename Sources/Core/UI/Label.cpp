@@ -1,5 +1,6 @@
 #include "Core/UI/Label.h"
 #include "EGEEngine.h"
+#include "EGEResourceManager.h"
 #include "EGEResources.h"
 #include "EGEStringUtils.h"
 

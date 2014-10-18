@@ -5,6 +5,7 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "EGEEngine.h"
 #include "EGEGraphics.h"
+#include "EGEResourceManager.h"
 #include "EGEResources.h"
 #include "EGEShader.h"
 #include "EGEList.h"

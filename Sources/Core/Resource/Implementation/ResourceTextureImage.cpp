@@ -4,6 +4,7 @@
 #include "EGEEngine.h"
 #include "EGEXml.h"
 #include "EGEResources.h"
+#include "EGEResourceManager.h"
 #include "EGEStringUtils.h"
 #include "EGEDebug.h"
 

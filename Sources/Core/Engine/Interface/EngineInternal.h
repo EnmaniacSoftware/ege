@@ -23,6 +23,7 @@ enum EngineState
 class AdNetworkRegistry;
 class AdNetwork;
 class AudioManagerFactory;
+class ResourceManagerFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineInternal
 {
@@ -43,6 +44,8 @@ class EngineInternal
     virtual AdNetwork* adNetwork() const = 0;
     /*! Returns pointer to audio manager factory. */
     virtual AudioManagerFactory* audioManagerFactory() const = 0;
+    /*! Returns pointer to resource manager factory. */
+    virtual ResourceManagerFactory* resourceManagerFactory() const = 0;
 
     /*! Requests engine shutdown. */
     virtual void shutdown() = 0;

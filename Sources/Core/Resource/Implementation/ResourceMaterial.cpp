@@ -1,14 +1,14 @@
 #include "Core/Resource/Interface/ResourceMaterial.h"
 #include "Core/Resource/Interface/ResourceTexture.h"
-#include "Core/Resource/Interface/ResourceManager.h"
 #include "Core/Resource/Interface/ResourceTextureImage.h"
 #include "Core/Resource/Interface/ResourceProgram.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
 #include "EGEEngine.h"
-#include "EGETexture.h"
 #include "EGEResources.h"
+#include "EGEResourceManager.h"
 #include "EGEStringUtils.h"
+#include "EGETexture.h"
 
 EGE_NAMESPACE_BEGIN
 

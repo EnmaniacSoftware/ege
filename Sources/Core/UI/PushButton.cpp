@@ -1,6 +1,7 @@
 #include "Core/UI/PushButton.h"
 #include "Core/UI/WidgetFactory.h"
 #include "EGEEngine.h"
+#include "EGEResourceManager.h"
 #include "EGEResources.h"
 #include "EGEGraphics.h"
 #include "EGEStringUtils.h"

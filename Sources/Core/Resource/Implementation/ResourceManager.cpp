@@ -1,5 +1,5 @@
 #include "EGEResources.h"
-#include "Core/Resource/Interface/ResourceManager.h"
+#include "Core/Resource/Implementation/ResourceManager.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
 #include "Core/Resource/Interface/ResourceTexture.h"
 #include "Core/Resource/Interface/ResourceMaterial.h"
@@ -22,23 +22,15 @@
 #include "Core/Graphics/Graphics.h"
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Graphics/Font.h"
-#include "EGEEngine.h"
-#include "EGEXml.h"
 #include "EGEDirectory.h"
-
-#if EGE_RESOURCEMANAGER_SINGLE_THREAD
-  #include "Core/Resource/Implementation/SingleThread/ResourceManagerST_p.h"
-#elif EGE_RESOURCEMANAGER_MULTI_THREAD
-  #include "Core/Resource/Implementation/MultiThread/ResourceManagerMT_p.h"
-#endif // EGE_RESOURCE_MANAGER_SINGLE_THREAD
+#include "EGEEngine.h"
+#include "EGETimer.h"
+#include "EGEXml.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KResourceManagerDebugName = "EGEResourceManager";
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ResourceManager)
-EGE_DEFINE_DELETE_OPERATORS(ResourceManager)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_RESOURCES "resources"
 #define NODE_GROUP     "group"
@@ -70,13 +62,10 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Engine& engine) 
-: m_p(NULL)
-, m_engine(engine)
+: m_engine(engine)
 , m_totalResourcesToProcess(0)
 , m_processedResourcesCount(0)
 {
-  m_p = ege_new ResourceManagerPrivate(this);
-
   ege_connect(&engine, signalFrameEnd, this, ResourceManager::onFrameEnd);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,20 +75,11 @@ ResourceManager::~ResourceManager()
 
   // NOTE: all groups should be already removed
   EGE_ASSERT(m_groups.empty());
-
-  EGE_DELETE(m_p);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
 {
   EGEResult result = EGE_SUCCESS;
-
-  // construct private
-  if (EGE_SUCCESS != (result = m_p->construct()))
-  {
-    // error!
-    return result;
-  }
 
   // register build-in resource types
   for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
@@ -279,7 +259,7 @@ EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXm
     // check if error occured
     if (EGE_SUCCESS != result)
     {
-      // we r done
+      // we are done
       break;
     }
 
@@ -312,10 +292,10 @@ EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& t
     if (NULL == existingGroup)
     {
       // connect
-      ege_connect(newGroup, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);
-      ege_connect(newGroup, resourceUnloaded, p_func(), ResourceManagerPrivate::onResourceUnloaded);
-      ege_connect(newGroup, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
-      ege_connect(newGroup, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
+      ege_connect(newGroup, resourceLoaded, this, ResourceManager::onResourceLoaded);
+      ege_connect(newGroup, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
+      ege_connect(newGroup, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
+      ege_connect(newGroup, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
   
       // add into pool
       m_groups.push_back(newGroup);
@@ -358,22 +338,6 @@ PResourceGroup ResourceManager::group(const String& name) const
   }
 
   return group;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManager::loadGroup(const String& name)
-{
-  // check if can NOT accept loading
-  if (EModuleStateRunning != state())
-  {
-    return EGE_ERROR;
-  }
-
-  return p_func()->loadGroup(name);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::unloadGroup(const String& name)
-{
-  p_func()->unloadGroup(name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceManager::resource(const String& typeName, const String& name, const String& groupName) const
@@ -474,10 +438,10 @@ void ResourceManager::unloadAll()
     //}
 
     // disconnect
-    ege_disconnect(group, resourceLoaded, p_func(), ResourceManagerPrivate::onResourceLoaded);
-    ege_disconnect(group, resourceUnloaded, p_func(), ResourceManagerPrivate::onResourceUnloaded);
-    ege_disconnect(group, resourceGroupLoaded, p_func(), ResourceManagerPrivate::onGroupLoaded);
-    ege_disconnect(group, resourceGroupUnloaded, p_func(), ResourceManagerPrivate::onGroupUnloaded);
+    ege_disconnect(group, resourceLoaded, this, ResourceManager::onResourceLoaded);
+    ege_disconnect(group, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
+    ege_disconnect(group, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
+    ege_disconnect(group, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
 
     // try to unload all resource one by one
     // NOTE: we need to go thru all resources instead of letting the group to unload itself cause it is possible (due to implementation)
@@ -553,11 +517,6 @@ EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElem
   return addResources(path, autoDetect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::update(const Time& time)
-{
-  p_func()->update(time);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceManager::buildDependacyList(StringList& list, const String& groupName) const
 {
   // find group
@@ -603,16 +562,6 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::processCommands()
-{
-  p_func()->processCommands();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceProcessPolicy ResourceManager::resourceProcessPolicy() const
-{
-  return p_func()->resourceProcessPolicy();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onFrameEnd()
 {
   if (EModuleStateRunning == state())
@@ -626,21 +575,114 @@ Engine& ResourceManager::engine() const
   return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::update(const Time& time)
+{
+  EGE_UNUSED(time);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onShutdown()
 {
   if ((EModuleStateClosed != state()) && (EModuleStateShuttingDown != state()))
   {
     // set state
     setState(EModuleStateShuttingDown);
-
-    // do shutting down
-    p_func()->shutDown();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 ResourceManager::uid() const
 {
   return EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onGroupLoaded(const PResourceGroup& group)
+{
+  ProcessingBatch& data = m_processList.front();
+
+  EGE_ASSERT(group->name() == data.groups.front());
+  
+  // check if expected group has been loaded
+  if (group->name() == data.groups.front())
+  {
+    egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
+
+    // remove it from batch pool
+    data.groups.pop_front();
+
+    // check if no more groups to be processed
+    if (data.groups.empty())
+    {
+      // remove from process list first
+      m_processList.pop_front();
+
+      // signal
+      emit groupLoadComplete(group->name());
+
+      // check if not more batches to process
+      if (m_processList.empty())
+      {
+        // clean up statistics
+        m_totalResourcesToProcess = 0;
+        m_processedResourcesCount = 0;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onGroupUnloaded(const PResourceGroup& group)
+{
+  ProcessingBatch& data = m_processList.front();
+
+  EGE_ASSERT(group->name() == data.groups.front());
+
+  // check if expected group has been loaded
+  if (group->name() == data.groups.front())
+  {
+    egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
+
+    // remove it from batch pool
+    data.groups.pop_front();
+
+    // check if no more groups to be processed
+    if (data.groups.empty())
+    {
+      // remove from process list first
+      m_processList.pop_front();
+
+      // check if not more batches to process
+      if (m_processList.empty())
+      {
+        // clean up statistics
+        m_totalResourcesToProcess = 0;
+        m_processedResourcesCount = 0;
+      }
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onResourceLoaded(const PResource& resource)
+{
+  EGE_UNUSED(resource);
+
+  // update statistics
+  m_processedResourcesCount++;
+
+  // signal
+  emit processingStatusUpdated(m_processedResourcesCount, m_totalResourcesToProcess);
+
+  egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onResourceUnloaded(const PResource& resource)
+{
+  EGE_UNUSED(resource);
+
+  // update statistics
+  m_processedResourcesCount++;
+
+  // signal
+  emit processingStatusUpdated(m_processedResourcesCount, m_totalResourcesToProcess);
+
+  egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

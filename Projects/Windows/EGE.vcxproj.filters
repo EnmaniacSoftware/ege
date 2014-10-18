@@ -1149,6 +1149,9 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.cpp">
       <Filter>Core\Resource\Implementation\Single Thread</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceManagerFactory.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -2056,9 +2059,6 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceImagedAnimation.h">
       <Filter>Core\Resource\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManager.h">
-      <Filter>Core\Resource\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceMaterial.h">
       <Filter>Core\Resource\Interface</Filter>
     </ClInclude>
@@ -2107,6 +2107,13 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerST_p.h">
       <Filter>Core\Resource\Implementation\Single Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceManagerFactory.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

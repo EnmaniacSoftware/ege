@@ -1,5 +1,5 @@
 #include "Core/Resource/Interface/ResourceGroup.h"
-#include "Core/Resource/Interface/ResourceManager.h"
+#include "Core/Resource/Implementation/ResourceManager.h"
 #include "EGETimer.h"
 #include "EGEDebug.h"
 #include "EGELog.h"

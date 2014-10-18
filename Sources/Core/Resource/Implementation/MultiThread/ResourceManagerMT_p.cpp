@@ -1,5 +1,3 @@
-#if EGE_RESOURCEMANAGER_MULTI_THREAD
-
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerMT_p.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerWorkThread.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
@@ -7,56 +5,44 @@
 #include "EGETimer.h"
 #include "EGEDebug.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(ResourceManagerPrivate)
-EGE_DEFINE_DELETE_OPERATORS(ResourceManagerPrivate)
+const char* KResourceManagerMultiThreadName = "multi-thread";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerPrivate::ResourceManagerPrivate(ResourceManager* base) 
-: m_d(base)
-{
-}
+EGE_DEFINE_NEW_OPERATORS(ResourceManagerMultiThread)
+EGE_DEFINE_DELETE_OPERATORS(ResourceManagerMultiThread)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerPrivate::~ResourceManagerPrivate()
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManagerPrivate::construct()
+ResourceManagerMultiThread::ResourceManagerMultiThread(Engine& engine) 
+: ResourceManager(engine)
 {
   // create work thread
   m_workThread = ege_new ResourceManagerWorkThread(this);
-  if (NULL == m_workThread)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-  ege_connect(m_workThread, finished, this, ResourceManagerPrivate::onWorkThreadFinished);
 
   // create access mutex
   m_mutex = ege_new Mutex();
-  if (NULL == m_mutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
 
   // create group emit resource mutex
   m_emitRequstsMutex = ege_new Mutex();
-  if (NULL == m_emitRequstsMutex)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
 
   // create wait condition
   m_commandsToProcess = ege_new WaitCondition();
-  if (NULL == m_commandsToProcess)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
 
+  // connect
+  ege_connect(m_workThread, finished, this, ResourceManagerMultiThread::onWorkThreadFinished);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceManagerMultiThread::~ResourceManagerMultiThread()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EngineModule<IResourceManager>* ResourceManagerMultiThread::Create(Engine& engine)
+{
+  return ege_new ResourceManagerMultiThread(engine);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceManagerMultiThread::construct()
+{
   // start thread
   if ( ! m_workThread->start())
   {
@@ -64,14 +50,14 @@ EGEResult ResourceManagerPrivate::construct()
     return EGE_ERROR;
   }
 
-  return EGE_SUCCESS;
+  return ResourceManager::construct();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::update(const Time& time)
+void ResourceManagerMultiThread::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  if (EModuleStateRunning == d_func()->state())
+  if (EModuleStateRunning == state())
   {
     // check if any signals are to be emitted
     if ( ! m_emissionRequests.empty())
@@ -87,12 +73,12 @@ void ResourceManagerPrivate::update(const Time& time)
         {
           case RT_GROUP_LOADED:
       
-            emit d_func()->groupLoadComplete(request.groupName);
+            emit groupLoadComplete(request.groupName);
             break;
 
           case RT_GROUP_LOAD_ERROR:
 
-            emit d_func()->groupLoadError(request.groupName);
+            emit groupLoadError(request.groupName);
             break;
 
           case RT_PROGRESS:
@@ -112,21 +98,21 @@ void ResourceManagerPrivate::update(const Time& time)
       m_emissionRequests.clear();
     }
   }
-  else if ((EModuleStateShuttingDown == d_func()->state()) && m_workThread->isFinished())
+  else if ((EModuleStateShuttingDown == state()) && m_workThread->isFinished())
   {
     // clean up
     // NOTE: this should be repeated until all groups are unloaded and removed
-    d_func()->unloadAll();
+    unloadAll();
 
-    if (d_func()->m_groups.empty())
+    if (m_groups.empty())
     {
       // done
-      d_func()->setState(EModuleStateClosed);
+      setState(EModuleStateClosed);
     }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::processCommands()
+void ResourceManagerMultiThread::processCommands()
 {
   // check if anything to process
   if ( ! m_scheduledList.empty())
@@ -136,7 +122,7 @@ void ResourceManagerPrivate::processCommands()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManagerPrivate::loadGroup(const String& name)
+EGEResult ResourceManagerMultiThread::loadGroup(const String& name)
 {
   // check if already scheduled for processing
   for (ProcessingBatchList::iterator it = m_scheduledList.begin(); it != m_scheduledList.end(); ++it)
@@ -178,7 +164,7 @@ EGEResult ResourceManagerPrivate::loadGroup(const String& name)
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::unloadGroup(const String& name)
+void ResourceManagerMultiThread::unloadGroup(const String& name)
 {
   // check if already scheduled for processing
   for (ProcessingBatchList::iterator it = m_scheduledList.begin(); it != m_scheduledList.end(); ++it)
@@ -218,11 +204,11 @@ void ResourceManagerPrivate::unloadGroup(const String& name)
   m_mutex->unlock();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::threadUpdate()
+void ResourceManagerMultiThread::threadUpdate()
 {
   // check if nothing left to process
   // NOTE: stop processing when not ready (ie closing)
-  while (m_pendingList.empty() && (EModuleStateRunning == d_func()->state()))
+  while (m_processList.empty() && (EModuleStateRunning == state()))
   {
     // check if no more data to process
     if (m_scheduledList.empty())
@@ -253,7 +239,7 @@ void ResourceManagerPrivate::threadUpdate()
   processBatches();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& batches)
+void ResourceManagerMultiThread::appendBatchesForProcessing(ProcessingBatchList& batches)
 {
   // add new data to processing list
   for (ProcessingBatchList::iterator it = batches.begin(); it != batches.end(); ++it)
@@ -264,7 +250,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     // NOTE: this contains all dependant groups and itself at the end
     String groupName = batch.groups.back();
     batch.groups.clear();
-    if ( ! d_func()->buildDependacyList(batch.groups, groupName))
+    if ( ! buildDependacyList(batch.groups, groupName))
     {
       // error!
       egeWarning(KResourceManagerDebugName) << "Could not build dependancy list for group" << groupName;
@@ -277,7 +263,7 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     for (StringList::const_iterator itGroup = batch.groups.begin(); itGroup != batch.groups.end(); ++itGroup)
     {
       // find group of given name
-      PResourceGroup group = d_func()->group(*itGroup);
+      PResourceGroup group = this->group(*itGroup);
       if (NULL == group)
       {
         // error!
@@ -290,24 +276,24 @@ void ResourceManagerPrivate::appendBatchesForProcessing(ProcessingBatchList& bat
     }
 
     // update statistics
-    d_func()->m_totalResourcesToProcess += batch.resourcesCount;
+    m_totalResourcesToProcess += batch.resourcesCount;
 
     // add to pending list
-    m_pendingList.push_back(batch);
+    m_processList.push_back(batch);
 
     egeDebug(KResourceManagerDebugName) << "Group scheduled for" << ((batch.load) ? "loading:" : "unloading:") << groupName;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::processBatches()
+void ResourceManagerMultiThread::processBatches()
 {
   // add new data to processing list
   // NOTE: stop processing if not ready anymore (ie closing)
-  while ( ! m_pendingList.empty() && (EModuleStateRunning == d_func()->state()))
+  while ( ! m_processList.empty() && (EModuleStateRunning == state()))
   {
-    ProcessingBatch& data = m_pendingList.front();
+    ProcessingBatch& data = m_processList.front();
 
-    PResourceGroup group = d_func()->group(data.groups.front());
+    PResourceGroup group = this->group(data.groups.front());
 
     // check if first try to load batch
     if (0 == data.startTime.microseconds())
@@ -349,26 +335,32 @@ void ResourceManagerPrivate::processBatches()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceProcessPolicy ResourceManagerPrivate::resourceProcessPolicy() const
+ResourceManager::ResourceProcessPolicy ResourceManagerMultiThread::resourceProcessPolicy() const
 {
   return ResourceManager::RLP_GROUP;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::shutDown()
+void ResourceManagerMultiThread::onShutdown()
 {
-  // request stop
-  m_workThread->stop(0);
+  if ((EModuleStateClosed != state()) && (EModuleStateShuttingDown != state()))
+  {
+    // request stop
+    m_workThread->stop(0);
 
-  // wake up any awaiters
-  m_commandsToProcess->wakeOne();
+    // wake up any awaiters
+    m_commandsToProcess->wakeOne();
+  }
+
+  // call base class
+  ResourceManager::onShutdown();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::onWorkThreadFinished(const PThread& thread)
+void ResourceManagerMultiThread::onWorkThreadFinished(const PThread& thread)
 {
   EGE_UNUSED(thread);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::addProgressRequest(u32 count, u32 total)
+void ResourceManagerMultiThread::addProgressRequest(u32 count, u32 total)
 {
   EmissionRequest request;
 
@@ -380,7 +372,7 @@ void ResourceManagerPrivate::addProgressRequest(u32 count, u32 total)
   m_emissionRequests.push_back(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::addGroupLoadedRequest(const String& groupName)
+void ResourceManagerMultiThread::addGroupLoadedRequest(const String& groupName)
 {
   EmissionRequest request;
 
@@ -391,7 +383,7 @@ void ResourceManagerPrivate::addGroupLoadedRequest(const String& groupName)
   m_emissionRequests.push_back(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::addGroupLoadErrorRequest(const String& groupName)
+void ResourceManagerMultiThread::addGroupLoadErrorRequest(const String& groupName)
 {
   EmissionRequest request;
 
@@ -402,96 +394,5 @@ void ResourceManagerPrivate::addGroupLoadErrorRequest(const String& groupName)
   m_emissionRequests.push_back(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::onGroupLoaded(const PResourceGroup& group)
-{
-  ProcessingBatch& data = m_pendingList.front();
 
-  EGE_ASSERT(group->name() == data.groups.front());
-  
-  // check if expected group has been loaded
-  if (group->name() == data.groups.front())
-  {
-    egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
-
-    // remove it from batch pool
-    data.groups.pop_front();
-
-    // check if no more groups to be processed
-    if (data.groups.empty())
-    {
-      // remove from process list first
-      m_pendingList.pop_front();
-
-      // add request to signal
-      addGroupLoadedRequest(group->name());
-
-      // check if not more batches to process
-      if (m_pendingList.empty())
-      {
-        // clean up statistics
-        d_func()->m_totalResourcesToProcess = 0;
-        d_func()->m_processedResourcesCount = 0;
-      }
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::onGroupUnloaded(const PResourceGroup& group)
-{
-  ProcessingBatch& data = m_pendingList.front();
-
-  EGE_ASSERT(group->name() == data.groups.front());
-
-  // check if expected group has been loaded
-  if (group->name() == data.groups.front())
-  {
-    egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
-
-    // remove it from batch pool
-    data.groups.pop_front();
-
-    // check if no more groups to be processed
-    if (data.groups.empty())
-    {
-      // remove from process list first
-      m_pendingList.pop_front();
-
-      // check if not more batches to process
-      if (m_pendingList.empty())
-      {
-        // clean up statistics
-        d_func()->m_totalResourcesToProcess = 0;
-        d_func()->m_processedResourcesCount = 0;
-      }
-    }
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::onResourceLoaded(const PResource& resource)
-{
-  EGE_UNUSED(resource);
-
-  // update statistics
-  d_func()->m_processedResourcesCount++;
-
-  // signal
-  emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-//  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerPrivate::onResourceUnloaded(const PResource& resource)
-{
-  EGE_UNUSED(resource);
-
-  // update statistics
-  d_func()->m_processedResourcesCount++;
-
-  // signal
-  emit d_func()->processingStatusUpdated(d_func()->m_processedResourcesCount, d_func()->m_totalResourcesToProcess);
-
-//  egeDebug() << "Progress" << d_func()->m_processedResourcesCount << "/" << d_func()->m_totalResourcesToProcess;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-#endif // EGE_RESOURCEMANAGER_MULTI_THREAD
+EGE_NAMESPACE_END

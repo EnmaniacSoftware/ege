@@ -3,6 +3,7 @@
 #include "Core/Graphics/Font.h"
 #include "EGEEngine.h"
 #include "EGEResources.h"
+#include "EGEResourceManager.h"
 
 EGE_NAMESPACE_BEGIN
 

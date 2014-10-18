@@ -37,6 +37,9 @@ EGE_NAMESPACE_BEGIN
 
 // audio specific
 #define KConfigParamAudioManagerTypeName "config-param-audio-manager-typename"
+
+// resource specific
+#define KConfigParamResourceManagerTypeName "config-param-resource-manager-typename"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
