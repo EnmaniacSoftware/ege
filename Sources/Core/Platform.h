@@ -29,15 +29,6 @@ inline void ege_noop() {}
 // EGE_PURCHASE_SERVICES_NULL
 // EGE_PURCHASE_SERVICES_APPSTORE
 
-// Available sound APIs
-// EGE_AUDIO_NULL
-// EGE_AUDIO_OPENAL
-// EGE_AUDIO_AIRPLAY
-
-// Available resource managers
-// EGE_RESOURCE_MANAGER_SINGLE_THREAD
-// EGE_RESOURCE_MANAGER_MULTI_THREAD
-
 // Available containers implementations
 // EGE_CONTAINERS_STL
 
