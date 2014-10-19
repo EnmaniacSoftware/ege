@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "45877DA416F09F5B00B4252B"
                BuildableName = "libEGE.a"
-               BlueprintName = "EGE OGL FPL MT"
+               BlueprintName = "EGE GLfixed"
                ReferencedContainer = "container:EGE.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
