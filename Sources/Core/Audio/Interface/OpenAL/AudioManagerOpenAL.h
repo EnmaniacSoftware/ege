@@ -50,14 +50,6 @@ class AudioManagerOpenAL : public IAudioManagerBase
 
   public:
 
-    /*! Creates instance of this implementation of AudioManager interface. 
-     *  @param  engine  Reference to engine.
-     *  @return Created instance. NULL if error occured.
-     */
-    static EngineModule<IAudioManager>* Create(Engine& engine);
-
-  public:
-
     /*! Updates manager. 
      *  @param  time  Time increment for which update is to be done.
      *  @note Meant to be used from another thread. 

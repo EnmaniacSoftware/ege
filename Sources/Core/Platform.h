@@ -56,7 +56,6 @@ inline void ege_noop() {}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 // Common defines
 #define EGE_DECLARE_SMART_CLASS(className, smartName) class className; typedef EGE::SmartPointer<className> smartName;
-//#define DECLARE_TEMPLATED_SMART_CLASS(className, smartName) template <class T> class className; typedef Pointer<className> smartName;
 
 #define EGE_NAMESPACE_BEGIN namespace EGE {
 #define EGE_NAMESPACE_END }

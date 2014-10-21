@@ -6,11 +6,12 @@
 
 #include "EGEMap.h"
 #include "EGEStringList.h"
+#include "EGEMemory.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
+template <typename Type>
 class Factory
 {
   public:
@@ -20,12 +21,28 @@ class Factory
 
   public:
 
+    /*! Create instance functor interface. */
+    class CreateInstanceFunctor : public Object
+    {
+      public:
+
+        EGE_DEFINE_NEW_OPERATORS_INLINE
+        EGE_DEFINE_DELETE_OPERATORS_INLINE
+
+        /*! Creates instance of the given type. */
+        virtual Type operator()() const = 0;
+    };
+
+    EGE_DECLARE_SMART_CLASS(CreateInstanceFunctor, PCreateInstanceFunctor)
+
+  public:
+
     /*! Registers object instance of a given type name. 
-     *  @param  typeName    Type name of the interface to be registered. This needs to be unique.
-     *  @param  createFunc  Function returning new instance of the given interface.
-     *  @return EGE_SUCCESS if instance has been successfully registered. Otherwise, another available error code.     
+     *  @param  typeName      Type name of the interface to be registered. This needs to be unique.
+     *  @param  createFunctor Functor capable of creating of new instance of the given interface.
+     *  @return EGE_SUCCESS if instance has been successfully registered. Otherwise, another available error code.
      */
-    EGEResult registerInterface(const String& typeName, CreateFuncDeclaration createFunc);
+    EGEResult registerInterface(const String& typeName, const PCreateInstanceFunctor& createFunctor);
     /*! Creates instance of registered interface of the type given by name. 
      *  @param  typeName    Type name of the registered instance.
      *  @return Created instance of the given interface. NULL if error occured.
@@ -48,7 +65,7 @@ class Factory
 
   private:
 
-    typedef Map<String, CreateFuncDeclaration> Registry;
+    typedef Map<String, PCreateInstanceFunctor> Registry;
 
   private:
   
@@ -58,19 +75,19 @@ class Factory
     Registry m_registry;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-Factory<Type, CreateFuncDeclaration>::Factory(Engine& engine)
+template <typename Type>
+Factory<Type>::Factory(Engine& engine)
 : m_engine(engine)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-Factory<Type, CreateFuncDeclaration>::~Factory()
+template <typename Type>
+Factory<Type>::~Factory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-EGEResult Factory<Type, CreateFuncDeclaration>::registerInterface(const String& typeName, CreateFuncDeclaration createFunc)
+template <typename Type>
+EGEResult Factory<Type>::registerInterface(const String& typeName, const PCreateInstanceFunctor& createFunctor)
 {
   EGEResult result = EGE_SUCCESS;
 
@@ -83,42 +100,42 @@ EGEResult Factory<Type, CreateFuncDeclaration>::registerInterface(const String& 
   else
   {
     // register
-    m_registry.insert(typeName, createFunc);
+    m_registry.insert(typeName, createFunctor);
   }
 
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-Type Factory<Type, CreateFuncDeclaration>::createInstance(const String& typeName) const
+template <typename Type>
+Type Factory<Type>::createInstance(const String& typeName) const
 {
   Type object = NULL;
 
   // file entry with given type name
-  CreateFuncDeclaration createFunc = m_registry.value(typeName, NULL);
-  if (NULL != createFunc)
+  const PCreateInstanceFunctor& createFunctor = m_registry.value(typeName, NULL);
+  if (NULL != createFunctor)
   {
     // create instance
-    object = createFunc(engine());
+    object = (*createFunctor)();
   }
 
   return object;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-bool Factory<Type, CreateFuncDeclaration>::isInterfaceRegistered(const String& typeName) const
+template <typename Type>
+bool Factory<Type>::isInterfaceRegistered(const String& typeName) const
 {
   return m_registry.contains(typeName);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-Engine& Factory<Type, CreateFuncDeclaration>::engine() const
+template <typename Type>
+Engine& Factory<Type>::engine() const
 {
   return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename Type, typename CreateFuncDeclaration>
-StringList Factory<Type, CreateFuncDeclaration>::registeredInterfaces() const
+template <typename Type>
+StringList Factory<Type>::registeredInterfaces() const
 {
   StringList list;
 

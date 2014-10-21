@@ -13,6 +13,7 @@
 #include "EGEStringList.h"
 #include "Core/Engine/Interface/EngineModule.h"
 #include "Core/Resource/Interface/IResourceManager.h"
+#include "Core/Resource/Interface/Loader/IResourceLoader.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -25,7 +26,6 @@ EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 EGE_DECLARE_SMART_CLASS(Event, PEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef PResource (*egeResourceCreateFunc)(Engine& engine, ResourceGroup* group);
-class ResourceManagerPrivate;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager : public EngineModule<IResourceManager>
 {
@@ -45,12 +45,16 @@ class ResourceManager : public EngineModule<IResourceManager>
 
   protected:
 
-    ResourceManager(Engine& engine);
+    /*! Constructor.
+     *  @param  engine  Engine object.
+     *  @param  loader  Resource loader object. Ownership is transferred to ResourceManager.
+     */
+    ResourceManager(Engine& engine, IResourceLoader& loader);
     virtual ~ResourceManager();
 
     /*! Returns engine object. */
     Engine& engine() const;
-
+    
     /*! @see IResourceManager::loadGroup. */
     PResourceGroup group(const String& name) const override;
 
@@ -92,6 +96,11 @@ class ResourceManager : public EngineModule<IResourceManager>
      */
     virtual void onResourceUnloaded(const PResource& resource);
 
+    /*! Slot called when new group has been created. 
+     *  @param group Newly created group.
+     */
+    void onGroupCreated(const PResourceGroup& group);
+
   protected:
 
     /*! Data struct containing information regarding resources to process. */
@@ -126,25 +135,10 @@ class ResourceManager : public EngineModule<IResourceManager>
     /*! @see IResourceManager::createResource. */
     PResource createResource(const String& typeName, ResourceGroup* group) override;
 
-    /*! Processes the RESOURCES tag.
-     *  @param  filePath  relative (with respect to resource root directory) path to resouce file.
-     *  @param  tag       resource element to process. 
-     */
-    EGEResult processResourcesTag(const String& filePath, const PXmlElement& tag);
-    /*! Add new group from XML data.
-    *   @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
-    *   @param  tag       group element to process. 
-    */
-    EGEResult addGroup(const String& filePath, const PXmlElement& tag);
     /*! Creates default resources. */
     bool createDefaultResources();
     /*! Destroys default resources. */
     void destroyDefaultResources();
-    /*! Processes include command from XML data. 
-     *  @param  filePath  relative (with respect to resource root directory) path to resouce file containing the group definition.
-     *  @param  tag       include element to process. 
-     */
-    EGEResult processInclude(const String& filePath, const PXmlElement& tag);
 
     /*! @see EngineModule::uid. */
     u32 uid() const override;
@@ -163,6 +157,8 @@ class ResourceManager : public EngineModule<IResourceManager>
 
     /*! Reference to engine. */
     Engine& m_engine;
+    /*! Resource loader. */
+    IResourceLoader& m_resourceLoader;
 
   protected:
 

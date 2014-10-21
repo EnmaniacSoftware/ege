@@ -15,15 +15,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-extern const char* KResourceManagerSingleThreadName;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerSingleThread : public ResourceManager
 {
   public:
 
-    ResourceManagerSingleThread(Engine& engine);
+    ResourceManagerSingleThread(Engine& engine, IResourceLoader& loader);
    ~ResourceManagerSingleThread();
 
     EGE_DECLARE_NEW_OPERATORS

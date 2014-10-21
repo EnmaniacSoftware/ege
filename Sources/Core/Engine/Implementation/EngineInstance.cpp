@@ -11,8 +11,8 @@
 #include "Core/Graphics/Render/RenderSystem.h"
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Physics/PhysicsManager.h"
-#include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "Core/Resource/Interface/ResourceManagerFactory.h"
+#include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Screen/Interface/ScreenManager.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
@@ -349,6 +349,11 @@ AudioManagerFactory* EngineInstance::audioManagerFactory() const
 ResourceManagerFactory* EngineInstance::resourceManagerFactory() const
 {
   return m_resourceManagerFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceLoaderFactory* EngineInstance::resourceLoaderFactory() const
+{
+  return resourceManagerFactory()->loaderFactory();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::onEventRecieved(PEvent event)

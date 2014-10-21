@@ -5,6 +5,8 @@
  */
 
 #include "Core/Engine/Interface/EngineInstance.h"
+#include "Core/Engine/Interface/EngineModule.h"
+#include "Core/Factory/Interface/Factory.h"
 
 EGE_NAMESPACE_BEGIN
 

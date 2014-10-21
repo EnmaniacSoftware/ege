@@ -25,16 +25,11 @@
 #include "EGEDirectory.h"
 #include "EGEEngine.h"
 #include "EGETimer.h"
-#include "EGEXml.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KResourceManagerDebugName = "EGEResourceManager";
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define NODE_RESOURCES "resources"
-#define NODE_GROUP     "group"
-#define NODE_INCLUDE   "include"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 struct BuiltInResource
 {
@@ -61,12 +56,14 @@ static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, Res
                                                     { RESOURCE_NAME_PROGRAM, ResourceProgram::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceManager(Engine& engine) 
+ResourceManager::ResourceManager(Engine& engine, IResourceLoader& loader) 
 : m_engine(engine)
+, m_resourceLoader(loader)
 , m_totalResourcesToProcess(0)
 , m_processedResourcesCount(0)
 {
   ege_connect(&engine, signalFrameEnd, this, ResourceManager::onFrameEnd);
+  ege_connect(&m_resourceLoader, signalGroupCreated, this, ResourceManager::onGroupCreated);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
@@ -166,30 +163,18 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
   {
     String fullPath = autoDetect ? Directory::Join(*it, filePath) : filePath;
 
-    XmlDocument xml;
-    if (EGE_SUCCESS != (result = xml.load(fullPath)))
+    // try to add the resource
+    result = m_resourceLoader.addResources(fullPath);
+
+    // check if resource wasnt found
+    if (EGE_ERROR_NOT_FOUND == result)
     {
       // try another data location
       continue;
     }
-
-    // get main node
-    PXmlElement resourcesNode = xml.firstChild(NODE_RESOURCES);
-    if ((NULL == resourcesNode) || ! resourcesNode->isValid())
+    else if (EGE_SUCCESS != result)
     {
-      // error!
-      egeWarning(KResourceManagerDebugName) << "Resource file" << fullPath << "has no" << NODE_RESOURCES << "tag";
-      result = EGE_ERROR;
-      break;
-    }
-
-    // process RESOURCES tag
-    String path;
-    String file;
-    Directory::DecomposePath(fullPath, path, file);
-    if (EGE_SUCCESS != (result = processResourcesTag(path, resourcesNode)))
-    {
-      // error!
+      // some other error happend, we are done
       break;
     }
 
@@ -232,93 +217,6 @@ void ResourceManager::addDataDirectory(const String& path)
   {
     m_dataDirs << path;
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManager::processResourcesTag(const String& filePath, const PXmlElement& tag)
-{
-  EGEResult result = EGE_SUCCESS;
-
-  // go thru all children
-  PXmlElement child = tag->firstChild();
-  while (child->isValid())
-  {
-    // get child name
-    const String childName = child->name();
-
-    // process GROUP tag
-    if (NODE_GROUP == childName)
-    {
-      result = addGroup(filePath, child);
-    }
-    // process INCLUDE tag
-    else if (NODE_INCLUDE == childName)
-    {
-      result = processInclude(filePath, child);
-    }
-
-    // check if error occured
-    if (EGE_SUCCESS != result)
-    {
-      // we are done
-      break;
-    }
-
-    // go to next child
-    child = child->nextChild();
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManager::addGroup(const String& filePath, const PXmlElement& tag)
-{
-  EGEResult result = EGE_SUCCESS;
-
-  PResourceGroup newGroup = ege_new ResourceGroup(this);
-  if (NULL == newGroup)
-  {
-    // error!
-    return EGE_ERROR_NO_MEMORY;
-  }
-  
-  // create from XML
-  result = newGroup->create(filePath, tag);
-  if (EGE_SUCCESS == result)
-  {
-    egeDebug(KResourceManagerDebugName) << newGroup->name();
-
-    // check if such group DOES NOT exists
-    PResourceGroup existingGroup = group(newGroup->name());
-    if (NULL == existingGroup)
-    {
-      // connect
-      ege_connect(newGroup, resourceLoaded, this, ResourceManager::onResourceLoaded);
-      ege_connect(newGroup, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
-      ege_connect(newGroup, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
-      ege_connect(newGroup, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
-  
-      // add into pool
-      m_groups.push_back(newGroup);
-    }
-    else
-    {
-      // try to override
-      result = existingGroup->overrideBy(newGroup);
-      if (EGE_ERROR_NOT_SUPPORTED == result)
-      {
-        // error!
-        egeWarning(KResourceManagerDebugName) << "Attempt to override non-overridable group" << existingGroup->name();
-      }
-      else if (EGE_ERROR_ALREADY_EXISTS == result)
-      {
-        // NOTE: we quitely omit group duplicates so it is valid to ie. INCLUDE the same group multiple times
-        egeWarning(KResourceManagerDebugName) << "Group" << newGroup->name() << "already exists. Skipping.";
-        result = EGE_SUCCESS;
-      }
-    }
-  }
-
-  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResourceGroup ResourceManager::group(const String& name) const
@@ -381,20 +279,30 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
+  PResourceGroup newGroup = ege_new ResourceGroup(this);
+  if (NULL == newGroup)
+  {
+    // error!
+    return false;
+  }
+  
   // locate group element
-  PXmlElement groupTag = document.rootElement()->firstChild(NODE_GROUP);
+  PXmlElement groupTag = document.rootElement()->firstChild("group"/*NODE_GROUP*/);
   if ((NULL == groupTag) || ! groupTag->isValid())
   {
     // error!
     return false;
   }
 
-  // create new group
-  if (EGE_SUCCESS != addGroup("", groupTag))
+  // create from XML
+  if (EGE_SUCCESS != newGroup->create("", groupTag))
   {
     // error!
     return false;
   }
+
+  // add group to the pool
+  onGroupCreated(newGroup);
 
   return (EGE_SUCCESS == loadGroup(DEFAULT_GROUP_NAME));
 }
@@ -486,35 +394,6 @@ PResourceText ResourceManager::textResource(const String& name, const String& gr
 PResourceSound ResourceManager::soundResource(const String& name, const String& groupName) const
 {
   return resource(RESOURCE_NAME_SOUND, name, groupName);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManager::processInclude(const String& filePath, const PXmlElement& tag)
-{
-  bool error = false;
-
-  // get data
-  String path     = tag->attribute("path");
-  bool autoDetect = tag->attribute("auto-detect", "false").toBool(&error);
-
-  // check if obligatory data is wrong
-  if (path.empty() || error)
-  {
-    // error!
-    return EGE_ERROR;
-  }
-
-  egeDebug(KResourceManagerDebugName) << "Including" << path;
-
-  // check if not autodetecting
-  // NOTE: in this case we assume path is with respect to current directory
-  if (!autoDetect)
-  {
-    // compose absolute path
-    path = Directory::Join(filePath, path);
-  }
-
-  // add new resource
-  return addResources(path, autoDetect);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceManager::buildDependacyList(StringList& list, const String& groupName) const
@@ -683,6 +562,18 @@ void ResourceManager::onResourceUnloaded(const PResource& resource)
   emit processingStatusUpdated(m_processedResourcesCount, m_totalResourcesToProcess);
 
   egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::onGroupCreated(const PResourceGroup& group)
+{
+  // connect
+  ege_connect(group, resourceLoaded, this, ResourceManager::onResourceLoaded);
+  ege_connect(group, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
+  ege_connect(group, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
+  ege_connect(group, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
+
+  // add into pool
+  m_groups.push_back(group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

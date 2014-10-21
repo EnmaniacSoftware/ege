@@ -18,8 +18,6 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-extern const char* KResourceManagerMultiThreadName;
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerMultiThread : public ResourceManager
@@ -55,7 +53,7 @@ class ResourceManagerMultiThread : public ResourceManager
 
   public:
 
-    ResourceManagerMultiThread(Engine& engine);
+    ResourceManagerMultiThread(Engine& engine, IResourceLoader& loader);
    ~ResourceManagerMultiThread();
 
     EGE_DECLARE_NEW_OPERATORS

@@ -15,14 +15,6 @@ class AdNetworkNull : public AdNetwork
 
     AdNetworkNull(Engine& engine);
    ~AdNetworkNull();
-
-  public:
-
-    /*! Creates instance of this implementation of AdNetwork interface. 
-     *  @param  engine  Reference to engine.
-     *  @return Created instance. NULL if error occured.
-     */
-    static AdNetwork* Create(Engine& engine);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

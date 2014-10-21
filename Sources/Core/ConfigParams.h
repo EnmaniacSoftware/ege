@@ -40,6 +40,7 @@ EGE_NAMESPACE_BEGIN
 
 // resource specific
 #define KConfigParamResourceManagerTypeName "config-param-resource-manager-typename"
+#define KConfigParamResourceLoaderTypeName  "config-param-resource-loader-typename"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

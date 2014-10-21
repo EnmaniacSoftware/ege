@@ -53,11 +53,6 @@ AudioManagerOpenAL::~AudioManagerOpenAL()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineModule<IAudioManager>* AudioManagerOpenAL::Create(Engine& engine)
-{
-  return ege_new AudioManagerOpenAL(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult AudioManagerOpenAL::construct()
 {
   // create audio device

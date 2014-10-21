@@ -19,11 +19,6 @@ AudioManagerNull::~AudioManagerNull()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EngineModule<IAudioManager>* AudioManagerNull::Create(Engine& engine)
-{
-  return ege_new AudioManagerNull(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerNull::update(const Time& time)
 {
   EGE_UNUSED(time)

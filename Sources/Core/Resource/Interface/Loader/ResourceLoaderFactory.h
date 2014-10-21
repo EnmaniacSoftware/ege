@@ -1,23 +1,23 @@
-#ifndef EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
-#define EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
+#ifndef EGE_CORE_RESOURCE_RESOURCELOADERFACTORY_H
+#define EGE_CORE_RESOURCE_RESOURCELOADERFACTORY_H
 
-/*! Registry object for all suppliers of Advertisement Network soulutions.
+/*! Factory for resource loader instances.
  */
 
 #include "EGE.h"
 #include "EGEEngine.h"
-#include "EGEAdNetwork.h"
 #include "Core/Factory/Interface/Factory.h"
+#include "Core/Resource/Interface/Loader/IResourceLoader.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AdNetworkRegistry : public Factory<AdNetwork*>
+class ResourceLoaderFactory : public Factory<IResourceLoader*>
 {
   public:
 
-    AdNetworkRegistry(Engine& engine);
-    virtual ~AdNetworkRegistry();
+    ResourceLoaderFactory(Engine& engine);
+    virtual ~ResourceLoaderFactory();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -26,4 +26,4 @@ class AdNetworkRegistry : public Factory<AdNetwork*>
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_SERVICES_ADNETWORKREGISTRY_H
+#endif // EGE_CORE_RESOURCE_RESOURCELOADERFACTORY_H

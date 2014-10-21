@@ -13,11 +13,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class AudioManagerFactory;
 class EngineApplication;
 class IEngineModule;
 class IGraphics;
+class ResourceLoaderFactory;
 class ResourceManagerFactory;
-class AudioManagerFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineInstance : public Engine
                      , public EngineInternal
@@ -85,6 +86,9 @@ class EngineInstance : public Engine
     AudioManagerFactory* audioManagerFactory() const override;
     /*! @see EngineInternal::resourceManagerFactory. */
     ResourceManagerFactory* resourceManagerFactory() const override;
+    /*! @see EngineInternal::resourceLoaderFactory. */
+    ResourceLoaderFactory* resourceLoaderFactory() const override;
+    
     /*! @see EngineInternal::shutdown. */
     void shutdown() override;
     /*! @see EngineInternal::isShuttingDown.*/

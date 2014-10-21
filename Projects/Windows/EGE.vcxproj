@@ -160,6 +160,8 @@
     <ClCompile Include="..\..\Sources\Core\Physics\PhysicsManager.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\RandomGenerator.cpp" />
     <ClCompile Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Loader\ResourceLoaderFactory.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Loader\ResourceLoaderXML.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerMultiThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Resource.cpp" />
@@ -415,6 +417,9 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\IResourceLoader.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\ResourceLoaderFactory.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\ResourceLoaderXML.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\MultiThread\ResourceManagerMultiThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\Resource.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceCurve.h" />
@@ -528,6 +533,7 @@
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
+    <ClInclude Include="..\..\Sources\EGEResourceLoader.h" />
     <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />

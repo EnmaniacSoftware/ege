@@ -13,8 +13,8 @@ const char* KResourceManagerMultiThreadName = "multi-thread";
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerMultiThread)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerMultiThread)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerMultiThread::ResourceManagerMultiThread(Engine& engine) 
-: ResourceManager(engine)
+ResourceManagerMultiThread::ResourceManagerMultiThread(Engine& engine, IResourceLoader& loader) 
+: ResourceManager(engine, loader)
 {
   // create work thread
   m_workThread = ege_new ResourceManagerWorkThread(this);

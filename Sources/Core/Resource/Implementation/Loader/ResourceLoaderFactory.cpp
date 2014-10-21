@@ -1,41 +1,43 @@
-#include "Core/Services/Interface/AdNetworkRegistry.h"
-#include "Core/Services/Implementation/AdNetworkNull.h"
+#include "Core/Resource/Interface/Loader/ResourceLoaderFactory.h"
+#include "Core/Resource/Interface/Loader/ResourceLoaderXML.h"
 #include "EGEDebug.h"
+#include "EGEResourceLoader.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const char* KAdNetworkRegistryDebugName = "EGEAdNetworkRegistry";
+const char* KResourceLoaderFactoryDebugName = "EGEResourceLoaderFactory";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AdNetworkNullCreateFunctor : public Factory<AdNetwork*>::CreateInstanceFunctor
+class ResourceLoaderXMLCreateFunctor : public Factory<IResourceLoader*>::CreateInstanceFunctor
 {
   public:
 
-    AdNetworkNullCreateFunctor(Engine& engine) : m_engine(engine) {}
+    ResourceLoaderXMLCreateFunctor(Engine& engine) : m_engine(engine) {}
 
-    AdNetwork* operator()() const override { return ege_new AdNetworkNull(m_engine); }
+    IResourceLoader* operator()() const override { return ege_new ResourceLoaderXML(m_engine); }
 
   private:
 
     Engine& m_engine;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(AdNetworkRegistry)
-EGE_DEFINE_DELETE_OPERATORS(AdNetworkRegistry)
+EGE_DEFINE_NEW_OPERATORS(ResourceLoaderFactory)
+EGE_DEFINE_DELETE_OPERATORS(ResourceLoaderFactory)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetworkRegistry::AdNetworkRegistry(Engine& engine) 
-: Factory<AdNetwork*>(engine)
+ResourceLoaderFactory::ResourceLoaderFactory(Engine& engine) 
+: Factory<IResourceLoader*>(engine)
 {
   // register default interfaces
-  if (EGE_SUCCESS != registerInterface(KDefaultAdNetworkName, ege_new AdNetworkNullCreateFunctor(engine)))
+  if (EGE_SUCCESS != registerInterface(KResourceLoaderXMLName, ege_new ResourceLoaderXMLCreateFunctor(engine)))
   {
-    egeWarning(KAdNetworkRegistryDebugName) << "Could not register default AdNetwork interfaces!";
+    egeWarning(KResourceLoaderFactoryDebugName) << "Could not register default ResourceLoader interfaces!";
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetworkRegistry::~AdNetworkRegistry()
+ResourceLoaderFactory::~ResourceLoaderFactory()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END
+

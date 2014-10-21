@@ -12,8 +12,8 @@ const char* KResourceManagerSingleThreadName = "single-thread";
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerSingleThread)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerSingleThread)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManagerSingleThread::ResourceManagerSingleThread(Engine& engine) 
-: ResourceManager(engine)
+ResourceManagerSingleThread::ResourceManagerSingleThread(Engine& engine, IResourceLoader& loader) 
+: ResourceManager(engine, loader)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

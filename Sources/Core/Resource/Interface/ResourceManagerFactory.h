@@ -12,9 +12,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef EngineModule<IResourceManager>* (*ResourceManagerCreateFunc)(Engine& engine);
+class ResourceLoaderFactory;
+class IResourceLoader;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManagerFactory : public Factory<EngineModule<IResourceManager>*, ResourceManagerCreateFunc>
+class ResourceManagerFactory : public Factory<EngineModule<IResourceManager>*>
 {
   public:
 
@@ -23,6 +24,16 @@ class ResourceManagerFactory : public Factory<EngineModule<IResourceManager>*, R
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
+
+    /*! Returns loader factory. */
+    ResourceLoaderFactory* loaderFactory() const;
+
+  private:
+
+    /*! Loader factory. */
+    ResourceLoaderFactory* m_loaderFactory;
+    /*! Resource loader instance. */
+    IResourceLoader* m_resourceLoader;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -472,6 +472,12 @@
     <Filter Include="Core\Resource\Interface\Single Thread">
       <UniqueIdentifier>{e63d74cc-572d-436f-bfd8-e0c4dd72758c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Resource\Implementation\Loader">
+      <UniqueIdentifier>{1dfe0c07-08d0-4820-a7d0-ebe1044831fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Resource\Interface\Loader">
+      <UniqueIdentifier>{7e9489cc-ff38-4e08-9601-d8d1190423e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -1157,6 +1163,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\SingleThread\ResourceManagerSingleThread.cpp">
       <Filter>Core\Resource\Implementation\Single Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Loader\ResourceLoaderFactory.cpp">
+      <Filter>Core\Resource\Implementation\Loader</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Loader\ResourceLoaderXML.cpp">
+      <Filter>Core\Resource\Implementation\Loader</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2120,6 +2132,16 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\SingleThread\ResourceManagerSingleThread.h">
       <Filter>Core\Resource\Interface\Single Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\IResourceLoader.h">
+      <Filter>Core\Resource\Interface\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\ResourceLoaderFactory.h">
+      <Filter>Core\Resource\Interface\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\Loader\ResourceLoaderXML.h">
+      <Filter>Core\Resource\Interface\Loader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEResourceLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

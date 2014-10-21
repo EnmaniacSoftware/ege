@@ -31,7 +31,7 @@ ResourceGroup::~ResourceGroup()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceGroup::create(const String& path,  const PXmlElement& tag)
+EGEResult ResourceGroup::create(const String& path, const PXmlElement& tag)
 {
   EGEResult result = EGE_SUCCESS;
 

@@ -5,6 +5,7 @@
  */
 
 #include "EGE.h"
+#include "EGEEngine.h"
 #include "EGESignal.h"
 #include "EGEString.h"
 

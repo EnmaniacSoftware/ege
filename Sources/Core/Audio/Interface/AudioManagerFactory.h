@@ -12,9 +12,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-typedef EngineModule<IAudioManager>* (*AudioManagerCreateFunc)(Engine& engine);
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerFactory : public Factory<EngineModule<IAudioManager>*, AudioManagerCreateFunc>
+class AudioManagerFactory : public Factory<EngineModule<IAudioManager>*>
 {
   public:
 
