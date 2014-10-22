@@ -39,9 +39,11 @@ const String& ResourceProgram::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceProgram::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceProgram::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   // get data
   m_name = tag->attribute("name");

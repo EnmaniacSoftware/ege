@@ -38,11 +38,13 @@ const String& ResourceSpriteAnimation::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceSpriteAnimation::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceSpriteAnimation::create(const String& path, const PObject& data)
 {
   EGE_UNUSED(path);
 
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 

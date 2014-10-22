@@ -34,9 +34,11 @@ const String& ResourceSound::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceSound::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceSound::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 

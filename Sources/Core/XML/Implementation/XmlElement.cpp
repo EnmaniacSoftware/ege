@@ -12,18 +12,21 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(XmlElement)
 EGE_DEFINE_DELETE_OPERATORS(XmlElement)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElement::XmlElement() : Object()
+XmlElement::XmlElement() 
+: Object(EGE_OBJECT_UID_XML_ELEMENT)
 {
   m_p = ege_new XmlElementPrivate(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElement::XmlElement(const String& name) : Object()
+XmlElement::XmlElement(const String& name) 
+: Object(EGE_OBJECT_UID_XML_ELEMENT)
 {
   m_p = ege_new XmlElementPrivate(this, name);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElement::XmlElement(XmlElementPrivate* p) : Object(), 
-                                               m_p(p)
+XmlElement::XmlElement(XmlElementPrivate* p) 
+: Object(EGE_OBJECT_UID_XML_ELEMENT)
+, m_p(p)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

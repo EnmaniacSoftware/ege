@@ -30,11 +30,13 @@ const String& ResourceSequencer::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceSequencer::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceSequencer::create(const String& path, const PObject& data)
 {
   EGE_UNUSED(path);
 
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   // get data
   bool error = false;

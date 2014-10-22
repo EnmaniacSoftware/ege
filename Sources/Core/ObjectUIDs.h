@@ -15,6 +15,7 @@ EGE_NAMESPACE_BEGIN
 #define EGE_CORE_THREADING_OBJECT_UID_BASE  (EGE_CORE_OBJECT_UID_BASE + 0x600)
 #define EGE_CORE_ENGINE_MODULES_UID_BASE    (EGE_CORE_OBJECT_UID_BASE + 0x700)
 #define EGE_CORE_INPUT_OBJECT_UID_BASE      (EGE_CORE_OBJECT_UID_BASE + 0x800)
+#define EGE_CORE_XML_OBJECT_UID_BASE        (EGE_CORE_OBJECT_UID_BASE + 0x900)
 
 // Generic object ids
 #define EGE_OBJECT_UID_GENERIC                ((EGE_CORE_OBJECT_UID_BASE) + 0)
@@ -92,6 +93,9 @@ EGE_NAMESPACE_BEGIN
 #define EGE_OBJECT_UID_INPUT_KEY_EVENT          ((EGE_CORE_INPUT_OBJECT_UID_BASE) + 0)
 #define EGE_OBJECT_UID_INPUT_MOUSE_EVENT        ((EGE_CORE_INPUT_OBJECT_UID_BASE) + 1)
 #define EGE_OBJECT_UID_INPUT_TOUCH_EVENT        ((EGE_CORE_INPUT_OBJECT_UID_BASE) + 2)
+
+// XML related object ids
+#define EGE_OBJECT_UID_XML_ELEMENT              ((EGE_CORE_XML_OBJECT_UID_BASE) + 0)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

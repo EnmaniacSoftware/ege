@@ -7,14 +7,13 @@
  */
 
 #include "EGE.h"
-#include "EGEXml.h"
+#include "EGEString.h"
 #include "Core/Memory/Object.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
-class Application;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,11 +38,12 @@ class IResource : public Object
     IResource(Engine& engine, ResourceGroup* group, const String& typeName, egeObjectDeleteFunc deleteFunc = NULL);
     virtual ~IResource();
 
-    /*! Initializes resource from XML. 
-     *  @param  path  full path to resource definition file.
-     *  @param  tag   xml element with resource definition. 
+    /*! Initializes resource. 
+     *  @param  path  Full path to resource definition file.
+     *  @param  data  Source of resource data. 
+     *  @return EGE_SUCCESS on success. EGE_ERROR_NOT_SUPPORTED if the source is not supported. Otherwise, one of the other error codes.
      */
-    virtual EGEResult create(const String& path, const PXmlElement& tag) = 0;
+    virtual EGEResult create(const String& path, const PObject& data) = 0;
     /*! Loads resource. 
      *  @return Returns EGE_SUCCESS if resource has been loaded. EGE_WAIT if resource is being loaded.
      */

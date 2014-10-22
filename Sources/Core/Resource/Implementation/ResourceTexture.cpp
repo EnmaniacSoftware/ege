@@ -53,12 +53,13 @@ static TextureAddressingMode MapTextureAddressingName(const String& name, Textur
   return defaultValue; //EGETexture::AM_REPEAT;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceTexture::ResourceTexture(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_TEXTURE)
-                                                                       , m_minFilter(TF_NEAREST)
-                                                                       , m_magFilter(TF_NEAREST)
-                                                                       , m_addressingModeS(AM_REPEAT)
-                                                                       , m_addressingModeT(AM_REPEAT)
-                                                                       , m_mipmap(false)
+ResourceTexture::ResourceTexture(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_TEXTURE)
+, m_minFilter(TF_NEAREST)
+, m_magFilter(TF_NEAREST)
+, m_addressingModeS(AM_REPEAT)
+, m_addressingModeT(AM_REPEAT)
+, m_mipmap(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -96,9 +97,11 @@ const String& ResourceTexture::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceTexture::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceTexture::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 

@@ -32,9 +32,11 @@ const String& ResourceData::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceData::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceData::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   // get data
   bool error = false;

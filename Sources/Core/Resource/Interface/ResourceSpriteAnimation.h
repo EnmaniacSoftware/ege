@@ -39,7 +39,7 @@ class ResourceSpriteAnimation : public IResource
     /*! @see IResource::name. */
     const String& name() const override;
     /*! @see IResource::create. */ 
-    EGEResult create(const String& path, const PXmlElement& tag) override;
+    EGEResult create(const String& path, const PObject& data) override;
     /*! @see IResource::load. */
     EGEResult load() override;
     /*! @see IResource::unload. */

@@ -12,7 +12,6 @@
 #include "Core/Overlay/OverlayManager.h"
 #include "Core/Physics/PhysicsManager.h"
 #include "Core/Resource/Interface/ResourceManagerFactory.h"
-#include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "Core/Scene/SceneManager.h"
 #include "Core/Screen/Interface/ScreenManager.h"
 #include "Core/Services/Interface/AdNetworkRegistry.h"
@@ -27,6 +26,7 @@
 #include "EGEInput.h"
 #include "EGEPurchaseServices.h"
 #include "EGEResources.h"
+#include "EGEResourceManager.h"
 #include "EGESocialServices.h"
 #include "EGETimer.h"
 

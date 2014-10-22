@@ -55,9 +55,11 @@ const String& ResourceShader::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceShader::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceShader::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 

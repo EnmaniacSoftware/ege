@@ -137,11 +137,13 @@ const String& ResourceMaterial::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceMaterial::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceMaterial::create(const String& path, const PObject& data)
 {
   EGE_UNUSED(path);
 
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
   bool defaultPassInUse = false;

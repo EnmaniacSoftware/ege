@@ -33,11 +33,13 @@ const String& ResourceText::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceText::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceText::create(const String& path, const PObject& data)
 {
   EGE_UNUSED(path);
 
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   // get data
   m_name = tag->attribute("name");

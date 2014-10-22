@@ -41,11 +41,13 @@ const String& ResourceImagedAnimation::name() const
   return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceImagedAnimation::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceImagedAnimation::create(const String& path, const PObject& data)
 {
   EGE_UNUSED(path);
 
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 

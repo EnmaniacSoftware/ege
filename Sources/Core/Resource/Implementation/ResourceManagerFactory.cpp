@@ -4,6 +4,7 @@
 #include "Core/Resource/Interface/MultiThread/ResourceManagerMultiThread.h"
 #include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
 #include "EGEDebug.h"
+#include "EGEResourceLoader.h"
 
 EGE_NAMESPACE_BEGIN
 
