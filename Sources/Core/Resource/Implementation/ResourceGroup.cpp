@@ -14,7 +14,7 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_DEPENDANCY "dependancy"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(ResourceManager* manager, const String& name) 
+ResourceGroup::ResourceGroup(IResourceManager& manager, const String& name) 
 : Object()
 , m_manager(manager)
 , m_name(name)
@@ -31,9 +31,11 @@ ResourceGroup::~ResourceGroup()
   destroy();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceGroup::create(const String& path, const PXmlElement& tag)
+EGEResult ResourceGroup::create(const String& path, const PObject& data)
 {
   EGEResult result = EGE_SUCCESS;
+
+  PXmlElement tag = ege_pcast<PXmlElement>(data);
 
   bool error = false;
 
@@ -67,7 +69,7 @@ EGEResult ResourceGroup::create(const String& path, const PXmlElement& tag)
     else
     {
       // create resource instance
-      PResource resource = static_cast<IResourceManager*>(manager())->createResource(child->name(), this);
+      PResource resource = manager().createResource(child->name(), this);
       if (resource)
       {
         // initialize from XML
@@ -136,7 +138,8 @@ EGEResult ResourceGroup::load()
         }
 
         // check processing policy
-        if (ResourceManager::RLP_RESOURCE == m_manager->resourceProcessPolicy())
+        // TAGE - FIX
+        if (ResourceManager::RLP_RESOURCE == dynamic_cast<ResourceManager&>(m_manager).resourceProcessPolicy())
         {
           // yield for now
           return EGE_WAIT;
@@ -395,9 +398,19 @@ const StringList& ResourceGroup::dependancies() const
   return m_dependancies; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager* ResourceGroup::manager() const 
+IResourceManager& ResourceGroup::manager() const 
 { 
   return m_manager; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& ResourceGroup::name() const 
+{ 
+  return m_name; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceGroup::isLoaded() const 
+{ 
+  return m_loaded; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -3,9 +3,6 @@
 #include "EGEDebug.h"
 #include "EGEDirectory.h"
 
-// TAGE - fix
-#include "Core/Resource/Implementation/ResourceManager.h"
-
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -102,8 +99,7 @@ EGEResult ResourceLoaderXML::processGroup(const String& filePath, const PXmlElem
 {
   EGEResult result = EGE_SUCCESS;
 
-  // TAGE - fix!
-  PResourceGroup newGroup = ege_new ResourceGroup(dynamic_cast<ResourceManager*>(m_engine.resourceManager()));
+  PResourceGroup newGroup = ege_new ResourceGroup(*m_engine.resourceManager());
   if (NULL == newGroup)
   {
     // error!

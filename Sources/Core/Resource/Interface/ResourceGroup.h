@@ -17,14 +17,14 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManager;
+class IResourceManager;
 EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(ResourceManager* manager, const String& name = "");
+    ResourceGroup(IResourceManager& manager, const String& name = "");
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -55,7 +55,7 @@ class ResourceGroup : public Object
      *  @param  path  full path to resource definition file.
      *  @param  tag   xml element with resource definition. 
      */
-    EGEResult create(const String& path,  const PXmlElement& tag);
+    EGEResult create(const String& path, const PObject& data);
     /*! Loads the group resources. 
      *  @note When loading is successfully done resourceGroupLoaded signal is emitted. If group was already loaded no singal is emitted.
      *  @return When group is successfully loaded EGE_SUCCESS is returned. If group was already loaded, EGE_ERROR_ALREADY_EXISTS is returned.
@@ -67,7 +67,8 @@ class ResourceGroup : public Object
      */
     EGEResult unload();
     /*! Returns group name. */
-    const String& name() const { return m_name; }
+    const String& name() const;
+
     /*! Returns resource of a given type and name. */
     PResource resource(const String& typeName, const String& name) const;
     /*! Returns list of all resources of the given type. 
@@ -79,11 +80,11 @@ class ResourceGroup : public Object
     /*! Adds given resource to group. */
     EGEResult addResource(const PResource& resource);
     /*! Is group loaded. */
-    bool isLoaded() const { return m_loaded; }
+    bool isLoaded() const;
     /*! Returns list of dependancy group names. */
     const StringList& dependancies() const;
     /*! Gets owning manager */
-    ResourceManager* manager() const;
+    IResourceManager& manager() const;
     /*! Overrides resources by another group ones. 
      *  @param group Group which resources should override current ones.
      *  @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)
@@ -107,8 +108,8 @@ class ResourceGroup : public Object
 
   private:
 
-    /*! Pointer to owning manager. */
-    ResourceManager* m_manager;
+    /*! Owning manager. */
+    IResourceManager& m_manager;
     /*! Group name. */
     String m_name;
     /*! Path to definition file. */

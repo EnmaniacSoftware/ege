@@ -279,7 +279,7 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
-  PResourceGroup newGroup = ege_new ResourceGroup(this);
+  PResourceGroup newGroup = ege_new ResourceGroup(*this);
   if (NULL == newGroup)
   {
     // error!
