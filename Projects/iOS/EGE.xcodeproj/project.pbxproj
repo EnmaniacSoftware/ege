@@ -182,30 +182,32 @@
 		4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D61971FB5C0002D632 /* Sequencer.cpp */; };
 		4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */; };
 		4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */; };
-		4563CFD919F3D53400A61978 /* ResourceManagerMultiThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFA419F3D53400A61978 /* ResourceManagerMultiThread.cpp */; };
-		4563CFDA19F3D53400A61978 /* ResourceManagerWorkThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFA519F3D53400A61978 /* ResourceManagerWorkThread.cpp */; };
-		4563CFDB19F3D53400A61978 /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFA719F3D53400A61978 /* Resource.cpp */; };
-		4563CFDC19F3D53400A61978 /* ResourceCurve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFA819F3D53400A61978 /* ResourceCurve.cpp */; };
-		4563CFDD19F3D53400A61978 /* ResourceData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFA919F3D53400A61978 /* ResourceData.cpp */; };
-		4563CFDE19F3D53400A61978 /* ResourceFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFAA19F3D53400A61978 /* ResourceFont.cpp */; };
-		4563CFDF19F3D53400A61978 /* ResourceGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFAB19F3D53400A61978 /* ResourceGroup.cpp */; };
-		4563CFE019F3D53400A61978 /* ResourceImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFAC19F3D53400A61978 /* ResourceImagedAnimation.cpp */; };
-		4563CFE119F3D53400A61978 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFAD19F3D53400A61978 /* ResourceManager.cpp */; };
-		4563CFE219F3D53400A61978 /* ResourceManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFAF19F3D53400A61978 /* ResourceManagerFactory.cpp */; };
-		4563CFE319F3D53400A61978 /* ResourceMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB019F3D53400A61978 /* ResourceMaterial.cpp */; };
-		4563CFE419F3D53400A61978 /* ResourceParticleAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB119F3D53400A61978 /* ResourceParticleAffector.cpp */; };
-		4563CFE519F3D53400A61978 /* ResourceParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB219F3D53400A61978 /* ResourceParticleEmitter.cpp */; };
-		4563CFE619F3D53400A61978 /* ResourceProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB319F3D53400A61978 /* ResourceProgram.cpp */; };
-		4563CFE719F3D53400A61978 /* ResourceSequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB419F3D53400A61978 /* ResourceSequencer.cpp */; };
-		4563CFE819F3D53400A61978 /* ResourceShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB519F3D53400A61978 /* ResourceShader.cpp */; };
-		4563CFE919F3D53400A61978 /* ResourceSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB619F3D53400A61978 /* ResourceSound.cpp */; };
-		4563CFEA19F3D53400A61978 /* ResourceSpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB719F3D53400A61978 /* ResourceSpriteAnimation.cpp */; };
-		4563CFEB19F3D53400A61978 /* ResourceSpritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB819F3D53400A61978 /* ResourceSpritesheet.cpp */; };
-		4563CFEC19F3D53400A61978 /* ResourceText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFB919F3D53400A61978 /* ResourceText.cpp */; };
-		4563CFED19F3D53400A61978 /* ResourceTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFBA19F3D53400A61978 /* ResourceTexture.cpp */; };
-		4563CFEE19F3D53400A61978 /* ResourceTextureImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFBB19F3D53400A61978 /* ResourceTextureImage.cpp */; };
-		4563CFEF19F3D53400A61978 /* ResourceWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFBC19F3D53400A61978 /* ResourceWidget.cpp */; };
-		4563CFF019F3D53400A61978 /* ResourceManagerSingleThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563CFBE19F3D53400A61978 /* ResourceManagerSingleThread.cpp */; };
+		456CA27319F83B6500868FA1 /* ResourceLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23719F83B6500868FA1 /* ResourceLoaderFactory.cpp */; };
+		456CA27419F83B6500868FA1 /* ResourceLoaderXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23819F83B6500868FA1 /* ResourceLoaderXML.cpp */; };
+		456CA27519F83B6500868FA1 /* ResourceManagerMultiThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23A19F83B6500868FA1 /* ResourceManagerMultiThread.cpp */; };
+		456CA27619F83B6500868FA1 /* ResourceManagerWorkThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23B19F83B6500868FA1 /* ResourceManagerWorkThread.cpp */; };
+		456CA27719F83B6500868FA1 /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23D19F83B6500868FA1 /* Resource.cpp */; };
+		456CA27819F83B6500868FA1 /* ResourceCurve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23E19F83B6500868FA1 /* ResourceCurve.cpp */; };
+		456CA27919F83B6500868FA1 /* ResourceData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23F19F83B6500868FA1 /* ResourceData.cpp */; };
+		456CA27A19F83B6500868FA1 /* ResourceFont.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24019F83B6500868FA1 /* ResourceFont.cpp */; };
+		456CA27B19F83B6500868FA1 /* ResourceGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24119F83B6500868FA1 /* ResourceGroup.cpp */; };
+		456CA27C19F83B6500868FA1 /* ResourceImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24219F83B6500868FA1 /* ResourceImagedAnimation.cpp */; };
+		456CA27D19F83B6500868FA1 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24319F83B6500868FA1 /* ResourceManager.cpp */; };
+		456CA27E19F83B6500868FA1 /* ResourceManagerFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24519F83B6500868FA1 /* ResourceManagerFactory.cpp */; };
+		456CA27F19F83B6500868FA1 /* ResourceMaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24619F83B6500868FA1 /* ResourceMaterial.cpp */; };
+		456CA28019F83B6500868FA1 /* ResourceParticleAffector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24719F83B6500868FA1 /* ResourceParticleAffector.cpp */; };
+		456CA28119F83B6500868FA1 /* ResourceParticleEmitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24819F83B6500868FA1 /* ResourceParticleEmitter.cpp */; };
+		456CA28219F83B6500868FA1 /* ResourceProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24919F83B6500868FA1 /* ResourceProgram.cpp */; };
+		456CA28319F83B6500868FA1 /* ResourceSequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24A19F83B6500868FA1 /* ResourceSequencer.cpp */; };
+		456CA28419F83B6500868FA1 /* ResourceShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24B19F83B6500868FA1 /* ResourceShader.cpp */; };
+		456CA28519F83B6500868FA1 /* ResourceSound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24C19F83B6500868FA1 /* ResourceSound.cpp */; };
+		456CA28619F83B6500868FA1 /* ResourceSpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24D19F83B6500868FA1 /* ResourceSpriteAnimation.cpp */; };
+		456CA28719F83B6500868FA1 /* ResourceSpritesheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24E19F83B6500868FA1 /* ResourceSpritesheet.cpp */; };
+		456CA28819F83B6500868FA1 /* ResourceText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA24F19F83B6500868FA1 /* ResourceText.cpp */; };
+		456CA28919F83B6500868FA1 /* ResourceTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25019F83B6500868FA1 /* ResourceTexture.cpp */; };
+		456CA28A19F83B6500868FA1 /* ResourceTextureImage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25119F83B6500868FA1 /* ResourceTextureImage.cpp */; };
+		456CA28B19F83B6500868FA1 /* ResourceWidget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25219F83B6500868FA1 /* ResourceWidget.cpp */; };
+		456CA28C19F83B6500868FA1 /* ResourceManagerSingleThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25419F83B6500868FA1 /* ResourceManagerSingleThread.cpp */; };
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
 		457C566319E5C29900E35A51 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565919E5C29900E35A51 /* String.cpp */; };
@@ -802,56 +804,62 @@
 		4563A4E11971FEA50002D632 /* MailComposeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailComposeDelegate.h; sourceTree = "<group>"; };
 		4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MailComposeDelegate.mm; sourceTree = "<group>"; };
 		4563CFA019F3D52100A61978 /* EGEResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResourceManager.h; path = ../../Sources/EGEResourceManager.h; sourceTree = "<group>"; };
-		4563CFA219F3D53400A61978 /* DefaultGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultGroup.h; sourceTree = "<group>"; };
-		4563CFA419F3D53400A61978 /* ResourceManagerMultiThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerMultiThread.cpp; sourceTree = "<group>"; };
-		4563CFA519F3D53400A61978 /* ResourceManagerWorkThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerWorkThread.cpp; sourceTree = "<group>"; };
-		4563CFA619F3D53400A61978 /* ResourceManagerWorkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerWorkThread.h; sourceTree = "<group>"; };
-		4563CFA719F3D53400A61978 /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
-		4563CFA819F3D53400A61978 /* ResourceCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceCurve.cpp; sourceTree = "<group>"; };
-		4563CFA919F3D53400A61978 /* ResourceData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceData.cpp; sourceTree = "<group>"; };
-		4563CFAA19F3D53400A61978 /* ResourceFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceFont.cpp; sourceTree = "<group>"; };
-		4563CFAB19F3D53400A61978 /* ResourceGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceGroup.cpp; sourceTree = "<group>"; };
-		4563CFAC19F3D53400A61978 /* ResourceImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceImagedAnimation.cpp; sourceTree = "<group>"; };
-		4563CFAD19F3D53400A61978 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
-		4563CFAE19F3D53400A61978 /* ResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
-		4563CFAF19F3D53400A61978 /* ResourceManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerFactory.cpp; sourceTree = "<group>"; };
-		4563CFB019F3D53400A61978 /* ResourceMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceMaterial.cpp; sourceTree = "<group>"; };
-		4563CFB119F3D53400A61978 /* ResourceParticleAffector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceParticleAffector.cpp; sourceTree = "<group>"; };
-		4563CFB219F3D53400A61978 /* ResourceParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceParticleEmitter.cpp; sourceTree = "<group>"; };
-		4563CFB319F3D53400A61978 /* ResourceProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceProgram.cpp; sourceTree = "<group>"; };
-		4563CFB419F3D53400A61978 /* ResourceSequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSequencer.cpp; sourceTree = "<group>"; };
-		4563CFB519F3D53400A61978 /* ResourceShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceShader.cpp; sourceTree = "<group>"; };
-		4563CFB619F3D53400A61978 /* ResourceSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSound.cpp; sourceTree = "<group>"; };
-		4563CFB719F3D53400A61978 /* ResourceSpriteAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSpriteAnimation.cpp; sourceTree = "<group>"; };
-		4563CFB819F3D53400A61978 /* ResourceSpritesheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSpritesheet.cpp; sourceTree = "<group>"; };
-		4563CFB919F3D53400A61978 /* ResourceText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceText.cpp; sourceTree = "<group>"; };
-		4563CFBA19F3D53400A61978 /* ResourceTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceTexture.cpp; sourceTree = "<group>"; };
-		4563CFBB19F3D53400A61978 /* ResourceTextureImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceTextureImage.cpp; sourceTree = "<group>"; };
-		4563CFBC19F3D53400A61978 /* ResourceWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceWidget.cpp; sourceTree = "<group>"; };
-		4563CFBE19F3D53400A61978 /* ResourceManagerSingleThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerSingleThread.cpp; sourceTree = "<group>"; };
-		4563CFC019F3D53400A61978 /* IResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceManager.h; sourceTree = "<group>"; };
-		4563CFC219F3D53400A61978 /* ResourceManagerMultiThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerMultiThread.h; sourceTree = "<group>"; };
-		4563CFC319F3D53400A61978 /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
-		4563CFC419F3D53400A61978 /* ResourceCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceCurve.h; sourceTree = "<group>"; };
-		4563CFC519F3D53400A61978 /* ResourceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceData.h; sourceTree = "<group>"; };
-		4563CFC619F3D53400A61978 /* ResourceFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFont.h; sourceTree = "<group>"; };
-		4563CFC719F3D53400A61978 /* ResourceGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceGroup.h; sourceTree = "<group>"; };
-		4563CFC819F3D53400A61978 /* ResourceImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImagedAnimation.h; sourceTree = "<group>"; };
-		4563CFC919F3D53400A61978 /* ResourceManagerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerFactory.h; sourceTree = "<group>"; };
-		4563CFCA19F3D53400A61978 /* ResourceMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceMaterial.h; sourceTree = "<group>"; };
-		4563CFCB19F3D53400A61978 /* ResourceParticleAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceParticleAffector.h; sourceTree = "<group>"; };
-		4563CFCC19F3D53400A61978 /* ResourceParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceParticleEmitter.h; sourceTree = "<group>"; };
-		4563CFCD19F3D53400A61978 /* ResourceProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceProgram.h; sourceTree = "<group>"; };
-		4563CFCE19F3D53400A61978 /* ResourceSequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSequencer.h; sourceTree = "<group>"; };
-		4563CFCF19F3D53400A61978 /* ResourceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceShader.h; sourceTree = "<group>"; };
-		4563CFD019F3D53400A61978 /* ResourceSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSound.h; sourceTree = "<group>"; };
-		4563CFD119F3D53400A61978 /* ResourceSpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSpriteAnimation.h; sourceTree = "<group>"; };
-		4563CFD219F3D53400A61978 /* ResourceSpritesheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSpritesheet.h; sourceTree = "<group>"; };
-		4563CFD319F3D53400A61978 /* ResourceText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceText.h; sourceTree = "<group>"; };
-		4563CFD419F3D53400A61978 /* ResourceTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceTexture.h; sourceTree = "<group>"; };
-		4563CFD519F3D53400A61978 /* ResourceTextureImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceTextureImage.h; sourceTree = "<group>"; };
-		4563CFD619F3D53400A61978 /* ResourceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceWidget.h; sourceTree = "<group>"; };
-		4563CFD819F3D53400A61978 /* ResourceManagerSingleThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerSingleThread.h; sourceTree = "<group>"; };
+		456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResourceLoader.h; path = ../../Sources/EGEResourceLoader.h; sourceTree = "<group>"; };
+		456CA23519F83B6500868FA1 /* DefaultGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultGroup.h; sourceTree = "<group>"; };
+		456CA23719F83B6500868FA1 /* ResourceLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceLoaderFactory.cpp; sourceTree = "<group>"; };
+		456CA23819F83B6500868FA1 /* ResourceLoaderXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceLoaderXML.cpp; sourceTree = "<group>"; };
+		456CA23A19F83B6500868FA1 /* ResourceManagerMultiThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerMultiThread.cpp; sourceTree = "<group>"; };
+		456CA23B19F83B6500868FA1 /* ResourceManagerWorkThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerWorkThread.cpp; sourceTree = "<group>"; };
+		456CA23C19F83B6500868FA1 /* ResourceManagerWorkThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerWorkThread.h; sourceTree = "<group>"; };
+		456CA23D19F83B6500868FA1 /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
+		456CA23E19F83B6500868FA1 /* ResourceCurve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceCurve.cpp; sourceTree = "<group>"; };
+		456CA23F19F83B6500868FA1 /* ResourceData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceData.cpp; sourceTree = "<group>"; };
+		456CA24019F83B6500868FA1 /* ResourceFont.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceFont.cpp; sourceTree = "<group>"; };
+		456CA24119F83B6500868FA1 /* ResourceGroup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceGroup.cpp; sourceTree = "<group>"; };
+		456CA24219F83B6500868FA1 /* ResourceImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceImagedAnimation.cpp; sourceTree = "<group>"; };
+		456CA24319F83B6500868FA1 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
+		456CA24419F83B6500868FA1 /* ResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManager.h; sourceTree = "<group>"; };
+		456CA24519F83B6500868FA1 /* ResourceManagerFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerFactory.cpp; sourceTree = "<group>"; };
+		456CA24619F83B6500868FA1 /* ResourceMaterial.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceMaterial.cpp; sourceTree = "<group>"; };
+		456CA24719F83B6500868FA1 /* ResourceParticleAffector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceParticleAffector.cpp; sourceTree = "<group>"; };
+		456CA24819F83B6500868FA1 /* ResourceParticleEmitter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceParticleEmitter.cpp; sourceTree = "<group>"; };
+		456CA24919F83B6500868FA1 /* ResourceProgram.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceProgram.cpp; sourceTree = "<group>"; };
+		456CA24A19F83B6500868FA1 /* ResourceSequencer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSequencer.cpp; sourceTree = "<group>"; };
+		456CA24B19F83B6500868FA1 /* ResourceShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceShader.cpp; sourceTree = "<group>"; };
+		456CA24C19F83B6500868FA1 /* ResourceSound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSound.cpp; sourceTree = "<group>"; };
+		456CA24D19F83B6500868FA1 /* ResourceSpriteAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSpriteAnimation.cpp; sourceTree = "<group>"; };
+		456CA24E19F83B6500868FA1 /* ResourceSpritesheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceSpritesheet.cpp; sourceTree = "<group>"; };
+		456CA24F19F83B6500868FA1 /* ResourceText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceText.cpp; sourceTree = "<group>"; };
+		456CA25019F83B6500868FA1 /* ResourceTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceTexture.cpp; sourceTree = "<group>"; };
+		456CA25119F83B6500868FA1 /* ResourceTextureImage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceTextureImage.cpp; sourceTree = "<group>"; };
+		456CA25219F83B6500868FA1 /* ResourceWidget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceWidget.cpp; sourceTree = "<group>"; };
+		456CA25419F83B6500868FA1 /* ResourceManagerSingleThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManagerSingleThread.cpp; sourceTree = "<group>"; };
+		456CA25619F83B6500868FA1 /* IResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceManager.h; sourceTree = "<group>"; };
+		456CA25819F83B6500868FA1 /* IResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IResourceLoader.h; sourceTree = "<group>"; };
+		456CA25919F83B6500868FA1 /* ResourceLoaderFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceLoaderFactory.h; sourceTree = "<group>"; };
+		456CA25A19F83B6500868FA1 /* ResourceLoaderXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceLoaderXML.h; sourceTree = "<group>"; };
+		456CA25C19F83B6500868FA1 /* ResourceManagerMultiThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerMultiThread.h; sourceTree = "<group>"; };
+		456CA25D19F83B6500868FA1 /* Resource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resource.h; sourceTree = "<group>"; };
+		456CA25E19F83B6500868FA1 /* ResourceCurve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceCurve.h; sourceTree = "<group>"; };
+		456CA25F19F83B6500868FA1 /* ResourceData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceData.h; sourceTree = "<group>"; };
+		456CA26019F83B6500868FA1 /* ResourceFont.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFont.h; sourceTree = "<group>"; };
+		456CA26119F83B6500868FA1 /* ResourceGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceGroup.h; sourceTree = "<group>"; };
+		456CA26219F83B6500868FA1 /* ResourceImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceImagedAnimation.h; sourceTree = "<group>"; };
+		456CA26319F83B6500868FA1 /* ResourceManagerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerFactory.h; sourceTree = "<group>"; };
+		456CA26419F83B6500868FA1 /* ResourceMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceMaterial.h; sourceTree = "<group>"; };
+		456CA26519F83B6500868FA1 /* ResourceParticleAffector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceParticleAffector.h; sourceTree = "<group>"; };
+		456CA26619F83B6500868FA1 /* ResourceParticleEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceParticleEmitter.h; sourceTree = "<group>"; };
+		456CA26719F83B6500868FA1 /* ResourceProgram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceProgram.h; sourceTree = "<group>"; };
+		456CA26819F83B6500868FA1 /* ResourceSequencer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSequencer.h; sourceTree = "<group>"; };
+		456CA26919F83B6500868FA1 /* ResourceShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceShader.h; sourceTree = "<group>"; };
+		456CA26A19F83B6500868FA1 /* ResourceSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSound.h; sourceTree = "<group>"; };
+		456CA26B19F83B6500868FA1 /* ResourceSpriteAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSpriteAnimation.h; sourceTree = "<group>"; };
+		456CA26C19F83B6500868FA1 /* ResourceSpritesheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceSpritesheet.h; sourceTree = "<group>"; };
+		456CA26D19F83B6500868FA1 /* ResourceText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceText.h; sourceTree = "<group>"; };
+		456CA26E19F83B6500868FA1 /* ResourceTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceTexture.h; sourceTree = "<group>"; };
+		456CA26F19F83B6500868FA1 /* ResourceTextureImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceTextureImage.h; sourceTree = "<group>"; };
+		456CA27019F83B6500868FA1 /* ResourceWidget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceWidget.h; sourceTree = "<group>"; };
+		456CA27219F83B6500868FA1 /* ResourceManagerSingleThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerSingleThread.h; sourceTree = "<group>"; };
 		457A67B218C7DAFC0004D38F /* Database.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Database.cpp; sourceTree = "<group>"; };
 		457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DatabaseSqlite.cpp; sourceTree = "<group>"; };
 		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
@@ -1033,6 +1041,7 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */,
 				4563CFA019F3D52100A61978 /* EGEResourceManager.h */,
 				45B6770119E30788009DB9FC /* EGEFileUtils.h */,
 				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
@@ -1836,8 +1845,8 @@
 		4514705D18C5231900AAC617 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFA119F3D53400A61978 /* Implementation */,
-				4563CFBF19F3D53400A61978 /* Interface */,
+				456CA23419F83B6500868FA1 /* Implementation */,
+				456CA25519F83B6500868FA1 /* Interface */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -2497,98 +2506,119 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
-		4563CFA119F3D53400A61978 /* Implementation */ = {
+		456CA23419F83B6500868FA1 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFA219F3D53400A61978 /* DefaultGroup.h */,
-				4563CFA319F3D53400A61978 /* MultiThread */,
-				4563CFA719F3D53400A61978 /* Resource.cpp */,
-				4563CFA819F3D53400A61978 /* ResourceCurve.cpp */,
-				4563CFA919F3D53400A61978 /* ResourceData.cpp */,
-				4563CFAA19F3D53400A61978 /* ResourceFont.cpp */,
-				4563CFAB19F3D53400A61978 /* ResourceGroup.cpp */,
-				4563CFAC19F3D53400A61978 /* ResourceImagedAnimation.cpp */,
-				4563CFAD19F3D53400A61978 /* ResourceManager.cpp */,
-				4563CFAE19F3D53400A61978 /* ResourceManager.h */,
-				4563CFAF19F3D53400A61978 /* ResourceManagerFactory.cpp */,
-				4563CFB019F3D53400A61978 /* ResourceMaterial.cpp */,
-				4563CFB119F3D53400A61978 /* ResourceParticleAffector.cpp */,
-				4563CFB219F3D53400A61978 /* ResourceParticleEmitter.cpp */,
-				4563CFB319F3D53400A61978 /* ResourceProgram.cpp */,
-				4563CFB419F3D53400A61978 /* ResourceSequencer.cpp */,
-				4563CFB519F3D53400A61978 /* ResourceShader.cpp */,
-				4563CFB619F3D53400A61978 /* ResourceSound.cpp */,
-				4563CFB719F3D53400A61978 /* ResourceSpriteAnimation.cpp */,
-				4563CFB819F3D53400A61978 /* ResourceSpritesheet.cpp */,
-				4563CFB919F3D53400A61978 /* ResourceText.cpp */,
-				4563CFBA19F3D53400A61978 /* ResourceTexture.cpp */,
-				4563CFBB19F3D53400A61978 /* ResourceTextureImage.cpp */,
-				4563CFBC19F3D53400A61978 /* ResourceWidget.cpp */,
-				4563CFBD19F3D53400A61978 /* SingleThread */,
+				456CA23519F83B6500868FA1 /* DefaultGroup.h */,
+				456CA23619F83B6500868FA1 /* Loader */,
+				456CA23919F83B6500868FA1 /* MultiThread */,
+				456CA23D19F83B6500868FA1 /* Resource.cpp */,
+				456CA23E19F83B6500868FA1 /* ResourceCurve.cpp */,
+				456CA23F19F83B6500868FA1 /* ResourceData.cpp */,
+				456CA24019F83B6500868FA1 /* ResourceFont.cpp */,
+				456CA24119F83B6500868FA1 /* ResourceGroup.cpp */,
+				456CA24219F83B6500868FA1 /* ResourceImagedAnimation.cpp */,
+				456CA24319F83B6500868FA1 /* ResourceManager.cpp */,
+				456CA24419F83B6500868FA1 /* ResourceManager.h */,
+				456CA24519F83B6500868FA1 /* ResourceManagerFactory.cpp */,
+				456CA24619F83B6500868FA1 /* ResourceMaterial.cpp */,
+				456CA24719F83B6500868FA1 /* ResourceParticleAffector.cpp */,
+				456CA24819F83B6500868FA1 /* ResourceParticleEmitter.cpp */,
+				456CA24919F83B6500868FA1 /* ResourceProgram.cpp */,
+				456CA24A19F83B6500868FA1 /* ResourceSequencer.cpp */,
+				456CA24B19F83B6500868FA1 /* ResourceShader.cpp */,
+				456CA24C19F83B6500868FA1 /* ResourceSound.cpp */,
+				456CA24D19F83B6500868FA1 /* ResourceSpriteAnimation.cpp */,
+				456CA24E19F83B6500868FA1 /* ResourceSpritesheet.cpp */,
+				456CA24F19F83B6500868FA1 /* ResourceText.cpp */,
+				456CA25019F83B6500868FA1 /* ResourceTexture.cpp */,
+				456CA25119F83B6500868FA1 /* ResourceTextureImage.cpp */,
+				456CA25219F83B6500868FA1 /* ResourceWidget.cpp */,
+				456CA25319F83B6500868FA1 /* SingleThread */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
 		};
-		4563CFA319F3D53400A61978 /* MultiThread */ = {
+		456CA23619F83B6500868FA1 /* Loader */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFA419F3D53400A61978 /* ResourceManagerMultiThread.cpp */,
-				4563CFA519F3D53400A61978 /* ResourceManagerWorkThread.cpp */,
-				4563CFA619F3D53400A61978 /* ResourceManagerWorkThread.h */,
+				456CA23719F83B6500868FA1 /* ResourceLoaderFactory.cpp */,
+				456CA23819F83B6500868FA1 /* ResourceLoaderXML.cpp */,
+			);
+			path = Loader;
+			sourceTree = "<group>";
+		};
+		456CA23919F83B6500868FA1 /* MultiThread */ = {
+			isa = PBXGroup;
+			children = (
+				456CA23A19F83B6500868FA1 /* ResourceManagerMultiThread.cpp */,
+				456CA23B19F83B6500868FA1 /* ResourceManagerWorkThread.cpp */,
+				456CA23C19F83B6500868FA1 /* ResourceManagerWorkThread.h */,
 			);
 			path = MultiThread;
 			sourceTree = "<group>";
 		};
-		4563CFBD19F3D53400A61978 /* SingleThread */ = {
+		456CA25319F83B6500868FA1 /* SingleThread */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFBE19F3D53400A61978 /* ResourceManagerSingleThread.cpp */,
+				456CA25419F83B6500868FA1 /* ResourceManagerSingleThread.cpp */,
 			);
 			path = SingleThread;
 			sourceTree = "<group>";
 		};
-		4563CFBF19F3D53400A61978 /* Interface */ = {
+		456CA25519F83B6500868FA1 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFC019F3D53400A61978 /* IResourceManager.h */,
-				4563CFC119F3D53400A61978 /* MultiThread */,
-				4563CFC319F3D53400A61978 /* Resource.h */,
-				4563CFC419F3D53400A61978 /* ResourceCurve.h */,
-				4563CFC519F3D53400A61978 /* ResourceData.h */,
-				4563CFC619F3D53400A61978 /* ResourceFont.h */,
-				4563CFC719F3D53400A61978 /* ResourceGroup.h */,
-				4563CFC819F3D53400A61978 /* ResourceImagedAnimation.h */,
-				4563CFC919F3D53400A61978 /* ResourceManagerFactory.h */,
-				4563CFCA19F3D53400A61978 /* ResourceMaterial.h */,
-				4563CFCB19F3D53400A61978 /* ResourceParticleAffector.h */,
-				4563CFCC19F3D53400A61978 /* ResourceParticleEmitter.h */,
-				4563CFCD19F3D53400A61978 /* ResourceProgram.h */,
-				4563CFCE19F3D53400A61978 /* ResourceSequencer.h */,
-				4563CFCF19F3D53400A61978 /* ResourceShader.h */,
-				4563CFD019F3D53400A61978 /* ResourceSound.h */,
-				4563CFD119F3D53400A61978 /* ResourceSpriteAnimation.h */,
-				4563CFD219F3D53400A61978 /* ResourceSpritesheet.h */,
-				4563CFD319F3D53400A61978 /* ResourceText.h */,
-				4563CFD419F3D53400A61978 /* ResourceTexture.h */,
-				4563CFD519F3D53400A61978 /* ResourceTextureImage.h */,
-				4563CFD619F3D53400A61978 /* ResourceWidget.h */,
-				4563CFD719F3D53400A61978 /* SingleThread */,
+				456CA25619F83B6500868FA1 /* IResourceManager.h */,
+				456CA25719F83B6500868FA1 /* Loader */,
+				456CA25B19F83B6500868FA1 /* MultiThread */,
+				456CA25D19F83B6500868FA1 /* Resource.h */,
+				456CA25E19F83B6500868FA1 /* ResourceCurve.h */,
+				456CA25F19F83B6500868FA1 /* ResourceData.h */,
+				456CA26019F83B6500868FA1 /* ResourceFont.h */,
+				456CA26119F83B6500868FA1 /* ResourceGroup.h */,
+				456CA26219F83B6500868FA1 /* ResourceImagedAnimation.h */,
+				456CA26319F83B6500868FA1 /* ResourceManagerFactory.h */,
+				456CA26419F83B6500868FA1 /* ResourceMaterial.h */,
+				456CA26519F83B6500868FA1 /* ResourceParticleAffector.h */,
+				456CA26619F83B6500868FA1 /* ResourceParticleEmitter.h */,
+				456CA26719F83B6500868FA1 /* ResourceProgram.h */,
+				456CA26819F83B6500868FA1 /* ResourceSequencer.h */,
+				456CA26919F83B6500868FA1 /* ResourceShader.h */,
+				456CA26A19F83B6500868FA1 /* ResourceSound.h */,
+				456CA26B19F83B6500868FA1 /* ResourceSpriteAnimation.h */,
+				456CA26C19F83B6500868FA1 /* ResourceSpritesheet.h */,
+				456CA26D19F83B6500868FA1 /* ResourceText.h */,
+				456CA26E19F83B6500868FA1 /* ResourceTexture.h */,
+				456CA26F19F83B6500868FA1 /* ResourceTextureImage.h */,
+				456CA27019F83B6500868FA1 /* ResourceWidget.h */,
+				456CA27119F83B6500868FA1 /* SingleThread */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
 		};
-		4563CFC119F3D53400A61978 /* MultiThread */ = {
+		456CA25719F83B6500868FA1 /* Loader */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFC219F3D53400A61978 /* ResourceManagerMultiThread.h */,
+				456CA25819F83B6500868FA1 /* IResourceLoader.h */,
+				456CA25919F83B6500868FA1 /* ResourceLoaderFactory.h */,
+				456CA25A19F83B6500868FA1 /* ResourceLoaderXML.h */,
+			);
+			path = Loader;
+			sourceTree = "<group>";
+		};
+		456CA25B19F83B6500868FA1 /* MultiThread */ = {
+			isa = PBXGroup;
+			children = (
+				456CA25C19F83B6500868FA1 /* ResourceManagerMultiThread.h */,
 			);
 			path = MultiThread;
 			sourceTree = "<group>";
 		};
-		4563CFD719F3D53400A61978 /* SingleThread */ = {
+		456CA27119F83B6500868FA1 /* SingleThread */ = {
 			isa = PBXGroup;
 			children = (
-				4563CFD819F3D53400A61978 /* ResourceManagerSingleThread.h */,
+				456CA27219F83B6500868FA1 /* ResourceManagerSingleThread.h */,
 			);
 			path = SingleThread;
 			sourceTree = "<group>";
@@ -3137,6 +3167,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4514711518C5231900AAC617 /* ComplexTypes.cpp in Sources */,
+				456CA27719F83B6500868FA1 /* Resource.cpp in Sources */,
+				456CA28B19F83B6500868FA1 /* ResourceWidget.cpp in Sources */,
 				4514711618C5231900AAC617 /* Component.cpp in Sources */,
 				4514711718C5231900AAC617 /* ComponentHost.cpp in Sources */,
 				4514711818C5231900AAC617 /* PhysicsComponentBox2D_p.cpp in Sources */,
@@ -3146,71 +3178,73 @@
 				4514711A18C5231900AAC617 /* PhysicsComponent.cpp in Sources */,
 				453C83F6193E6AD200FBA4AA /* AudioUtils.cpp in Sources */,
 				457C566319E5C29900E35A51 /* String.cpp in Sources */,
-				4563CFE819F3D53400A61978 /* ResourceShader.cpp in Sources */,
 				4514711B18C5231900AAC617 /* Cipher.cpp in Sources */,
 				4514711C18C5231900AAC617 /* CipherAES.cpp in Sources */,
+				456CA27919F83B6500868FA1 /* ResourceData.cpp in Sources */,
 				4514711D18C5231900AAC617 /* CipherKey.cpp in Sources */,
 				4514711E18C5231900AAC617 /* CipherXOR.cpp in Sources */,
 				4514711F18C5231900AAC617 /* CryptographicHash.cpp in Sources */,
 				4514712018C5231900AAC617 /* CryptographicHashMD5.cpp in Sources */,
 				4514712118C5231900AAC617 /* Hash.cpp in Sources */,
+				456CA28519F83B6500868FA1 /* ResourceSound.cpp in Sources */,
+				456CA27C19F83B6500868FA1 /* ResourceImagedAnimation.cpp in Sources */,
 				4514712818C5231900AAC617 /* Console.cpp in Sources */,
 				4514712918C5231900AAC617 /* Debug.cpp in Sources */,
-				4563CFDF19F3D53400A61978 /* ResourceGroup.cpp in Sources */,
 				4514712B18C5231900AAC617 /* Logger.cpp in Sources */,
-				4563CFEC19F3D53400A61978 /* ResourceText.cpp in Sources */,
 				4514712F18C5231900AAC617 /* Directory.cpp in Sources */,
+				456CA28119F83B6500868FA1 /* ResourceParticleEmitter.cpp in Sources */,
 				4514713318C5231900AAC617 /* Camera.cpp in Sources */,
 				459972FE19EDC798001B63C3 /* PointerEvent.cpp in Sources */,
 				4514713418C5231900AAC617 /* Color.cpp in Sources */,
+				456CA27619F83B6500868FA1 /* ResourceManagerWorkThread.cpp in Sources */,
 				4514713518C5231900AAC617 /* ColorTransform.cpp in Sources */,
 				4514713618C5231900AAC617 /* Font.cpp in Sources */,
-				4563CFF019F3D53400A61978 /* ResourceManagerSingleThread.cpp in Sources */,
 				4514713718C5231900AAC617 /* Frustum.cpp in Sources */,
-				4563CFE619F3D53400A61978 /* ResourceProgram.cpp in Sources */,
+				456CA27D19F83B6500868FA1 /* ResourceManager.cpp in Sources */,
 				4514713818C5231900AAC617 /* Graphics.cpp in Sources */,
-				4563CFD919F3D53400A61978 /* ResourceManagerMultiThread.cpp in Sources */,
-				4563CFDB19F3D53400A61978 /* Resource.cpp in Sources */,
 				453C8421193E6BF000FBA4AA /* SoundDelegate.mm in Sources */,
+				456CA27A19F83B6500868FA1 /* ResourceFont.cpp in Sources */,
 				4514713918C5231900AAC617 /* Image.cpp in Sources */,
 				4514713A18C5231900AAC617 /* ImageHandlerJPG.cpp in Sources */,
 				4514713B18C5231900AAC617 /* ImageHandlerPNG.cpp in Sources */,
 				4514713C18C5231900AAC617 /* ImageHandlerPVR.cpp in Sources */,
 				4514713D18C5231900AAC617 /* ImageLoader.cpp in Sources */,
 				4514713E18C5231900AAC617 /* ImageUtils.cpp in Sources */,
-				4563CFED19F3D53400A61978 /* ResourceTexture.cpp in Sources */,
 				4514713F18C5231900AAC617 /* ImageLoaderST_p.cpp in Sources */,
 				453C83FD193E6AD200FBA4AA /* SoundEffectFadeOut.cpp in Sources */,
 				4514714118C5231900AAC617 /* IndexBuffer.cpp in Sources */,
-				4563CFEA19F3D53400A61978 /* ResourceSpriteAnimation.cpp in Sources */,
 				4514714218C5231900AAC617 /* JpegDataSrcFile.cpp in Sources */,
 				4514714318C5231900AAC617 /* Material.cpp in Sources */,
 				4514715018C5231900AAC617 /* ParticleAffector.cpp in Sources */,
 				4514715118C5231900AAC617 /* ParticleAffectorForce.cpp in Sources */,
 				4514715218C5231900AAC617 /* ParticleEmitter.cpp in Sources */,
+				456CA27519F83B6500868FA1 /* ResourceManagerMultiThread.cpp in Sources */,
 				45E246C119ABDA2A00A538B0 /* AdNetworkNull.cpp in Sources */,
+				456CA28A19F83B6500868FA1 /* ResourceTextureImage.cpp in Sources */,
 				4514715318C5231900AAC617 /* ParticleEmitterPoint.cpp in Sources */,
 				4514715418C5231900AAC617 /* ParticleFactory.cpp in Sources */,
 				4514715518C5231900AAC617 /* Program.cpp in Sources */,
 				4514715618C5231900AAC617 /* BatchedRenderQueue.cpp in Sources */,
 				4514715718C5231900AAC617 /* RenderComponent.cpp in Sources */,
 				4514715818C5231900AAC617 /* RenderQueue.cpp in Sources */,
+				456CA28719F83B6500868FA1 /* ResourceSpritesheet.cpp in Sources */,
 				4514715918C5231900AAC617 /* RenderQueueFactory.cpp in Sources */,
 				4514715A18C5231900AAC617 /* SimpleRenderQueue.cpp in Sources */,
 				4514715B18C5231900AAC617 /* RenderPass.cpp in Sources */,
-				4563CFE319F3D53400A61978 /* ResourceMaterial.cpp in Sources */,
 				4514715C18C5231900AAC617 /* RenderSystem.cpp in Sources */,
 				4514715D18C5231900AAC617 /* RenderTarget.cpp in Sources */,
 				4514715E18C5231900AAC617 /* RenderWindow.cpp in Sources */,
 				457C566419E5C29900E35A51 /* Text.cpp in Sources */,
 				4514715F18C5231900AAC617 /* RenderObjectFactory.cpp in Sources */,
+				456CA28819F83B6500868FA1 /* ResourceText.cpp in Sources */,
+				456CA27F19F83B6500868FA1 /* ResourceMaterial.cpp in Sources */,
 				4514716018C5231900AAC617 /* Shader.cpp in Sources */,
 				45EE1AF019EEF6E10036D0AA /* ScreenManager.cpp in Sources */,
 				4514716218C5231900AAC617 /* Texture2D.cpp in Sources */,
 				4514716318C5231900AAC617 /* TextureImage.cpp in Sources */,
+				456CA27819F83B6500868FA1 /* ResourceCurve.cpp in Sources */,
 				4514716418C5231900AAC617 /* VertexBuffer.cpp in Sources */,
 				459972FD19EDC798001B63C3 /* MouseEvent.cpp in Sources */,
-				4563CFDE19F3D53400A61978 /* ResourceFont.cpp in Sources */,
 				453C83F5193E6AD200FBA4AA /* AudioHelper.cpp in Sources */,
 				450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */,
 				4514716518C5231900AAC617 /* VertexDeclaration.cpp in Sources */,
@@ -3218,12 +3252,12 @@
 				453C8402193E6AD200FBA4AA /* SoundOpenAL.cpp in Sources */,
 				4514716618C5231900AAC617 /* VertexElement.cpp in Sources */,
 				4514716718C5231900AAC617 /* Viewport.cpp in Sources */,
+				456CA27319F83B6500868FA1 /* ResourceLoaderFactory.cpp in Sources */,
 				4514716A18C5231900AAC617 /* Angle.cpp in Sources */,
 				4514716B18C5231900AAC617 /* AxisAlignedBox.cpp in Sources */,
 				4514716C18C5231900AAC617 /* Math.cpp in Sources */,
 				4514716D18C5231900AAC617 /* CubicSpline.cpp in Sources */,
 				45E246C319ABDA4A00A538B0 /* AudioManagerFactory.cpp in Sources */,
-				4563CFE119F3D53400A61978 /* ResourceManager.cpp in Sources */,
 				45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */,
 				45B91A9F19DB5C09009856BD /* EventManager.cpp in Sources */,
 				457C566519E5C29900E35A51 /* StringBuffer.cpp in Sources */,
@@ -3235,8 +3269,10 @@
 				4514718518C5231900AAC617 /* MemoryManager.cpp in Sources */,
 				4514718718C5231900AAC617 /* MessageBox.cpp in Sources */,
 				4514718818C5231900AAC617 /* ImageOverlay.cpp in Sources */,
+				456CA28619F83B6500868FA1 /* ResourceSpriteAnimation.cpp in Sources */,
 				4514718918C5231900AAC617 /* Overlay.cpp in Sources */,
 				4514718B18C5231900AAC617 /* OverlayManager.cpp in Sources */,
+				456CA28419F83B6500868FA1 /* ResourceShader.cpp in Sources */,
 				4514718C18C5231900AAC617 /* TextOverlay.cpp in Sources */,
 				4514718D18C5231900AAC617 /* DebugDrawBox2D.cpp in Sources */,
 				450E126619351E2E00B9F785 /* Device.cpp in Sources */,
@@ -3264,19 +3300,18 @@
 				45E4DC36199C0395000FB4B8 /* DeviceServices.cpp in Sources */,
 				45B91AA419DB5C21009856BD /* FileIOS_p.mm in Sources */,
 				45E4DC3A199C0395000FB4B8 /* SocialServicesNull.cpp in Sources */,
+				456CA28319F83B6500868FA1 /* ResourceSequencer.cpp in Sources */,
 				45B91A9E19DB5C09009856BD /* Event.cpp in Sources */,
 				453C8400193E6AD200FBA4AA /* AudioManagerOpenAL.cpp in Sources */,
 				45E2656619B66D60003E5B14 /* AdNetworkChartboost.mm in Sources */,
-				4563CFEB19F3D53400A61978 /* ResourceSpritesheet.cpp in Sources */,
-				4563CFE719F3D53400A61978 /* ResourceSequencer.cpp in Sources */,
 				451471B418C5231900AAC617 /* SceneManager.cpp in Sources */,
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
+				456CA28019F83B6500868FA1 /* ResourceParticleAffector.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
 				45B91A9419DB5BF6009856BD /* File.cpp in Sources */,
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
 				451471C318C5231900AAC617 /* Mutex.cpp in Sources */,
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
-				4563CFEF19F3D53400A61978 /* ResourceWidget.cpp in Sources */,
 				451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */,
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
 				459972FC19EDC798001B63C3 /* KeyEvent.cpp in Sources */,
@@ -3286,17 +3321,18 @@
 				451471C918C5231900AAC617 /* WaitCondition.cpp in Sources */,
 				451471CD18C5231900AAC617 /* ByteOrder.cpp in Sources */,
 				452EF2F919729E83006D5876 /* StringHelper.mm in Sources */,
+				456CA27419F83B6500868FA1 /* ResourceLoaderXML.cpp in Sources */,
 				451471CE18C5231900AAC617 /* CommandLineParser.cpp in Sources */,
 				45E4DC37199C0395000FB4B8 /* PurchaseServices.cpp in Sources */,
-				4563CFDA19F3D53400A61978 /* ResourceManagerWorkThread.cpp in Sources */,
 				451471CF18C5231900AAC617 /* Dialog.cpp in Sources */,
 				451471D018C5231900AAC617 /* Label.cpp in Sources */,
 				451471D118C5231900AAC617 /* PushButton.cpp in Sources */,
+				456CA28C19F83B6500868FA1 /* ResourceManagerSingleThread.cpp in Sources */,
 				451471D218C5231900AAC617 /* UIAbstractScrollbar.cpp in Sources */,
 				45E246BE19ABD54C00A538B0 /* EngineInstanceIOS.cpp in Sources */,
 				451471D318C5231900AAC617 /* UIHorizontalScrollbar.cpp in Sources */,
+				456CA28919F83B6500868FA1 /* ResourceTexture.cpp in Sources */,
 				451471D418C5231900AAC617 /* UIPageIndicator.cpp in Sources */,
-				4563CFDC19F3D53400A61978 /* ResourceCurve.cpp in Sources */,
 				451471D518C5231900AAC617 /* UIScrollablePageView.cpp in Sources */,
 				451471D618C5231900AAC617 /* UIScrollableView.cpp in Sources */,
 				451471D718C5231900AAC617 /* UIScrollView.cpp in Sources */,
@@ -3307,7 +3343,6 @@
 				451471DB18C5231900AAC617 /* WidgetFrame.cpp in Sources */,
 				451471DC18C5231900AAC617 /* Version.cpp in Sources */,
 				451471DD18C5231900AAC617 /* XmlAttributeTinyXml_p.cpp in Sources */,
-				4563CFEE19F3D53400A61978 /* ResourceTextureImage.cpp in Sources */,
 				453C83F8193E6AD200FBA4AA /* AudioCodecMp3.cpp in Sources */,
 				451471DE18C5231900AAC617 /* XmlDocumentTinyXml_p.cpp in Sources */,
 				451471DF18C5231900AAC617 /* XmlElementTinyXml_p.cpp in Sources */,
@@ -3337,16 +3372,16 @@
 				45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */,
 				45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */,
 				453C83FC193E6AD200FBA4AA /* SoundEffectFadeIn.cpp in Sources */,
-				4563CFE519F3D53400A61978 /* ResourceParticleEmitter.cpp in Sources */,
 				453C8401193E6AD200FBA4AA /* AudioThreadOpenAL.cpp in Sources */,
 				45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */,
 				45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */,
 				45E2657019B67615003E5B14 /* AdNetworkChartboostDelegate.mm in Sources */,
+				456CA27B19F83B6500868FA1 /* ResourceGroup.cpp in Sources */,
+				456CA27E19F83B6500868FA1 /* ResourceManagerFactory.cpp in Sources */,
 				45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */,
 				45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */,
 				45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */,
 				455A2FDF18F48C3100CD9581 /* RenderSystemFixedOGL.cpp in Sources */,
-				4563CFE419F3D53400A61978 /* ResourceParticleAffector.cpp in Sources */,
 				455A2FE018F48C3100CD9581 /* RenderSystemProgrammableOGL.cpp in Sources */,
 				453C83FA193E6AD200FBA4AA /* AudioCodecWav.cpp in Sources */,
 				455A2FE118F48C3100CD9581 /* RenderSystemOGL.cpp in Sources */,
@@ -3357,12 +3392,11 @@
 				45E4DC35199C0395000FB4B8 /* AdNetworkRegistry.cpp in Sources */,
 				455A2FF718F48D9D00CD9581 /* ProgramOGL.cpp in Sources */,
 				455A2FF818F48D9D00CD9581 /* RenderTextureCopyOGL.cpp in Sources */,
-				4563CFDD19F3D53400A61978 /* ResourceData.cpp in Sources */,
 				455A2FF918F48D9D00CD9581 /* RenderTextureFBOOGL.cpp in Sources */,
 				4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */,
 				455A2FFA18F48D9D00CD9581 /* ShaderOGL.cpp in Sources */,
 				453C841F193E6BF000FBA4AA /* AudioManagerOpenALIOS.mm in Sources */,
-				4563CFE919F3D53400A61978 /* ResourceSound.cpp in Sources */,
+				456CA28219F83B6500868FA1 /* ResourceProgram.cpp in Sources */,
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,
 				455A2FFC18F48D9D00CD9581 /* VertexBufferVAOGL.cpp in Sources */,
 				455A2FFD18F48D9D00CD9581 /* VertexBufferVBOOGL.cpp in Sources */,
@@ -3370,8 +3404,6 @@
 				458AA7A218FF1F0E00333B67 /* Time.cpp in Sources */,
 				458AA7A318FF1F0E00333B67 /* TimeLine.cpp in Sources */,
 				458AA7AA18FF1F3100333B67 /* TimerIOS.mm in Sources */,
-				4563CFE219F3D53400A61978 /* ResourceManagerFactory.cpp in Sources */,
-				4563CFE019F3D53400A61978 /* ResourceImagedAnimation.cpp in Sources */,
 				45E0F0C81909AFBC0003E15F /* DataBuffer.cpp in Sources */,
 				45E0F0C91909AFBC0003E15F /* Node.cpp in Sources */,
 				45E246B719ABD52B00A538B0 /* EngineApplication.cpp in Sources */,

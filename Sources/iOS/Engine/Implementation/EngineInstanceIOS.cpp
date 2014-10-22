@@ -10,6 +10,32 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class AudioManagerOpenALCreateFunctor : public Factory<EngineModule<IAudioManager>*>::CreateInstanceFunctor
+{
+  public:
+  
+    AudioManagerOpenALCreateFunctor(Engine& engine) : m_engine(engine) {}
+  
+    EngineModule<IAudioManager>* operator()() const override { return ege_new AudioManagerOpenALIOS(m_engine); }
+  
+  private:
+  
+    Engine& m_engine;
+};
+
+class AdNetworkChartboostCreateFunctor : public Factory<AdNetwork*>::CreateInstanceFunctor
+{
+  public:
+  
+    AdNetworkChartboostCreateFunctor(Engine& engine) : m_engine(engine) {}
+  
+    AdNetwork* operator()() const override { return ege_new AdNetworkChartboost(m_engine); }
+  
+  private:
+  
+    Engine& m_engine;
+};
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstanceIOS::EngineInstanceIOS()
 : EngineInstance()
 {
@@ -27,7 +53,7 @@ EGEResult EngineInstanceIOS::construct(const Dictionary& configParamDictionary)
   Dictionary specificConfigParamDictionary(configParamDictionary);
 
   // register audio interfaces
-  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, AudioManagerOpenALIOS::Create);
+  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, ege_new AudioManagerOpenALCreateFunctor(*this));
   if (EGE_SUCCESS != result)
   {
     egeWarning(KEngineDebugName) << "Could not register AudioManagerOpenAL instance!";
@@ -43,7 +69,7 @@ EGEResult EngineInstanceIOS::construct(const Dictionary& configParamDictionary)
   }
 
   // register AdNetwork interfaces
-  result = adNetworkRegistry()->registerInterface(KChartboostAdNetworkName, AdNetworkChartboost::Create);
+  result = adNetworkRegistry()->registerInterface(KChartboostAdNetworkName, ege_new AdNetworkChartboostCreateFunctor(*this));
   if (EGE_SUCCESS != result)
   {
     egeWarning(KEngineDebugName) << "Could not register AdNetworkChartboost instance!";

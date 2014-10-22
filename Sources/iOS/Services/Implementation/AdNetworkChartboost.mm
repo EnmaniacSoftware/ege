@@ -38,11 +38,6 @@ AdNetworkChartboost::~AdNetworkChartboost()
   engine().eventManager()->unregisterListener(this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AdNetwork* AdNetworkChartboost::Create(Engine& engine)
-{
-  return ege_new AdNetworkChartboost(engine);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AdNetworkChartboost::initialize()
 {
   // retrieve data from .plist file

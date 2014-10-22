@@ -20,14 +20,6 @@ class AdNetworkChartboost : public AdNetwork
     AdNetworkChartboost(Engine& engine);
    ~AdNetworkChartboost();
 
-  public:
-
-    /*! Creates instance of this implementation of AdNetwork interface. 
-     *  @param  engine  Reference to engine.
-     *  @return Created instance. NULL if error occured.
-     */
-    static AdNetwork* Create(Engine& engine);
-
   private:
 
     /*! Initializes the object. */
