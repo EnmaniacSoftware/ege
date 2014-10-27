@@ -182,6 +182,7 @@
 		4563A4DB1971FB5C0002D632 /* Sequencer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4D61971FB5C0002D632 /* Sequencer.cpp */; };
 		4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4DD1971FBD20002D632 /* SpriteAnimation.cpp */; };
 		4563A4E31971FEA50002D632 /* MailComposeDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */; };
+		45660C2B19FEDC2A00E70859 /* ResourceFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45660C2A19FEDC2A00E70859 /* ResourceFactory.cpp */; };
 		456CA27319F83B6500868FA1 /* ResourceLoaderFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23719F83B6500868FA1 /* ResourceLoaderFactory.cpp */; };
 		456CA27419F83B6500868FA1 /* ResourceLoaderXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23819F83B6500868FA1 /* ResourceLoaderXML.cpp */; };
 		456CA27519F83B6500868FA1 /* ResourceManagerMultiThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA23A19F83B6500868FA1 /* ResourceManagerMultiThread.cpp */; };
@@ -804,6 +805,11 @@
 		4563A4E11971FEA50002D632 /* MailComposeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailComposeDelegate.h; sourceTree = "<group>"; };
 		4563A4E21971FEA50002D632 /* MailComposeDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MailComposeDelegate.mm; sourceTree = "<group>"; };
 		4563CFA019F3D52100A61978 /* EGEResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResourceManager.h; path = ../../Sources/EGEResourceManager.h; sourceTree = "<group>"; };
+		45660C2219FEDC1300E70859 /* EGERenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGERenderable.h; path = ../../Sources/EGERenderable.h; sourceTree = "<group>"; };
+		45660C2319FEDC1300E70859 /* EGEResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResource.h; path = ../../Sources/EGEResource.h; sourceTree = "<group>"; };
+		45660C2419FEDC1300E70859 /* EGEResourceFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResourceFactory.h; path = ../../Sources/EGEResourceFactory.h; sourceTree = "<group>"; };
+		45660C2A19FEDC2A00E70859 /* ResourceFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceFactory.cpp; sourceTree = "<group>"; };
+		45660C2C19FEDC3500E70859 /* ResourceFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFactory.h; sourceTree = "<group>"; };
 		456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEResourceLoader.h; path = ../../Sources/EGEResourceLoader.h; sourceTree = "<group>"; };
 		456CA23519F83B6500868FA1 /* DefaultGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultGroup.h; sourceTree = "<group>"; };
 		456CA23719F83B6500868FA1 /* ResourceLoaderFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceLoaderFactory.cpp; sourceTree = "<group>"; };
@@ -1041,6 +1047,9 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				45660C2219FEDC1300E70859 /* EGERenderable.h */,
+				45660C2319FEDC1300E70859 /* EGEResource.h */,
+				45660C2419FEDC1300E70859 /* EGEResourceFactory.h */,
 				456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */,
 				4563CFA019F3D52100A61978 /* EGEResourceManager.h */,
 				45B6770119E30788009DB9FC /* EGEFileUtils.h */,
@@ -2509,6 +2518,7 @@
 		456CA23419F83B6500868FA1 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45660C2A19FEDC2A00E70859 /* ResourceFactory.cpp */,
 				456CA23519F83B6500868FA1 /* DefaultGroup.h */,
 				456CA23619F83B6500868FA1 /* Loader */,
 				456CA23919F83B6500868FA1 /* MultiThread */,
@@ -2569,6 +2579,7 @@
 		456CA25519F83B6500868FA1 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45660C2C19FEDC3500E70859 /* ResourceFactory.h */,
 				456CA25619F83B6500868FA1 /* IResourceManager.h */,
 				456CA25719F83B6500868FA1 /* Loader */,
 				456CA25B19F83B6500868FA1 /* MultiThread */,
@@ -3354,6 +3365,7 @@
 				4514722418C5236200AAC617 /* AppDelegate.mm in Sources */,
 				4514722618C5236200AAC617 /* ViewController.mm in Sources */,
 				4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */,
+				45660C2B19FEDC2A00E70859 /* ResourceFactory.cpp in Sources */,
 				4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */,
 				4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */,
 				4514722F18C5236200AAC617 /* ExtensionsOGLIOS.cpp in Sources */,
