@@ -21,17 +21,13 @@ static const char* KResourceProgramDebugName = "EGEResourceProgram";
 EGE_DEFINE_NEW_OPERATORS(ResourceProgram)
 EGE_DEFINE_DELETE_OPERATORS(ResourceProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceProgram::ResourceProgram(Engine& engine, ResourceGroup* group) : IResource(engine, group, RESOURCE_NAME_PROGRAM)
+ResourceProgram::ResourceProgram(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, RESOURCE_NAME_PROGRAM)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceProgram::~ResourceProgram()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceProgram::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceProgram(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceProgram::name() const

@@ -23,6 +23,7 @@ class Debug;
 class DeviceServices;
 class ImageLoader;
 class IAudioManager;
+class ResourceFactory;
 class SocialServices;
 class PurchaseServices;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,6 +68,8 @@ class Engine
     virtual ISceneManager* sceneManager() const = 0;
     /*! Returns resource manager. */
     virtual IResourceManager* resourceManager() const = 0;
+    /*! Returns resource factory. */
+    virtual ResourceFactory* resourceFactory() const = 0;
     /*! Returns overlay manager. */
     virtual IOverlayManager* overlayManager() const = 0;
     /*! Returns screen manager. */

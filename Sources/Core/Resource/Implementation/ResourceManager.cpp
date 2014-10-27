@@ -31,31 +31,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KResourceManagerDebugName = "EGEResourceManager";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-struct BuiltInResource
-{
-  const char* name;
-  egeResourceCreateFunc pfCreateFunc;
-};
-
-static BuiltInResource l_resourcesToRegister[] = {  { RESOURCE_NAME_TEXTURE, ResourceTexture::Create},
-                                                    { RESOURCE_NAME_TEXTURE_IMAGE, ResourceTextureImage::Create},
-                                                    { RESOURCE_NAME_MATERIAL, ResourceMaterial::Create },
-                                                    { RESOURCE_NAME_FONT, ResourceFont::Create },
-                                                    { RESOURCE_NAME_DATA, ResourceData::Create },
-                                                    { RESOURCE_NAME_SPRITE_SHEET, ResourceSpritesheet::Create },
-                                                    { RESOURCE_NAME_SPRITE_ANIMATION, ResourceSpriteAnimation::Create },
-                                                    { RESOURCE_NAME_CURVE, ResourceCurve::Create },
-                                                    { RESOURCE_NAME_PARTICLE_EMITTER, ResourceParticleEmitter::Create },
-                                                    { RESOURCE_NAME_PARTICLE_AFFECTOR, ResourceParticleAffector::Create },
-                                                    { RESOURCE_NAME_TEXT, ResourceText::Create },
-                                                    { RESOURCE_NAME_SOUND, ResourceSound::Create },
-                                                    { RESOURCE_NAME_WIDGET, ResourceWidget::Create },
-                                                    { RESOURCE_NAME_IMAGED_ANIMATION, ResourceImagedAnimation::Create },
-                                                    { RESOURCE_NAME_SEQUENCE, ResourceSequencer::Create },
-                                                    { RESOURCE_NAME_SHADER, ResourceShader::Create },
-                                                    { RESOURCE_NAME_PROGRAM, ResourceProgram::Create }
-};
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::ResourceManager(Engine& engine, IResourceLoader& loader) 
 : m_engine(engine)
 , m_resourceLoader(loader)
@@ -78,19 +53,6 @@ EGEResult ResourceManager::construct()
 {
   EGEResult result = EGE_SUCCESS;
 
-  // register build-in resource types
-  for (u32 i = 0; i < sizeof (l_resourcesToRegister) / sizeof (BuiltInResource); ++i)
-  {
-    const BuiltInResource& resource = l_resourcesToRegister[i];
-
-    if (EGE_SUCCESS != (result = registerResource(resource.name, resource.pfCreateFunc)))
-    {
-      // error!
-      egeCritical(KResourceManagerDebugName) << EGE_FUNC_INFO << "Could not register resource";
-      return result;
-    }
-  }
-
   // set state
   setState(EModuleStateRunning);
 
@@ -103,47 +65,6 @@ EGEResult ResourceManager::construct()
   }
 
   return EngineModule::construct();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceManager::registerResource(const String& typeName, egeResourceCreateFunc createFunc)
-{
-  // check if resource with such a name exists already
-  Map<String, ResourceRegistryEntry>::iterator it = m_registeredResources.find(typeName);
-  if (it != m_registeredResources.end())
-  {
-    // error!
-    return EGE_ERROR_ALREADY_EXISTS;
-  }
-
-  // register
-  ResourceRegistryEntry entry;
-  entry.m_createFunc  = createFunc;
-
-  m_registeredResources.insert(typeName, entry);
-
-  return EGE_SUCCESS;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool ResourceManager::isResourceRegistered(const String& typeName) const
-{
-  // check if resource with such a name exists already
-  Map<String, ResourceRegistryEntry>::const_iterator it = m_registeredResources.find(typeName);
-  return it != m_registeredResources.end();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceManager::createResource(const String& name, ResourceGroup* group)
-{
-  PResource resource;
-
-  // check if resource with such a name exists already
-  Map<String, ResourceRegistryEntry>::iterator it = m_registeredResources.find(name);
-  if (it != m_registeredResources.end())
-  {
-    // create resource
-    resource = it->second.m_createFunc(engine(), group);
-  }
-
-  return resource;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
@@ -279,7 +200,7 @@ bool ResourceManager::createDefaultResources()
     return false;
   }
 
-  PResourceGroup newGroup = ege_new ResourceGroup(*this);
+  PResourceGroup newGroup = ege_new ResourceGroup(engine());
   if (NULL == newGroup)
   {
     // error!

@@ -23,13 +23,13 @@ class ResourceParticleAffector : public IResource
 {
   public:
 
+    ResourceParticleAffector(Engine& engine, ResourceGroup* group);
     virtual ~ResourceParticleAffector();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -42,10 +42,6 @@ class ResourceParticleAffector : public IResource
 
     /*! Creates instance of particle affector object defined by resource. */
     PParticleAffector createInstance();
-
-  private:
-
-    ResourceParticleAffector(Engine& engine, ResourceGroup* group);
 
   private:
 

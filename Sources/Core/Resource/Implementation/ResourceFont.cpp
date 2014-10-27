@@ -23,15 +23,10 @@ ResourceFont::~ResourceFont()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceFont::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceFont(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceFont::Create(Engine& engine, ResourceGroup* group, const String& name, PFont font)
 {
   // create empty resource
-  PResourceFont resource = Create(engine, group);
+  PResourceFont resource = ege_new ResourceFont(engine, group);
   if (resource)
   {
     resource->m_name    = name;

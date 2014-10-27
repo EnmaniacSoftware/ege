@@ -23,15 +23,18 @@ class ResourceTexture : public IResource
 {
   public:
 
+    ResourceTexture(Engine& engine, ResourceGroup* group);
     virtual ~ResourceTexture();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
+
     /*! Creates instance of resource embedding given texture object. This is helper method for manual texture adding. */
     static PResource Create(Engine& engine, ResourceGroup* group, const String& name, PObject texture);
+
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -47,7 +50,6 @@ class ResourceTexture : public IResource
 
   private:
 
-    ResourceTexture(Engine& engine, ResourceGroup* group);
     /*! Creates 2D texture. */
     EGEResult create2D();
     /*! Gets texture type. */

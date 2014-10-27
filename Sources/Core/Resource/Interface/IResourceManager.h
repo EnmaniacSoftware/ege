@@ -101,24 +101,6 @@ class IResourceManager
      *  @return Found resource. NULL if resource could not be found.
      */
     virtual PResourceSound soundResource(const String& name, const String& groupName = "") const = 0;
-    
-    /*! Registeres custom resource type. 
-     *  @param  typeName    Resource type name.
-     *  @param  createFunc  Function capable of returning an instance of the given resource type.
-     *  @return EGE_SUCCESS if given resource type has been successfully registered. Otherwise, one of the other error codes.
-     */
-    virtual EGEResult registerResource(const String& typeName, egeResourceCreateFunc createFunc) = 0;
-    /*! Checks if given resource type has been registered. 
-     *  @param  typeName  Resource type name to check.
-     *  @return TRUE if given resource type has been already registered. Otherwise, FALSE.
-     */
-    virtual bool isResourceRegistered(const String& typeName) const = 0;
-    /*! Creates instance of resource of the type given by name. 
-     *  @param  typeName  Type name of the resource which instance is to be created.
-     *  @param  group     Group to which created resource should belong.
-     *  @return Created instance. NULL if error occured.
-     */
-    virtual PResource createResource(const String& typeName, ResourceGroup* group) = 0;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

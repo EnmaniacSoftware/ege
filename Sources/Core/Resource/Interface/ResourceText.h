@@ -21,13 +21,13 @@ class ResourceText : public IResource
 {
   public:
 
+    ResourceText(Engine& engine, ResourceGroup* group);
     virtual ~ResourceText();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -43,7 +43,6 @@ class ResourceText : public IResource
 
   private:
 
-    ResourceText(Engine& engine, ResourceGroup* group);
     /*! Adds text localization. */
     EGEResult addLocalization(const PXmlElement& tag);
     /*! Returns index of translation for given numerous. */

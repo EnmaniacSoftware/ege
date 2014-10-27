@@ -23,11 +23,6 @@ ResourceSpritesheet::~ResourceSpritesheet()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSpritesheet::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceSpritesheet(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSpritesheet::name() const
 {
   return m_name;

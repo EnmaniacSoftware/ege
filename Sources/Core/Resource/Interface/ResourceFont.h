@@ -35,15 +35,18 @@ class ResourceFont : public IResource
 {
   public:
 
+    ResourceFont(Engine& engine, ResourceGroup* group);
     virtual ~ResourceFont();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
+
     /*! Creates instance of resource embedding given font object. This is helper method for manual font adding. */
     static PResource Create(Engine& engine, ResourceGroup* group, const String& name, PFont font);
+
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -59,7 +62,6 @@ class ResourceFont : public IResource
 
   private:
 
-    ResourceFont(Engine& engine, ResourceGroup* group);
     /*! Returns material name. */
     const String& materialName() const { return m_materialName; } 
     /*! Returns height of the font (in pixels) */

@@ -43,11 +43,6 @@ ResourceCurve::~ResourceCurve()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceCurve::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceCurve(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceCurve::name() const
 {
   return m_name;

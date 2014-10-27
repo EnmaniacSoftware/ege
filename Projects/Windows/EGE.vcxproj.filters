@@ -1170,6 +1170,9 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Loader\ResourceLoaderXML.cpp">
       <Filter>Core\Resource\Implementation\Loader</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceFactory.cpp">
+      <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -2142,6 +2145,11 @@
       <Filter>Core\Resource\Interface\Loader</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEResourceLoader.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceFactory.h">
+      <Filter>Core\Resource\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEResource.h" />
+    <ClInclude Include="..\..\Sources\EGEResourceFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

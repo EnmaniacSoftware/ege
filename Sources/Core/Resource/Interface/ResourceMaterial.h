@@ -71,13 +71,13 @@ class ResourceMaterial : public IResource
 
   public:
 
+    ResourceMaterial(Engine& engine, ResourceGroup* group);
     virtual ~ResourceMaterial();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -112,7 +112,6 @@ class ResourceMaterial : public IResource
 
   private:
 
-    ResourceMaterial(Engine& engine, ResourceGroup* group);
     /*! Adds texture reference dependancy to given pass. */
     EGEResult addTextureReference(const PXmlElement& tag, PassData& pass);
     /*! Adds pass. */

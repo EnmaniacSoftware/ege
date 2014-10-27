@@ -2,6 +2,7 @@
 #include "Core/Resource/Implementation/ResourceManager.h"
 #include "EGETimer.h"
 #include "EGEDebug.h"
+#include "EGEResourceFactory.h"
 #include "EGELog.h"
 
 EGE_NAMESPACE_BEGIN
@@ -14,9 +15,8 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 #define NODE_DEPENDANCY "dependancy"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceGroup::ResourceGroup(IResourceManager& manager, const String& name) 
-: Object()
-, m_manager(manager)
+ResourceGroup::ResourceGroup(Engine& engine, const String& name) 
+: m_engine(engine)
 , m_name(name)
 , m_loaded(false)
 , m_overridable(false)
@@ -68,8 +68,10 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
     }
     else
     {
+      egeWarning(KResourceGroupDebugName) << child->name();
+
       // create resource instance
-      PResource resource = manager().createResource(child->name(), this);
+      PResource resource = engine().resourceFactory()->createInstance(child->name(), this);
       if (resource)
       {
         // initialize from XML
@@ -85,6 +87,11 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
           // error!
           break;
         }
+      }
+      else
+      {
+        // error!
+        egeWarning(KResourceGroupDebugName) << "Could not create resource instance of type:" << child->name();
       }
     }
 
@@ -139,7 +146,7 @@ EGEResult ResourceGroup::load()
 
         // check processing policy
         // TAGE - FIX
-        if (ResourceManager::RLP_RESOURCE == dynamic_cast<ResourceManager&>(m_manager).resourceProcessPolicy())
+        if (ResourceManager::RLP_RESOURCE == dynamic_cast<ResourceManager*>(engine().resourceManager())->resourceProcessPolicy())
         {
           // yield for now
           return EGE_WAIT;
@@ -398,11 +405,6 @@ const StringList& ResourceGroup::dependancies() const
   return m_dependancies; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IResourceManager& ResourceGroup::manager() const 
-{ 
-  return m_manager; 
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceGroup::name() const 
 { 
   return m_name; 
@@ -411,6 +413,11 @@ const String& ResourceGroup::name() const
 bool ResourceGroup::isLoaded() const 
 { 
   return m_loaded; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Engine& ResourceGroup::engine() const
+{
+  return m_engine;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -127,11 +127,6 @@ ResourceMaterial::~ResourceMaterial()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceMaterial::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceMaterial(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceMaterial::name() const
 {
   return m_name;

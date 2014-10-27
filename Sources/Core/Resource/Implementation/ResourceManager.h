@@ -128,12 +128,6 @@ class ResourceManager : public EngineModule<IResourceManager>
     PResourceText textResource(const String& name, const String& groupName = "") const override;
     /*! @see IResourceManager::soundResource. */
     PResourceSound soundResource(const String& name, const String& groupName = "") const override;
-    /*! @see IResourceManager::registerResource. */
-    EGEResult registerResource(const String& typeName, egeResourceCreateFunc createFunc) override;
-    /*! @see IResourceManager::isResourceRegistered. */
-    bool isResourceRegistered(const String& typeName) const override;
-    /*! @see IResourceManager::createResource. */
-    PResource createResource(const String& typeName, ResourceGroup* group) override;
 
     /*! Creates default resources. */
     bool createDefaultResources();
@@ -144,12 +138,6 @@ class ResourceManager : public EngineModule<IResourceManager>
     u32 uid() const override;
 
   private:
-
-    /*! Data struct containing registration information for resource. */
-    struct ResourceRegistryEntry
-    {
-      egeResourceCreateFunc m_createFunc;
-    };
 
     typedef List<PResourceGroup> GroupList;
 
@@ -166,8 +154,6 @@ class ResourceManager : public EngineModule<IResourceManager>
     StringList m_dataDirs;
     /*! Resource groups defined */
     GroupList m_groups;
-    /*! Registered resources sorted by type name. */
-    Map<String, ResourceRegistryEntry> m_registeredResources;
     /*! Total number of resources to process yet. */
     u32 m_totalResourcesToProcess;
     /*! Number of resources processed so far. */

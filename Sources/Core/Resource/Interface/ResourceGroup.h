@@ -24,7 +24,7 @@ class ResourceGroup : public Object
 {
   public:
 
-    ResourceGroup(IResourceManager& manager, const String& name = "");
+    ResourceGroup(Engine& engine, const String& name = "");
    ~ResourceGroup();
 
     EGE_DECLARE_NEW_OPERATORS
@@ -83,8 +83,6 @@ class ResourceGroup : public Object
     bool isLoaded() const;
     /*! Returns list of dependancy group names. */
     const StringList& dependancies() const;
-    /*! Gets owning manager */
-    IResourceManager& manager() const;
     /*! Overrides resources by another group ones. 
      *  @param group Group which resources should override current ones.
      *  @note  If current group is not overridable EGE_ERROR_NOT_SUPPORTED is retured. If both groups are the same (same paths)
@@ -96,6 +94,8 @@ class ResourceGroup : public Object
 
   private:
 
+    /*! Returns engine object. */
+    Engine& engine() const;
     /*! Destroys group. */
     void destroy();
     /* Adds dependancy. */
@@ -108,8 +108,8 @@ class ResourceGroup : public Object
 
   private:
 
-    /*! Owning manager. */
-    IResourceManager& m_manager;
+    /*! Engine object. */
+    Engine& m_engine;
     /*! Group name. */
     String m_name;
     /*! Path to definition file. */

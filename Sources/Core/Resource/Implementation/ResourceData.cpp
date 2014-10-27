@@ -22,11 +22,6 @@ ResourceData::~ResourceData()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceData::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceData(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceData::name() const
 {
   return m_name;

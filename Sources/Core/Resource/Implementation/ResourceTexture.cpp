@@ -67,15 +67,10 @@ ResourceTexture::~ResourceTexture()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceTexture::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceTexture(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceTexture::Create(Engine& engine, ResourceGroup* group, const String& name, PObject texture)
 {
   // create empty resource
-  PResourceTexture resource = Create(engine, group);
+  PResourceTexture resource = ege_new ResourceTexture(engine, group);
   if (resource)
   {
     resource->m_name    = name;

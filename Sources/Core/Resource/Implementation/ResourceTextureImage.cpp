@@ -25,11 +25,6 @@ ResourceTextureImage::~ResourceTextureImage()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceTextureImage::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceTextureImage(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceTextureImage::name() const
 {
   return m_name;

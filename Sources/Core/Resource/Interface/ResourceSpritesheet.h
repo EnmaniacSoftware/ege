@@ -23,13 +23,13 @@ class ResourceSpritesheet : public IResource
 {
   public:
 
+    ResourceSpritesheet(Engine& engine, ResourceGroup* group);
     virtual ~ResourceSpritesheet();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -53,7 +53,6 @@ class ResourceSpritesheet : public IResource
 
   private:
 
-    ResourceSpritesheet(Engine& engine, ResourceGroup* group);
     /*! Returns texture name. */
     const String& textureName() const { return m_textureName; } 
 

@@ -25,13 +25,13 @@ class ResourceTextureImage : public IResource
 {
   public:
 
+    ResourceTextureImage(Engine& engine, ResourceGroup* group);
     virtual ~ResourceTextureImage();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -50,10 +50,6 @@ class ResourceTextureImage : public IResource
      *  @note  Loads resource if it is not loaded yet.
      */
     EGEResult setInstance(const PTextureImage& instance);
-
-  private:
-
-    ResourceTextureImage(Engine& engine, ResourceGroup* group);
 
   private:
 

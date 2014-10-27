@@ -23,11 +23,6 @@ ResourceText::~ResourceText()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceText::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceText(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceText::name() const
 {
   return m_name;

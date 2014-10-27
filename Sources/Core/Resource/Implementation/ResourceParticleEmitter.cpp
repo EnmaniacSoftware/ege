@@ -25,11 +25,6 @@ ResourceParticleEmitter::~ResourceParticleEmitter()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceParticleEmitter::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceParticleEmitter(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceParticleEmitter::name() const
 {
   return m_name;

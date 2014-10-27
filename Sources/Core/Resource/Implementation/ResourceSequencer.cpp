@@ -20,11 +20,6 @@ ResourceSequencer::~ResourceSequencer()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSequencer::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceSequencer(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSequencer::name() const
 {
   return m_name;

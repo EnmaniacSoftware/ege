@@ -30,13 +30,13 @@ class ResourceImagedAnimation : public IResource
 
   public:
 
+    ResourceImagedAnimation(Engine& engine, ResourceGroup* group);
     virtual ~ResourceImagedAnimation();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -54,7 +54,6 @@ class ResourceImagedAnimation : public IResource
 
   private:
 
-    ResourceImagedAnimation(Engine& engine, ResourceGroup* group);
     /*! Adds object. */
     EGEResult addObject(const PXmlElement& tag);
     /*! Adds frame. */

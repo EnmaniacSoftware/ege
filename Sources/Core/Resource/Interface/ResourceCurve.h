@@ -24,15 +24,11 @@ class ResourceCurve : public IResource
 {
   public:
 
+    ResourceCurve(Engine& engine, ResourceGroup* group);
     virtual ~ResourceCurve();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
-
-  public:
-
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
 
   public:
 
@@ -63,7 +59,6 @@ class ResourceCurve : public IResource
 
   private:
 
-    ResourceCurve(Engine& engine, ResourceGroup* group);
     /*! Returns curve type. */
     CubicSplineType type() const;
 

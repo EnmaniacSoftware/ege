@@ -24,11 +24,6 @@ ResourceSound::~ResourceSound()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSound::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceSound(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSound::name() const
 {
   return m_name;

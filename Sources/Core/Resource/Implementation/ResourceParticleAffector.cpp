@@ -22,11 +22,6 @@ ResourceParticleAffector::~ResourceParticleAffector()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceParticleAffector::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceParticleAffector(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceParticleAffector::name() const
 {
   return m_name;

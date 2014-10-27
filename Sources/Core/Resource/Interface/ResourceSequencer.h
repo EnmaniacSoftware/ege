@@ -21,13 +21,13 @@ class ResourceSequencer : public IResource
 {
   public:
 
+    ResourceSequencer(Engine& engine, ResourceGroup* group);
     virtual ~ResourceSequencer();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -42,10 +42,6 @@ class ResourceSequencer : public IResource
     PSequencer createInstance();
     /*! Set given instance of sequencer object to what is defined by resource. */
     EGEResult setInstance(PSequencer& instance);
-
-  private:
-
-    ResourceSequencer(Engine& engine, ResourceGroup* group);
 
   private:
 

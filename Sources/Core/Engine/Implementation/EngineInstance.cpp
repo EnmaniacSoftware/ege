@@ -26,6 +26,7 @@
 #include "EGEInput.h"
 #include "EGEPurchaseServices.h"
 #include "EGEResources.h"
+#include "EGEResourceFactory.h"
 #include "EGEResourceManager.h"
 #include "EGESocialServices.h"
 #include "EGETimer.h"
@@ -56,6 +57,7 @@ EngineInstance::EngineInstance()
   m_adNetworkRegistry = ege_new AdNetworkRegistry(*this);
   m_audioManagerFactory = ege_new AudioManagerFactory(*this);
   m_resourceManagerFactory = ege_new ResourceManagerFactory(*this);
+  m_resourceFactory = ege_new ResourceFactory(*this);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstance::~EngineInstance()
@@ -63,6 +65,7 @@ EngineInstance::~EngineInstance()
   EngineApplication::DestroyInstance(m_application);
   m_application = NULL;
 
+  EGE_DELETE(m_resourceFactory);
   EGE_DELETE(m_resourceManagerFactory);
   EGE_DELETE(m_audioManagerFactory);
   EGE_DELETE(m_adNetwork);
@@ -354,6 +357,11 @@ ResourceManagerFactory* EngineInstance::resourceManagerFactory() const
 ResourceLoaderFactory* EngineInstance::resourceLoaderFactory() const
 {
   return resourceManagerFactory()->loaderFactory();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+ResourceFactory* EngineInstance::resourceFactory() const
+{
+  return m_resourceFactory;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::onEventRecieved(PEvent event)

@@ -25,13 +25,13 @@ class ResourceWidget : public IResource
 {
   public:
 
+    ResourceWidget(Engine& engine, ResourceGroup* group);
     virtual ~ResourceWidget();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -47,7 +47,6 @@ class ResourceWidget : public IResource
 
   private:
 
-    ResourceWidget(Engine& engine, ResourceGroup* group);
     /*! Processes child data. */
     EGEResult processChild(const PXmlElement& tag);
     /*! Processes frame data. */

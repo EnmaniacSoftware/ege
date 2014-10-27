@@ -7,6 +7,7 @@
 #include "EGEDebug.h"
 #include "EGEResources.h"
 #include "EGEResourceManager.h"
+#include "EGEResourceFactory.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -26,11 +27,6 @@ ResourceSpriteAnimation::ResourceSpriteAnimation(Engine& engine, ResourceGroup* 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceSpriteAnimation::~ResourceSpriteAnimation()
 {
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceSpriteAnimation::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceSpriteAnimation(engine, group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceSpriteAnimation::name() const
@@ -247,7 +243,7 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(engine(), group());
+  PResourceSequencer seqRes = static_cast<ResourceSequencer*>(engine().resourceFactory()->createInstance(RESOURCE_NAME_SEQUENCE, group()));
   if (NULL == seqRes)
   {
     // error!

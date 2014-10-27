@@ -31,11 +31,6 @@ ResourceImagedAnimation::~ResourceImagedAnimation()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceImagedAnimation::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceImagedAnimation(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceImagedAnimation::name() const
 {
   return m_name;
@@ -406,7 +401,7 @@ EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // create sequence resource manually
-  PResourceSequencer seqRes = ResourceSequencer::Create(engine(), group());
+  PResourceSequencer seqRes = ege_new ResourceSequencer(engine(), group());
   if (NULL == seqRes)
   {
     // error!

@@ -22,13 +22,13 @@ class ResourceSound : public IResource
 {
   public:
 
+    ResourceSound(Engine& engine, ResourceGroup* group);
     virtual ~ResourceSound();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -41,10 +41,6 @@ class ResourceSound : public IResource
 
     /*! Creates instance of sound object defined by resource. */
     PSound createInstance();
-
-  private:
-
-    ResourceSound(Engine& engine, ResourceGroup* group);
 
   private:
 

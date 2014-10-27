@@ -167,6 +167,7 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\Resource.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceCurve.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceData.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceFont.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceGroup.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceImagedAnimation.cpp" />
@@ -424,6 +425,7 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\Resource.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceCurve.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceData.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceFactory.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceFont.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceGroup.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\ResourceImagedAnimation.h" />
@@ -533,6 +535,8 @@
     <ClInclude Include="..\..\Sources\EGERenderer.h" />
     <ClInclude Include="..\..\Sources\EGERenderQueues.h" />
     <ClInclude Include="..\..\Sources\EGERenderSystem.h" />
+    <ClInclude Include="..\..\Sources\EGEResource.h" />
+    <ClInclude Include="..\..\Sources\EGEResourceFactory.h" />
     <ClInclude Include="..\..\Sources\EGEResourceLoader.h" />
     <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />

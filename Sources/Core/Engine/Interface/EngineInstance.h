@@ -17,6 +17,7 @@ class AudioManagerFactory;
 class EngineApplication;
 class IEngineModule;
 class IGraphics;
+class ResourceFactory;
 class ResourceLoaderFactory;
 class ResourceManagerFactory;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,6 +54,8 @@ class EngineInstance : public Engine
     ISceneManager* sceneManager() const override;
     /*! @see Engine::resourceManager. */
     IResourceManager* resourceManager() const override;
+    /*! @see Engine::resourceFactory. */
+    ResourceFactory* resourceFactory() const override;
     /*! @see Engine::overlayManager. */
     IOverlayManager* overlayManager() const override;
     /*! @see Engine::screenManager. */
@@ -140,6 +143,8 @@ class EngineInstance : public Engine
     AdNetworkRegistry* m_adNetworkRegistry;
     /*! Resource manager factory. */
     ResourceManagerFactory* m_resourceManagerFactory;
+    /*! Resource factory. */
+    ResourceFactory* m_resourceFactory;
     /*! Audio manager factory. */
     AudioManagerFactory* m_audioManagerFactory;
     /*! Available ad network solution. */

@@ -99,7 +99,7 @@ EGEResult ResourceLoaderXML::processGroup(const String& filePath, const PXmlElem
 {
   EGEResult result = EGE_SUCCESS;
 
-  PResourceGroup newGroup = ege_new ResourceGroup(*m_engine.resourceManager());
+  PResourceGroup newGroup = ege_new ResourceGroup(m_engine);
   if (NULL == newGroup)
   {
     // error!

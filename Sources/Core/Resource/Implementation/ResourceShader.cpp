@@ -45,11 +45,6 @@ ResourceShader::~ResourceShader()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceShader::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceShader(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceShader::name() const
 {
   return m_name;

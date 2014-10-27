@@ -27,11 +27,6 @@ ResourceWidget::~ResourceWidget()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-PResource ResourceWidget::Create(Engine& engine, ResourceGroup* group)
-{
-  return ege_new ResourceWidget(engine, group);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& ResourceWidget::name() const
 {
   return m_name;

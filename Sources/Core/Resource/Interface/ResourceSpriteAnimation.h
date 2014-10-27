@@ -28,13 +28,13 @@ class ResourceSpriteAnimation : public IResource
 {
   public:
 
+    ResourceSpriteAnimation(Engine& engine, ResourceGroup* group);
     virtual ~ResourceSpriteAnimation();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-    /*! Creates instance of resource. This method is a registration method for manager. */
-    static PResource Create(Engine& engine, ResourceGroup* group);
+  public:
 
     /*! @see IResource::name. */
     const String& name() const override;
@@ -52,7 +52,6 @@ class ResourceSpriteAnimation : public IResource
 
   private:
 
-    ResourceSpriteAnimation(Engine& engine, ResourceGroup* group);
     /*! Returns sprite sheet name. */
     const String& sheetName() const { return m_sheetName; } 
     /*! Invalidates frame data. */
