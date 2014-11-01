@@ -10,31 +10,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerOpenALCreateFunctor : public Factory<EngineModule<IAudioManager>*>::CreateInstanceFunctor
+static EngineModule<IAudioManager>* CreateAudioManagerOpenAL(Engine& engine)
 {
-  public:
-  
-    AudioManagerOpenALCreateFunctor(Engine& engine) : m_engine(engine) {}
-  
-    EngineModule<IAudioManager>* operator()() const override { return ege_new AudioManagerOpenALIOS(m_engine); }
-  
-  private:
-  
-    Engine& m_engine;
-};
+  return ege_new AudioManagerOpenALIOS(engine);
+}
 
-class AdNetworkChartboostCreateFunctor : public Factory<AdNetwork*>::CreateInstanceFunctor
+static AdNetwork* CreateChartboostAdNetwork(Engine& engine)
 {
-  public:
-  
-    AdNetworkChartboostCreateFunctor(Engine& engine) : m_engine(engine) {}
-  
-    AdNetwork* operator()() const override { return ege_new AdNetworkChartboost(m_engine); }
-  
-  private:
-  
-    Engine& m_engine;
-};
+  return ege_new AdNetworkChartboost(engine);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstanceIOS::EngineInstanceIOS()
 : EngineInstance()
@@ -53,7 +37,7 @@ EGEResult EngineInstanceIOS::construct(const Dictionary& configParamDictionary)
   Dictionary specificConfigParamDictionary(configParamDictionary);
 
   // register audio interfaces
-  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, ege_new AudioManagerOpenALCreateFunctor(*this));
+  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, CreateAudioManagerOpenAL);
   if (EGE_SUCCESS != result)
   {
     egeWarning(KEngineDebugName) << "Could not register AudioManagerOpenAL instance!";
@@ -69,7 +53,7 @@ EGEResult EngineInstanceIOS::construct(const Dictionary& configParamDictionary)
   }
 
   // register AdNetwork interfaces
-  result = adNetworkRegistry()->registerInterface(KChartboostAdNetworkName, ege_new AdNetworkChartboostCreateFunctor(*this));
+  result = adNetworkRegistry()->registerInterface(KChartboostAdNetworkName, CreateChartboostAdNetwork);
   if (EGE_SUCCESS != result)
   {
     egeWarning(KEngineDebugName) << "Could not register AdNetworkChartboost instance!";
