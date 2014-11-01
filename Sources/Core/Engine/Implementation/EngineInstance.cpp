@@ -521,7 +521,7 @@ void EngineInstance::createModules()
 
   // create resource manager
   typeName = configurationDictionary().value(KConfigParamResourceManagerTypeName, KResourceManagerSingleThreadName);
-  module = resourceManagerFactory()->createInstance(typeName);
+  module = resourceManagerFactory()->createInstance(typeName, resourceManagerFactory()->loader());
   m_modules.insert(KModulePriorityResourceManager, module);
   m_modulesUIDToObjects.insert(module->uid(), module);
 

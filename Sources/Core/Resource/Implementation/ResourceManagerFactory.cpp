@@ -11,39 +11,21 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* KResourceManagerFactoryDebugName = "EGEResourceManagerFactory";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class SingleThreadCreateFunctor : public Factory<EngineModule<IResourceManager>*>::CreateInstanceFunctor
+static EngineModule<IResourceManager>* CreateSingleThreadResourceManager(Engine& engine, IResourceLoader& loader)
 {
-  public:
+  return ege_new ResourceManagerSingleThread(engine, loader);
+}
 
-    SingleThreadCreateFunctor(Engine& engine, IResourceLoader& loader) : m_engine(engine), m_loader(loader) {}
-
-    EngineModule<IResourceManager>* operator()() const override { return ege_new ResourceManagerSingleThread(m_engine, m_loader); }
-
-  private:
-
-    Engine& m_engine;
-    IResourceLoader& m_loader;
-};
-
-class MultiThreadCreateFunctor : public Factory<EngineModule<IResourceManager>*>::CreateInstanceFunctor
+static EngineModule<IResourceManager>* CreateMultipleThreadResourceManager(Engine& engine, IResourceLoader& loader)
 {
-  public:
-
-    MultiThreadCreateFunctor(Engine& engine, IResourceLoader& loader) : m_engine(engine), m_loader(loader) {}
-
-    EngineModule<IResourceManager>* operator()() const override { return ege_new ResourceManagerMultiThread(m_engine, m_loader); }
-
-  private:
-
-    Engine& m_engine;
-    IResourceLoader& m_loader;
-};
+  return ege_new ResourceManagerMultiThread(engine, loader);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(ResourceManagerFactory)
 EGE_DEFINE_DELETE_OPERATORS(ResourceManagerFactory)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManagerFactory::ResourceManagerFactory(Engine& engine) 
-: Factory<EngineModule<IResourceManager>*>(engine)
+: Factory1<EngineModule<IResourceManager>*, IResourceLoader&>(engine)
 , m_loaderFactory(NULL)
 {
   // create loader factory
@@ -54,8 +36,8 @@ ResourceManagerFactory::ResourceManagerFactory(Engine& engine)
   m_resourceLoader = m_loaderFactory->createInstance(typeName);
 
   // register default interfaces
-  if ((EGE_SUCCESS != registerInterface(KResourceManagerSingleThreadName, ege_new SingleThreadCreateFunctor(engine, *m_resourceLoader))) ||
-      (EGE_SUCCESS != registerInterface(KResourceManagerMultiThreadName, ege_new MultiThreadCreateFunctor(engine, *m_resourceLoader))))
+  if ((EGE_SUCCESS != registerInterface(KResourceManagerSingleThreadName, CreateSingleThreadResourceManager)) ||
+      (EGE_SUCCESS != registerInterface(KResourceManagerMultiThreadName, CreateMultipleThreadResourceManager)))
   {
     egeWarning(KResourceManagerFactoryDebugName) << "Could not register default ResourceManager interfaces!";
   }
@@ -70,6 +52,11 @@ ResourceManagerFactory::~ResourceManagerFactory()
 ResourceLoaderFactory* ResourceManagerFactory::loaderFactory() const
 {
   return m_loaderFactory;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+IResourceLoader& ResourceManagerFactory::loader() const
+{
+  return *m_resourceLoader;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

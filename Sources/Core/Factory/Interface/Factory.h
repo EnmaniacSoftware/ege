@@ -20,28 +20,19 @@ class Factory
 
   public:
 
-    /*! Create instance functor interface. */
-    class CreateInstanceFunctor : public Object
-    {
-      public:
-
-        EGE_DEFINE_NEW_OPERATORS_INLINE
-        EGE_DEFINE_DELETE_OPERATORS_INLINE
-
-        /*! Creates instance of the given type. */
-        virtual Type operator()() const = 0;
-    };
-
-    EGE_DECLARE_SMART_CLASS(CreateInstanceFunctor, PCreateInstanceFunctor)
+    /*! Instance creating function. 
+     *  @param  engine  Engine object.
+     */
+    typedef Type (*egeFactoryCreateFunction)(Engine& engine);
 
   public:
 
     /*! Registers object instance of a given type name. 
-     *  @param  typeName      Type name of the interface to be registered. This needs to be unique.
-     *  @param  createFunctor Functor capable of creating of new instance of the given interface.
+     *  @param  typeName       Type name of the interface to be registered. This needs to be unique.
+     *  @param  createFunction Function capable of creating of new instance of the given interface.
      *  @return EGE_SUCCESS if instance has been successfully registered. Otherwise, another available error code.
      */
-    EGEResult registerInterface(const String& typeName, const PCreateInstanceFunctor& createFunctor)
+    EGEResult registerInterface(const String& typeName, egeFactoryCreateFunction createFunction)
     {
       EGEResult result = EGE_SUCCESS;
 
@@ -54,7 +45,7 @@ class Factory
       else
       {
         // register
-        m_registry.insert(typeName, createFunctor);
+        m_registry.insert(typeName, createFunction);
       }
 
       return result;
@@ -69,11 +60,11 @@ class Factory
       Type object = NULL;
 
       // file entry with given type name
-      const PCreateInstanceFunctor& createFunctor = m_registry.value(typeName, NULL);
-      if (NULL != createFunctor)
+      const egeFactoryCreateFunction createFunction = m_registry.value(typeName, NULL);
+      if (NULL != createFunction)
       {
         // create instance
-        object = (*createFunctor)();
+        object = createFunction(m_engine);
       }
 
       return object;
@@ -90,7 +81,7 @@ class Factory
 
   private:
 
-    typedef Map<String, PCreateInstanceFunctor> Registry;
+    typedef Map<String, egeFactoryCreateFunction> Registry;
 
   private:
   

@@ -8,18 +8,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerOpenALCreateFunctor : public Factory<EngineModule<IAudioManager>*>::CreateInstanceFunctor
+static EngineModule<IAudioManager>* CreateAudioManagerOpenAL(Engine& engine)
 {
-  public:
-
-    AudioManagerOpenALCreateFunctor(Engine& engine) : m_engine(engine) {}
-
-    EngineModule<IAudioManager>* operator()() const override { return ege_new AudioManagerOpenAL(m_engine); }
-
-  private:
-
-    Engine& m_engine;
-};
+  return ege_new AudioManagerOpenAL(engine);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstanceWin32::EngineInstanceWin32()
 : EngineInstance()
@@ -38,7 +30,7 @@ EGEResult EngineInstanceWin32::construct(const Dictionary& configParamDictionary
   Dictionary specificConfigParamDictionary(configParamDictionary);
 
   // register audio interfaces
-  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, ege_new AudioManagerOpenALCreateFunctor(*this));
+  result = audioManagerFactory()->registerInterface(KOpenALAudioManagerName, CreateAudioManagerOpenAL);
   if (EGE_SUCCESS != result)
   {
     egeWarning(KEngineDebugName) << "Could not register AudioManagerOpenAL instance!";

@@ -15,7 +15,7 @@ EGE_NAMESPACE_BEGIN
 class ResourceLoaderFactory;
 class IResourceLoader;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManagerFactory : public Factory<EngineModule<IResourceManager>*>
+class ResourceManagerFactory : public Factory1<EngineModule<IResourceManager>*, IResourceLoader&>
 {
   public:
 
@@ -27,6 +27,8 @@ class ResourceManagerFactory : public Factory<EngineModule<IResourceManager>*>
 
     /*! Returns loader factory. */
     ResourceLoaderFactory* loaderFactory() const;
+    /*! Returns resource loader. */
+    IResourceLoader& loader() const;
 
   private:
 
