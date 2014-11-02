@@ -116,6 +116,7 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimerTest.cpp" />

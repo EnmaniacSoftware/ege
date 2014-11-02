@@ -40,55 +40,40 @@
     <Filter Include="Tests\File">
       <UniqueIdentifier>{cd36c7ef-8ae8-492e-925b-3b6ccc3e1d7c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Crypto\UnitTests">
+      <UniqueIdentifier>{1fd778d5-3d82-41c6-8d72-8a36ce4212cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Database\UnitTests">
+      <UniqueIdentifier>{f90aa32d-d601-4421-95cc-6782782a0b83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Debug\UnitTests">
+      <UniqueIdentifier>{7d48e5e5-ca67-4be4-a835-0a91c7ed5198}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\File\UnitTests">
+      <UniqueIdentifier>{c5f87daa-f13a-4b47-8e70-f5d48fac288b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Math\UnitTests">
+      <UniqueIdentifier>{00df545c-c743-4551-83e6-c3e15671ef43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Services\UnitTests">
+      <UniqueIdentifier>{30bda202-4edd-4c08-bbb0-879e036e38b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Time\UnitTests">
+      <UniqueIdentifier>{2595e318-3ff1-4fef-a523-e2aaafe08185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\XML\UnitTests">
+      <UniqueIdentifier>{7b2e35c6-879e-4339-9990-b1ebcf715403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Resource">
+      <UniqueIdentifier>{26bfa5ed-0052-4f88-be7e-f7c8aabd7574}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Resource\ComponentTests">
+      <UniqueIdentifier>{4eedd8e3-acf4-4817-9920-127d59105df3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
-      <Filter>Tests\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp">
-      <Filter>Tests\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp">
-      <Filter>Tests\XML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\RectTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
       <Filter>TestFramework\Implemenation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\TweenerTest.cpp">
-      <Filter>Tests\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\MathTest.cpp">
-      <Filter>Tests\Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.cpp">
       <Filter>Tests\Math\Helpers</Filter>
@@ -105,53 +90,101 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.cpp">
       <Filter>Tests\Math\Helpers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Line2Test.cpp">
-      <Filter>Tests\Math</Filter>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp">
+      <Filter>Tests\Crypto\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp">
-      <Filter>Tests\Crypto</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp">
-      <Filter>Tests\Crypto</Filter>
+      <Filter>Tests\Crypto\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp">
-      <Filter>Tests\Crypto</Filter>
+      <Filter>Tests\Crypto\UnitTests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp">
-      <Filter>Tests\Crypto</Filter>
+    <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp">
+      <Filter>Tests\Crypto\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp">
-      <Filter>Tests\Database</Filter>
+      <Filter>Tests\Database\UnitTests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp">
-      <Filter>Tests\Services</Filter>
+    <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp">
+      <Filter>Tests\Debug\UnitTests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp">
-      <Filter>Tests\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimerTest.cpp">
-      <Filter>Tests\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeTest.cpp">
-      <Filter>Tests\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTest.cpp">
-      <Filter>Tests\File</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.cpp">
-      <Filter>Tests\File</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp">
-      <Filter>Tests\File</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp">
-      <Filter>Tests\File</Filter>
+    <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp">
+      <Filter>Tests\Debug\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp">
-      <Filter>Tests\File</Filter>
+      <Filter>Tests\File\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp">
+      <Filter>Tests\File\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTest.cpp">
+      <Filter>Tests\File\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.cpp">
+      <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileUtilsTest.cpp">
-      <Filter>Tests\File</Filter>
+      <Filter>Tests\File\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp">
+      <Filter>Tests\File\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\ComplexTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\CubicSplineTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Line2Test.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\MathTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Matrix4Test.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\PlaneTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\QuaternionTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\RectTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\TweenerTest.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp">
+      <Filter>Tests\Math\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp">
+      <Filter>Tests\Services\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp">
+      <Filter>Tests\Time\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimerTest.cpp">
+      <Filter>Tests\Time\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeTest.cpp">
+      <Filter>Tests\Time\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp">
+      <Filter>Tests\XML\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTest.cpp">
+      <Filter>Tests\Resource\ComponentTests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -177,7 +210,7 @@
       <Filter>TestFramework\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h">
-      <Filter>Tests\File</Filter>
+      <Filter>Tests\File\UnitTests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -25,6 +25,7 @@ class EngineMock : public Engine
     MOCK_CONST_METHOD0(purchaseServices, PurchaseServices*());
     MOCK_CONST_METHOD0(socialServices, SocialServices*());
     MOCK_CONST_METHOD0(imageLoader, ImageLoader*());
+    MOCK_CONST_METHOD0(resourceFactory, ResourceFactory*());
 
     MOCK_METHOD1(setLanguage, void(const String&));
     MOCK_CONST_METHOD0(language, const String&());
