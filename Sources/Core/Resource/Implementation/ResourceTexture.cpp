@@ -159,7 +159,7 @@ EGEResult ResourceTexture::load()
       if (EGE_SUCCESS == result)
       {
         // set to loading
-        egeAtomicCompareAndSet(reinterpret_cast<u32&>(m_state), STATE_UNLOADED, STATE_LOADING);
+        egeAtomicCompareAndSet(reinterpret_cast<volatile s32&>(m_state), STATE_UNLOADED, STATE_LOADING);
       }
     }
   }
@@ -229,7 +229,7 @@ void ResourceTexture::onRequestComplete(PObject object)
   m_texture = object;
 
   // set state
-  egeAtomicCompareAndSet(reinterpret_cast<u32&>(m_state), m_state, STATE_LOADED);
+  egeAtomicCompareAndSet(reinterpret_cast<volatile s32&>(m_state), m_state, STATE_LOADED);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceTexture::loadTextureData(const PXmlElement& tag)

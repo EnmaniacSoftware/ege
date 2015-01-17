@@ -76,7 +76,7 @@ class IResource : public Object
     /*! Path to resource. Can be empty if not required. */
     String m_path;
     /*! Current state. */
-    State m_state;
+    volatile State m_state;
 
   private:
 
