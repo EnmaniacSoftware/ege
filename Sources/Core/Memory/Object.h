@@ -2,7 +2,7 @@
 #define EGE_CORE_OBJECT_H
 
 #include "EGETypes.h"
-#include "EGEAtomic.h"
+#include "EGEAtomicInt.h"
 #include "Core/ObjectUIDs.h"
 
 EGE_NAMESPACE_BEGIN
@@ -26,21 +26,22 @@ class Object
     /*! Decreses reference count for the object. If no more references are present deallocates object. */
     void release();
     /*! Returns reference count. */
-    u32 referenceCount();
+    s32 referenceCount();
 
   private:
 
     /*! Reference counter. */
-    u32 m_references;
+    AtomicInt m_references;
     /*! Object UID. */
     u32 m_uid;
     /*! Delete function pointer. If NULL standard delete operator will be used for object deletion. */
     egeObjectDeleteFunc m_deleteFunc;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline Object::Object(u32 uid, egeObjectDeleteFunc deleteFunc) : m_references(0)
-                                                               , m_uid(uid)
-                                                               , m_deleteFunc(deleteFunc) 
+inline Object::Object(u32 uid, egeObjectDeleteFunc deleteFunc) 
+: m_references(0)
+, m_uid(uid)
+, m_deleteFunc(deleteFunc) 
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,13 +56,12 @@ inline u32 Object::uid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::addReference() 
 { 
-  egeAtomicIncrement(m_references);
+  m_references.increment();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline void Object::release() 
 { 
-  egeAtomicDecrement(m_references);
-  if (0 == m_references) 
+  if (0 == m_references.decrement()) 
   { 
     if (NULL != m_deleteFunc) 
     {
@@ -74,9 +74,9 @@ inline void Object::release()
   } 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline u32 Object::referenceCount()
+inline s32 Object::referenceCount()
 {
-  return m_references;
+  return m_references.load();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
