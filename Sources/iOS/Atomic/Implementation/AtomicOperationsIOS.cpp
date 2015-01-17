@@ -11,7 +11,12 @@ s32 egeAtomicIncrement(volatile s32& value)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 egeAtomicDecrement(volatile s32& value)
 {
-  returnOSAtomicDecrement32Barrier(reinterpret_cast<volatile int32_t*>(&value));
+  return OSAtomicDecrement32Barrier(reinterpret_cast<volatile int32_t*>(&value));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 egeAtomicAdd(volatile s32& value, s32 addValue)
+{
+  return OSAtomicAdd32Barrier(addValue, reinterpret_cast<volatile int32_t*>(&value));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 egeAtomicCompareAndSet(volatile s32& value, s32 compareValue, s32 newValue)
