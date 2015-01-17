@@ -1,47 +1,36 @@
-#include "TestFramework/Interface/TestBase.h"
-#include <EGEMemory.h>
-#include <EGEResource.h>
-#include <EGEString.h>
-#include <string>
-#include <limits>
-#include <vector>
+#include "ResourceMock.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class ResourceManagerTest : public TestBase
-{
-  protected:
-
-    static void SetUpTestCase();
-    static void TearDownTestCase();
-
-  protected:
-
-    virtual void SetUp();
-    virtual void TearDown();
-};
+const char* ResourceMock::KResourceMockName = "resource-mock";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerTest::SetUpTestCase()
-{
-  EXPECT_TRUE(MemoryManager::Initialize());
-}
+EGE_DEFINE_NEW_OPERATORS(ResourceMock)
+EGE_DEFINE_DELETE_OPERATORS(ResourceMock)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerTest::TearDownTestCase()
-{
-  MemoryManager::Deinitialize();
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerTest::SetUp()
+ResourceMock::ResourceMock(Engine& engine, ResourceGroup* group) 
+: IResource(engine, group, KResourceMockName)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerTest::TearDown()
+ResourceMock::~ResourceMock()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(ResourceManagerTest, XYZ)
+IResource* ResourceMock::CreateResource(Engine& engine, ResourceGroup* group) 
+{ 
+  return ege_new ResourceMock(engine, group); 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceMock::setLoaded()
 {
+  m_state = IResource::STATE_LOADED;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceMock::setUnloaded()
+{
+  m_state = IResource::STATE_UNLOADED;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+EGE_NAMESPACE_END

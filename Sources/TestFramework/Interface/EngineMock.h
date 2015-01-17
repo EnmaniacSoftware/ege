@@ -4,6 +4,7 @@
 #include <gmock/gmock.h>
 #include <EGEEngine.h>
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EngineMock : public Engine
 {
   public:
@@ -30,5 +31,6 @@ class EngineMock : public Engine
     MOCK_METHOD1(setLanguage, void(const String&));
     MOCK_CONST_METHOD0(language, const String&());
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #endif // EGE_CORE_TESTFRAMEWORK_ENGINE_MOCK_H

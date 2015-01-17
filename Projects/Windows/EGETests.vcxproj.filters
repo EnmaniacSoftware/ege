@@ -70,6 +70,12 @@
     <Filter Include="Tests\Resource\ComponentTests">
       <UniqueIdentifier>{4eedd8e3-acf4-4817-9920-127d59105df3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Threading">
+      <UniqueIdentifier>{cfad6c44-e4e1-41b6-84b6-aa5f92d62ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Threading\UnitTests">
+      <UniqueIdentifier>{0341b795-4381-46c2-804c-e24b6538a925}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
@@ -183,8 +189,20 @@
     <ClCompile Include="..\..\Sources\Core\XML\Tests\Unittest\XMLTest.cpp">
       <Filter>Tests\XML\UnitTests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTest.cpp">
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerSingleThreadTest.cpp">
       <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerMultiThreadTest.cpp">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.cpp">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.cpp">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp">
+      <Filter>Tests\Threading\UnitTests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,6 +229,21 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h">
       <Filter>Tests\File\UnitTests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\ResourceFactoryMock.h">
+      <Filter>TestFramework\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerSingleThreadMock.h">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerMultiThreadMock.h">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.h">
+      <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.h">
+      <Filter>Tests\Resource\ComponentTests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

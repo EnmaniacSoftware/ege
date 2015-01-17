@@ -1,0 +1,23 @@
+<?xml version="1.0"  standalone='no'?>
+
+<resources>
+
+  <group name='group-1'>
+
+    <resource-mock name='dummy-1' />
+    <resource-mock name='dummy-2' />
+
+  </group>
+
+  <group name='group-2'>  
+  </group>
+
+  <group name='group-3'>
+    
+    <dependancy name='group-1'/>
+
+    <resource-mock name='dummy-3' />
+  
+  </group>
+
+</resources>
