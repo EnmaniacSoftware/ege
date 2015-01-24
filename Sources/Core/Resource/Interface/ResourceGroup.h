@@ -11,7 +11,6 @@
 #include "EGEStringList.h"
 #include "EGEList.h"
 #include "EGEMap.h"
-#include "EGESignal.h"
 #include "Core/Resource/Interface/Resource.h"
 
 EGE_NAMESPACE_BEGIN
@@ -30,25 +29,6 @@ class ResourceGroup : public Object
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
 
-  public signals:
-
-    /*! Signal emitted when resource has been loaded. 
-     *  @param resource Resource which has been loaded.
-     */
-    Signal1<const PResource&> resourceLoaded;
-    /*! Signal emitted when resource has been unloaded. 
-     *  @param resource Resource which has been unloaded.
-     */
-    Signal1<const PResource&> resourceUnloaded;
-    /*! Signal emitted when resource group has been loaded. 
-     *  @param group Resource group which has been loaded.
-     */
-    Signal1<const PResourceGroup&> resourceGroupLoaded;
-    /*! Signal emitted when resource group has been unloaded. 
-     *  @param group Resource group which has been unloaded.
-     */
-    Signal1<const PResourceGroup&> resourceGroupUnloaded;
-
   public:
 
     /*! Initializes resource from XML. 
@@ -56,16 +36,7 @@ class ResourceGroup : public Object
      *  @param  tag   xml element with resource definition. 
      */
     EGEResult create(const String& path, const PObject& data);
-    /*! Loads the group resources. 
-     *  @note When loading is successfully done resourceGroupLoaded signal is emitted. If group was already loaded no singal is emitted.
-     *  @return When group is successfully loaded EGE_SUCCESS is returned. If group was already loaded, EGE_ERROR_ALREADY_EXISTS is returned.
-     */
-    EGEResult load();
-    /*! Unloads the group resources. 
-     *  @note When unloading is successfully done resourceGroupUnloaded signal is emitted. If group was already unloaded no singal is emitted.
-     *  @return When group is successfully unloaded EGE_SUCCESS is returned. If group was already unloaded, EGE_ERROR_ALREADY_EXISTS is returned.
-     */
-    EGEResult unload();
+
     /*! Returns group name. */
     const String& name() const;
 
@@ -79,7 +50,7 @@ class ResourceGroup : public Object
     u32 resourceCount() const;
     /*! Adds given resource to group. */
     EGEResult addResource(const PResource& resource);
-    /*! Is group loaded. */
+    /*! Returns TRUE if group loaded. */
     bool isLoaded() const;
     /*! Returns list of dependancy group names. */
     const StringList& dependancies() const;
@@ -116,8 +87,6 @@ class ResourceGroup : public Object
     String m_path;
     /*! Resources map. */
     ResourcesMap m_resources;
-    /*! Is group loaded. */
-    bool m_loaded;
     /*! Dependancy list. */
     StringList m_dependancies;
     /*! Overridable flag. */

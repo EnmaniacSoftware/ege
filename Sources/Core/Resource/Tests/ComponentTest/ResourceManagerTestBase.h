@@ -50,6 +50,33 @@ class ResourceManagerTestBase : public TestBase
      */
     void onProgress(s32 processed, s32 total);
 
+    /*! Slot called when group is successfully loaded. Schedules loading of another group.
+     *  @param  groupName Name of the loaded group. 
+     *  @param  result    Operation result.
+     */
+    void onGroupLoadedAndLoadAnother(const String& groupName, EGEResult result);
+    /*! Slot called when group is successfully loaded. Schedules unloading of group 1 if loaded group is 3.
+     *  @param  groupName Name of the loaded group. 
+     *  @param  result    Operation result.
+     */
+    void onGroupLoadedAndUnloadGroup1IfGroup3(const String& groupName, EGEResult result);
+    /*! Slot called when group is successfully loaded. Schedules self unloading of if loaded group is 1.
+     *  @param  groupName Name of the loaded group. 
+     *  @param  result    Operation result.
+     */
+    void onGroupLoadedAndUnloadSelfIfGroup1(const String& groupName, EGEResult result);
+
+    /*! Slot called when group is successfully unloaded. Schedules loading of another group.
+     *  @param  groupName Name of the loaded group. 
+     *  @param  result    Operation result.
+     */
+    void onGroupUnloadedAndLoadAnother(const String& groupName, EGEResult result);
+    /*! Slot called when group is successfully unloaded. Schedules unloading of group 3 if unloaded group is 1.
+     *  @param  groupName Name of the loaded group. 
+     *  @param  result    Operation result.
+     */
+    void onGroupUnloadedAndUnloadGroup3IfGroup1(const String& groupName, EGEResult result);
+
   protected:
 
     static void SetUpTestCase();

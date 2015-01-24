@@ -41,9 +41,13 @@ class ResourceMock : public IResource
 
   public:
 
-    /*! Sets state to loaded. */
-    void setLoaded();
-    /*! Sets state to unloded. */
+    /*! Sets state to loaded. 
+     *  @note Google Mock requires that this method has to have the same return value as the method for which it is to be called: load().
+     */
+    EGEResult setLoaded();
+    /*! Sets state to unloded. 
+     *  @note Google Mock requires that this method has to have the same return value as the method for which it is to be called: unload().
+     */
     void setUnloaded();
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

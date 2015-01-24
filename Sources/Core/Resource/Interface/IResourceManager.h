@@ -30,21 +30,23 @@ class IResourceManager
   public signals:
 
     /*! Signal emitted when group has been loaded. 
-     *  @param name Name of a group which has been loaded.
+     *  @param  name    Name of a group which has been loaded.
+     *  @param  result  Result of operation.
      *  @note Signal is emitted in manager's thread. 
      */
-    Signal1<const String&> groupLoadComplete;
-    /*! Signal emitted when group could not be loaded. 
-     *  @param name Name of a group which failed to load.
+    Signal2<const String&, EGEResult> signalGroupLoaded;
+    /*! Signal emitted when group has been unloaded. 
+     *  @param  name    Name of a group which has been unloaded.
+     *  @param  result  Result of operation.
      *  @note Signal is emitted in manager's thread. 
      */
-    Signal1<const String&> groupLoadError;
+    Signal2<const String&, EGEResult> signalGroupUnloaded;
     /*! Signal emitted when resource has been processed.
      *  @param processed Number of already processed resources
      *  @param total     Total number resources to process
      *  @note Signal is NOT guaranteed to be emitted in manager's thread. 
      */
-    Signal2<u32, u32> processingStatusUpdated;
+    Signal2<s32, s32> signalProgress;
 
   public:
 
@@ -56,7 +58,7 @@ class IResourceManager
      *  @param  filePath    Path to resource definition file which is to be added into resources.
      *  @param  autoDetect  If TRUE file given by filePath will be looked for within currently registered data paths. Otherwise, filePath will be treated as
      *                      absolute path.
-     *  @return EGE_SUCCESS on success. Otherwise, one of the available error codes.
+     *  @return EGE_SUCCESS on success. EGE_ERROR_NOT_FOUND if resources were not found. Otherwise, one of the available error codes.
      */
     virtual EGEResult addResources(String filePath, bool autoDetect = true) = 0;
 

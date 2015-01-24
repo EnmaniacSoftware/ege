@@ -37,14 +37,11 @@ ResourceManager::ResourceManager(Engine& engine, IResourceLoader& loader)
 , m_totalResourcesToProcess(0)
 , m_processedResourcesCount(0)
 {
-  ege_connect(&engine, signalFrameEnd, this, ResourceManager::onFrameEnd);
   ege_connect(&m_resourceLoader, signalGroupCreated, this, ResourceManager::onGroupCreated);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManager::~ResourceManager()
 {
-  ege_disconnect(&engine(), signalFrameEnd, this, ResourceManager::onFrameEnd);
-
   // NOTE: all groups should be already removed
   EGE_ASSERT(m_groups.empty());
 }
@@ -69,7 +66,7 @@ EGEResult ResourceManager::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 {
-  EGEResult result = EGE_SUCCESS;
+  EGEResult result = EGE_ERROR_NOT_FOUND;
 
   bool atLeastOneResourceAddedSucessfully = false;
 
@@ -105,32 +102,6 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 
   return atLeastOneResourceAddedSucessfully ? EGE_SUCCESS : result;
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Adds resources from given buffer. */
-//EGEResult ResourceManager::addResources(const PDataBuffer& buffer)
-//{
-//  EGEResult result = EGE_SUCCESS;
-//
-//  XmlDocument xml;
-//  if (EGE_SUCCESS != (result = xml.load(buffer)))
-//  {
-//    // error!
-//    return result;
-//  }
-//
-//  // get main node
-//  PXmlElement resourcesNode = xml.firstChild(NODE_RESOURCES);
-//  if (!resourcesNode->isValid())
-//  {
-//    // error!
-//    return EGE_ERROR;
-//  }
-//
-//  // process RESOURCES tag
-//  result = processResourcesTag(resourcesNode);
-//
-//  return result;
-//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::addDataDirectory(const String& path)
 {
@@ -228,66 +199,25 @@ bool ResourceManager::createDefaultResources()
   return (EGE_SUCCESS == loadGroup(DEFAULT_GROUP_NAME));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::destroyDefaultResources()
-{
-  PResourceGroup defaultGroup = group(DEFAULT_GROUP_NAME);
-  if (NULL != defaultGroup)
-  {
-    List<PResource> resources = defaultGroup->resources("");
-
-    // go thru all resources
-    for (List<PResource>::iterator it = resources.begin(); it != resources.end(); ++it)
-    {
-      PResource resource = *it;
-
-      if (RESOURCE_NAME_TEXTURE == resource->typeName())
-      {
-        PResourceTexture textureResource = resource;
-//        app()->graphics()->hardwareResourceProvider()->destroyTexture2D(textureResource->texture());
-      }
-    }
-
-    // remove from pool
-    m_groups.remove(defaultGroup);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::unloadAll()
 {
- // destroyDefaultResources();
-
   // go thru all groups
   for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); )
   {
     PResourceGroup group = *it;
 
-    //if (group->name() == DEFAULT_GROUP_NAME)
-    //{
-    //  int a = 1;
-    //}
-
-    // disconnect
-    ege_disconnect(group, resourceLoaded, this, ResourceManager::onResourceLoaded);
-    ege_disconnect(group, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
-    ege_disconnect(group, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
-    ege_disconnect(group, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
-
     // try to unload all resource one by one
-    // NOTE: we need to go thru all resources instead of letting the group to unload itself cause it is possible (due to implementation)
-    //       that some of the resources were loaded from outside (ie not thru PResourceGroup::load) ie when some other group refers 
-    //       the resources from other group
-    
     List<PResource> resources = group->resources("");
     for (List<PResource>::iterator itResource = resources.begin(); itResource != resources.end(); ++itResource)
     {
       PResource resource = *itResource;
 
       // try to unload
-      resource->unload();
+      if (IResource::STATE_UNLOADED != resource->state())
+      {
+        resource->unload();
+      }
     }
-
-    // NOTE: just to reset load flag
-    group->unload();
 
     // try to unload
     //if (EGE_ERROR_ALREADY_EXISTS == group->unload())
@@ -362,11 +292,153 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   return true;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onFrameEnd()
+bool ResourceManager::initializeProcessingBatch(ProcessingBatch& batch, const String& groupName) const
 {
-  if (EModuleStateRunning == state())
+  // clear up data
+  batch.startTime         = 0LL;
+  batch.resourcesCount    = 0;
+  batch.nextResourceIndex = 0;
+
+  // build dependencies first
+  // NOTE: this contains all dependant groups only
+  if ( ! buildDependacyList(batch.groups, groupName))
   {
-    processCommands();
+    // error!
+    egeWarning(KResourceManagerDebugName) << "Could not build dependancy list for group" << groupName;
+    return false;
+  }
+
+  // add itself at the end
+  batch.groups.push_back(groupName);
+
+  // count resources
+  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+  {
+    // find group of given name
+    PResourceGroup group = this->group(*it);
+    if (NULL == group)
+    {
+      // error!
+      egeWarning(KResourceManagerDebugName) << "Group" << groupName << "not found!";
+      return false;
+    }
+
+    // update resource count for batch
+    batch.resourcesCount += group->resourceCount();
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
+{
+  // reserve space
+  batch.resources.reserve(batch.resourcesCount);
+
+  // go thru all groups
+  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+  {
+    // find group of given name
+    PResourceGroup group = this->group(*it);
+    if (NULL == group)
+    {
+      // error!
+      egeWarning(KResourceManagerDebugName) << "Group" << *it << "not found!";
+      return false;
+    }
+
+    // get list of all resources
+    List<PResource> resources = group->resources("");
+
+    // add them all into batch
+    for (List<PResource>::const_iterator itRes = resources.begin(); itRes != resources.end(); ++itRes)
+    {
+      batch.resources.push_back(*itRes);
+    }
+  }
+
+  return true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManager::processBatch()
+{
+  EGE_ASSERT( ! m_processList.empty());
+
+  ProcessingBatch& batch = m_processList.front();
+
+  // check if batch has been processed
+  if (batch.resources.empty())
+  {
+    // do nothing
+    return;
+  }
+
+  // check if first try to load batch
+  if (0 == batch.startTime.microseconds())
+  {
+    // set timestamp
+    batch.startTime = Timer::GetMicroseconds();
+  }
+
+  // get next resource to process
+  EGEResult result = EGE_SUCCESS;
+  PResource resource = batch.resources.at(batch.nextResourceIndex, NULL);
+  if (NULL != resource)
+  {
+    if (batch.load)
+    {
+      result = loadResource(resource);
+
+      // check if not being processed
+      if (EGE_WAIT != result)
+      {
+        // notify
+        onResourceLoaded(resource, result);
+      }
+    }
+    else
+    {
+      result = unloadResource(resource);
+
+      // check if not being processed
+      if (EGE_WAIT != result)
+      {
+        // notify
+        onResourceUnloaded(resource, result);
+      }
+    }
+
+    // go to next resource if not being processed
+    if (EGE_WAIT != result)
+    {
+      ++batch.nextResourceIndex;
+    }
+  }
+
+  // notify group result
+  // NOTE: notify in case of an error or when it is done
+  //       Error occurs when 'result' is NOT one of the following:
+  //       - EGE_SUCCESS which means resource has been successfully processed
+  //       - EGE_WAIT which means resource is being processed but needs more time
+  //       - EGE_ERROR_ALREADY_EXISTS which means resource has been found in the correct state already
+  if (((EGE_SUCCESS != result) && (EGE_WAIT != result) && (EGE_ERROR_ALREADY_EXISTS != result)) || (NULL == resource))
+  {
+    // mark as processed
+    batch.resources.clear();
+
+    PResourceGroup group = this->group(batch.groups.last(""));
+    EGE_ASSERT(NULL != group);
+
+    if (batch.load)
+    {
+      // notify
+      onGroupLoaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+    }
+    else
+    {
+      // notify
+      onGroupUnloaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+    }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -394,107 +466,121 @@ u32 ResourceManager::uid() const
   return EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onGroupLoaded(const PResourceGroup& group)
+void ResourceManager::onGroupLoaded(const PResourceGroup& group, EGEResult result)
 {
   ProcessingBatch& data = m_processList.front();
 
-  EGE_ASSERT(group->name() == data.groups.front());
+  EGE_ASSERT(group->name() == data.groups.last(""));
   
   // check if expected group has been loaded
-  if (group->name() == data.groups.front())
+  if (group->name() == data.groups.last(""))
   {
     egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
-    // remove it from batch pool
-    data.groups.pop_front();
+    // remove from process list first
+    m_processList.pop_front();
 
-    // check if no more groups to be processed
-    if (data.groups.empty())
+    // signal
+    emit signalGroupLoaded(group->name(), result);
+
+    // check if not more batches to process
+    if (m_processList.empty())
     {
-      // remove from process list first
-      m_processList.pop_front();
-
-      // signal
-      emit groupLoadComplete(group->name());
-
-      // check if not more batches to process
-      if (m_processList.empty())
-      {
-        // clean up statistics
-        m_totalResourcesToProcess = 0;
-        m_processedResourcesCount = 0;
-      }
+      // clean up statistics
+      m_totalResourcesToProcess = 0;
+      m_processedResourcesCount = 0;
     }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onGroupUnloaded(const PResourceGroup& group)
+void ResourceManager::onGroupUnloaded(const PResourceGroup& group, EGEResult result)
 {
   ProcessingBatch& data = m_processList.front();
 
-  EGE_ASSERT(group->name() == data.groups.front());
-
+  EGE_ASSERT(group->name() == data.groups.last(""));
+  
   // check if expected group has been loaded
-  if (group->name() == data.groups.front())
+  if (group->name() == data.groups.last(""))
   {
     egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
-    // remove it from batch pool
-    data.groups.pop_front();
+    // remove from process list first
+    m_processList.pop_front();
 
-    // check if no more groups to be processed
-    if (data.groups.empty())
+    // signal
+    emit signalGroupUnloaded(group->name(), result);
+
+    // check if not more batches to process
+    if (m_processList.empty())
     {
-      // remove from process list first
-      m_processList.pop_front();
-
-      // check if not more batches to process
-      if (m_processList.empty())
-      {
-        // clean up statistics
-        m_totalResourcesToProcess = 0;
-        m_processedResourcesCount = 0;
-      }
+      // clean up statistics
+      m_totalResourcesToProcess = 0;
+      m_processedResourcesCount = 0;
     }
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onResourceLoaded(const PResource& resource)
+void ResourceManager::onResourceLoaded(const PResource& resource, EGEResult result)
 {
-  EGE_UNUSED(resource);
+  EGE_UNUSED(resource)
+  EGE_UNUSED(result)
 
   // update statistics
   m_processedResourcesCount++;
 
   // signal
-  emit processingStatusUpdated(m_processedResourcesCount, m_totalResourcesToProcess);
+  emit signalProgress(m_processedResourcesCount, m_totalResourcesToProcess);
 
   egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onResourceUnloaded(const PResource& resource)
+void ResourceManager::onResourceUnloaded(const PResource& resource, EGEResult result)
 {
-  EGE_UNUSED(resource);
+  EGE_UNUSED(resource)
+  EGE_UNUSED(result)
 
   // update statistics
   m_processedResourcesCount++;
 
   // signal
-  emit processingStatusUpdated(m_processedResourcesCount, m_totalResourcesToProcess);
+  emit signalProgress(m_processedResourcesCount, m_totalResourcesToProcess);
 
   egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupCreated(const PResourceGroup& group)
 {
-  // connect
-  ege_connect(group, resourceLoaded, this, ResourceManager::onResourceLoaded);
-  ege_connect(group, resourceUnloaded, this, ResourceManager::onResourceUnloaded);
-  ege_connect(group, resourceGroupLoaded, this, ResourceManager::onGroupLoaded);
-  ege_connect(group, resourceGroupUnloaded, this, ResourceManager::onGroupUnloaded);
-
   // add into pool
   m_groups.push_back(group);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceManager::loadResource(PResource& resource) const
+{
+  EGEResult result = EGE_ERROR_ALREADY_EXISTS;
+
+  // check if resource requires loading
+  if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
+  {
+    result = resource->load();
+  }
+
+  return result;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+EGEResult ResourceManager::unloadResource(PResource& resource) const
+{
+  EGEResult result = EGE_ERROR_ALREADY_EXISTS;
+
+  // check if resource requires unloading
+  if ( ! resource->isManual() && (IResource::STATE_UNLOADED != resource->state()))
+  {
+    // try to unload
+    /*result = */resource->unload();
+
+    result = (IResource::STATE_UNLOADED == resource->state()) ? EGE_SUCCESS : EGE_ERROR;
+  }
+
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

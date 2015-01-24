@@ -22,9 +22,10 @@ IResource* ResourceMock::CreateResource(Engine& engine, ResourceGroup* group)
   return ege_new ResourceMock(engine, group); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceMock::setLoaded()
+EGEResult ResourceMock::setLoaded()
 {
   m_state = IResource::STATE_LOADED;
+  return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceMock::setUnloaded()

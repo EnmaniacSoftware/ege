@@ -27,47 +27,7 @@ void ResourceManagerSingleThread::update(const Time& time)
 
   if ( ! m_processList.empty() && (EModuleStateRunning == state()))
   {
-    ProcessingBatch& data = m_processList.front();
-
-    PResourceGroup group = this->group(data.groups.front());
-
-    // check if first try to load batch
-    if (0 == data.startTime.microseconds())
-    {
-      // set timestamp
-      data.startTime = Timer::GetMicroseconds();
-    }
-
-    if (data.load)
-    {
-      // try to load
-      EGEResult result = group->load();
-
-      // check if loaded already
-      if (EGE_ERROR_ALREADY_EXISTS == result)
-      {
-        // process as loaded
-        onGroupLoaded(group);
-      }
-      // check if error
-      else if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
-      {
-        // error!
-        emit groupLoadError(group->name());
-      }
-    }
-    else
-    {
-      // try to unload
-      EGEResult result = group->unload();
-
-      // check if unloaded already
-      if (EGE_ERROR_ALREADY_EXISTS == result)
-      {
-        // process as unloaded
-        onGroupUnloaded(group);
-      }
-    }
+    processBatch();
   }
   else if (EModuleStateShuttingDown == state())
   {
@@ -81,10 +41,6 @@ void ResourceManagerSingleThread::update(const Time& time)
       setState(EModuleStateClosed);
     }
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerSingleThread::processCommands()
-{
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
@@ -110,41 +66,20 @@ EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
       {
         // already scheduled
         egeWarning(KResourceManagerDebugName) << "Group" << name << "already scheduled for loading!";
-        return EGE_SUCCESS;
+        return EGE_ERROR_ALREADY_EXISTS;
       }
     }
   }
 
   ProcessingBatch batch;
-  batch.load            = true;
-  batch.startTime       = 0LL;
-  batch.resourcesCount  = 0;
+  batch.load = true;
 
-  // build dependencies first
-  // NOTE: this contains all dependant groups and itself at the end
-  if ( ! buildDependacyList(batch.groups, name))
+  // setup processing batch
+  if ( ! initializeProcessingBatch(batch, name) || ! finalizeProcessingBatch(batch))
   {
     // error!
-    egeWarning(KResourceManagerDebugName) << "Could not build dependancy list for group" << name;
+    egeWarning(KResourceManagerDebugName) << "Could not setup processing batch for group" << name;
     return EGE_ERROR;
-  }
-
-  batch.groups.push_back(name);
-
-  // count resources
-  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
-  {
-    // find group of given name
-    PResourceGroup group = this->group(*it);
-    if (NULL == group)
-    {
-      // error!
-      egeWarning(KResourceManagerDebugName) << "Group" << *it << "not found!";
-      return EGE_ERROR;
-    }
-
-    // update resource count for batch
-    batch.resourcesCount += group->resourceCount();
   }
 
   // add to pool
@@ -153,7 +88,7 @@ EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
   // update statistics
   m_totalResourcesToProcess += batch.resourcesCount;
 
-  egeDebug(KResourceManagerDebugName) << "Group scheduled for loading:" << name;
+  egeDebug(KResourceManagerDebugName) << "Group scheduled for loading:" << name << "Total resources:" << batch.resourcesCount;
 
   return EGE_SUCCESS;
 }
@@ -187,35 +122,14 @@ void ResourceManagerSingleThread::unloadGroup(const String& name)
   }
 
   ProcessingBatch batch;
-  batch.load            = false;
-  batch.startTime       = 0LL;
-  batch.resourcesCount  = 0;
+  batch.load = false;
 
-  // build dependencies first
-  // NOTE: this contains all dependant groups and itself at the end
-  if ( ! buildDependacyList(batch.groups, name))
+  // setup processing batch
+  if ( ! initializeProcessingBatch(batch, name) || ! finalizeProcessingBatch(batch))
   {
     // error!
-    egeWarning(KResourceManagerDebugName) << "Could not build dependancy list for group" << name;
+    egeWarning(KResourceManagerDebugName) << "Could not setup processing batch for group" << name;
     return;
-  }
-
-  batch.groups.push_back(name);
-
-  // count resources
-  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
-  {
-    // find group of given name
-    PResourceGroup group = this->group(*it);
-    if (NULL == group)
-    {
-      // error!
-      egeWarning(KResourceManagerDebugName) << "Group" << name << "not found!";
-      return;
-    }
-
-    // update resource count for batch
-    batch.resourcesCount += group->resourceCount();
   }
 
   // add to pool
@@ -225,11 +139,6 @@ void ResourceManagerSingleThread::unloadGroup(const String& name)
   m_totalResourcesToProcess += batch.resourcesCount;
 
   egeDebug(KResourceManagerDebugName) << "Group scheduled for unloading:" << name;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ResourceManager::ResourceProcessPolicy ResourceManagerSingleThread::resourceProcessPolicy() const
-{
-  return ResourceManager::RLP_RESOURCE;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -108,6 +108,63 @@ void ResourceManagerTestBase::onGroupUnloaded(const String& groupName, EGEResult
   m_unloadedGroups << groupName;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onGroupLoadedAndLoadAnother(const String& groupName, EGEResult result)
+{
+  // process as normal
+  onGroupLoaded(groupName, result);
+  
+  // load another group if this is not what is scheduled here
+  if (KResourceGroup3 != groupName)
+  {
+    EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup3));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onGroupLoadedAndUnloadSelfIfGroup1(const String& groupName, EGEResult result)
+{
+  // process as normal
+  onGroupLoaded(groupName, result);
+
+  // unload self if group 1
+  if (KResourceGroup1 == groupName)
+  {
+    resourceManager()->unloadGroup(groupName);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onGroupUnloadedAndLoadAnother(const String& groupName, EGEResult result)
+{
+  // process as normal
+  onGroupUnloaded(groupName, result);
+
+  // load another group
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup3));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onGroupLoadedAndUnloadGroup1IfGroup3(const String& groupName, EGEResult result)
+{
+  // process as normal
+  onGroupLoaded(groupName, result);
+
+  // unload group 1 if just loaded group 3
+  if (KResourceGroup3 == groupName)
+  {
+    resourceManager()->unloadGroup(KResourceGroup1);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onGroupUnloadedAndUnloadGroup3IfGroup1(const String& groupName, EGEResult result)
+{
+  // process as normal
+  onGroupUnloaded(groupName, result);
+
+  // unload another group
+  if (KResourceGroup1 == groupName)
+  {
+    resourceManager()->unloadGroup(KResourceGroup3);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerTestBase::onProgress(s32 processed, s32 total)
 {
   m_totalProgress = total;
@@ -130,7 +187,7 @@ void ResourceManagerTestBase::waitUntilGroupsAreLoaded(const StringList& groupNa
     allLoaded = true;
     for (StringList::const_iterator it = groupNames.begin(); it != groupNames.end(); ++it)
     {
-      allLoaded &= m_loadedGroups.contains(*it);
+      allLoaded = allLoaded && m_loadedGroups.contains(*it);
     }
 
     timeoutMs -= Timer::GetMiliseconds() - timestamp;
@@ -155,7 +212,7 @@ void ResourceManagerTestBase::waitUntilGroupsAreUnloaded(const StringList& group
     allLoaded = true;
     for (StringList::const_iterator it = groupNames.begin(); it != groupNames.end(); ++it)
     {
-      allLoaded &= m_unloadedGroups.contains(*it);
+      allLoaded = allLoaded && m_unloadedGroups.contains(*it);
     }
 
     timeoutMs -= Timer::GetMiliseconds() - timestamp;

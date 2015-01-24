@@ -123,7 +123,6 @@ TEST_F(ResourceManagerSingleThreadTest, LoadExistingGroup)
   ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoaded);
 
   resourceManager()->addDataDirectory("Resource-test");
-  EXPECT_EQ(EGE_ERROR_NOT_FOUND, resourceManager()->addResources("resources.xml", false));
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
 
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup1));
@@ -138,7 +137,6 @@ TEST_F(ResourceManagerSingleThreadTest, LoadNonExistingGroup)
   ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoaded);
 
   resourceManager()->addDataDirectory("Resource-test");
-  EXPECT_EQ(EGE_ERROR_NOT_FOUND, resourceManager()->addResources("resources.xml", false));
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
 
   EXPECT_EQ(EGE_ERROR, resourceManager()->loadGroup(KResourceNonExistingGroup));
@@ -159,7 +157,6 @@ TEST_F(ResourceManagerSingleThreadTest, UnloadGroup)
   ege_connect(resourceManager(), signalGroupUnloaded, this, ResourceManagerTestBase::onGroupUnloaded);
 
   resourceManager()->addDataDirectory("Resource-test");
-  EXPECT_EQ(EGE_ERROR_NOT_FOUND, resourceManager()->addResources("resources.xml", false));
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
 
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup1));
@@ -177,7 +174,6 @@ TEST_F(ResourceManagerSingleThreadTest, UnloadNonExistingGroup)
   ege_connect(resourceManager(), signalGroupUnloaded, this, ResourceManagerTestBase::onGroupUnloaded);
 
   resourceManager()->addDataDirectory("Resource-test");
-  EXPECT_EQ(EGE_ERROR_NOT_FOUND, resourceManager()->addResources("resources.xml", false));
   EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
 
   resourceManager()->unloadGroup(KResourceNonExistingGroup);
@@ -317,5 +313,134 @@ TEST_F(ResourceManagerSingleThreadTest, LoadUnloadBeforeUpdate)
 
   EXPECT_EQ(0, m_totalProgress);
   EXPECT_EQ(0, m_currentProgress);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ResourceManagerSingleThreadTest, LoadAnotherDuringLoadComplete)
+{
+  // setup resource factory
+  std::vector<ResourceMock*> resources = setupResourceFactory();
+
+  // set expectations on loading
+  EXPECT_CALL(*resources[0], load())
+    .WillOnce(DoAll(IgnoreResult(InvokeWithoutArgs(resources[0], &ResourceMock::setLoaded)), 
+                    Return(EGE_SUCCESS)));
+  EXPECT_CALL(*resources[1], load())
+    .WillOnce(DoAll(IgnoreResult(InvokeWithoutArgs(resources[1], &ResourceMock::setLoaded)), 
+                    Return(EGE_SUCCESS)));
+  EXPECT_CALL(*resources[2], load())
+    .WillOnce(Return(EGE_SUCCESS));
+  
+  ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoadedAndLoadAnother);
+  ege_connect(resourceManager(), signalProgress, this, ResourceManagerTestBase::onProgress);
+
+  resourceManager()->addDataDirectory("Resource-test");
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
+
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup1));
+
+  waitUntilGroupsAreLoaded(StringList() << KResourceGroup1 << KResourceGroup3);
+
+  // expect the following progress:
+  // - first for the group 1
+  // - second for the group 3 (which is again group 1 and group 3)
+  EXPECT_EQ(KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_totalProgress);
+  EXPECT_EQ(KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_currentProgress);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ResourceManagerSingleThreadTest, UnloadDuringLoadComplete)
+{
+  // setup resource factory
+  std::vector<ResourceMock*> resources = setupResourceFactory();
+
+  // set expectations on loading
+  EXPECT_CALL(*resources[0], load())
+    .WillOnce(DoAll(IgnoreResult(InvokeWithoutArgs(resources[0], &ResourceMock::setLoaded)), 
+                    Return(EGE_SUCCESS)));
+  EXPECT_CALL(*resources[1], load())
+    .WillOnce(DoAll(IgnoreResult(InvokeWithoutArgs(resources[1], &ResourceMock::setLoaded)), 
+                    Return(EGE_SUCCESS)));
+  
+  ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoadedAndUnloadSelfIfGroup1);
+  ege_connect(resourceManager(), signalGroupUnloaded, this, ResourceManagerTestBase::onGroupUnloaded);
+  ege_connect(resourceManager(), signalProgress, this, ResourceManagerTestBase::onProgress);
+
+  resourceManager()->addDataDirectory("Resource-test");
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
+
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup1));
+
+  waitUntilGroupsAreUnloaded(StringList() << KResourceGroup1);
+
+  // expect the following progress:
+  // - first for the group 1
+  // - second for the group 1 again
+  EXPECT_EQ(KGroup1ResourceCount + KGroup1ResourceCount, m_totalProgress);
+  EXPECT_EQ(KGroup1ResourceCount + KGroup1ResourceCount, m_currentProgress);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ResourceManagerSingleThreadTest, LoadAnotherDuringUnloadComplete)
+{
+  // setup resource factory
+  std::vector<ResourceMock*> resources = setupResourceFactory();
+
+  // set expectations on loading
+  EXPECT_CALL(*resources[0], load())
+    .Times(2)
+    .WillRepeatedly(Return(EGE_SUCCESS));
+  EXPECT_CALL(*resources[1], load())
+    .Times(2)
+    .WillRepeatedly(Return(EGE_SUCCESS));
+  EXPECT_CALL(*resources[2], load())
+    .WillOnce(Return(EGE_SUCCESS));
+  
+  ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoadedAndUnloadSelfIfGroup1);
+  ege_connect(resourceManager(), signalGroupUnloaded, this, ResourceManagerTestBase::onGroupUnloadedAndLoadAnother);
+  ege_connect(resourceManager(), signalProgress, this, ResourceManagerTestBase::onProgress);
+
+  resourceManager()->addDataDirectory("Resource-test");
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
+
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup1));
+
+  waitUntilGroupsAreLoaded(StringList() << KResourceGroup3);
+
+  // expect the following progress:
+  // - load for the group 1
+  // - unload for the group 1
+  // - load for the group 3 (which is again group 1 and group 3)
+  EXPECT_EQ(KGroup1ResourceCount + KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_totalProgress);
+  EXPECT_EQ(KGroup1ResourceCount + KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_currentProgress);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ResourceManagerSingleThreadTest, UnloadAnotherDuringUnloadComplete)
+{
+  // setup resource factory
+  std::vector<ResourceMock*> resources = setupResourceFactory();
+
+  // set expectations on loading
+  EXPECT_CALL(*resources[0], load())
+    .WillOnce(Return(EGE_SUCCESS));
+  EXPECT_CALL(*resources[1], load())
+    .WillOnce(Return(EGE_SUCCESS));
+  EXPECT_CALL(*resources[2], load())
+    .WillOnce(Return(EGE_SUCCESS));
+  
+  ege_connect(resourceManager(), signalGroupLoaded, this, ResourceManagerTestBase::onGroupLoadedAndUnloadGroup1IfGroup3);
+  ege_connect(resourceManager(), signalGroupUnloaded, this, ResourceManagerTestBase::onGroupUnloadedAndUnloadGroup3IfGroup1);
+  ege_connect(resourceManager(), signalProgress, this, ResourceManagerTestBase::onProgress);
+
+  resourceManager()->addDataDirectory("Resource-test");
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->addResources("resources.xml", true));
+
+  EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup3));
+
+  waitUntilGroupsAreUnloaded(StringList() << KResourceGroup1 << KResourceGroup3);
+
+  // expect the following progress:
+  // - load for the group 3 (group 1 + group 3)
+  // - unload for the group 1
+  // - unload for the group 3 (which is again group 1 and group 3)
+  EXPECT_EQ((KGroup1ResourceCount + KGroup3ResourceCount) + KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_totalProgress);
+  EXPECT_EQ((KGroup1ResourceCount + KGroup3ResourceCount) + KGroup1ResourceCount + (KGroup1ResourceCount + KGroup3ResourceCount), m_currentProgress);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

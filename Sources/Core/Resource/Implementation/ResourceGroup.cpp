@@ -18,7 +18,6 @@ EGE_DEFINE_DELETE_OPERATORS(ResourceGroup)
 ResourceGroup::ResourceGroup(Engine& engine, const String& name) 
 : m_engine(engine)
 , m_name(name)
-, m_loaded(false)
 , m_overridable(false)
 {
 }
@@ -68,8 +67,6 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
     }
     else
     {
-      egeWarning(KResourceGroupDebugName) << child->name();
-
       // create resource instance
       PResource resource = engine().resourceFactory()->createInstance(child->name(), this);
       if (resource)
@@ -102,137 +99,131 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
   return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceGroup::load()
-{
-  EGEResult result = EGE_SUCCESS;
-
-  // check if NOT already loaded
-  if ( ! isLoaded())
-  {
-    // This flag is turned on if at least one of the resources reported busy after load
-    bool resourceBusy = false;
-
-    // go thru all resources
-    for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end(); ++it)
-    {
-      PResource resource = it->second;
-
-      // check if non-manual and needs to be loaded
-      if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
-      {
-        // load resource
-        result = resource->load();
-        if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
-        {
-          // error!
-          egeWarning(KResourceGroupDebugName) << "Load failed:" << resource->name();
-          break;
-        }
-
-        // check if loaded
-        if (EGE_SUCCESS == result)
-        {
-          egeLog() << resource->name() << "of group" << name();
-
-          // signal
-          emit resourceLoaded(resource);
-        }
-        // check if resource is busy
-        else if (EGE_WAIT == result)
-        {
-          // we will need another interation
-          resourceBusy = true;
-        }
-
-        // check processing policy
-        // TAGE - FIX
-        if (ResourceManager::RLP_RESOURCE == dynamic_cast<ResourceManager*>(engine().resourceManager())->resourceProcessPolicy())
-        {
-          // yield for now
-          return EGE_WAIT;
-        }
-      }
-    }
-
-    // check if error occured
-    if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
-    {
-      // unload entire group
-      unload();
-    }
-    else
-    {
-      // check if all resources reported they are loaded
-      if ( ! resourceBusy)
-      {
-        // signal
-        emit resourceGroupLoaded(*this);
-
-        // set flag
-        m_loaded = true;
-      }
-      else
-      {
-        // need to wait
-        result = EGE_WAIT;
-      }
-    }
-  }
-  else
-  {
-    // already loaded
-    result = EGE_ERROR_ALREADY_EXISTS;
-  }
-
-  return result;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGEResult ResourceGroup::unload()
-{
-  EGEResult result = EGE_SUCCESS;
-
-//  if (name() == "main-menu-heart")
+//EGEResult ResourceGroup::load()
+//{
+//  EGEResult result = EGE_SUCCESS;
+//
+//  // check if NOT already loaded
+//  if ( ! isLoaded())
 //  {
-//    int a = 1;
+//    // This flag is turned on if at least one of the resources reported busy after load
+//    bool resourceBusy = false;
+//
+//    // go thru all resources
+//    for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end(); ++it)
+//    {
+//      PResource resource = it->second;
+//
+//      // check if non-manual and needs to be loaded
+//      if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
+//      {
+//        // load resource
+//        result = resource->load();
+//        if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
+//        {
+//          // error!
+//          egeWarning(KResourceGroupDebugName) << "Load failed:" << resource->name();
+//          break;
+//        }
+//
+//        // check if resource is busy
+//        if (EGE_WAIT == result)
+//        {
+//          // we will need another interation
+//          resourceBusy = true;
+//        }
+//        else
+//        {
+//          egeLog() << resource->name() << "of group" << name();
+//
+//          // signal
+//          emit signalResourceLoaded(resource, result);
+//        }
+//
+//        // check processing policy
+//        // TAGE - FIX
+//        if (ResourceManager::RLP_RESOURCE == dynamic_cast<ResourceManager*>(engine().resourceManager())->resourceProcessPolicy())
+//        {
+//          // yield for now
+//          return EGE_WAIT;
+//        }
+//      }
+//    }
+//
+//    // check if error occured
+//    if ((EGE_SUCCESS != result) && (EGE_WAIT != result))
+//    {
+//      // unload entire group
+//      unload();
+//    }
+//    else
+//    {
+//      // check if all resources reported they are loaded
+//      if ( ! resourceBusy)
+//      {
+//        // signal
+//        emit signalResourceGroupLoaded(*this, EGE_SUCCESS);
+//
+//        // set flag
+//        m_loaded = true;
+//      }
+//      else
+//      {
+//        // need to wait
+//        result = EGE_WAIT;
+//      }
+//    }
 //  }
-
-  // check if loaded
-  if (isLoaded())
-  {
-    // go thru all resources
-    for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
-    {
-      PResource resource = it->second;
-
-      // check if non-manual
-      if ( ! resource->isManual())
-      {
-        // unload it
-        resource->unload();
-
-        // check if loaded
-        if (IResource::STATE_UNLOADED == resource->state())
-        {
-          // signal
-          emit resourceUnloaded(resource);
-        }
-      }
-    }
-
-    // reset flag
-    m_loaded = false;
-
-    // signal
-    emit resourceGroupUnloaded(*this);
-  }
-  else
-  {
-    // already unloaded
-    result = EGE_ERROR_ALREADY_EXISTS;
-  }
-
-  return result;
-}
+//  else
+//  {
+//    // already loaded
+//    result = EGE_ERROR_ALREADY_EXISTS;
+//  }
+//
+//  return result;
+//}
+////--------------------------------------------------------------------------------------------------------------------------------------------------------------
+//EGEResult ResourceGroup::unload()
+//{
+//  EGEResult result = EGE_SUCCESS;
+//
+//  // check if loaded
+//  if (isLoaded())
+//  {
+//    // go thru all resources
+//    for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
+//    {
+//      PResource resource = it->second;
+//
+//      // check if non-manual
+//      if ( ! resource->isManual())
+//      {
+//        // unload it
+//        resource->unload();
+//
+//        // check if loaded
+//        if (IResource::STATE_UNLOADED == resource->state())
+//        {
+//          // signal
+//          emit signalResourceUnloaded(resource, EGE_SUCCESS);
+//        }
+//      }
+//    }
+//
+//    // reset flag
+//    m_loaded = false;
+//
+//    // signal
+//    emit signalResourceGroupUnloaded(*this, EGE_SUCCESS);
+//  }
+//  else
+//  {
+//    // already unloaded
+//    result = EGE_ERROR_ALREADY_EXISTS;
+//  }
+//
+//  return result;
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceGroup::resource(const String& typeName, const String& name) const
 {
@@ -411,8 +402,24 @@ const String& ResourceGroup::name() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceGroup::isLoaded() const 
-{ 
-  return m_loaded; 
+{
+  bool loaded = ! m_resources.empty();
+
+  // go through all resources and try to find not loaded one
+  for (ResourcesMap::const_iterator it = m_resources.begin(); (it != m_resources.end()) && loaded; ++it)
+  {
+    const PResource& resource = it->second;
+
+    // check if loaded
+    // NOTE: do not take manual resouces into accoount
+    if ( ! resource->isManual() && (IResource::STATE_LOADED != resource->state()))
+    {
+      // not loaded
+      loaded = false;
+    }
+  }
+
+  return loaded; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Engine& ResourceGroup::engine() const

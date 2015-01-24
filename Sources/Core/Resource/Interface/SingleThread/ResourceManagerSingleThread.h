@@ -34,11 +34,6 @@ class ResourceManagerSingleThread : public ResourceManager
     /*! @see IResourceManager::unloadGroup. */
     void unloadGroup(const String& name) override;
 
-    /*! @see ResourceManager::processCommands. */
-    void processCommands() override;
-    /*! @see ResourceManager::resourceProcessPolicy. */
-    ResourceManager::ResourceProcessPolicy resourceProcessPolicy() const override;
-
     /*! @see EngineModule::update. */
     void update(const Time& time) override;
 };
