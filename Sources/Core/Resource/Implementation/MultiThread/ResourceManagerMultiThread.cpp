@@ -237,9 +237,7 @@ void ResourceManagerMultiThread::threadUpdate()
   {
     // wait for data
     // NOTE: this unlocks mutex
-    printf("Waiting...\n");
     m_commandsToProcess->wait(m_mutex);
-    printf("Resuming...\n");
 
     // mutex is locked here
   }
@@ -255,12 +253,8 @@ void ResourceManagerMultiThread::threadUpdate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerMultiThread::onShutdown()
 {
-  //printf("Shutting down\n");
-
   if ((EModuleStateClosed != state()) && (EModuleStateShuttingDown != state()))
   {
-    printf("Really shutting down\n");
-
     // request stop
     m_workThread->stop(0);
 
