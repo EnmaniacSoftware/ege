@@ -13,7 +13,8 @@ class AtomicInt
 {
   public:
 
-    AtomicInt(s32 value = 0);
+    explicit AtomicInt(s32 value = 0);
+    explicit AtomicInt(const AtomicInt& other);
 
     /*! Returns current value.
      *  @note This uses ordered memory model.
