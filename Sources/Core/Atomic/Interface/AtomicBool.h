@@ -14,6 +14,7 @@ class AtomicBool
   public:
 
     explicit AtomicBool(bool value = false);
+    explicit AtomicBool(const AtomicBool& other);
 
     /*! Returns current value.
      *  @note This uses ordered memory model.
@@ -29,8 +30,10 @@ class AtomicBool
 
   private:
 
-    /*! Current value. */
-    volatile bool m_value;
+    /*! Current value. 
+     *  @note Internal implementation is a 32-bit signed integer.
+     */
+    volatile s32 m_value;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
