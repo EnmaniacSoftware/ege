@@ -7,9 +7,11 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ThreadPrivate)
 EGE_DEFINE_DELETE_OPERATORS(ThreadPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ThreadPrivate::ThreadPrivate(Thread* base) : m_d(base),
-                                             m_running(false),
-                                             m_finished(false)
+ThreadPrivate::ThreadPrivate(Thread* base) 
+: m_d(base)
+, m_cancelled(false)
+, m_running(false)
+, m_finished(false)
 {
   EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
 }
@@ -21,37 +23,56 @@ ThreadPrivate::~ThreadPrivate()
 void* ThreadPrivate::ThreadFunc(void* userData)
 {
   ThreadPrivate* me = reinterpret_cast<ThreadPrivate*>(userData);
-  
   Thread* base = me->d_func();
+  
+  // disable cancelling
+  // NOTE: if cancel is requested in the meantime it will happen once re-enabled and first opportunity for test arises
+  pthread_setcancelstate(PTHREAD_CANCEL_DISABLE, NULL);
+
+  // setup clean up function
+  pthread_cleanup_push(ThreadPrivate::ThreadFinalize, me);
 
   // set flags
-  me->m_running = true;
+  me->m_running.store(true);
 
   // emit
-  emit base->started(base);
-
-  // start thread function execution
-  s32 result = base->run();
+  emit base->started(*base);
   
-  // check if was requested to stop
-  if (base->isStopping())
+  // check if still to be run
+  if ( ! base->m_stopping.load())
   {
-    // get requested exit code
-    result = base->m_exitCode;
+    // re-enable cancelling and check if it was requested in the meantime
+    pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+    pthread_testcancel();
+
+    // start thread function execution
+    s32 result = base->run();
+
+    // check if thread hasnt been manually stopped
+    if ( ! base->isStopping())
+    {
+      // set exit code according to thread method
+      base->m_exitCode = result;
+    }
   }
 
+  // finalize
+  pthread_cleanup_pop(1);
+
+  return reinterpret_cast<void*>(base->m_exitCode);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ThreadPrivate::ThreadFinalize(ThreadPrivate* thread)
+{
+  Thread* base = thread->d_func();
+
   // set flags
-  me->m_running    = false;
-  me->m_finished   = true;
-  base->m_stopping = false;
+  thread->m_running.store(false);
+  thread->m_finished.store(true);
+  base->m_stopping.store(false);
 
   // emit
-  emit base->finished(base);
-
-  // clean up
-  pthread_exit(reinterpret_cast<void*>(result));
-
-  return reinterpret_cast<void*>(result);
+  emit base->finished(*base);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ThreadPrivate::start()
@@ -63,7 +84,7 @@ bool ThreadPrivate::start()
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 
   // set flags
-  m_finished = false;
+  m_finished.store(false);
   
   // start thread
   return 0 == pthread_create(&m_thread, &attr, &ThreadPrivate::ThreadFunc, this);
@@ -71,12 +92,12 @@ bool ThreadPrivate::start()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ThreadPrivate::isRunning() const
 {
-  return m_running;
+  return m_running.load();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ThreadPrivate::isFinished() const
 {
-  return m_finished;
+  return m_finished.load();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ThreadPrivate::wait()
@@ -87,8 +108,12 @@ bool ThreadPrivate::wait()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ThreadPrivate::cancel()
 {
-  pthread_cancel(m_thread);
-  EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
+  if (0 == pthread_cancel(m_thread))
+  {
+    m_cancelled.store(true);
+  }
+
+  //EGE_MEMSET(&m_thread, 0, sizeof (m_thread));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* Thread::CurrentId()

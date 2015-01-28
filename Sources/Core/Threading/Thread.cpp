@@ -11,9 +11,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Thread)
 EGE_DEFINE_DELETE_OPERATORS(Thread)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Thread::Thread() : Object(EGE_OBJECT_UID_THREAD)
-                 , m_stopping(false)
-                 , m_exitCode(0)
+Thread::Thread() 
+: Object(EGE_OBJECT_UID_THREAD)
+, m_stopping(false)
+, m_exitCode(0)
 {
   m_p = ege_new ThreadPrivate(this);
 }
@@ -36,7 +37,7 @@ bool Thread::start()
   EGE_ASSERT(isValid());
 
   // reset data
-  m_stopping = false;
+  m_stopping.store(false);
   m_exitCode = 0;
 
   if (m_p)
@@ -73,16 +74,14 @@ bool Thread::isFinished() const
 void Thread::stop(s32 exitCode)
 {
   EGE_ASSERT(isValid());
-  if (m_p && m_p->isRunning())
-  {
-    m_stopping = true;
-    m_exitCode = exitCode;
-  }
+
+  m_stopping.store(true);
+  m_exitCode = exitCode;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Thread::isStopping() const
 {
-  return m_stopping;
+  return m_stopping.load();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Thread::wait()

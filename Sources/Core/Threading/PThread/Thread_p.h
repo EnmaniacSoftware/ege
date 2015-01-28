@@ -4,6 +4,7 @@
 /*! PThreads implementation of Thread. */
 
 #include "EGE.h"
+#include "EGEAtomicBool.h"
 #include "EGESignal.h"
 #include "EGETime.h"
 #include <pthread.h>
@@ -44,15 +45,21 @@ class ThreadPrivate
 
     /*! Thread function. */
     static void* ThreadFunc(void* userData);
+    /*! Thread finalization function. 
+     *  @note This can be called as a clean up due to thread cancellation or as a part of regular shutdown.
+     */
+    static void ThreadFinalize(ThreadPrivate* thread);
 
   private:
 
     /*! Thread object. */
     pthread_t m_thread;
+    /*! Cancel flag. */
+    AtomicBool m_cancelled;
     /*! Running flag. */
-    volatile bool m_running;
+    mutable AtomicBool m_running;
     /*! Finished flag. */
-    bool m_finished;
+    mutable AtomicBool m_finished;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

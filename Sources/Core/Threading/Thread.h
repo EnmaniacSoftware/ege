@@ -4,6 +4,7 @@
 /*! This class represents the seperate thread of control. */
 
 #include "EGE.h"
+#include "EGEAtomicBool.h"
 #include "EGESignal.h"
 #include "EGETime.h"
 
@@ -17,7 +18,7 @@ class Thread : public Object
   public:
 
     Thread();
-   ~Thread();
+    virtual ~Thread();
 
     EGE_DECLARE_NEW_OPERATORS
     EGE_DECLARE_DELETE_OPERATORS
@@ -45,10 +46,14 @@ class Thread : public Object
 
     /*! Starts thread. */
     bool start();
-    /*! Stops thread. */
+    /*! Stops thread. 
+     *  @param  exitCode  Code the thread is going to exit with.
+     *  @note This exists the thread in a gently way. This is only possible if a thread is checking regularily the value is isStopping method.
+     *        Once this method returns TRUE, thread function should return.
+     */
     void stop(s32 exitCode = 0);
     /*! Cancels tread. 
-     *  @note This forcilbly stops the thread. Use with caution.
+     *  @note This forcibly stops the thread. Use with caution.
      */
     void cancel();
     
@@ -72,7 +77,7 @@ class Thread : public Object
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Thread);
 
     /*! Stop request flag. */
-    volatile bool m_stopping;
+    mutable AtomicBool m_stopping;
     /*! Exit code. Used with explicit stopping. */
     s32 m_exitCode;
 };
