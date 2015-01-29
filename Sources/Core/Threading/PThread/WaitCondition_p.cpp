@@ -21,21 +21,22 @@ WaitConditionPrivate::~WaitConditionPrivate()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool WaitConditionPrivate::wait(Mutex* mutex)
 {
-  EGE_ASSERT(mutex->m_locked);
+  bool locked = mutex->m_locked.load();
+  EGE_ASSERT(locked);
 
-  if ( ! mutex->m_locked)
+  if ( ! locked)
   {
     // do nothing
     return false;
   }
 
   // NOTE: pthread_cond_wait releases the mutex
-  mutex->m_locked = false;
+  mutex->m_locked.store(false);
 
   int result = pthread_cond_wait(&m_condition, &mutex->p_func()->m_mutex);
 
   // mutex is locked on pthread_cond_wait return
-  mutex->m_locked = true;
+  mutex->m_locked.store(true);
 
   return 0 == result;
 }

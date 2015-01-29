@@ -11,8 +11,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Mutex)
 EGE_DEFINE_DELETE_OPERATORS(Mutex)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Mutex::Mutex(EGEMutex::EType type) : Object(EGE_OBJECT_UID_MUTEX)
-                                   , m_locked(false)
+Mutex::Mutex(EGEMutex::EType type) 
+: Object(EGE_OBJECT_UID_MUTEX)
+, m_locked(false)
 {
   m_p = ege_new MutexPrivate(this, type);
 }
@@ -20,8 +21,6 @@ Mutex::Mutex(EGEMutex::EType type) : Object(EGE_OBJECT_UID_MUTEX)
 Mutex::~Mutex()
 {
   EGE_DELETE(m_p);
-
-  m_locked = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Mutex::isValid() const
@@ -31,16 +30,13 @@ bool Mutex::isValid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Mutex::lock()
 {
-  EGE_ASSERT(isValid());
+  EGE_ASSERT(isValid() /*&& ! m_locked.load()*/);
 
   bool result = false;
   if (NULL != m_p)
   {
     result = m_p->lock();
-    if (result)
-    {
-      m_locked = result;
-    }
+    m_locked.store(result);
   }
 
   return result;
@@ -48,16 +44,13 @@ bool Mutex::lock()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Mutex::unlock()
 {
-  EGE_ASSERT(isValid());
+  EGE_ASSERT(isValid() /*&& m_locked.load()*/);
 
   bool result = false;
   if (m_p)
   {
     result = m_p->unlock();
-    if (result)
-    {
-      m_locked = false;
-    }
+    m_locked.store( ! result);
   }
 
   return result;
