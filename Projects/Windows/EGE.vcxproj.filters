@@ -148,9 +148,6 @@
     <Filter Include="Core\Graphics\Color">
       <UniqueIdentifier>{18ffb765-04a0-4287-8c08-79146b5d8d50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Win32\Threading">
-      <UniqueIdentifier>{686887ab-fec0-47ff-bcba-08ebe23e27c7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Graphics\Render\Implementation">
       <UniqueIdentifier>{3acc5b22-0ed5-4d32-8a2d-d7dd5f5998d6}</UniqueIdentifier>
     </Filter>
@@ -478,6 +475,21 @@
     <Filter Include="Core\Resource\Interface\Loader">
       <UniqueIdentifier>{7e9489cc-ff38-4e08-9601-d8d1190423e9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Core\Atomic">
+      <UniqueIdentifier>{ba2650c1-9923-45a8-ae1e-20dba03d21ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Atomic\Interface">
+      <UniqueIdentifier>{90ac976f-75f4-457b-bdd2-e0cf6bd90602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Atomic\Implementation">
+      <UniqueIdentifier>{0577f0f3-5b77-474b-bac7-fc8497981369}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Atomic">
+      <UniqueIdentifier>{daf30a66-b3e8-42c7-b677-07ea89e7f651}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32\Atomic\Implementation">
+      <UniqueIdentifier>{81154b93-f590-4d76-8022-6cac30e08617}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -767,9 +779,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp">
       <Filter>Win32\Graphics\OpenGL</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp">
-      <Filter>Win32\Threading</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Render\Implementation\BatchedRenderQueue.cpp">
       <Filter>Core\Graphics\Render\Implementation</Filter>
@@ -1172,6 +1181,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Resource\Implementation\ResourceFactory.cpp">
       <Filter>Core\Resource\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Implementation\AtomicInt.cpp">
+      <Filter>Core\Atomic\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Atomic\Implementation\AtomicOperationsWin32.cpp">
+      <Filter>Win32\Atomic\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Implementation\AtomicBool.cpp">
+      <Filter>Core\Atomic\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2150,6 +2168,26 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEResource.h" />
     <ClInclude Include="..\..\Sources\EGEResourceFactory.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupLoadedRequest.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerRequest.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupUnloadedRequest.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicInt.h">
+      <Filter>Core\Atomic\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicOperations.h">
+      <Filter>Core\Atomic\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAtomicInt.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicBool.h">
+      <Filter>Core\Atomic\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
