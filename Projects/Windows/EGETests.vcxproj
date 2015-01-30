@@ -55,7 +55,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_USE_MATH_DEFINES;_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\..\External\tinyxml 2.6.1;..\..\External\box2d 2.1.2\box2d;..\..\External\jpeglib;..\..\External\pnglib;..\..\External\zlib;..\..\External\OpenAL 1.13\include;..\..\External\pthreads 2.8.0\include;..\..\External\OpenSSL 1.0.1f\include;..\..\External\gmock-1.7.0\include;..\..\External\gmock-1.7.0\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <FloatingPointModel>Strict</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -85,6 +85,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicBoolTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicIntTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicOperationsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
@@ -116,8 +119,13 @@
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector2Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector3Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\Vector4Test.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerMultiThreadTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerSingleThreadTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeTest.cpp" />
@@ -163,7 +171,12 @@
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MatrixHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\QuaternionHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\VectorHelper.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerMultiThreadMock.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerSingleThreadMock.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\EngineMock.h" />
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\ResourceFactoryMock.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

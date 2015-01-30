@@ -25,6 +25,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Animation\Implementation\KeyFrameAnimation.cpp" />
     <ClCompile Include="..\..\Sources\Core\Animation\Implementation\Sequencer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Atomic\Implementation\AtomicBool.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Atomic\Implementation\AtomicInt.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioHelper.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioManagerFactory.cpp" />
     <ClCompile Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.cpp" />
@@ -236,6 +238,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlAttribute.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlElement.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Atomic\Implementation\AtomicOperationsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
@@ -252,6 +255,9 @@
     <ClCompile Include="..\..\Sources\Win32\Time\Implementation\TimerWin32.cpp" />
     <ClInclude Include="..\..\Sources\Core\Animation\Interface\KeyFrameAnimation.h" />
     <ClInclude Include="..\..\Sources\Core\Animation\Interface\Sequencer.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicBool.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicInt.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicOperations.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioManagerBase.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.h" />
@@ -415,6 +421,9 @@
     <ClInclude Include="..\..\Sources\Core\Random\RandomGenerator.h" />
     <ClInclude Include="..\..\Sources\Core\Random\StdC\RandomGeneratorStdC_p.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\DefaultGroup.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupLoadedRequest.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupUnloadedRequest.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerRequest.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h" />
@@ -497,6 +506,8 @@
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
+    <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
+    <ClInclude Include="..\..\Sources\EGEAtomicInt.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />
@@ -543,7 +554,6 @@
     <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\Threading\AtomicWin32.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\ComplexTypes.h" />

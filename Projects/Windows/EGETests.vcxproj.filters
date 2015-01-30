@@ -76,6 +76,12 @@
     <Filter Include="Tests\Threading\UnitTests">
       <UniqueIdentifier>{0341b795-4381-46c2-804c-e24b6538a925}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Atomic">
+      <UniqueIdentifier>{d1ae0f96-c013-45f4-8b95-2c82b3873fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Atomic\Unittests">
+      <UniqueIdentifier>{8561a87b-a387-474f-b998-426e658cec6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
@@ -202,6 +208,18 @@
       <Filter>Tests\Resource\ComponentTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp">
+      <Filter>Tests\Threading\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicIntTest.cpp">
+      <Filter>Tests\Atomic\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicBoolTest.cpp">
+      <Filter>Tests\Atomic\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicOperationsTest.cpp">
+      <Filter>Tests\Atomic\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp">
       <Filter>Tests\Threading\UnitTests</Filter>
     </ClCompile>
   </ItemGroup>
