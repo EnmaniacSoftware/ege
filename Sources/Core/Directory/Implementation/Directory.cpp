@@ -12,14 +12,14 @@ void Directory::DecomposePath(const String& fullPath, String& path, String& file
   fileName = fullPath;
 
   // find last separator
-  size_t pos = fullPath.find_last_of(PathSeparator());
-  if (std::string::npos != pos)
+  s32 pos = fullPath.lastIndexOf(PathSeparator());
+  if (0 <= pos)
   {
     // store everything before separator as path
-    path = fullPath.substr(0, pos);
+    path = fullPath.subString(0, pos);
 
     // store everything after separator as file name
-    fileName = fullPath.substr(pos + 1);
+    fileName = fullPath.subString(pos + 1);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

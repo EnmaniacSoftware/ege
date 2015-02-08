@@ -193,7 +193,7 @@ EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
 {
   // get obligatory data
   String name = tag->attribute("name");
-  if (name.empty())
+  if (name.isEmpty())
   {
     // error!
     return EGE_ERROR;

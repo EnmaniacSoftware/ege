@@ -8,7 +8,7 @@ EGE_DEFINE_DELETE_OPERATORS(CipherKey)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 CipherKey::CipherKey(const String& key) : Object(NULL)
 {
-  s64 length = static_cast<s64>(key.size());
+  s64 length = static_cast<s64>(key.length());
   if (m_key.write(reinterpret_cast<const void*>(key.toAscii()), length) != length)
   {
     m_key.clear();

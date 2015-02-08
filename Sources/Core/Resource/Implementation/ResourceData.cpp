@@ -40,7 +40,7 @@ EGEResult ResourceData::create(const String& path, const PObject& data)
   m_nulled = tag->attribute("nulled").toBool(&error);
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty() || error)
+  if (m_name.isEmpty() || m_path.isEmpty() || error)
   {
     // error!
     egeWarning(KResourceDataDebugName) << "Failed for name:" << m_name;

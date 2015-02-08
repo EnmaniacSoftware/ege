@@ -113,7 +113,7 @@ EGEResult ResourceTexture::create(const String& path, const PObject& data)
   m_mipmap          = tag->attribute("mipmap", "false").toBool(&error);
 
   // check if any embedded data type
-  if ( ! m_dataType.empty())
+  if ( ! m_dataType.isEmpty())
   {
     // load texture data from XML
     if (EGE_SUCCESS != (result = loadTextureData(tag)))
@@ -124,7 +124,7 @@ EGEResult ResourceTexture::create(const String& path, const PObject& data)
   }
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_type.empty() || error || (m_path.empty() && m_dataType.empty()))
+  if (m_name.isEmpty() || m_type.isEmpty() || error || (m_path.isEmpty() && m_dataType.isEmpty()))
   {
     // error!
     egeWarning(KResourceTextureDebugName) << "Failed for name:" << m_name;
@@ -279,7 +279,7 @@ EGEResult ResourceTexture::loadTextureData(const PXmlElement& tag)
       for (u32 i = 0; (i < length) && ! error; i += 2)
       {
         // decode
-        char encodedByte[3] = { text[i], text[i + 1], 0 };
+        char encodedByte[3] = { text.at(i), text.at(i + 1), 0 };
         u8 byte = StringUtils::FromHex(encodedByte, &error);
 
         // store

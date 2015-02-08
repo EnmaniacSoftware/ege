@@ -44,7 +44,7 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
   m_path        = path;
 
   // check if wrong data
-  if (m_name.empty() || error)
+  if (m_name.isEmpty() || error)
   {
     // error!
     egeWarning(KResourceGroupDebugName) << "Failed for name:" << m_name;
@@ -252,7 +252,7 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
   List<PResource> list;
 
   // check if any type requested
-  if ( ! typeName.empty())
+  if ( ! typeName.isEmpty())
   {
     // get all resources of a given type
     std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);
@@ -309,7 +309,7 @@ EGEResult ResourceGroup::addDependancy(const PXmlElement& tag)
   String name = tag->attribute("name");
 
   // check if wrong data
-  if (name.empty())
+  if (name.isEmpty())
   {
     // error!
     return EGE_ERROR_BAD_PARAM;

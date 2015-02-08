@@ -53,8 +53,8 @@ void CommandLineParser::parse(const String& commandLine)
   String value;
 
   // find first switch
-  size_t pos = findNextSwitchToken(commandLine, 0);
-  while ((String::npos != pos) && (pos < commandLine.size()))
+  s32 pos = findNextSwitchToken(commandLine, 0);
+  while ((0 <= pos) && (pos < commandLine.length()))
   {
     // skip switch token
     pos += strlen(SWITCH_TOKEN);
@@ -63,7 +63,7 @@ void CommandLineParser::parse(const String& commandLine)
     name = retrieveName(commandLine, pos);
 
     // update position
-    pos += name.size();
+    pos += name.length();
 
     // check if value name is present
     value.clear();
@@ -75,7 +75,7 @@ void CommandLineParser::parse(const String& commandLine)
       value = retrieveName(commandLine, pos);
 
       // update position
-      pos += value.size();
+      pos += value.length();
     }
 
     // add to dictionary
@@ -86,16 +86,16 @@ void CommandLineParser::parse(const String& commandLine)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-size_t CommandLineParser::findNextSwitchToken(const String& commandLine, size_t pos)
+s32 CommandLineParser::findNextSwitchToken(const String& commandLine, s32 pos)
 {
-  return commandLine.find(SWITCH_TOKEN, pos);
+  return commandLine.indexOf(SWITCH_TOKEN, pos);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String CommandLineParser::retrieveName(const String& commandLine, size_t pos)
+String CommandLineParser::retrieveName(const String& commandLine, s32 pos)
 {
   String name;
 
-  while (pos < commandLine.size())
+  while (pos < commandLine.length())
   {
     char c = commandLine.at(pos);
     

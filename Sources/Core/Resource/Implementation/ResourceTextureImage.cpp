@@ -47,7 +47,7 @@ EGEResult ResourceTextureImage::create(const String& path, const PObject& data)
   m_rotationAngle = StringUtils::ToAngle(tag->attribute("rotation", "0"), &error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_textureName.empty())
+  if (error || m_name.isEmpty() || m_textureName.isEmpty())
   {
     // error!
     egeWarning(KResourceTextureImageDebugName) << "Failed for name:" << m_name;

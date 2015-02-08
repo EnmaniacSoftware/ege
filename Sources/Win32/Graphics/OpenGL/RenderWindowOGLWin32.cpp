@@ -250,7 +250,7 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
 	AdjustWindowRect(&rcWindow, dwStyles, false);
 
   // create the window
-  if (NULL == (m_hWnd = CreateWindowA("RenderWindowOGLWin32ClassName", title().c_str(), dwStyles, 0, 0, rcWindow.right - rcWindow.left, 
+  if (NULL == (m_hWnd = CreateWindowA("RenderWindowOGLWin32ClassName", title().toAscii(), dwStyles, 0, 0, rcWindow.right - rcWindow.left, 
                                       rcWindow.bottom - rcWindow.top, NULL, NULL, GetModuleHandle(NULL), NULL)))
   {
     // error!
@@ -700,7 +700,7 @@ void RenderWindowOGLWin32::detectCapabilities()
   // get list of all extensions
 #if EGE_RENDERING_OPENGL_FIXED
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
-  if ( ! extensionString.empty())
+  if ( ! extensionString.isEmpty())
   {
     extensionArray = extensionString.split(" ");
   }

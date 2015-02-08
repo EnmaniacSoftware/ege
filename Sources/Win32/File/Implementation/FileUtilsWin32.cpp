@@ -11,7 +11,7 @@ bool FileUtils::Exists(const String& filePath)
 
   // try to open file
   FILE* file = NULL;
-  if (0 == fopen_s(&file, filePath.c_str(), "r"))
+  if (0 == fopen_s(&file, filePath.toAscii(), "r"))
   {
     // exists
     exists = true;
@@ -25,7 +25,7 @@ bool FileUtils::Exists(const String& filePath)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FileUtils::Remove(const String& filePath)
 {
-  return (0 == ::remove(filePath.c_str()));
+  return (0 == ::remove(filePath.toAscii()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FileUtils::Size(const String& filePath)
@@ -35,7 +35,7 @@ s64 FileUtils::Size(const String& filePath)
   s64 fileSize = -1;
 
   // get info about file
-  int result = _stat(filePath.c_str(), &fileStatistics);
+  int result = _stat(filePath.toAscii(), &fileStatistics);
   if (0 == result)
   {
     fileSize = fileStatistics.st_size;

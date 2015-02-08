@@ -62,7 +62,7 @@ TextureEnvironmentMode MapTextureEnvironmentMode(const String& name, TextureEnvi
 EGEGraphics::BlendFactor MapBlendFactor(const String& name, EGEGraphics::BlendFactor defaultValue)
 {
   // check if no data to convert
-  if (name.empty())
+  if (name.isEmpty())
   {
     // return default value
     return defaultValue;
@@ -158,7 +158,7 @@ EGEResult ResourceMaterial::create(const String& path, const PObject& data)
   defaultPass.m_shininess       = tag->attribute("shininess", "0").toFloat(&error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty())
+  if (error || m_name.isEmpty())
   {
     // error!
     egeWarning(KResourceMaterialDebugName) << "Failed for name:" << m_name;
@@ -364,7 +364,7 @@ EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData
   textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, static_cast<s32>(pass.m_textureImageData.size()));
 
   // check if obligatory data is wrong
-  if (error || textureData.name.empty())
+  if (error || textureData.name.isEmpty())
   {
     // error!
     egeWarning(KResourceMaterialDebugName) << "Failed for name:" << name();
@@ -443,7 +443,7 @@ EGEResult ResourceMaterial::addProgramReference(const PXmlElement& tag, PassData
   String name = tag->attribute("name", "");
 
   // check if invalid data
-  if (name.empty())
+  if (name.isEmpty())
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
@@ -678,7 +678,7 @@ EGEResult ResourceMaterial::loadDependencies()
     }
 
     // try to load program for current pass (if any)
-    if ((NULL == pass.m_program) && ! pass.m_programName.empty())
+    if ((NULL == pass.m_program) && ! pass.m_programName.isEmpty())
     {
       // try to find program resource of a given name
       PResourceProgram resource = engine().resourceManager()->resource(RESOURCE_NAME_PROGRAM, pass.m_programName);

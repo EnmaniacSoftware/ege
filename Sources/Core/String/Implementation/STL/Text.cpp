@@ -29,7 +29,7 @@ Text::Text(const Char* string, s32 length) : std::wstring(string, length)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text(const char* string) : std::wstring()
 {
-  String temp = string;
+  std::string temp = string;
   resize(temp.length());
   std::copy(temp.begin(), temp.end(), begin());
 }
@@ -104,14 +104,14 @@ bool Text::fromString(const String& string)
   DynamicArray<u32> unicode;
 
   // go thru all characters
-  size_t i = 0;
-  while (i < string.size())
+  s32 i = 0;
+  while (i < string.length())
   {
     u32 uni;
     size_t todo;
 
     // determine type of character
-    u8 ch = string[i++];
+    char ch = string.at(i++);
     if (ch <= 0x7F)
     {
       uni = ch;
@@ -134,8 +134,8 @@ bool Text::fromString(const String& string)
     }
     else if (ch <= 0xF7)
     {
-        uni = ch & 0x07;
-        todo = 3;
+      uni = ch & 0x07;
+      todo = 3;
     }
     else
     {
@@ -146,14 +146,14 @@ bool Text::fromString(const String& string)
     // process all detrmined number of character which contribute to single entity
     for (size_t j = 0; j < todo; ++j)
     {
-      if (i == string.size())
+      if (i == string.length())
       {
         // error! Not UTF-8 string
         return false;
       }
 
-      ch = string[i++];
-      if (ch < 0x80 || ch > 0xBF)
+      ch = string.at(i++);
+      if ((ch < 0x80) || (ch > 0xBF))
       {
         // error! Not UTF-8 string
         return false;
@@ -182,7 +182,7 @@ bool Text::fromString(const String& string)
 
   // build final UTF-16 string
   clear();
-  for (i = 0; i < unicode.size(); ++i)
+  for (i = 0; i < static_cast<signed>(unicode.size()); ++i)
   {
     u32 uni = unicode[i];
 

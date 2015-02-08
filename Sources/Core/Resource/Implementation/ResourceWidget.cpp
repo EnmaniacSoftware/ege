@@ -193,7 +193,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
   childData.widgetName  = tag->attribute("widget-name");
  
   // check for error
-  if (childData.name.empty() || childData.widgetName.empty() || error)
+  if (childData.name.isEmpty() || childData.widgetName.isEmpty() || error)
   {
     // error!
     egeWarning(KResourceWidgetDebugName) << "Failed for name:" << m_name;

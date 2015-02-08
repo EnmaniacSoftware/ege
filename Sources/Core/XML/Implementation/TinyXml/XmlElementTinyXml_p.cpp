@@ -18,7 +18,7 @@ XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base),
 XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base), 
                                                                              m_deallocElement(true)
 {
-  m_element = new TiXmlElement(name);
+  m_element = new TiXmlElement(name.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), 
@@ -54,7 +54,7 @@ bool XmlElementPrivate::setAttribute(const String& name, const String& value)
 {
   if (isValid())
   {
-    m_element->SetAttribute(name, value);
+    m_element->SetAttribute(name.toAscii(), value.toAscii());
     return true;
   }
 
@@ -65,7 +65,7 @@ XmlElementPrivate* XmlElementPrivate::firstChild(const String& name) const
 {
   XmlElementPrivate* priv = NULL;
   
-  TiXmlElement* elem = name.empty() ? m_element->FirstChildElement() : m_element->FirstChildElement(name);
+  TiXmlElement* elem = name.isEmpty() ? m_element->FirstChildElement() : m_element->FirstChildElement(name.toAscii());
 
   if (elem)
   {
@@ -79,7 +79,7 @@ XmlElementPrivate* XmlElementPrivate::nextChild(const String& name) const
 {
   XmlElementPrivate* priv = NULL;
 
-  TiXmlElement* elem = name.empty() ? m_element->NextSiblingElement() : m_element->NextSiblingElement(name);
+  TiXmlElement* elem = name.isEmpty() ? m_element->NextSiblingElement() : m_element->NextSiblingElement(name.toAscii());
   if (elem)
   {
     priv = ege_new XmlElementPrivate(elem, m_base);

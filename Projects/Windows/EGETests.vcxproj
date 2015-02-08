@@ -124,6 +124,8 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringUtilsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp" />

@@ -10,38 +10,31 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define WORK_BUFFER_LENGTH (512)
+static const s32 KWorkBufferLength = 512;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function detrmining if given character is a white space. */
-bool IsWhiteSpace(char c)
+static bool IsWhiteSpace(char c)
 {
-  if ((' ' == c) || ('\t' == c) || ('\n' == c) || ('\r' == c) || ('\v' == c) || ('\f' == c))
-  {
-    // yes
-    return true;
-  }
-
-  // no
-  return false;
+  return (' ' == c) || ('\t' == c) || ('\n' == c) || ('\r' == c) || ('\v' == c) || ('\f' == c);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String() : std::string()
+String::String()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const String& string) : std::string(string)
+String::String(const String& other) : m_value(other.m_value)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const std::string& string) : std::string(string)
+String::String(const std::string& string) : m_value(string)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const char* str) : std::string()
+String::String(const char* str)
 {
   if (NULL != str)
   {
-    *this = str;
+    m_value = str;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -52,60 +45,112 @@ String::~String()
 String& String::toLower()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'tolower' in <locale>
-  std::transform(begin(), end(), begin(), (int(*)(int)) std::tolower);
+  std::transform(m_value.begin(), m_value.end(), m_value.begin(), (int(*)(int)) std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::toUpper()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'toupper' in <locale>  
-  std::transform(begin(), end(), begin(), (int(*)(int)) std::toupper);
+  std::transform(m_value.begin(), m_value.end(), m_value.begin(), (int(*)(int)) std::toupper);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::operator=(const char* string)
 {
-  (*(std::string*) this) = string;
-
+  m_value = string;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::operator=(const String& string)
 {
-  (*(std::string*) this) = (*(std::string*) &string);
-
+  m_value = string.m_value;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::operator+=(const char* string)
 {
-  (*(std::string*) this) += string;
-
+  m_value += string;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::operator+=(char c)
 {
-  (*(std::string*) this) += c;
-
+  m_value += c;
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::operator+=(const String& string)
 {
-  (*(std::string*) this) += (*(std::string*) &string);
-
+  m_value += string.m_value;
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::operator==(const String& other) const
+{
+  return m_value == other.m_value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::operator==(const char* other) const
+{
+  return m_value == other;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::operator!=(const String& other) const
+{
+  return m_value != other.m_value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::operator!=(const char* other) const
+{
+  return m_value != other;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::operator<(const String& other) const
+{
+  return m_value < other.m_value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const char* String::toAscii() const
 {
-  return c_str();
+  return m_value.c_str();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void String::clear()
+{
+  m_value.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool String::isEmpty() const
+{
+  return m_value.empty();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 String::indexOf(const String& string, s32 position) const
+{
+  size_t pos = m_value.find(string.m_value, position);
+  return (std::string::npos != pos) ? static_cast<s32>(pos) : -1;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 String::lastIndexOf(const String& string) const
+{
+  return static_cast<s32>(m_value.rfind(string.m_value));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String String::subString(s32 position, s32 length) const
+{
+  return m_value.substr(position, (0 > length) ? std::string::npos : length);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+char String::at(s32 index) const
+{
+  EGE_ASSERT((0 <= index) && (index < static_cast<signed>(m_value.size())));
+  return m_value[index];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 String::toInt(bool* error) const
 {
-  if (empty())
+  if (m_value.empty())
   {
     if (error)
     {
@@ -115,14 +160,14 @@ s32 String::toInt(bool* error) const
     return 0;
   }
 
-  s32 value = StringUtils::ToInt(c_str(), error);
+  s32 value = StringUtils::ToInt(m_value.c_str(), error);
 
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 String::toInt64(bool* error) const
 {
-  if (empty())
+  if (m_value.empty())
   {
     if (error)
     {
@@ -132,14 +177,14 @@ s64 String::toInt64(bool* error) const
     return 0;
   }
 
-  s64 value = StringUtils::ToInt64(c_str(), error);
+  s64 value = StringUtils::ToInt64(m_value.c_str(), error);
 
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool String::toBool(bool* error) const
 {
-  if (empty())
+  if (m_value.empty())
   {
     if (error)
     {
@@ -153,14 +198,30 @@ bool String::toBool(bool* error) const
   String copy = *this;
   copy.toLower();
 
-  bool value = (copy == "true");
+  // assume FALSE
+  bool value = false;
+
+  // check if TRUE
+  if ("true" == copy)
+  {
+    value = true;
+  }
+  // check if NOT FALSE
+  else if ("false" != copy)
+  {
+    // error, not FALSE and not TRUE
+    if (error)
+    {
+      *error = true;
+    }
+  }
 
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 float32 String::toFloat(bool* error) const
 {
-  if (empty())
+  if (m_value.empty())
   {
     if (error)
     {
@@ -170,7 +231,7 @@ float32 String::toFloat(bool* error) const
     return 0;
   }
 
-  const char* text = c_str();
+  const char* text = m_value.c_str();
   char* end;
 
   float32 value = (float32) strtod(text, &end);
@@ -190,12 +251,12 @@ String String::FromNumber(s32 value)
 
   stream << value;
 
-  return stream.str();
+  return String(stream.str());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void String::format(const char* text, ...)
 {
-  char buffer[WORK_BUFFER_LENGTH];
+  char buffer[KWorkBufferLength];
 
 	va_list arg;
 	va_start(arg, text);
@@ -209,7 +270,7 @@ String String::Format(const char* text, ...)
 {
   String out;
 
-  char buffer[WORK_BUFFER_LENGTH];
+  char buffer[KWorkBufferLength];
 
 	va_list arg;
 	va_start(arg, text);
@@ -224,10 +285,10 @@ String String::Format(const char* text, ...)
 bool String::endsWith(const String& string) const
 {
   // check if current string can contain the one to test
-  if (size() >= string.size())
+  if (m_value.size() >= string.m_value.size())
   {
     // check if last characters are the same
-    return 0 == compare(size() - string.size(), string.size(), string);
+    return 0 == m_value.compare(m_value.size() - string.m_value.size(), string.m_value.size(), string.m_value);
   }
 
   return false;
@@ -236,10 +297,10 @@ bool String::endsWith(const String& string) const
 bool String::startsWith(const String& string) const
 {
   // check if current string can contain the one to test
-  if (size() >= string.size())
+  if (m_value.size() >= string.m_value.size())
   {
     // check if first characters are the same
-    return 0 == compare(0, string.size(), string);
+    return 0 == m_value.compare(0, string.m_value.size(), string.m_value);
   }
 
   return false;
@@ -253,8 +314,8 @@ String::ArgEscapeData String::findArgEscapes() const
   data.occurrences = 0;
 
   // go thru entire string
-  String::const_iterator it = begin();
-  while (it != end())
+  std::string::const_iterator it = m_value.begin();
+  while (it != m_value.end())
   {
     // check if begining of escape found
     if ('%' != *(it++))
@@ -265,12 +326,12 @@ String::ArgEscapeData String::findArgEscapes() const
 
     // check if valid escape identifier
     // NOTE: only [1-99] range is supported
-    if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+    if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
     {
       s32 escape = *it - '0';
       ++it;
 
-      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
       {
         escape = escape * 10 + *it - '0';
         ++it;
@@ -297,26 +358,26 @@ String::ArgEscapeData String::findArgEscapes() const
 void String::replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const
 {
   // preallocate enough space
-  out.reserve(length() + argData.occurrences * arg.length());
+  out.m_value.reserve(m_value.length() + argData.occurrences * arg.m_value.length());
 
   // go thru entire input string
-  String::const_iterator it = begin();
-  while (it != end())
+  std::string::const_iterator it = m_value.begin();
+  while (it != m_value.end())
   {
     // check if proper args found
     if ('%' == *it)
     {
-      String::const_iterator argBegin = it;
+      std::string::const_iterator argBegin = it;
 
       ++it;
 
       // check if valid arg escape
-      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
       {
         s32 escape = *it - '0';
         ++it;
 
-        if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+        if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
         {
           escape = escape * 10 + *it - '0';
           ++it;
@@ -343,7 +404,7 @@ void String::replaceArgEscapes(String& out, const String& arg, ArgEscapeData& ar
     }
     
     // just copy
-    out.push_back(*it);
+    out.m_value.push_back(*it);
     ++it;
   }
 }
@@ -391,27 +452,27 @@ String String::arg(float32 value) const
 StringArray String::split(const String& separator) const
 {
   StringArray list;
-  String subString;
+  std::string subString;
 
   size_t pos = 0;
   while (std::string::npos != pos)
   {
-    size_t nextPos = this->find(separator, pos);
+    size_t nextPos = m_value.find(separator.m_value, pos);
     if (std::string::npos != nextPos)
     {
       // retrieve substring
-      subString = this->substr(pos, nextPos - pos);
+      subString = m_value.substr(pos, nextPos - pos);
 
       // go to next character after separator
-      pos = nextPos + separator.length();
+      pos = nextPos + separator.m_value.length();
     }
     else
     {
       // check if any string is present after last seperator
-      if (pos < length())
+      if (pos < m_value.length())
       {
         // retrieve substring
-        subString = this->substr(pos, length() - pos);
+        subString = m_value.substr(pos, m_value.length() - pos);
       }
 
       // no more processing
@@ -419,7 +480,7 @@ StringArray String::split(const String& separator) const
     }
 
     // add to list
-    list.push_back(subString);
+    list.push_back(String(subString));
   }
 
   return list;
@@ -428,21 +489,21 @@ StringArray String::split(const String& separator) const
 String String::trimmed() const
 {
   // check if empty string
-  if (empty())
+  if (m_value.empty())
   {
     // done
     return *this;
   }
 
   // check if at the start and end there are non-white characters
-  if (!IsWhiteSpace(*begin()) && !IsWhiteSpace(*(end() - 1)))
+  if (!IsWhiteSpace(*m_value.begin()) && !IsWhiteSpace(*(m_value.end() - 1)))
   {
     // done
     return *this;
   }
 
-  String::const_iterator startPos  = begin();
-  String::const_iterator endPos    = end() - 1;
+  std::string::const_iterator startPos  = m_value.begin();
+  std::string::const_iterator endPos    = m_value.end() - 1;
 
   // skip white spaces from the begining
   while ((startPos <= endPos) && IsWhiteSpace(*startPos))
@@ -453,7 +514,7 @@ String String::trimmed() const
   if (startPos <= endPos)
   {
     // skip white spaces from the end
-    while ((endPos != begin()) && IsWhiteSpace(*endPos))
+    while ((endPos != m_value.begin()) && IsWhiteSpace(*endPos))
     {
       --endPos;
     }
@@ -462,20 +523,30 @@ String String::trimmed() const
   return String(std::string(startPos, endPos + 1));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+String& String::replace(s32 position, s32 length, const String& string)
+{
+  EGE_ASSERT((0 <= position) && (position < static_cast<signed>(m_value.size())));
+  EGE_ASSERT(0 <= length);
+
+  m_value.replace(position, length, string.m_value);
+
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String& String::replaceAll(const String& before, const String& after)
 {
   // find first occurence
-  size_t pos = this->find(before);
+  size_t pos = m_value.find(before.m_value);
   while (std::string::npos != pos)
   {
     // erase
-    this->erase(pos, before.length());
+    m_value.erase(pos, before.m_value.length());
 
     // insert
-    this->insert(pos, after);
+    m_value.insert(pos, after.m_value);
 
     // locate next occurence
-    pos = this->find(before, pos + 1);
+    pos = m_value.find(before.m_value, pos + 1);
   }
 
   return *this;
@@ -487,6 +558,11 @@ String& String::replaceAll(const char* before, const char* after)
   const String afterString(after);
 
   return replaceAll(beforeString, afterString);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 String::length() const
+{
+  return static_cast<s32>(m_value.length());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

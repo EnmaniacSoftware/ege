@@ -23,7 +23,7 @@ s32 StringUtils::FromHex(const char* hexInText, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Color StringUtils::ToColor(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -47,7 +47,7 @@ Color StringUtils::ToColor(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Rectf StringUtils::ToRectf(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -68,7 +68,7 @@ Rectf StringUtils::ToRectf(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Recti StringUtils::ToRecti(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -89,7 +89,7 @@ Recti StringUtils::ToRecti(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector2f StringUtils::ToVector2f(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -110,7 +110,7 @@ Vector2f StringUtils::ToVector2f(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector2i StringUtils::ToVector2i(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -131,7 +131,7 @@ Vector2i StringUtils::ToVector2i(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector3f StringUtils::ToVector3f(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -152,7 +152,7 @@ Vector3f StringUtils::ToVector3f(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector4f StringUtils::ToVector4f(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -173,7 +173,7 @@ Vector4f StringUtils::ToVector4f(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Vector4i StringUtils::ToVector4i(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -194,7 +194,7 @@ Vector4i StringUtils::ToVector4i(const String& string, bool* error)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Alignment StringUtils::ToAlignment(const String& string, bool* error)
 {
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -253,7 +253,7 @@ Angle StringUtils::ToAngle(const String& string, bool* error)
 {
   Angle angle;
 
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {
@@ -278,7 +278,7 @@ Time StringUtils::ToTime(const String& string, bool* error)
 {
   Time time;
 
-  if (string.empty())
+  if (string.isEmpty())
   {
     if (error)
     {

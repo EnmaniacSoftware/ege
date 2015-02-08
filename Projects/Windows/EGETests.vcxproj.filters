@@ -67,9 +67,6 @@
     <Filter Include="Tests\Resource">
       <UniqueIdentifier>{26bfa5ed-0052-4f88-be7e-f7c8aabd7574}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Tests\Resource\ComponentTests">
-      <UniqueIdentifier>{4eedd8e3-acf4-4817-9920-127d59105df3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tests\Threading">
       <UniqueIdentifier>{cfad6c44-e4e1-41b6-84b6-aa5f92d62ac2}</UniqueIdentifier>
     </Filter>
@@ -81,6 +78,15 @@
     </Filter>
     <Filter Include="Tests\Atomic\Unittests">
       <UniqueIdentifier>{8561a87b-a387-474f-b998-426e658cec6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\String">
+      <UniqueIdentifier>{8222232c-df8a-45b2-8789-39dab7136869}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\String\UnitTests">
+      <UniqueIdentifier>{ca7e6dd8-c109-4eb0-8b7a-0b9e1ef48458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Resource\ComponentTests">
+      <UniqueIdentifier>{4eedd8e3-acf4-4817-9920-127d59105df3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -221,6 +227,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp">
       <Filter>Tests\Threading\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringTest.cpp">
+      <Filter>Tests\String\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringUtilsTest.cpp">
+      <Filter>Tests\String\UnitTests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

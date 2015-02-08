@@ -8,8 +8,8 @@ String Directory::FromNativeSeparators(const String& path)
 {
   String result = path;
 
-  size_t pos = 0;
-  while (std::string::npos != (pos = result.find("\\", pos)))
+  s32 pos = 0;
+  while (0 <= (pos = result.indexOf("\\", pos)))
   {
     result.replace(pos, 1, PathSeparator());
   }

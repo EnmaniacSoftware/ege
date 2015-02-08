@@ -63,7 +63,7 @@ EGEResult ResourceCurve::create(const String& path, const PObject& data)
   m_type  = MapCurveTypeName(tag->attribute("type").toLower(), EBezier);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty())
+  if (error || m_name.isEmpty())
   {
     // error!
     egeWarning(KResourceGroupDebugName) << "Failed for name:" << m_name;

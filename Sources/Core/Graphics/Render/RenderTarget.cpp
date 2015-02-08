@@ -38,7 +38,7 @@ RenderTarget::~RenderTarget()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool RenderTarget::isValid() const
 {
-  return !m_name.empty() && (0 < m_width) && (0 < m_height);
+  return !m_name.isEmpty() && (0 < m_width) && (0 < m_height);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PViewport RenderTarget::addViewport(const String& name, PCamera camera)

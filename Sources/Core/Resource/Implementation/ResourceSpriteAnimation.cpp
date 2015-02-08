@@ -50,7 +50,7 @@ EGEResult ResourceSpriteAnimation::create(const String& path, const PObject& dat
   m_fps       = tag->attribute("fps").toFloat(&error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_sheetName.empty())
+  if (error || m_name.isEmpty() || m_sheetName.isEmpty())
   {
     // error!
     egeWarning(KResourceSpriteAnimationDebugName) << "Failed for name:" << m_name;

@@ -59,7 +59,7 @@ EGEResult ResourceFont::create(const String& path, const PObject& data)
   m_height       = tag->attribute("height").toInt(&error);
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_materialName.empty() || error)
+  if (m_name.isEmpty() || m_materialName.isEmpty() || error)
   {
     // error!
     egeDebug(KResourceFontDebugName) << "Failed for name:" << m_name;

@@ -149,7 +149,7 @@ EGEResult ResourceLoaderXML::processInclude(const String& filePath, const PXmlEl
   bool autoDetect = tag->attribute("auto-detect", "false").toBool(&error);
 
   // check if obligatory data is wrong
-  if (path.empty() || error)
+  if (path.isEmpty() || error)
   {
     // error!
     return EGE_ERROR;

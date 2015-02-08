@@ -47,7 +47,7 @@ EGEResult ResourceSequencer::create(const String& path, const PObject& data)
   }
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_frameIds.empty() || error)
+  if (m_name.isEmpty() || m_frameIds.empty() || error)
   {
     // error!
     egeWarning(KResourceSequencerDebugName) << "Failed for name:" << m_name;

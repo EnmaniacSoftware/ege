@@ -64,7 +64,7 @@ EGEResult ResourceShader::create(const String& path, const PObject& data)
   m_type = MapShaderTypeName(tag->attribute("type").toLower());
 
   // check if obligatory data is wrong
-  if (m_name.empty() || m_path.empty() || (EGEGraphics::UNKNOWN_SHADER == m_type) || error)
+  if (m_name.isEmpty() || m_path.isEmpty() || (EGEGraphics::UNKNOWN_SHADER == m_type) || error)
   {
     // error!
     egeWarning(KResourceShaderDebugName) << "Failed for name:" << m_name;

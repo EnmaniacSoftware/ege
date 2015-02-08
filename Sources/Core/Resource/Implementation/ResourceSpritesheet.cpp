@@ -47,7 +47,7 @@ EGEResult ResourceSpritesheet::create(const String& path, const PObject& data)
   m_framesPerRow    = tag->attribute("frames-per-row").toInt(&error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty() || m_textureName.empty())
+  if (error || m_name.isEmpty() || m_textureName.isEmpty())
   {
     // error!
     egeWarning(KResourceSpriteSheetDebugName) << "Failed for name:" << m_name;

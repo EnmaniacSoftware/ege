@@ -52,7 +52,7 @@ EGEResult ResourceImagedAnimation::create(const String& path, const PObject& dat
   m_displaySize = StringUtils::ToVector2f(tag->attribute("size"), &error);
 
   // check if obligatory data is wrong
-  if (error || m_name.empty())
+  if (error || m_name.isEmpty())
   {
     // error!
     egeWarning(KResourceImagedAnimationDebugName) << "Failed for name:" << m_name;

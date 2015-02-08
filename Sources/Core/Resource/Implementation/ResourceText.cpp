@@ -40,7 +40,7 @@ EGEResult ResourceText::create(const String& path, const PObject& data)
   m_name = tag->attribute("name");
 
   // check if obligatory data is wrong
-  if (m_name.empty())
+  if (m_name.isEmpty())
   {
     // error!
     egeWarning(KResourceTextDebugName) << "Failed for name:" << m_name;
@@ -98,7 +98,7 @@ EGEResult ResourceText::addLocalization(const PXmlElement& tag)
   Text value  = tag->attribute("value");
 
   // check if data is present
-  if (name.empty() || value.empty())
+  if (name.isEmpty() || value.empty())
   {
     // error!
     return EGE_ERROR_BAD_PARAM;

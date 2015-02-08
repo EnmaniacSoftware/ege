@@ -39,7 +39,7 @@ EGEResult FilePrivate::open(FileMode mode)
   }
 
   // open file
-  if (0 != fopen_s(&m_file, d_func()->filePath().c_str(), modeInternal.c_str()))
+  if (0 != fopen_s(&m_file, d_func()->filePath().toAscii(), modeInternal.toAscii()))
   {
     // error!
     return EGE_ERROR_IO;

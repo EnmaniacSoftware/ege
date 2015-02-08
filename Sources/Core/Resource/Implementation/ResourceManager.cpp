@@ -133,7 +133,7 @@ PResourceGroup ResourceManager::group(const String& name) const
 PResource ResourceManager::resource(const String& typeName, const String& name, const String& groupName) const
 {
   // check if search is to be done exactly in the given group
-  if (!groupName.empty())
+  if (!groupName.isEmpty())
   {
     PResourceGroup groupRes = group(groupName);
     if (groupRes)

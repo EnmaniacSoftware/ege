@@ -45,7 +45,7 @@ EGEResult ResourceProgram::create(const String& path, const PObject& data)
   m_name = tag->attribute("name");
 
   // check if obligatory data is wrong
-  if (m_name.empty())
+  if (m_name.isEmpty())
   {
     // error!
     egeWarning(KResourceProgramDebugName) << "Failed for name:" << m_name;
@@ -158,7 +158,7 @@ EGEResult ResourceProgram::addShaderReference(const PXmlElement& tag)
 {
   // get data
   String name = tag->attribute("name");
-  if (name.empty())
+  if (name.isEmpty())
   {
     // error!
     return EGE_ERROR_NOT_FOUND;

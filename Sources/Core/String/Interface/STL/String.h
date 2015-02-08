@@ -11,30 +11,82 @@ class String;
 template <typename T> class DynamicArray;
 typedef DynamicArray<String> StringArray;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class String : public std::string
+class String
 {
   public:
     
     String();
-    String(const String& string);
-    String(const std::string& string);
+    String(const String& other);
     String(const char* string);
+    String(const std::string& string);
    ~String();
+
+  operators:
 
    	String& operator=(const char* string);
    	String& operator=(const String& string);
+
    	String& operator+=(const char* string);
    	String& operator+=(char c);
    	String& operator+=(const String& string);
 
+    bool operator==(const String& other) const;
+    bool operator==(const char* other) const;
+    
+    bool operator!=(const String& other) const;
+    bool operator!=(const char* other) const;
+
+	  bool operator<(const String& other) const;
+
   public:
 
     /*! Create new object from formatted text. */
+    // TAGE - this probably can be removed
     static String Format(const char* text, ...);
     /*! Creates new object from given number. */
+    // TAGE - this probably can be removed
     static String FromNumber(s32 value);
 
   public:
+
+    /*! Returns length of the string (in bytes). 
+     *  @note Returned value does not contain NULL termination character.
+     */
+    s32 length() const;
+    /*! Clears the string. */
+    void clear();
+    /*! Returns TRUE if string is empty. */
+    bool isEmpty() const;
+
+    /*! Returns the index position of the first occurrence of the string in this string, searching forward from given index position.
+     *  @param  string    String to look for.
+     *  @param  position  Index position the search is to be started from.
+     *  @return 0-based index of the begining of a given string within the current one or negative value if string is not found.
+     */
+    s32 indexOf(const String& string, s32 position = 0) const;
+    /*! Returns an index position of the last occurence of the given string.
+     *  @param  string  String to look for its last occurance.
+     *  @return 0-based index of the begining of a given string within the current one or negative value if string is not found.
+     */
+    s32 lastIndexOf(const String& string) const;
+
+    /*! Returns TRUE if current string ends with given one. */
+    bool endsWith(const String& string) const;
+    /*! Returns TRUE if current string starts with given one. */
+    bool startsWith(const String& string) const;
+
+    /*! Returns character at a given index.
+     *  @param  index   0-based index of character.
+     *  @return Character found.
+     */
+    char at(s32 index) const;
+
+    /*! Returns a string that contains characters of this string, starting at the specified position index.
+     *  @param  position  Starting index within a current string.
+     *  @param  length    Length of the new string. If negative, all characters of the current string from given position will be used.
+     *  @return Created string.
+     */
+    String subString(s32 position, s32 length = -1) const;
 
     /*! Creates formatted text. */
     void format(const char* text, ...);
@@ -45,10 +97,6 @@ class String : public std::string
     String& toUpper();
     /*! Returns ASCII string. */
     const char* toAscii() const;
-    /*! Returns TRUE if current string ends with given one. */
-    bool endsWith(const String& string) const;
-    /*! Returns TRUE if current string starts with given one. */
-    bool startsWith(const String& string) const;
 
     /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
     String arg(const String& string) const;
@@ -59,19 +107,44 @@ class String : public std::string
     /*! Returns copy of the current string with lowest arg marker replaced with a given float value. */
     String arg(float32 value) const;
 
-    /*! Converts to integer. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts current string to 32-bit signed integer.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
     s32 toInt(bool* error = NULL) const;
-    /*! Converts to 64-bit integer. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts current string to 64-bit signed integer.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
     s64 toInt64(bool* error = NULL) const;
-    /*! Converts to boolean. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts current string to boolean.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
     bool toBool(bool* error = NULL) const;
-    /*! Converts to float. If error is valid, it holds TRUE if error occured during the conversion. */
+    /*! Converts current string to 32-bit float value.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
     float32 toFloat(bool* error = NULL) const;
 
     /*! Splits the string into array of substrings whenever seperator occurs. */
+    // TAGE - move to StingUtils ? This will remove dependency to DynamicArray
     StringArray split(const String& separator) const;
     /*! Returns a string that has whitespace removed from the start and the end. */
     String trimmed() const;
+
+    /*! Replaces portion of the string with another.
+     *  @param  position  0-based index position where replacement should start in current string.
+     *  @param  length    Number of characters to replace in current string.
+     *  @param  string    String to insert as a replacement.
+     *  @return Reference to self.
+     */
+    String& replace(s32 position, s32 length, const String& string);
     /*! Replaces all occurences of the string with another string. 
      *  @param  before String to be replaced.
      *  @param  after  String to be placed.
@@ -95,6 +168,11 @@ class String : public std::string
     ArgEscapeData findArgEscapes() const;
     /*! Replaces args with given string. */
     void replaceArgEscapes(String& out, const String& arg, ArgEscapeData& argData) const;
+
+  private:
+
+    /*! Underlying container. */
+    std::string m_value;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 inline String operator + (const String& left, const char* right)
@@ -106,13 +184,23 @@ inline String operator + (const String& left, const char* right)
   return string;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-inline String operator + (String& left, const String& right)
+inline String operator + (const String& left, const String& right)
 {
   String string;
   string += left;
   string += right;
 
   return string;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool operator==(const char* left, const String& right)
+{
+  return (right == left);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+inline bool operator!=(const char* left, const String& right)
+{
+  return (right != left);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
