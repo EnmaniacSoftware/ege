@@ -136,7 +136,7 @@ EGEResult SocialServicesIOS::saveNextAchievement()
 
   egeDebug(KSocialServicesDebugName) << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
-  NSString* identifier = [NSString stringWithCString: achievementData.name.c_str() encoding: NSASCIIStringEncoding];
+  NSString* identifier = [NSString stringWithCString: achievementData.name.toAscii() encoding: NSASCIIStringEncoding];
 
   GKAchievement* achievement = [[GKAchievement alloc] initWithIdentifier: identifier];
   if (nil != achievement)
@@ -193,7 +193,7 @@ EGEResult SocialServicesIOS::saveScore(const String& scoreTable, s32 score)
   {
     result = EGE_SUCCESS;
     
-    NSString* category = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
+    NSString* category = [NSString stringWithCString: scoreTable.toAscii() encoding: NSASCIIStringEncoding];
     
     GKScore* scoreReporter = [[GKScore alloc] initWithCategory: category];
     scoreReporter.value = score;
@@ -220,7 +220,7 @@ EGEResult SocialServicesIOS::showScores(const String& scoreTable)
   {
     result = EGE_SUCCESS;
     
-    NSString* leaderboardID = [NSString stringWithCString: scoreTable.c_str() encoding: NSASCIIStringEncoding];
+    NSString* leaderboardID = [NSString stringWithCString: scoreTable.toAscii() encoding: NSASCIIStringEncoding];
 
     // show window
     RenderWindowOGLIOS* renderWindow = ege_cast<RenderWindowOGLIOS*>(engine().graphics()->renderTarget(EGE_PRIMARY_RENDER_TARGET_NAME));

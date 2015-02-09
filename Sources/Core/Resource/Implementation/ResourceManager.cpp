@@ -48,8 +48,6 @@ ResourceManager::~ResourceManager()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
 {
-  EGEResult result = EGE_SUCCESS;
-
   // set state
   setState(EModuleStateRunning);
 

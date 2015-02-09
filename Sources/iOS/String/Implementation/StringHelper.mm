@@ -11,7 +11,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 NSString* StringHelper::Convert(const String& string)
 {
-  NSString* value = [NSString stringWithCString: string.c_str() encoding: NSASCIIStringEncoding];
+  NSString* value = [NSString stringWithCString: string.toAscii() encoding: NSASCIIStringEncoding];
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

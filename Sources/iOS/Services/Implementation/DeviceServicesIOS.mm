@@ -143,7 +143,7 @@ EGEResult DeviceServicesIOS::storeConfidentialValue(const String& name, const St
   
   // convert key name
   NSString* nsName  = StringHelper::Convert(KConfidentialValuesPrefix + name);
-  NSData* valueData = [[[NSData alloc] initWithBytes: value.c_str() length: value.size()] autorelease];
+  NSData* valueData = [[[NSData alloc] initWithBytes: value.toAscii() length: value.length()] autorelease];
   
   if ((nil == nsName) || (nil == valueData))
   {

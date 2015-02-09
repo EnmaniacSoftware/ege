@@ -111,7 +111,7 @@ bool Text::fromString(const String& string)
     size_t todo;
 
     // determine type of character
-    char ch = string.at(i++);
+    u8 ch = static_cast<u8>(string.at(i++));
     if (ch <= 0x7F)
     {
       uni = ch;

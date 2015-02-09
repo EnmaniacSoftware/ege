@@ -66,7 +66,7 @@ static DeviceInfo l_iOSDeviceInfoMap[] = {
 static DeviceType GetIOSDevice(const String& deviceId)
 {
   // convert
-  NSString* deviceIdentifier = [NSString stringWithCString: deviceId.c_str() encoding: NSASCIIStringEncoding];
+  NSString* deviceIdentifier = [NSString stringWithCString: deviceId.toAscii() encoding: NSASCIIStringEncoding];
     
   // go thru all iOS devices
   for (u32 i = 0; i < sizeof (l_iOSDeviceInfoMap) / sizeof (l_iOSDeviceInfoMap[0]); ++i)

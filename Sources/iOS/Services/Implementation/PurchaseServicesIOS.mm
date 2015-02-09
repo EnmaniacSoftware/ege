@@ -80,7 +80,7 @@ void PurchaseServicesIOS::processNextPurchase()
   const String product = m_pendingPurchases.front();
   
   // convert product name
-  NSString* identifier = [NSString stringWithCString: product.c_str() encoding: NSASCIIStringEncoding];
+  NSString* identifier = [NSString stringWithCString: product.toAscii() encoding: NSASCIIStringEncoding];
   
   // check if purchase data is NOT available yet
   SKProduct* registeredProduct = [(AppStoreTransactionObserver*) m_observer findProduct: identifier];

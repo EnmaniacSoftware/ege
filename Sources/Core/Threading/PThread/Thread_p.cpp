@@ -62,8 +62,9 @@ void* ThreadPrivate::ThreadFunc(void* userData)
   return reinterpret_cast<void*>(base->m_exitCode);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ThreadPrivate::ThreadFinalize(ThreadPrivate* thread)
+void ThreadPrivate::ThreadFinalize(void* userData)
 {
+  ThreadPrivate* thread = reinterpret_cast<ThreadPrivate*>(userData);
   Thread* base = thread->d_func();
 
   // set flags

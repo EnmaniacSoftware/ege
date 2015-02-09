@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4506A9C71A893D9A009393B3 /* AtomicBool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9BC1A893D9A009393B3 /* AtomicBool.cpp */; };
+		4506A9C81A893D9A009393B3 /* AtomicInt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9BD1A893D9A009393B3 /* AtomicInt.cpp */; };
+		4506A9CF1A8942A5009393B3 /* AtomicOperationsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9CE1A8942A5009393B3 /* AtomicOperationsIOS.cpp */; };
 		450E126619351E2E00B9F785 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450E126519351E2E00B9F785 /* Device.cpp */; };
 		450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 450E126919351E4C00B9F785 /* DeviceIOS.mm */; };
 		4514711518C5231900AAC617 /* ComplexTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146EFB18C5231800AAC617 /* ComplexTypes.cpp */; };
@@ -139,7 +142,6 @@
 		4514723318C5236200AAC617 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720B18C5236200AAC617 /* main.mm */; };
 		4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720D18C5236200AAC617 /* MemoryIOS.cpp */; };
 		4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */; };
-		4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514721F18C5236200AAC617 /* AtomicIOS.cpp */; };
 		452EF2F919729E83006D5876 /* StringHelper.mm in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2F819729E83006D5876 /* StringHelper.mm */; };
 		452EF2FB1972A455006D5876 /* StringUtilsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 452EF2FA1972A455006D5876 /* StringUtilsIOS.cpp */; };
 		453B563D18FDD5A1004E21D0 /* RenderSystemStatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 453B563C18FDD5A1004E21D0 /* RenderSystemStatistics.cpp */; };
@@ -320,6 +322,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomicBool.h; path = ../../Sources/EGEAtomicBool.h; sourceTree = "<group>"; };
+		4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomicInt.h; path = ../../Sources/EGEAtomicInt.h; sourceTree = "<group>"; };
+		4506A9BC1A893D9A009393B3 /* AtomicBool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicBool.cpp; sourceTree = "<group>"; };
+		4506A9BD1A893D9A009393B3 /* AtomicInt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicInt.cpp; sourceTree = "<group>"; };
+		4506A9BF1A893D9A009393B3 /* AtomicBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicBool.h; sourceTree = "<group>"; };
+		4506A9C01A893D9A009393B3 /* AtomicInt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicInt.h; sourceTree = "<group>"; };
+		4506A9C11A893D9A009393B3 /* AtomicOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicOperations.h; sourceTree = "<group>"; };
+		4506A9CE1A8942A5009393B3 /* AtomicOperationsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicOperationsIOS.cpp; sourceTree = "<group>"; };
 		450E126519351E2E00B9F785 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Device.cpp; path = Implementation/Device.cpp; sourceTree = "<group>"; };
 		450E126719351E3400B9F785 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Device.h; path = Interface/Device.h; sourceTree = "<group>"; };
 		450E126919351E4C00B9F785 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceIOS.mm; path = Implementation/DeviceIOS.mm; sourceTree = "<group>"; };
@@ -704,7 +714,6 @@
 		4514720D18C5236200AAC617 /* MemoryIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemoryIOS.cpp; sourceTree = "<group>"; };
 		4514720F18C5236200AAC617 /* MessageBoxIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageBoxIOS_p.h; sourceTree = "<group>"; };
 		4514721018C5236200AAC617 /* MessageBoxIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MessageBoxIOS_p.mm; sourceTree = "<group>"; };
-		4514721F18C5236200AAC617 /* AtomicIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicIOS.cpp; sourceTree = "<group>"; };
 		4514722318C5236200AAC617 /* TypesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TypesIOS.h; sourceTree = "<group>"; };
 		452EF2F219729CE4006D5876 /* StringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringHelper.h; sourceTree = "<group>"; };
 		452EF2F819729E83006D5876 /* StringHelper.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = StringHelper.mm; sourceTree = "<group>"; };
@@ -1020,6 +1029,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4506A9BA1A893D9A009393B3 /* Atomic */ = {
+			isa = PBXGroup;
+			children = (
+				4506A9BB1A893D9A009393B3 /* Implementation */,
+				4506A9BE1A893D9A009393B3 /* Interface */,
+			);
+			path = Atomic;
+			sourceTree = "<group>";
+		};
+		4506A9BB1A893D9A009393B3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				4506A9BC1A893D9A009393B3 /* AtomicBool.cpp */,
+				4506A9BD1A893D9A009393B3 /* AtomicInt.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
+		4506A9BE1A893D9A009393B3 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				4506A9BF1A893D9A009393B3 /* AtomicBool.h */,
+				4506A9C01A893D9A009393B3 /* AtomicInt.h */,
+				4506A9C11A893D9A009393B3 /* AtomicOperations.h */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		4506A9CC1A8942A5009393B3 /* Atomic */ = {
+			isa = PBXGroup;
+			children = (
+				4506A9CD1A8942A5009393B3 /* Implementation */,
+			);
+			path = Atomic;
+			sourceTree = "<group>";
+		};
+		4506A9CD1A8942A5009393B3 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				4506A9CE1A8942A5009393B3 /* AtomicOperationsIOS.cpp */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
 		450E126319351E1600B9F785 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1047,6 +1100,8 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
+				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
 				45660C2219FEDC1300E70859 /* EGERenderable.h */,
 				45660C2319FEDC1300E70859 /* EGEResource.h */,
 				45660C2419FEDC1300E70859 /* EGEResourceFactory.h */,
@@ -1165,6 +1220,7 @@
 				4514705618C5231900AAC617 /* Platform.h */,
 				45146F5318C5231800AAC617 /* FeatureList.txt */,
 				45146ED218C5231800AAC617 /* Animation */,
+				4506A9BA1A893D9A009393B3 /* Atomic */,
 				45146ED718C5231800AAC617 /* Audio */,
 				454BCF3319D84BB3004E462C /* Base */,
 				45146EF818C5231800AAC617 /* Cache */,
@@ -2058,6 +2114,7 @@
 				4514722318C5236200AAC617 /* TypesIOS.h */,
 				4514720B18C5236200AAC617 /* main.mm */,
 				451471E518C5236200AAC617 /* Application */,
+				4506A9CC1A8942A5009393B3 /* Atomic */,
 				451471EC18C5236200AAC617 /* Audio */,
 				451471F418C5236200AAC617 /* Debug */,
 				451471F618C5236200AAC617 /* Device */,
@@ -2069,7 +2126,6 @@
 				4514720E18C5236200AAC617 /* NativeUI */,
 				4514721118C5236200AAC617 /* Services */,
 				4514721C18C5236200AAC617 /* String */,
-				4514721E18C5236200AAC617 /* Threading */,
 				458AA7A718FF1F3100333B67 /* Time */,
 			);
 			name = iOS;
@@ -2193,14 +2249,6 @@
 				452EF2F119729CE4006D5876 /* Interface */,
 			);
 			path = String;
-			sourceTree = "<group>";
-		};
-		4514721E18C5236200AAC617 /* Threading */ = {
-			isa = PBXGroup;
-			children = (
-				4514721F18C5236200AAC617 /* AtomicIOS.cpp */,
-			);
-			path = Threading;
 			sourceTree = "<group>";
 		};
 		452EF2F119729CE4006D5876 /* Interface */ = {
@@ -3323,8 +3371,10 @@
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
 				451471C318C5231900AAC617 /* Mutex.cpp in Sources */,
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
+				4506A9C81A893D9A009393B3 /* AtomicInt.cpp in Sources */,
 				451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */,
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
+				4506A9C71A893D9A009393B3 /* AtomicBool.cpp in Sources */,
 				459972FC19EDC798001B63C3 /* KeyEvent.cpp in Sources */,
 				451471C718C5231900AAC617 /* WaitCondition_p.cpp in Sources */,
 				451471C818C5231900AAC617 /* Thread.cpp in Sources */,
@@ -3376,7 +3426,6 @@
 				4514723318C5236200AAC617 /* main.mm in Sources */,
 				4514723418C5236200AAC617 /* MemoryIOS.cpp in Sources */,
 				4514723518C5236200AAC617 /* MessageBoxIOS_p.mm in Sources */,
-				4514723C18C5236200AAC617 /* AtomicIOS.cpp in Sources */,
 				457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */,
 				457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */,
 				45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */,
@@ -3401,6 +3450,7 @@
 				4563A4E01971FBD20002D632 /* SpriteAnimation.cpp in Sources */,
 				455A2FF518F48D9D00CD9581 /* IndexBufferVAOGL.cpp in Sources */,
 				455A2FF618F48D9D00CD9581 /* IndexBufferVBOOGL.cpp in Sources */,
+				4506A9CF1A8942A5009393B3 /* AtomicOperationsIOS.cpp in Sources */,
 				45E4DC35199C0395000FB4B8 /* AdNetworkRegistry.cpp in Sources */,
 				455A2FF718F48D9D00CD9581 /* ProgramOGL.cpp in Sources */,
 				455A2FF818F48D9D00CD9581 /* RenderTextureCopyOGL.cpp in Sources */,

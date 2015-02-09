@@ -48,7 +48,7 @@ class ThreadPrivate
     /*! Thread finalization function. 
      *  @note This can be called as a clean up due to thread cancellation or as a part of regular shutdown.
      */
-    static void ThreadFinalize(ThreadPrivate* thread);
+    static void ThreadFinalize(void* userData);
 
   private:
 

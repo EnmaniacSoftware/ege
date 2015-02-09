@@ -26,7 +26,7 @@ String Directory::Path(DirectoryType directory)
   {
     case EApplication:
 
-      if (l_applicationFolderPath.empty())
+      if (l_applicationFolderPath.isEmpty())
       {
         // get application directory
         NSString* path = [[NSBundle mainBundle] bundlePath];
@@ -39,7 +39,7 @@ String Directory::Path(DirectoryType directory)
 
     case EDocuments:
 
-      if (l_documentsFolderPath.empty())
+      if (l_documentsFolderPath.isEmpty())
       {
         // get the documents directory
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
