@@ -1077,9 +1077,6 @@
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringUtils.cpp">
       <Filter>Core\String\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\String.cpp">
-      <Filter>Core\String\Implementation\STL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\Text.cpp">
       <Filter>Core\String\Implementation\STL</Filter>
     </ClCompile>
@@ -1190,6 +1187,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Atomic\Implementation\AtomicBool.cpp">
       <Filter>Core\Atomic\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\String.cpp">
+      <Filter>Core\String\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2044,9 +2044,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h">
       <Filter>Core\Containers\Interface\STL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\Interface\STL\String.h">
-      <Filter>Core\String\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\STL\Text.h">
       <Filter>Core\String\Interface\STL</Filter>
     </ClInclude>
@@ -2188,6 +2185,9 @@
       <Filter>Core\Atomic\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Interface\String.h">
+      <Filter>Core\String\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

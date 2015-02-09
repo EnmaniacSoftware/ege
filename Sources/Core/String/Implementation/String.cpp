@@ -1,4 +1,4 @@
-#include "Core/String/Interface/STL/String.h"
+#include "Core/String/Interface/String.h"
 #include "EGEStringArray.h"
 #include "EGEStringUtils.h"
 #include "EGEDebug.h"
