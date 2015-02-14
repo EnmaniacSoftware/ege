@@ -32,9 +32,6 @@ inline void ege_noop() {}
 // Available containers implementations
 // EGE_CONTAINERS_STL
 
-// Available string/text implementations
-// EGE_STRING_STL
-
 #if WIN32
   #define EGE_PLATFORM_WIN32 1
   #define PLATFORM_CLASSNAME(classname) classname##Win32

@@ -203,10 +203,10 @@
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServices.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\SocialServicesNull.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Implementation\SpecialURLs.cpp" />
-    <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\Text.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Implementation\String.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringUtils.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\Text.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\Mutex_p.cpp" />
@@ -466,10 +466,10 @@
     <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServices.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\SocialServicesNull.h" />
     <ClInclude Include="..\..\Sources\Core\Services\Interface\SpecialURLs.h" />
-    <ClInclude Include="..\..\Sources\Core\String\Interface\STL\Text.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\String.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringUtils.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Interface\Text.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\Mutex_p.h" />

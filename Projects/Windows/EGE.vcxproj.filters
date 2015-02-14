@@ -448,12 +448,6 @@
     <Filter Include="Core\String\Implementation">
       <UniqueIdentifier>{801e87dc-d768-466b-ab43-7dc00f45bd94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\String\Interface\STL">
-      <UniqueIdentifier>{0ece8fe4-4a6b-41d1-8413-9efc2babb3b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\String\Implementation\STL">
-      <UniqueIdentifier>{9b7d4f5e-a38e-41ab-9bff-4c2373845e30}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Screen\Implementation">
       <UniqueIdentifier>{70376f28-0674-41e9-9b3c-f10f2cabd076}</UniqueIdentifier>
     </Filter>
@@ -1077,9 +1071,6 @@
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringUtils.cpp">
       <Filter>Core\String\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\String\Implementation\STL\Text.cpp">
-      <Filter>Core\String\Implementation\STL</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Input\Implementation\KeyEvent.cpp">
       <Filter>Core\Input\Implementation</Filter>
     </ClCompile>
@@ -1189,6 +1180,9 @@
       <Filter>Core\Atomic\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Implementation\String.cpp">
+      <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\Text.cpp">
       <Filter>Core\String\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
@@ -2044,9 +2038,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h">
       <Filter>Core\Containers\Interface\STL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\String\Interface\STL\Text.h">
-      <Filter>Core\String\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
@@ -2186,6 +2177,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\String.h">
+      <Filter>Core\String\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\Text.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
   </ItemGroup>

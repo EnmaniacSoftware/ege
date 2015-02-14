@@ -1,4 +1,4 @@
-#include "Core/String/Interface/STL/Text.h"
+#include "Core/String/Interface/Text.h"
 #include "EGEDynamicArray.h"
 #include "EGEMath.h"
 #include <sstream>

@@ -8,7 +8,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_STRING_STL;EGE_CONTAINERS_STL</PreprocessorDefinitions>
+      <PreprocessorDefinitions>EGE_FEATURE_DEBUG;EGE_FEATURE_MEMORY_DEBUG;EGE_FEATURE_ENGINE_INFO;EGE_CONTAINERS_STL</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(PROJECTS_DIR)\Cpp\Ege\Sources</AdditionalIncludeDirectories>
       <BrowseInformation>true</BrowseInformation>
       <MinimalRebuild>false</MinimalRebuild>
