@@ -10,6 +10,7 @@
 		4506A9C71A893D9A009393B3 /* AtomicBool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9BC1A893D9A009393B3 /* AtomicBool.cpp */; };
 		4506A9C81A893D9A009393B3 /* AtomicInt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9BD1A893D9A009393B3 /* AtomicInt.cpp */; };
 		4506A9CF1A8942A5009393B3 /* AtomicOperationsIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9CE1A8942A5009393B3 /* AtomicOperationsIOS.cpp */; };
+		4506A9D11A89614E009393B3 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4506A9D01A89614E009393B3 /* String.cpp */; };
 		450E126619351E2E00B9F785 /* Device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 450E126519351E2E00B9F785 /* Device.cpp */; };
 		450E126A19351E4C00B9F785 /* DeviceIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 450E126919351E4C00B9F785 /* DeviceIOS.mm */; };
 		4514711518C5231900AAC617 /* ComplexTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45146EFB18C5231800AAC617 /* ComplexTypes.cpp */; };
@@ -213,7 +214,6 @@
 		456CA28C19F83B6500868FA1 /* ResourceManagerSingleThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25419F83B6500868FA1 /* ResourceManagerSingleThread.cpp */; };
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
-		457C566319E5C29900E35A51 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565919E5C29900E35A51 /* String.cpp */; };
 		457C566419E5C29900E35A51 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565A19E5C29900E35A51 /* Text.cpp */; };
 		457C566519E5C29900E35A51 /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565B19E5C29900E35A51 /* StringBuffer.cpp */; };
 		457C566619E5C29900E35A51 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565C19E5C29900E35A51 /* StringUtils.cpp */; };
@@ -330,6 +330,8 @@
 		4506A9C01A893D9A009393B3 /* AtomicInt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicInt.h; sourceTree = "<group>"; };
 		4506A9C11A893D9A009393B3 /* AtomicOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicOperations.h; sourceTree = "<group>"; };
 		4506A9CE1A8942A5009393B3 /* AtomicOperationsIOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicOperationsIOS.cpp; sourceTree = "<group>"; };
+		4506A9D01A89614E009393B3 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
+		4506A9D21A896157009393B3 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = String.h; sourceTree = "<group>"; };
 		450E126519351E2E00B9F785 /* Device.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Device.cpp; path = Implementation/Device.cpp; sourceTree = "<group>"; };
 		450E126719351E3400B9F785 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Device.h; path = Interface/Device.h; sourceTree = "<group>"; };
 		450E126919351E4C00B9F785 /* DeviceIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = DeviceIOS.mm; path = Implementation/DeviceIOS.mm; sourceTree = "<group>"; };
@@ -880,11 +882,9 @@
 		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		457A67B618C7DAFC0004D38F /* DatabaseSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseSqlite.h; sourceTree = "<group>"; };
 		457A67C218C7DB220004D38F /* EGEDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDatabase.h; path = ../../Sources/EGEDatabase.h; sourceTree = "<group>"; };
-		457C565919E5C29900E35A51 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
 		457C565A19E5C29900E35A51 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		457C565B19E5C29900E35A51 /* StringBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuffer.cpp; sourceTree = "<group>"; };
 		457C565C19E5C29900E35A51 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
-		457C565F19E5C29900E35A51 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = String.h; sourceTree = "<group>"; };
 		457C566019E5C29900E35A51 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		457C566119E5C29900E35A51 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		457C566219E5C29900E35A51 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
@@ -2718,6 +2718,7 @@
 		457C565719E5C29900E35A51 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				4506A9D01A89614E009393B3 /* String.cpp */,
 				457C565819E5C29900E35A51 /* STL */,
 				457C565B19E5C29900E35A51 /* StringBuffer.cpp */,
 				457C565C19E5C29900E35A51 /* StringUtils.cpp */,
@@ -2728,7 +2729,6 @@
 		457C565819E5C29900E35A51 /* STL */ = {
 			isa = PBXGroup;
 			children = (
-				457C565919E5C29900E35A51 /* String.cpp */,
 				457C565A19E5C29900E35A51 /* Text.cpp */,
 			);
 			path = STL;
@@ -2737,6 +2737,7 @@
 		457C565D19E5C29900E35A51 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				4506A9D21A896157009393B3 /* String.h */,
 				457C565E19E5C29900E35A51 /* STL */,
 				457C566119E5C29900E35A51 /* StringBuffer.h */,
 				457C566219E5C29900E35A51 /* StringUtils.h */,
@@ -2747,7 +2748,6 @@
 		457C565E19E5C29900E35A51 /* STL */ = {
 			isa = PBXGroup;
 			children = (
-				457C565F19E5C29900E35A51 /* String.h */,
 				457C566019E5C29900E35A51 /* Text.h */,
 			);
 			path = STL;
@@ -3236,7 +3236,6 @@
 				4514711918C5231900AAC617 /* PhysicsComponentNull_p.cpp in Sources */,
 				4514711A18C5231900AAC617 /* PhysicsComponent.cpp in Sources */,
 				453C83F6193E6AD200FBA4AA /* AudioUtils.cpp in Sources */,
-				457C566319E5C29900E35A51 /* String.cpp in Sources */,
 				4514711B18C5231900AAC617 /* Cipher.cpp in Sources */,
 				4514711C18C5231900AAC617 /* CipherAES.cpp in Sources */,
 				456CA27919F83B6500868FA1 /* ResourceData.cpp in Sources */,
@@ -3403,6 +3402,7 @@
 				451471DA18C5231900AAC617 /* WidgetFactory.cpp in Sources */,
 				451471DB18C5231900AAC617 /* WidgetFrame.cpp in Sources */,
 				451471DC18C5231900AAC617 /* Version.cpp in Sources */,
+				4506A9D11A89614E009393B3 /* String.cpp in Sources */,
 				451471DD18C5231900AAC617 /* XmlAttributeTinyXml_p.cpp in Sources */,
 				453C83F8193E6AD200FBA4AA /* AudioCodecMp3.cpp in Sources */,
 				451471DE18C5231900AAC617 /* XmlDocumentTinyXml_p.cpp in Sources */,
