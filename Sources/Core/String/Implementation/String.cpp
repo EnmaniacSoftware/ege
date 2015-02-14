@@ -22,19 +22,26 @@ String::String()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const String& other) : m_value(other.m_value)
+String::String(const String& other) 
+: m_value(other.m_value)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const std::string& string) : m_value(string)
+String::String(const std::string& string) 
+: m_value(string)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-String::String(const char* str)
+String::String(const char* string, s32 length)
 {
-  if (NULL != str)
+  if (NULL != string)
   {
-    m_value = str;
+    if (0 > length)
+    {
+      length = static_cast<s32>(strlen(string));
+    }
+
+    m_value.append(string, length);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

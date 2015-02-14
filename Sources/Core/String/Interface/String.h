@@ -17,8 +17,8 @@ class String
     
     String();
     String(const String& other);
-    String(const char* string);
     String(const std::string& string);
+    String(const char* string, s32 length = -1);
    ~String();
 
   operators:

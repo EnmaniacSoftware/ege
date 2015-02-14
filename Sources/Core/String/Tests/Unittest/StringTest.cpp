@@ -50,13 +50,27 @@ void StringTest::TearDown()
 TEST_F(StringTest, Construct)
 {
   String empty;
-  String fromConstChar(KReferenceCString);
-  String fromStdString(KReferenceStdString);
-  String fromAnotherString(fromConstChar);
-
   EXPECT_EQ(0, empty.length());
+
+  String empty2(NULL);
+  EXPECT_EQ(0, empty2.length());
+
+  String empty3(NULL, 10);
+  EXPECT_EQ(0, empty3.length());
+
+  String fromConstChar(KReferenceCString);
   EXPECT_STREQ(KReferenceCString, fromConstChar.toAscii());
+
+  String fromConstCharShort(KReferenceCString, 5);
+  for (s32 i = 0; i < 5; ++i)
+  {
+    EXPECT_EQ(KReferenceCString[i], fromConstCharShort.toAscii()[i]);
+  }  
+
+  String fromStdString(KReferenceStdString);
   EXPECT_STREQ(KReferenceStdString.c_str(), fromStdString.toAscii());
+
+  String fromAnotherString(fromConstChar);
   EXPECT_STREQ(KReferenceCString, fromAnotherString.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
