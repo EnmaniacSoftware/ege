@@ -41,9 +41,9 @@ const GlyphData* Font::glyphData(Char c) const
 Vector2i Font::metrics(const Text& text) const
 {
   Vector2i metrics(0, height());
-  for (Text::const_iterator it = text.begin(); it != text.end(); ++it)
+  for (s32 i = 0; i < text.length(); ++i)
   {
-    const GlyphData* data = glyphData(*it);
+    const GlyphData* data = glyphData(text.at(i));
     if (NULL != data)
     {
       metrics.x += data->m_width;

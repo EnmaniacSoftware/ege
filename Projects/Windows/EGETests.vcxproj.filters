@@ -234,6 +234,9 @@
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringUtilsTest.cpp">
       <Filter>Tests\String\UnitTests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextTest.cpp">
+      <Filter>Tests\String\UnitTests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">

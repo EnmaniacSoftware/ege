@@ -95,10 +95,10 @@ EGEResult ResourceText::addLocalization(const PXmlElement& tag)
 {
   // get data
   String name = tag->attribute("name");
-  Text value  = tag->attribute("value");
+  Text value  = tag->attribute("value").toAscii();
 
   // check if data is present
-  if (name.isEmpty() || value.empty())
+  if (name.isEmpty() || value.isEmpty())
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
@@ -141,15 +141,7 @@ Text ResourceText::text(s32 numerous) const
     Text number   = Text::Format("%d", numerous);
     Text percentN = EGE_TEXT("%n");
 
-    size_t pos = outText.find(percentN);
-    while (Text::npos != pos)
-    {
-      // replace
-      outText.replace(pos, 2, number);
-
-      // find next
-      pos = outText.find(percentN, pos + 2);
-    }
+    outText.replaceAll(percentN, number);
   }
 
   return outText;

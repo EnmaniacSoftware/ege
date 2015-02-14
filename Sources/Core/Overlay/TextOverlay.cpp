@@ -9,10 +9,11 @@ static const char* KTextOverlayDebugName = "EGETextOverlay";
 EGE_DEFINE_NEW_OPERATORS(TextOverlay)
 EGE_DEFINE_DELETE_OPERATORS(TextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TextOverlay::TextOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) : Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc)
-                                                                                             , m_textDataValid(false)
-                                                                                             , m_renderableCharactersCount(0)
-                                                                                             , m_textAlignment(ALIGN_TOP_LEFT)
+TextOverlay::TextOverlay(Engine& engine, const String& name, egeObjectDeleteFunc deleteFunc) 
+: Overlay(engine, name, EGE_OBJECT_UID_OVERLAY_TEXT, deleteFunc)
+, m_textDataValid(false)
+, m_renderableCharactersCount(0)
+, m_textAlignment(ALIGN_TOP_LEFT)
 {
   initialize();
 }
@@ -88,10 +89,11 @@ void TextOverlay::updateRenderData()
         }
 
         // go thru all characters in current line
-        for (Text::const_iterator itChar = lineData.start; itChar != lineData.end; ++itChar)
+        for (s32 i = lineData.start; i < lineData.end; ++i)
         {
           // get current glyph texture coords
-          const GlyphData* glyphData = font()->glyphData(*itChar);
+          const Char c = m_text.at(i);
+          const GlyphData* glyphData = font()->glyphData(c);
           if (glyphData)
           {
             float32 width = static_cast<float32>(glyphData->m_width);
@@ -200,18 +202,18 @@ void TextOverlay::updateTextData()
 
   // go thru all characters
   TextLineData lineData;
-  lineData.start = m_text.begin();
-  lineData.end   = m_text.end();
+  lineData.start = 0;
+  lineData.end   = m_text.length();
   lineData.width = 0.0f;
-  for (Text::const_iterator it = m_text.begin(); it != m_text.end(); ++it)
+  for (s32 i = 0; i < m_text.length(); ++i)
   {
-    Char c = *it;
+    Char c = m_text.at(i);
 
     // check if EOL found
     if ('\n' == c)
     {
       // store end
-      lineData.end = it;
+      lineData.end = i;
 
       // add to pool
       m_textLines.push_back(lineData);
@@ -220,21 +222,21 @@ void TextOverlay::updateTextData()
       textSize.x = Math::Max(textSize.x, lineData.width);
 
       // prepare data for next line
-      lineData.start = it + 1;
-      lineData.end   = m_text.end();
+      lineData.start = i + 1;
+      lineData.end   = m_text.length();
       lineData.width = 0.0f;
       continue;
     }
 
     // get current glyph data
-    const GlyphData* glyphData = currentFont->glyphData(*it);
+    const GlyphData* glyphData = currentFont->glyphData(c);
     if (glyphData)
     {
       lineData.width += static_cast<float32>(glyphData->m_width) + spacing;
     }
     else
     {
-      egeWarning(KTextOverlayDebugName) << "Undefined character found:" << (s32) *it;
+      egeWarning(KTextOverlayDebugName) << "Undefined character found:" << (s32) c;
       continue;
     }
 
@@ -243,7 +245,7 @@ void TextOverlay::updateTextData()
   }
 
   // check if any final line to be added
-  if (lineData.start != m_text.end())
+  if (lineData.start != m_text.length())
   {
     // add to pool
     m_textLines.push_back(lineData);

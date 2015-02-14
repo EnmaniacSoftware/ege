@@ -9,71 +9,107 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#define WORK_BUFFER_LENGTH (512)
+static const s32 KWorkBufferLength = 512;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text() : std::wstring()
+Text::Text()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const Text& text) : std::wstring(text)
+Text::Text(const Text& text) 
+: m_value(text.m_value)
+{
+}
+Text::Text(const std::wstring& other)
+: m_value(other)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const Char* string) : std::wstring(string)
+Text::Text(const Char* string) 
+: m_value(string)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const Char* string, s32 length) : std::wstring(string, length)
+Text::Text(const Char* string, s32 length)
+: m_value(string, length)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const char* string) : std::wstring()
+Text::Text(const char* string)
 {
   std::string temp = string;
-  resize(temp.length());
-  std::copy(temp.begin(), temp.end(), begin());
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const String& string) : std::wstring(string.length(), L' ')
-{
-  fromString(string);
+  m_value.resize(temp.length());
+  std::copy(temp.begin(), temp.end(), m_value.begin());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::~Text()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Text& Text::operator=(const Text& other)
+{
+  m_value = other.m_value;
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Text& Text::operator+=(const Text& other)
+{
+  m_value += other.m_value;
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Text::operator==(const Text& other) const
+{
+  return m_value == other.m_value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Text::operator!=(const Text& other) const
+{
+  return m_value != other.m_value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Text::clear()
+{
+  m_value.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool Text::isEmpty() const
+{
+  return m_value.empty();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 Text::length() const
+{
+  return static_cast<s32>(m_value.length());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const Char* Text::data() const
+{
+  return static_cast<const Char*>(m_value.c_str());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text& Text::toLower()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'tolower' in <locale>
-  std::transform(begin(), end(), begin(), (int(*)(int)) std::tolower);
+  std::transform(m_value.begin(), m_value.end(), m_value.begin(), (int(*)(int)) std::tolower);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text& Text::toUpper()
 {
   // NOTE: explicit casting is needed for XCode4 as there is also template version of 'toupper' in <locale>  
-  std::transform(begin(), end(), begin(), (int(*)(int)) std::toupper);
+  std::transform(m_value.begin(), m_value.end(), m_value.begin(), (int(*)(int)) std::toupper);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text& Text::operator=(const Text& string)
+Char Text::at(s32 index) const
 {
-  (*(std::wstring*) this) = (*(std::wstring*) &string);
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text& Text::operator+=(const Text& string)
-{
-  (*(std::wstring*) this) += (*(std::wstring*) &string);
-
-  return *this;
+  EGE_ASSERT((0 <= index) && (index < static_cast<signed>(m_value.size())));
+  return m_value[index];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Text::format(const char* text, ...)
 {
-  char buffer[WORK_BUFFER_LENGTH];
+  char buffer[KWorkBufferLength];
 
 	va_list arg;
 	va_start(arg, text);
@@ -85,7 +121,7 @@ void Text::format(const char* text, ...)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text Text::Format(const char* text, ...)
 {
-  char buffer[WORK_BUFFER_LENGTH];
+  char buffer[KWorkBufferLength];
 
   Text out;
 
@@ -99,108 +135,108 @@ Text Text::Format(const char* text, ...)
   return out;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool Text::fromString(const String& string)
-{
-  DynamicArray<u32> unicode;
-
-  // go thru all characters
-  s32 i = 0;
-  while (i < string.length())
-  {
-    u32 uni;
-    size_t todo;
-
-    // determine type of character
-    u8 ch = static_cast<u8>(string.at(i++));
-    if (ch <= 0x7F)
-    {
-      uni = ch;
-      todo = 0;
-    }
-    else if (ch <= 0xBF)
-    {
-      // error! not UTF-8 string
-      return false;
-    }
-    else if (ch <= 0xDF)
-    {
-      uni = ch & 0x1F;
-      todo = 1;
-    }
-    else if (ch <= 0xEF)
-    {
-      uni = ch & 0x0F;
-      todo = 2;
-    }
-    else if (ch <= 0xF7)
-    {
-      uni = ch & 0x07;
-      todo = 3;
-    }
-    else
-    {
-      // error! Not UTF-8 String
-      return false;
-    }
-
-    // process all detrmined number of character which contribute to single entity
-    for (size_t j = 0; j < todo; ++j)
-    {
-      if (i == string.length())
-      {
-        // error! Not UTF-8 string
-        return false;
-      }
-
-      ch = string.at(i++);
-      if ((ch < 0x80) || (ch > 0xBF))
-      {
-        // error! Not UTF-8 string
-        return false;
-      }
-
-      uni <<= 6;
-      uni += ch & 0x3F;
-    }
-
-    // check if we came up with valid UTF-16 character
-    if ((0xD800 <= uni) && (0xDFFF >= uni))
-    {
-      // error! Not UTF-8 string
-      return false;
-    }
-
-    if (0x10FFFF < uni)
-    {
-      // error! Not UTF-8 string
-      return false;
-    }
-
-    // ok valid character
-    unicode.push_back(uni);
-  }
-
-  // build final UTF-16 string
-  clear();
-  for (i = 0; i < static_cast<signed>(unicode.size()); ++i)
-  {
-    u32 uni = unicode[i];
-
-    if (uni <= 0xFFFF)
-    {
-      push_back((wchar_t) uni);
-    }
-    else
-    {
-      uni -= 0x10000;
-
-      push_back((wchar_t)((uni >> 10) + 0xD800));
-      push_back((wchar_t)((uni & 0x3FF) + 0xDC00));
-    }
-  }
-
-  return true;
-}
+//bool Text::fromString(const String& string)
+//{
+//  DynamicArray<u32> unicode;
+//
+//  // go thru all characters
+//  s32 i = 0;
+//  while (i < string.length())
+//  {
+//    u32 uni;
+//    size_t todo;
+//
+//    // determine type of character
+//    u8 ch = static_cast<u8>(string.at(i++));
+//    if (ch <= 0x7F)
+//    {
+//      uni = ch;
+//      todo = 0;
+//    }
+//    else if (ch <= 0xBF)
+//    {
+//      // error! not UTF-8 string
+//      return false;
+//    }
+//    else if (ch <= 0xDF)
+//    {
+//      uni = ch & 0x1F;
+//      todo = 1;
+//    }
+//    else if (ch <= 0xEF)
+//    {
+//      uni = ch & 0x0F;
+//      todo = 2;
+//    }
+//    else if (ch <= 0xF7)
+//    {
+//      uni = ch & 0x07;
+//      todo = 3;
+//    }
+//    else
+//    {
+//      // error! Not UTF-8 String
+//      return false;
+//    }
+//
+//    // process all detrmined number of character which contribute to single entity
+//    for (size_t j = 0; j < todo; ++j)
+//    {
+//      if (i == string.length())
+//      {
+//        // error! Not UTF-8 string
+//        return false;
+//      }
+//
+//      ch = string.at(i++);
+//      if ((ch < 0x80) || (ch > 0xBF))
+//      {
+//        // error! Not UTF-8 string
+//        return false;
+//      }
+//
+//      uni <<= 6;
+//      uni += ch & 0x3F;
+//    }
+//
+//    // check if we came up with valid UTF-16 character
+//    if ((0xD800 <= uni) && (0xDFFF >= uni))
+//    {
+//      // error! Not UTF-8 string
+//      return false;
+//    }
+//
+//    if (0x10FFFF < uni)
+//    {
+//      // error! Not UTF-8 string
+//      return false;
+//    }
+//
+//    // ok valid character
+//    unicode.push_back(uni);
+//  }
+//
+//  // build final UTF-16 string
+//  clear();
+//  for (i = 0; i < static_cast<signed>(unicode.size()); ++i)
+//  {
+//    u32 uni = unicode[i];
+//
+//    if (uni <= 0xFFFF)
+//    {
+//      m_value.push_back((wchar_t) uni);
+//    }
+//    else
+//    {
+//      uni -= 0x10000;
+//
+//      m_value.push_back((wchar_t)((uni >> 10) + 0xD800));
+//      m_value.push_back((wchar_t)((uni & 0x3FF) + 0xDC00));
+//    }
+//  }
+//
+//  return true;
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::ArgEscapeData Text::findArgEscapes() const
 {
@@ -210,8 +246,8 @@ Text::ArgEscapeData Text::findArgEscapes() const
   data.occurrences = 0;
 
   // go thru entire string
-  Text::const_iterator it = begin();
-  while (it != end())
+  std::wstring::const_iterator it = m_value.begin();
+  while (it != m_value.end())
   {
     // check if begining of escape found
     if ('%' != *(it++))
@@ -222,12 +258,12 @@ Text::ArgEscapeData Text::findArgEscapes() const
 
     // check if valid escape identifier
     // NOTE: only [1-99] range is supported
-    if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+    if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
     {
       s32 escape = *it - '0';
       ++it;
 
-      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
       {
         escape = escape * 10 + *it - '0';
         ++it;
@@ -254,26 +290,26 @@ Text::ArgEscapeData Text::findArgEscapes() const
 void Text::replaceArgEscapes(Text& out, const Text& arg, ArgEscapeData& argData) const
 {
   // preallocate enough space
-  out.reserve(length() + argData.occurrences * arg.length());
+  out.m_value.reserve(length() + argData.occurrences * arg.length());
 
   // go thru entire input string
-  Text::const_iterator it = begin();
-  while (it != end())
+  std::wstring::const_iterator it = m_value.begin();
+  while (it != m_value.end())
   {
     // check if proper args found
     if ('%' == *it)
     {
-      Text::const_iterator argBegin = it;
+      std::wstring::const_iterator argBegin = it;
 
       ++it;
 
       // check if valid arg escape
-      if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+      if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
       {
         s32 escape = *it - '0';
         ++it;
 
-        if ((it != end()) && ('0' <= *it) && ('9' >= *it))
+        if ((it != m_value.end()) && ('0' <= *it) && ('9' >= *it))
         {
           escape = escape * 10 + *it - '0';
           ++it;
@@ -300,22 +336,22 @@ void Text::replaceArgEscapes(Text& out, const Text& arg, ArgEscapeData& argData)
     }
     
     // just copy
-    out.push_back(*it);
+    out.m_value.push_back(*it);
     ++it;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text Text::arg(const String& string) const
-{
-  ArgEscapeData argEscapes = findArgEscapes();
-
-  Text convertedString(string);
-
-  Text out;
-  replaceArgEscapes(out, convertedString, argEscapes);
-
-  return out;
-}
+//Text Text::arg(const String& string) const
+//{
+//  ArgEscapeData argEscapes = findArgEscapes();
+//
+//  Text convertedString(string);
+//
+//  Text out;
+//  replaceArgEscapes(out, convertedString, argEscapes);
+//
+//  return out;
+//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text Text::arg(const Text& string) const
 {
@@ -345,6 +381,41 @@ Text Text::arg(float32 value) const
   replaceArgEscapes(out, Text::Format("%f", value), argEscapes);
 
   return out;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s32 Text::indexOf(const Text& string, s32 position) const
+{
+  size_t pos = m_value.find(string.m_value, position);
+  return (std::wstring::npos != pos) ? static_cast<s32>(pos) : -1;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Text& Text::replace(s32 position, s32 length, const Text& string)
+{
+  EGE_ASSERT((0 <= position) && (position < static_cast<signed>(m_value.size())));
+  EGE_ASSERT(0 <= length);
+
+  m_value.replace(position, length, string.m_value);
+
+  return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+Text& Text::replaceAll(const Text& before, const Text& after)
+{
+  // find first occurence
+  size_t pos = m_value.find(before.m_value);
+  while (std::wstring::npos != pos)
+  {
+    // erase
+    m_value.erase(pos, before.m_value.length());
+
+    // insert
+    m_value.insert(pos, after.m_value);
+
+    // locate next occurence
+    pos = m_value.find(before.m_value, pos + 1);
+  }
+
+  return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

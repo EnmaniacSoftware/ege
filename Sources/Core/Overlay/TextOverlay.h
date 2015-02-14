@@ -55,10 +55,10 @@ class TextOverlay : public Overlay
     /*! Single text line data structure. */
     struct TextLineData
     {
-      Text::const_iterator start;         /*!< Iterator to first character in line. */
-      Text::const_iterator end;           /*!< Iterator to one after last character in line. */
+      s32 start;         /*!< Position of the first character in line. */
+      s32 end;           /*!< Position of the one after the last character in line. */
 
-      float32 width;                      /*!< Line width (in pixels). */
+      float32 width;     /*!< Line width (in pixels). */
     };
 
     typedef List<TextLineData> TextLineDataList;
