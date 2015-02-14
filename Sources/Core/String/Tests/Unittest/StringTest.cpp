@@ -183,9 +183,10 @@ TEST_F(StringTest, IsEmpty)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(StringTest, IndexOf)
 {
-  const char* KSubString            = "an";
+  const char* KSubString            = "ST";
   const char* KNonExistingSubString = "blah";
   const s32 KSubStringPosition = static_cast<s32>(KReferenceStdString.find(KSubString, 0));
+  EXPECT_TRUE(0 <= KSubStringPosition);
 
   // find existing substring starting from the begining
   String string(KReferenceStdString);
