@@ -14,13 +14,8 @@ class Text
     Text();
     Text(const Text& other);
     Text(const std::wstring& other);
-
-    // TAGE - check
-    Text(const Char* string);
-    // TAGE - check
-    Text(const Char* string, s32 length);
-    // TAGE - check
-    Text(const char* string);
+    Text(const Char* string, s32 length = -1);
+    Text(const char* string, s32 length = -1);
    ~Text();
 
   operators:
@@ -74,8 +69,6 @@ class Text
     /*! Converts self to upper-case. */
     Text& toUpper();
 
-    /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
-    //Text arg(const String& string) const;
     /*! Returns copy of the current string with lowest arg marker replaced with a given string. */
     Text arg(const Text& string) const;
     /*! Returns copy of the current string with lowest arg marker replaced with a given integer value. */

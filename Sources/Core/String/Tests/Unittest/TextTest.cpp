@@ -60,6 +60,12 @@ TEST_F(TextTest, Construct)
     EXPECT_EQ(KReferenceCString[i], fromConstChar.data()[i]);
   }
 
+  Text fromConstCharShort(KReferenceCString, 5);
+  for (s32 i = 0; i < 5; ++i)
+  {
+    EXPECT_EQ(KReferenceCString[i], fromConstChar.data()[i]);
+  }
+
   Text fromWideCString(KReferenceWideCString);
   EGE_EXPECT_WSTREQ(KReferenceWideCString, fromWideCString.data());
 

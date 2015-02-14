@@ -24,18 +24,23 @@ Text::Text(const std::wstring& other)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const Char* string) 
-: m_value(string)
-{
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text(const Char* string, s32 length)
-: m_value(string, length)
 {
+  if (0 > length)
+  {
+    length = static_cast<s32>(wcslen(string));
+  }
+
+  m_value.append(string, length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Text::Text(const char* string)
+Text::Text(const char* string, s32 length)
 {
+  if (0 > length)
+  {
+    length = static_cast<s32>(strlen(string));
+  }
+
   std::string temp = string;
   m_value.resize(temp.length());
   std::copy(temp.begin(), temp.end(), m_value.begin());
@@ -340,18 +345,6 @@ void Text::replaceArgEscapes(Text& out, const Text& arg, ArgEscapeData& argData)
     ++it;
   }
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-//Text Text::arg(const String& string) const
-//{
-//  ArgEscapeData argEscapes = findArgEscapes();
-//
-//  Text convertedString(string);
-//
-//  Text out;
-//  replaceArgEscapes(out, convertedString, argEscapes);
-//
-//  return out;
-//}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text Text::arg(const Text& string) const
 {
