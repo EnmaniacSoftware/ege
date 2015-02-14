@@ -54,6 +54,18 @@ TEST_F(TextTest, Construct)
   Text empty;
   EXPECT_EQ(0, empty.length());
 
+  Text empty2(reinterpret_cast<char*>(NULL));
+  EXPECT_EQ(0, empty2.length());
+
+  Text empty3(reinterpret_cast<char*>(NULL), 10);
+  EXPECT_EQ(0, empty3.length());
+
+  Text empty4(reinterpret_cast<Char*>(NULL));
+  EXPECT_EQ(0, empty4.length());
+
+  Text empty5(reinterpret_cast<Char*>(NULL), 10);
+  EXPECT_EQ(0, empty5.length());
+
   Text fromConstChar(KReferenceCString);
   for (s32 i = 0; i < static_cast<s32>(strlen(KReferenceCString)); ++i)
   {

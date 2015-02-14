@@ -26,24 +26,30 @@ Text::Text(const std::wstring& other)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text(const Char* string, s32 length)
 {
-  if (0 > length)
+  if (NULL != string)
   {
-    length = static_cast<s32>(wcslen(string));
-  }
+    if (0 > length)
+    {
+      length = static_cast<s32>(wcslen(string));
+    }
 
-  m_value.append(string, length);
+    m_value.append(string, length);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::Text(const char* string, s32 length)
 {
-  if (0 > length)
+  if (NULL != string)
   {
-    length = static_cast<s32>(strlen(string));
-  }
+    if (0 > length)
+    {
+      length = static_cast<s32>(strlen(string));
+    }
 
-  std::string temp = string;
-  m_value.resize(temp.length());
-  std::copy(temp.begin(), temp.end(), m_value.begin());
+    std::string temp = string;
+    m_value.resize(temp.length());
+    std::copy(temp.begin(), temp.end(), m_value.begin());
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Text::~Text()
