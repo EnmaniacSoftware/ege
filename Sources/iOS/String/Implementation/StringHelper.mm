@@ -18,7 +18,7 @@ NSString* StringHelper::Convert(const String& string)
 NSString* StringHelper::Convert(const Text& string)
 {
   const char* data = reinterpret_cast<const char*>(string.data());
-  unsigned size = string.size() * sizeof(wchar_t);
+  unsigned size = string.length() * sizeof(wchar_t);
     
   NSString* result = [[[NSString alloc] initWithBytes: data length: size encoding: KWcharEncoding] autorelease];
   return result;

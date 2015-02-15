@@ -214,7 +214,6 @@
 		456CA28C19F83B6500868FA1 /* ResourceManagerSingleThread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 456CA25419F83B6500868FA1 /* ResourceManagerSingleThread.cpp */; };
 		457A67BA18C7DAFC0004D38F /* Database.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B218C7DAFC0004D38F /* Database.cpp */; };
 		457A67BB18C7DAFC0004D38F /* DatabaseSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457A67B318C7DAFC0004D38F /* DatabaseSqlite.cpp */; };
-		457C566419E5C29900E35A51 /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565A19E5C29900E35A51 /* Text.cpp */; };
 		457C566519E5C29900E35A51 /* StringBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565B19E5C29900E35A51 /* StringBuffer.cpp */; };
 		457C566619E5C29900E35A51 /* StringUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 457C565C19E5C29900E35A51 /* StringUtils.cpp */; };
 		45877DA916F09F5B00B4252B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45877DA816F09F5B00B4252B /* Foundation.framework */; };
@@ -233,6 +232,7 @@
 		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
 		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
 		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
+		45C17FE61A901A580018922D /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45C17FE51A901A580018922D /* Text.cpp */; };
 		45C3AD3F18CDF4520009ABA3 /* AppStoreTransactionObserver.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */; };
 		45C3AD4018CDF4520009ABA3 /* DeviceServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */; };
 		45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */; };
@@ -882,10 +882,8 @@
 		457A67B518C7DAFC0004D38F /* Database.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Database.h; sourceTree = "<group>"; };
 		457A67B618C7DAFC0004D38F /* DatabaseSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DatabaseSqlite.h; sourceTree = "<group>"; };
 		457A67C218C7DB220004D38F /* EGEDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDatabase.h; path = ../../Sources/EGEDatabase.h; sourceTree = "<group>"; };
-		457C565A19E5C29900E35A51 /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		457C565B19E5C29900E35A51 /* StringBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuffer.cpp; sourceTree = "<group>"; };
 		457C565C19E5C29900E35A51 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
-		457C566019E5C29900E35A51 /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		457C566119E5C29900E35A51 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		457C566219E5C29900E35A51 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
 		457C566919E5C2AA00E35A51 /* DynamicArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicArray.h; sourceTree = "<group>"; };
@@ -932,6 +930,8 @@
 		45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlQuery.cpp; sourceTree = "<group>"; };
 		45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResult.cpp; sourceTree = "<group>"; };
 		45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SqlResultSqlite.cpp; sourceTree = "<group>"; };
+		45C17FE51A901A580018922D /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
+		45C17FE71A901A5F0018922D /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		45C3AD3418CDF4520009ABA3 /* AppStoreTransactionObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppStoreTransactionObserver.h; sourceTree = "<group>"; };
 		45C3AD3518CDF4520009ABA3 /* AppStoreTransactionObserver.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppStoreTransactionObserver.mm; sourceTree = "<group>"; };
 		45C3AD3618CDF4520009ABA3 /* DeviceServicesIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; path = DeviceServicesIOS.mm; sourceTree = "<group>"; wrapsLines = 0; };
@@ -2718,39 +2718,23 @@
 		457C565719E5C29900E35A51 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45C17FE51A901A580018922D /* Text.cpp */,
 				4506A9D01A89614E009393B3 /* String.cpp */,
-				457C565819E5C29900E35A51 /* STL */,
 				457C565B19E5C29900E35A51 /* StringBuffer.cpp */,
 				457C565C19E5C29900E35A51 /* StringUtils.cpp */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
 		};
-		457C565819E5C29900E35A51 /* STL */ = {
-			isa = PBXGroup;
-			children = (
-				457C565A19E5C29900E35A51 /* Text.cpp */,
-			);
-			path = STL;
-			sourceTree = "<group>";
-		};
 		457C565D19E5C29900E35A51 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45C17FE71A901A5F0018922D /* Text.h */,
 				4506A9D21A896157009393B3 /* String.h */,
-				457C565E19E5C29900E35A51 /* STL */,
 				457C566119E5C29900E35A51 /* StringBuffer.h */,
 				457C566219E5C29900E35A51 /* StringUtils.h */,
 			);
 			path = Interface;
-			sourceTree = "<group>";
-		};
-		457C565E19E5C29900E35A51 /* STL */ = {
-			isa = PBXGroup;
-			children = (
-				457C566019E5C29900E35A51 /* Text.h */,
-			);
-			path = STL;
 			sourceTree = "<group>";
 		};
 		457C566719E5C2AA00E35A51 /* Interface */ = {
@@ -3292,7 +3276,6 @@
 				4514715C18C5231900AAC617 /* RenderSystem.cpp in Sources */,
 				4514715D18C5231900AAC617 /* RenderTarget.cpp in Sources */,
 				4514715E18C5231900AAC617 /* RenderWindow.cpp in Sources */,
-				457C566419E5C29900E35A51 /* Text.cpp in Sources */,
 				4514715F18C5231900AAC617 /* RenderObjectFactory.cpp in Sources */,
 				456CA28819F83B6500868FA1 /* ResourceText.cpp in Sources */,
 				456CA27F19F83B6500868FA1 /* ResourceMaterial.cpp in Sources */,
@@ -3370,6 +3353,7 @@
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
 				451471C318C5231900AAC617 /* Mutex.cpp in Sources */,
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
+				45C17FE61A901A580018922D /* Text.cpp in Sources */,
 				4506A9C81A893D9A009393B3 /* AtomicInt.cpp in Sources */,
 				451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */,
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
@@ -3546,7 +3530,6 @@
 					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
-					EGE_STRING_STL,
 					EGE_FEATURE_OPENGL_DEBUG,
 					TIXML_USE_STL,
 				);
@@ -3590,7 +3573,6 @@
 					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
 					EGE_CONTAINERS_STL,
-					EGE_STRING_STL,
 					TIXML_USE_STL,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
