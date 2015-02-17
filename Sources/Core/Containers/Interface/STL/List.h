@@ -15,22 +15,45 @@ class List : public std::list<T>
 
     List();
     List(const T& object);
-    List(const List& list, s32 count);
+    List(const List& list, s32 count = -1);
 
-    /*! Removes object at given index. */
-    void removeAt(s32 index);
-    /*! Returns first element. If list is empty, default value is returned. */
-    const T first(const T& defaultValue) const;
-    /*! Returns last element. If list is empty, default value is returned. */
-    const T last(const T& defaultValue) const;
-    /*! Returns TRUE if given object is present. */
-    bool contains(const T object) const;
-    /*! Copies all data from given list. */
-    void copy(const List& other);
+  operators:
+
     /*! Appends given list. */
     List& operator << (const List& other);
     /*! Appends given element. */
     List& operator << (const T& value);
+
+  public:
+
+    /*! Removes element at a given index position.
+     *  @param  index 0-based index at which element is to be removed from this list.
+     *  @note If index is out of range no operation is performed.
+     */
+    void removeAt(s32 index);
+
+    /*! Returns first element.
+     *  @param  defaultValue  Value to return in case of an empty list.
+     *  @return First element or default one.
+     */
+    const T first(const T& defaultValue) const;
+    /*! Returns last element.
+     *  @param  defaultValue  Value to return in case of an empty list.
+     *  @return Last element or default one.
+     */
+    const T last(const T& defaultValue) const;
+
+    /*! Checks for existance of the given element in this list.
+     *  @param  object  Element to look for in this list.
+     *  @return TRUE if given element is present is this list. Otherwise, FALSE.
+     */
+    bool contains(const T object) const;
+
+    /*! Copies all data from a given list to this one.
+     *  @param  from  List to copy data from.
+     *  @note All data present in this list before the copy operation will be removed.
+     */
+    void copy(const List& from);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -47,6 +70,11 @@ List<T>::List(const T& object)
 template <typename T>
 List<T>::List(const List<T>& list, s32 count)
 {
+  if (0 > count)
+  {
+    count = list.size();
+  }
+
   typename List<T>::const_iterator it;
   for (it = list.begin(); (it != list.end()) && (0 < count); ++it, --count)
   {
@@ -57,7 +85,11 @@ List<T>::List(const List<T>& list, s32 count)
 template <typename T>
 void List<T>::removeAt(s32 index)
 {
-  if (index < static_cast<s32>(this->size()))
+  // TAGE - uncomment when EGE #101 is implemented
+  // EGE_ASSERT(0 <= index);
+  // EGE_ASSERT(index < size());
+
+  if ((0 <= index) && (index < static_cast<s32>(this->size())))
   {
     typename List<T>::iterator it = this->begin();
     while (0 != index--)
