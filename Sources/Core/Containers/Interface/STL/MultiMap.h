@@ -12,11 +12,20 @@ class MultiMap : public std::multimap<T, U>
 {
   public:
 
-    /*! Inserts value with given key to map. */
+    /*! Inserts key value pair into this map.
+     *  @param  key   Key at which value is to be inserted.
+     *  @param  value Value to be assiciated with the key.
+     */
     void insert(const T& key, const U& value);
+
     /*! Fills given list with all objects of a given key. */
+    // TAGE - move to some utility class to remove dependency to List ?
     void values(const T& key, List<U>& list) const;
-    /*! Removes entry with a given value. Returns TRUE if entry has been removed. */
+
+    /*! Removes first key-value entry where value is equal to the given one.
+     *  @param  value Value to check for while deciding if entry is to be removed.
+     *  @return TRUE if entry has been removed. Otherwise, FALSE.
+     */
     bool removeByValue(const U value);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

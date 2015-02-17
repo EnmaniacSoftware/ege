@@ -13,25 +13,47 @@ class Map : public std::map<T, U>
 {
   public:
 
-    /*! Returns TRUE if given key is present. */
+    /*! Checks for existance of the given key in this map.
+     *  @param  key Key to look for in this map.
+     *  @return TRUE if given key is present is this map. Otherwise, FALSE.
+     */
     bool contains(const T& key) const;
-    /*! Returns value associated with given key. If key is not found, default value is returned. */
+
+    /*! Returns value associated with a given key.
+     *  @param  key Key under which value of interest is stored.
+     *  @oaram  defaultValue  Value to be returned if requested key is not found.
+     *  @return Value under the given key or default one.
+     */
     U value(const T& key, const U defaultValue) const;
-    /*! Inserts value with given key to map. */
+
+    /*! Inserts key value pair into this map.
+     *  @param  key   Key at which value is to be inserted.
+     *  @param  value Value to be assiciated with the key.
+     *  @note If the key already exists, no data is inserted.
+     */
     void insert(const T& key, const U& value);
+
     /*! Merges another map into this one. 
      *  @param  other               Other map to merge with this one.
      *  @param  overrideDuplicated  If set, in case of key duplicates, original values will be overriden with new values. 
                                     Otherwise, original values will be kept.
      */
     void merge(const Map& other, bool overrideDuplicates = false);
+
     /*! Returns value. */
     U& at(const T& key);
     /*! Returns value. */
     const U& at(const T& key) const;
-    /*! Removes entry with a given value. Returns TRUE if entry has been removed. */
+
+    /*! Removes first key-value entry where value is equal to the given one.
+     *  @param  value Value to check for while deciding if entry is to be removed.
+     *  @return TRUE if entry has been removed. Otherwise, FALSE.
+     */
     bool removeByValue(const U value);
-    /*! Removes entry with a given key. Returns TRUE if entry has been removed. */
+    /*! Removes key-value entry for a given key.
+     *  @param  key Key of the entry to be removed.
+     *  @return TRUE if entry has been removed. Otherwise, FALSE.
+     */
     bool removeByKey(const T key);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
