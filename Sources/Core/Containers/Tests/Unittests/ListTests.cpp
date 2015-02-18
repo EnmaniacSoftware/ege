@@ -18,6 +18,12 @@ class ListTest : public TestBase
      *  @note Any old data within the list will be removed.
      */
     void createList(IntList& list) const;
+
+    /*! Checks content of the given lists for equality. 
+     *  @param  list1 First list.
+     *  @param  list2 Second list.
+     */
+    void checkContentEqual(const IntList& list1, const IntList& list2) const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ListTest::createList(IntList& list) const
@@ -35,6 +41,18 @@ void ListTest::createList(IntList& list) const
   EXPECT_EQ(KListElementCount, list.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ListTest::checkContentEqual(const IntList& list1, const IntList& list2) const
+{
+  EXPECT_EQ(list1.size(), list2.size());
+
+  IntList::ConstIterator it1 = list1.begin();
+  IntList::ConstIterator it2 = list2.begin();
+  for (; (it1 != list1.end()) && (it2 != list2.end()); ++it1, ++it2)
+  {
+    EXPECT_EQ(*it1, *it2);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, Construct)
 {
   IntList empty;
@@ -48,18 +66,20 @@ TEST_F(ListTest, Construct)
   IntList list(other);
   EXPECT_EQ(other.size(), list.size());
 
-  // TAGE - iterators needs to be implemented
-//  for (s32 i = 0; i < other.size(); ++i)
-//  {
-//    EXPECT_EQ(other.at(i), list.at(i));
-//  }
+  // check content
+  checkContentEqual(other, list);
 
   createList(other);
   IntList list2(other, 2);
   EXPECT_EQ(2, list2.size());
 
-  // TAGE - iterators needs to be implemented
-  // Test elements
+  // check content
+  IntList::ConstIterator it1 = list2.begin();
+  IntList::ConstIterator it2 = other.begin();
+  for (; (it1 != list2.end()) && (it2 != other.end()); ++it1, ++it2)
+  {
+    EXPECT_EQ(*it1, *it2);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, RemoveAt)
@@ -78,7 +98,12 @@ TEST_F(ListTest, RemoveAt)
   list.removeAt(KExistingElementIndex);
   EXPECT_EQ(KListElementCount - 1, list.size());
 
-  // TAGE - check content
+  // check content
+  IntList::ConstIterator it = list.begin();
+  for (; it != list.end(); ++it)
+  {
+    EXPECT_NE(KExistingElementValue, *it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, First)
@@ -122,8 +147,7 @@ TEST_F(ListTest, Copy)
   createList(other);
 
   list.copy(other);
-  EXPECT_EQ(other.size(), list.size());
-  // TAGE - check content
+  checkContentEqual(other, list);
 
   list.copy(IntList());
   EXPECT_EQ(0, list.size());
@@ -144,5 +168,77 @@ TEST_F(ListTest, Append)
   EXPECT_EQ(KListElementCount + 1, list.size());
 
   // TAGE - check content
+  IntList::ConstIterator it1 = list.begin();
+  EXPECT_EQ(10, *it1);
+
+  it1++;
+  IntList::ConstIterator it2 = other.begin();
+  for (; (it1 != list.end()) && (it2 != other.end()); ++it1, ++it2)
+  {
+    EXPECT_EQ(*it1, *it2);
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ListTest, Begin)
+{
+  const IntList constListEmpty;
+  IntList listEmpty;
+
+  IntList list;
+  createList(list);
+  IntList constList(list);
+
+  // const interator
+  EXPECT_EQ(constListEmpty.end(), constListEmpty.begin());
+  EXPECT_NE(constList.end(), constList.begin());
+
+  IntList::ConstIterator cit = constList.begin();
+  for (s32 i = 0; i < KListElementCount; ++i, ++cit)
+  {
+    if (i == KExistingElementIndex)
+    {
+      EXPECT_EQ(KExistingElementValue, *cit);
+    }
+  }
+
+  // non-const interator
+  EXPECT_EQ(listEmpty.end(), listEmpty.begin());
+  EXPECT_NE(list.end(), list.begin());
+
+  IntList::Iterator it = list.begin();
+  for (s32 i = 0; i < KListElementCount; ++i, ++it)
+  {
+    if (i == KExistingElementIndex)
+    {
+      EXPECT_EQ(KExistingElementValue, *it);
+    }
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ListTest, End)
+{
+  const IntList constListEmpty;
+  IntList listEmpty;
+
+  IntList list;
+  createList(list);
+  IntList constList(list);
+
+  // const interator
+  EXPECT_EQ(constListEmpty.end(), constListEmpty.begin());
+  EXPECT_NE(constList.end(), constList.begin());
+
+  // non-const interator
+  EXPECT_EQ(listEmpty.end(), listEmpty.begin());
+  EXPECT_NE(list.end(), list.begin());
+
+  // test iteration eqivalence
+  IntList::ConstIterator cit = constList.begin();
+  IntList::Iterator it = list.begin();
+
+  for (; (cit != constList.end()) && (it != list.end()); ++cit, ++it)
+  {
+    EXPECT_EQ(*cit, *it);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

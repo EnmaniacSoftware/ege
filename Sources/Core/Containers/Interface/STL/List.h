@@ -13,6 +13,11 @@ class List : public std::list<T>
 {
   public:
 
+    typedef std::list<T>::iterator Iterator;
+    typedef std::list<T>::const_iterator ConstIterator;
+
+  public:
+
     List();
     List(const T& object);
     List(const List& list, s32 count = -1);
@@ -54,6 +59,14 @@ class List : public std::list<T>
      *  @note All data present in this list before the copy operation will be removed.
      */
     void copy(const List& from);
+
+    /*! Returns an STL-style iterator pointing to the first item in the list. */
+    Iterator begin();
+    ConstIterator begin() const;
+
+    /*! Returns an STL-style iterator pointing to the imaginary item after the last item in the list. */
+    Iterator end();
+    ConstIterator end() const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -125,6 +138,30 @@ void List<T>::copy(const List<T>& other)
 {
   this->clear();
   this->insert(this->begin(), other.begin(), other.end());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+typename List<T>::Iterator List<T>::begin()
+{
+  return std::list<T>::begin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+typename List<T>::ConstIterator List<T>::begin() const
+{
+  return std::list<T>::begin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+typename List<T>::Iterator List<T>::end()
+{
+  return std::list<T>::end();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+typename List<T>::ConstIterator List<T>::end() const
+{
+  return std::list<T>::end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
