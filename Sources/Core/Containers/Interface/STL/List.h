@@ -31,6 +31,13 @@ class List : public std::list<T>
 
   public:
 
+    /*! Returns length of the list. */
+    s32 length() const;
+    /*! Clears the list by removing all elements. */
+    void clear();
+    /*! Returns TRUE if list is empty. */
+    bool isEmpty() const;
+
     /*! Removes element at a given index position.
      *  @param  index 0-based index at which element is to be removed from this list.
      *  @note If index is out of range no operation is performed.
@@ -176,6 +183,24 @@ List<T>& List<T>::operator << (const T& value)
 {
   this->push_back(value);
   return *this;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+s32 List<T>::length() const
+{
+  return static_cast<s32>(size());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+void List<T>::clear()
+{
+  std::list<T>::clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T>
+bool List<T>::isEmpty() const
+{
+  return empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -38,7 +38,7 @@ void ListTest::createList(IntList& list) const
   list << 30;
   list << 100;
 
-  EXPECT_EQ(KListElementCount, list.size());
+  EXPECT_EQ(KListElementCount, list.length());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ListTest::checkContentEqual(const IntList& list1, const IntList& list2) const
@@ -80,6 +80,46 @@ TEST_F(ListTest, Construct)
   {
     EXPECT_EQ(*it1, *it2);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ListTest, Length)
+{
+  IntList list;
+  EXPECT_EQ(0, list.length());
+
+  IntList list2(10);
+  EXPECT_EQ(1, list2.length());
+
+  IntList list3;
+  list3 << 1 << 2 << 3;
+  EXPECT_EQ(3, list3.length());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ListTest, Clear)
+{
+  IntList list;
+  createList(list);
+
+  list.clear(); 
+  EXPECT_EQ(0, list.length());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(ListTest, IsEmpty)
+{
+  IntList list;
+  EXPECT_TRUE(list.isEmpty());
+
+  IntList list2(10);
+  EXPECT_FALSE(list2.isEmpty());
+
+  IntList other;
+  createList(other);
+
+  IntList list3(other);
+  EXPECT_FALSE(list3.isEmpty());
+
+  list3.clear();
+  EXPECT_TRUE(list3.isEmpty());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, RemoveAt)
