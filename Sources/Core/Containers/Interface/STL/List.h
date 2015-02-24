@@ -49,7 +49,7 @@ class List
      *  @param  iterator  Iterator pointing into element to be removed from this list.
      *  @return Iterator to an element after the removed one.
      *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
-    */
+     */
     typename List::Iterator remove(typename List::ConstIterator iterator);
 
     /*! Removes first element containing given object from this list.
