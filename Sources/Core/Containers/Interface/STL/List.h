@@ -49,8 +49,8 @@ class List
      *  @param  iterator  Iterator pointing into element to be removed from this list.
      *  @return Iterator to an element after the removed one.
      *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
-     */
-    typename Iterator remove(typename ConstIterator iterator);
+    */
+    typename List::Iterator remove(typename List::ConstIterator iterator);
 
     /*! Removes first element containing given object from this list.
      *  @param  object  Object to search for.
@@ -115,23 +115,23 @@ class List
      *  @param  obejct    Element to be inserted.
      *  @return Iterator pointing to the inserted object.
      */
-    typename Iterator insert(typename ConstIterator position, const T& object);
+    typename List::Iterator insert(typename List::ConstIterator position, const T& object);
 
     /*! Returns a STL-style iterator pointing to the first item in the list. */
-    typename Iterator begin();
-    typename ConstIterator begin() const;
+    typename List::Iterator begin();
+    typename List::ConstIterator begin() const;
 
     /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list. */
-    typename Iterator end();
-    typename ConstIterator end() const;
+    typename List::Iterator end();
+    typename List::ConstIterator end() const;
 
     /*! Returns a STL-style iterator pointing to the first item in the list, counting from the end. */
-    typename ReverseIterator rbegin();
-    typename ConstReverseIterator rbegin() const;
+    typename List::ReverseIterator rbegin();
+    typename List::ConstReverseIterator rbegin() const;
 
     /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list, counting from the end. */
-    typename ReverseIterator rend();
-    typename ConstReverseIterator rend() const;
+    typename List::ReverseIterator rend();
+    typename List::ConstReverseIterator rend() const;
 
   private:
 

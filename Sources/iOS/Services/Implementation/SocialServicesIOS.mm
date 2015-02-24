@@ -98,7 +98,7 @@ EGEResult SocialServicesIOS::loadAchievements()
           data.name               = [[achievement identifier] UTF8String];
           data.percentageComplete = static_cast<s32>([achievement percentComplete]);
           
-          achievementsList.push_back(data);
+          achievementsList.append(data);
         }
       }
       
@@ -121,7 +121,7 @@ EGEResult SocialServicesIOS::saveAchievements(const AchievementDataList& achieve
     m_pendingAchievementSaveList << achievements;
 
     // process next achievement
-    result = ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.empty()) ? saveNextAchievement() : EGE_SUCCESS;
+    result = ((m_pendingAchievementSaveList.length() == achievements.length()) && ! achievements.isEmpty()) ? saveNextAchievement() : EGE_SUCCESS;
   }
   
   return result;
@@ -131,8 +131,8 @@ EGEResult SocialServicesIOS::saveNextAchievement()
 {
   EGEResult result = EGE_ERROR;
   
-  AchievementData achievementData = m_pendingAchievementSaveList.front();
-  m_pendingAchievementSaveList.pop_front();
+  AchievementData achievementData = m_pendingAchievementSaveList.first();
+  m_pendingAchievementSaveList.removeFirst();
 
   egeDebug(KSocialServicesDebugName) << "Submitting achievement" << achievementData.name << "completion" << achievementData.percentageComplete;
 
@@ -160,7 +160,7 @@ EGEResult SocialServicesIOS::saveNextAchievement()
       else
       {
         // check if any achievement still in queue
-        if ( ! m_pendingAchievementSaveList.empty())
+        if ( ! m_pendingAchievementSaveList.isEmpty())
         {
           // proceed
           if (EGE_SUCCESS != (result = saveNextAchievement()))

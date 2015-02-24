@@ -49,7 +49,7 @@ EGEResult PurchaseServicesIOS::purchase(const String& product)
     m_pendingPurchases << product;
     
     // check if first item added
-    if (1 == m_pendingPurchases.size())
+    if (1 == m_pendingPurchases.length())
     {
       // process immediately
       processNextPurchase();
@@ -77,7 +77,7 @@ EGEResult PurchaseServicesIOS::restoreAll()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PurchaseServicesIOS::processNextPurchase()
 {
-  const String product = m_pendingPurchases.front();
+  const String product = m_pendingPurchases.first();
   
   // convert product name
   NSString* identifier = [NSString stringWithCString: product.toAscii() encoding: NSASCIIStringEncoding];
@@ -102,16 +102,16 @@ void PurchaseServicesIOS::processNextPurchase()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void PurchaseServicesIOS::onProductPurchased(EGEResult result, const String& productName)
 {
-  EGE_ASSERT(m_pendingPurchases.front() == productName);
+  EGE_ASSERT(m_pendingPurchases.first() == productName);
   
   // remove from pool
-  m_pendingPurchases.pop_front();
+  m_pendingPurchases.removeFirst();
   
   // emit
   emit purchased(result, productName);
   
   // check if more items to purchase
-  if ( ! m_pendingPurchases.empty())
+  if ( ! m_pendingPurchases.isEmpty())
   {
     processNextPurchase();
   }
