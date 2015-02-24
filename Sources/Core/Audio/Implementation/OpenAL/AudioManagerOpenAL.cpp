@@ -148,7 +148,7 @@ void AudioManagerOpenAL::setEnable(bool set)
       MutexLocker locker(m_mutex);
 
       // queue all currently played sounds for stop
-      for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
+      for (SoundList::Iterator it = m_sounds.begin(); it != m_sounds.end(); ++it)
       {
         // stop
         queueForStop(*it);
@@ -156,7 +156,7 @@ void AudioManagerOpenAL::setEnable(bool set)
       m_sounds.clear();
 
       // stop all sounds scheduled for playback
-      for (SoundList::iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
+      for (SoundList::Iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
       {
         // stop
         queueForStop(*it);
@@ -219,7 +219,7 @@ void AudioManagerOpenAL::threadUpdate(const Time& time)
   MutexLocker locker(m_mutex);
 
   // process sounds to be paused
-  for (SoundList::iterator it = m_soundsToPause.begin(); it != m_soundsToPause.end(); ++it)
+  for (SoundList::Iterator it = m_soundsToPause.begin(); it != m_soundsToPause.end(); ++it)
   {
     SoundOpenAL* sound = ege_cast<SoundOpenAL*>(*it);
 
@@ -229,7 +229,7 @@ void AudioManagerOpenAL::threadUpdate(const Time& time)
   m_soundsToPause.clear();
 
   // go thru all sounds
-  for (SoundList::iterator it = m_sounds.begin(); it != m_sounds.end();)
+  for (SoundList::Iterator it = m_sounds.begin(); it != m_sounds.end();)
   {
     SoundOpenAL* sound = ege_cast<SoundOpenAL*>(*it);
 
@@ -240,7 +240,7 @@ void AudioManagerOpenAL::threadUpdate(const Time& time)
     if (SoundOpenAL::StateStopped == sound->state())
     {
       // remove from list
-      it = m_sounds.erase(it);
+      it = m_sounds.remove(it);
     }
     else
     {
@@ -249,7 +249,7 @@ void AudioManagerOpenAL::threadUpdate(const Time& time)
   }
 
   // start pending playbacks
-  for (SoundList::iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
+  for (SoundList::Iterator it = m_soundsToPlay.begin(); it != m_soundsToPlay.end(); ++it)
   {
     SoundOpenAL* sound = ege_cast<SoundOpenAL*>(*it);
 
@@ -265,14 +265,14 @@ void AudioManagerOpenAL::threadUpdate(const Time& time)
       if (sound->doPlay(findAvailableChannel()))
       {
         // add to pool
-        m_sounds.push_back(*it);
+        m_sounds.append(*it);
       }
     }
   }
   m_soundsToPlay.clear();
 
   // stop playbacks
-  for (SoundList::iterator it = m_soundsToStop.begin(); it != m_soundsToStop.end(); ++it)
+  for (SoundList::Iterator it = m_soundsToStop.begin(); it != m_soundsToStop.end(); ++it)
   {
     SoundOpenAL* sound = ege_cast<SoundOpenAL*>(*it);
 
@@ -297,19 +297,19 @@ void AudioManagerOpenAL::onThreadFinished(const PThread& thread)
 void AudioManagerOpenAL::queueForStop(PSound& sound)
 {
   // add to list
-  m_soundsToStop.push_back(sound);
+  m_soundsToStop.append(sound);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerOpenAL::queueForPlay(PSound& sound)
 {
   // add to list
-  m_soundsToPlay.push_back(sound);
+  m_soundsToPlay.append(sound);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioManagerOpenAL::queueForPause(PSound& sound)
 {
   // add to list
-  m_soundsToPause.push_back(sound);
+  m_soundsToPause.append(sound);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ALuint AudioManagerOpenAL::findAvailableChannel() const

@@ -11,23 +11,25 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const char* KImagedAnimationDebugName = "EGEImagedAnimation";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImagedAnimation::ImagedAnimation(Engine& engine) : KeyFrameAnimation(engine, "")
-                                                 , m_renderPriority(EGEGraphics::RP_MAIN)
-                                                 , m_displaySize(50, 50)
-                                                 , m_baseAlignment(ALIGN_TOP_LEFT)
-                                                 , m_alpha(1.0f)
-                                                 , m_renderDataNeedsUpdate(false)
-                                                 , m_transform(Matrix4f::IDENTITY)
+ImagedAnimation::ImagedAnimation(Engine& engine) 
+: KeyFrameAnimation(engine, "")
+, m_renderPriority(EGEGraphics::RP_MAIN)
+, m_displaySize(50, 50)
+, m_baseAlignment(ALIGN_TOP_LEFT)
+, m_alpha(1.0f)
+, m_renderDataNeedsUpdate(false)
+, m_transform(Matrix4f::IDENTITY)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImagedAnimation::ImagedAnimation(Engine& engine, const String& name) : KeyFrameAnimation(engine, name)
-                                                                     , m_renderPriority(EGEGraphics::RP_MAIN)
-                                                                     , m_displaySize(50, 50)
-                                                                     , m_baseAlignment(ALIGN_TOP_LEFT)
-                                                                     , m_alpha(1.0f)
-                                                                     , m_renderDataNeedsUpdate(false)
-                                                                     , m_transform(Matrix4f::IDENTITY)
+ImagedAnimation::ImagedAnimation(Engine& engine, const String& name) 
+: KeyFrameAnimation(engine, name)
+, m_renderPriority(EGEGraphics::RP_MAIN)
+, m_displaySize(50, 50)
+, m_baseAlignment(ALIGN_TOP_LEFT)
+, m_alpha(1.0f)
+, m_renderDataNeedsUpdate(false)
+, m_transform(Matrix4f::IDENTITY)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -40,7 +42,7 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
   EGEResult result = EGE_ERROR;
 
   // check if appropriate animation data is present
-  if ( ! m_objects.empty() && ! m_framesActionsList.empty())
+  if ( ! m_objects.empty() && ! m_framesActionsList.isEmpty())
   {
     // try to start animation
     result = KeyFrameAnimation::play(sequencerName);
@@ -135,7 +137,7 @@ void ImagedAnimation::updateRenderData()
   declaration.addElement(NVertexBuffer::VES_COLOR_RGBA);
 
   // go thru all frames
-  for (List<EGEImagedAnimation::ActionDataList>::const_iterator itFrame = m_framesActionsList.begin(); itFrame != m_framesActionsList.end(); ++itFrame)
+  for (List<EGEImagedAnimation::ActionDataList>::ConstIterator itFrame = m_framesActionsList.begin(); itFrame != m_framesActionsList.end(); ++itFrame)
   {
     const List<EGEImagedAnimation::ActionData>& actions = *itFrame;
 
@@ -152,13 +154,13 @@ void ImagedAnimation::updateRenderData()
     EGE_ASSERT(NULL != data);
 
     // go thru all frame actions
-    for (List<EGEImagedAnimation::ActionData>::const_iterator itAction = actions.begin(); itAction != actions.end(); ++itAction)
+    for (List<EGEImagedAnimation::ActionData>::ConstIterator itAction = actions.begin(); itAction != actions.end(); ++itAction)
     {
       const EGEImagedAnimation::ActionData& action = *itAction;
       
       // go thru all action children
       const EGEImagedAnimation::Object& object = m_objects.at(action.objectId);
-      for (EGEImagedAnimation::ChildObjectList::const_iterator itObject = object.children.begin(); itObject != object.children.end(); ++itObject)
+      for (EGEImagedAnimation::ChildObjectList::ConstIterator itObject = object.children.begin(); itObject != object.children.end(); ++itObject)
       {
         const EGEImagedAnimation::ChildObject& child = *itObject;
 
@@ -285,7 +287,7 @@ u32 ImagedAnimation::calculateFrameVertexCount(const EGEImagedAnimation::ObjectM
   u32 vertexCount = 0;
 
   // go thru all frame actions
-  for (EGEImagedAnimation::ActionDataList::const_iterator itAction = frameActionList.begin(); itAction != frameActionList.end(); ++itAction)
+  for (EGEImagedAnimation::ActionDataList::ConstIterator itAction = frameActionList.begin(); itAction != frameActionList.end(); ++itAction)
   {
     const EGEImagedAnimation::ActionData& action = *itAction;
       
@@ -293,7 +295,7 @@ u32 ImagedAnimation::calculateFrameVertexCount(const EGEImagedAnimation::ObjectM
     const EGEImagedAnimation::Object& object = objects.at(action.objectId);
 
     // update vertex count (number of objects)
-    vertexCount += object.children.size();
+    vertexCount += object.children.length();
   }
 
   // (6 vertices per object/quad)

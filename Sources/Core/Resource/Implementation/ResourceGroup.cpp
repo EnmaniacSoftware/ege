@@ -261,7 +261,7 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
     for (ResourcesMap::const_iterator it = range.first; it != range.second; ++it)
     {
       // add to list
-      list.push_back(it->second);
+      list.append(it->second);
     }
   }
   else
@@ -270,7 +270,7 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
     for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
       // add to list
-      list.push_back(it->second);
+      list.append(it->second);
     }
   }
 

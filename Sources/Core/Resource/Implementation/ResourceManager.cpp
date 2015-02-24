@@ -43,7 +43,7 @@ ResourceManager::ResourceManager(Engine& engine, IResourceLoader& loader)
 ResourceManager::~ResourceManager()
 {
   // NOTE: all groups should be already removed
-  EGE_ASSERT(m_groups.empty());
+  EGE_ASSERT(m_groups.isEmpty());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::construct()
@@ -75,7 +75,7 @@ EGEResult ResourceManager::addResources(String filePath, bool autoDetect)
 
   // try to locate resource file in each data location
   // NOTE: if no AUTO-DETECTION is set we do exactly one search with a given filePath
-  for (StringList::const_iterator it = m_dataDirs.begin(); (it != m_dataDirs.end() && ((it == m_dataDirs.begin() && !autoDetect) || autoDetect)); ++it)
+  for (StringList::ConstIterator it = m_dataDirs.begin(); (it != m_dataDirs.end() && ((it == m_dataDirs.begin() && !autoDetect) || autoDetect)); ++it)
   {
     String fullPath = autoDetect ? Directory::Join(*it, filePath) : filePath;
 
@@ -114,7 +114,7 @@ PResourceGroup ResourceManager::group(const String& name) const
   PResourceGroup group;
 
   // go thru all groups
-  for (List<PResourceGroup>::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+  for (List<PResourceGroup>::ConstIterator it = m_groups.begin(); it != m_groups.end(); ++it)
   {
     // check if proper group has been found
     if ((*it)->name() == name)
@@ -142,7 +142,7 @@ PResource ResourceManager::resource(const String& typeName, const String& name, 
   else
   {
     // go thru all groups
-    for (GroupList::const_iterator it = m_groups.begin(); it != m_groups.end(); ++it)
+    for (GroupList::ConstIterator it = m_groups.begin(); it != m_groups.end(); ++it)
     {
       PResource resource = (*it)->resource(typeName, name);
       if (resource)
@@ -200,13 +200,13 @@ bool ResourceManager::createDefaultResources()
 void ResourceManager::unloadAll()
 {
   // go thru all groups
-  for (GroupList::iterator it = m_groups.begin(); it != m_groups.end(); )
+  for (GroupList::Iterator it = m_groups.begin(); it != m_groups.end(); )
   {
     PResourceGroup group = *it;
 
     // try to unload all resource one by one
     List<PResource> resources = group->resources("");
-    for (List<PResource>::iterator itResource = resources.begin(); itResource != resources.end(); ++itResource)
+    for (List<PResource>::Iterator itResource = resources.begin(); itResource != resources.end(); ++itResource)
     {
       PResource resource = *itResource;
 
@@ -221,7 +221,7 @@ void ResourceManager::unloadAll()
     //if (EGE_ERROR_ALREADY_EXISTS == group->unload())
     {
       // remove
-      it = m_groups.erase(it);
+      it = m_groups.remove(it);
       //continue;
     }
 
@@ -257,7 +257,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
   }
 
   // go thru all dependancies
-  for (StringList::const_iterator it = groupResource->dependancies().begin(); it != groupResource->dependancies().end(); ++it)
+  for (StringList::ConstIterator it = groupResource->dependancies().begin(); it != groupResource->dependancies().end(); ++it)
   {
     PResourceGroup groupResourceDependancy = group(*it);
     if (NULL == groupResourceDependancy)
@@ -271,7 +271,7 @@ bool ResourceManager::buildDependacyList(StringList& list, const String& groupNa
     if (!list.contains(*it))
     {
       // add to pool
-      list.push_back(*it);
+      list.append(*it);
     }
     else
     {
@@ -307,10 +307,10 @@ bool ResourceManager::initializeProcessingBatch(ProcessingBatch& batch, const St
   }
 
   // add itself at the end
-  batch.groups.push_back(groupName);
+  batch.groups.append(groupName);
 
   // count resources
-  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+  for (StringList::ConstIterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
   {
     // find group of given name
     PResourceGroup group = this->group(*it);
@@ -334,7 +334,7 @@ bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
   batch.resources.reserve(batch.resourcesCount);
 
   // go thru all groups
-  for (StringList::const_iterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
+  for (StringList::ConstIterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
   {
     // find group of given name
     PResourceGroup group = this->group(*it);
@@ -349,7 +349,7 @@ bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
     List<PResource> resources = group->resources("");
 
     // add them all into batch
-    for (List<PResource>::const_iterator itRes = resources.begin(); itRes != resources.end(); ++itRes)
+    for (List<PResource>::ConstIterator itRes = resources.begin(); itRes != resources.end(); ++itRes)
     {
       batch.resources.push_back(*itRes);
     }
@@ -360,9 +360,9 @@ bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::processBatch()
 {
-  EGE_ASSERT( ! m_processList.empty());
+  EGE_ASSERT( ! m_processList.isEmpty());
 
-  ProcessingBatch& batch = m_processList.front();
+  ProcessingBatch& batch = m_processList.first();
 
   // check if batch has been processed
   if (batch.resources.empty())
@@ -466,7 +466,7 @@ u32 ResourceManager::uid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupLoaded(const PResourceGroup& group, EGEResult result)
 {
-  ProcessingBatch& data = m_processList.front();
+  ProcessingBatch& data = m_processList.first();
 
   EGE_ASSERT(group->name() == data.groups.last(""));
   
@@ -476,13 +476,13 @@ void ResourceManager::onGroupLoaded(const PResourceGroup& group, EGEResult resul
     egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove from process list first
-    m_processList.pop_front();
+    m_processList.removeFirst();
 
     // signal
     emit signalGroupLoaded(group->name(), result);
 
     // check if not more batches to process
-    if (m_processList.empty())
+    if (m_processList.isEmpty())
     {
       // clean up statistics
       m_totalResourcesToProcess = 0;
@@ -493,7 +493,7 @@ void ResourceManager::onGroupLoaded(const PResourceGroup& group, EGEResult resul
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupUnloaded(const PResourceGroup& group, EGEResult result)
 {
-  ProcessingBatch& data = m_processList.front();
+  ProcessingBatch& data = m_processList.first();
 
   EGE_ASSERT(group->name() == data.groups.last(""));
   
@@ -503,13 +503,13 @@ void ResourceManager::onGroupUnloaded(const PResourceGroup& group, EGEResult res
     egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
 
     // remove from process list first
-    m_processList.pop_front();
+    m_processList.removeFirst();
 
     // signal
     emit signalGroupUnloaded(group->name(), result);
 
     // check if not more batches to process
-    if (m_processList.empty())
+    if (m_processList.isEmpty())
     {
       // clean up statistics
       m_totalResourcesToProcess = 0;
@@ -549,7 +549,7 @@ void ResourceManager::onResourceUnloaded(const PResource& resource, EGEResult re
 void ResourceManager::onGroupCreated(const PResourceGroup& group)
 {
   // add into pool
-  m_groups.push_back(group);
+  m_groups.append(group);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManager::loadResource(PResource& resource) const

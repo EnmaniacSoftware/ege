@@ -57,13 +57,13 @@ void ResourceManagerMultiThread::update(const Time& time)
   if (EModuleStateRunning == state())
   {
     // check if any signals are to be emitted
-    if ( ! m_emissionRequests.empty())
+    if ( ! m_emissionRequests.isEmpty())
     {
       MutexLocker lock(m_mutex);
       MutexLocker lock2(m_emitRequstsMutex);
 
       // emit one by one
-      for (EmissionRequestList::const_iterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
+      for (EmissionRequestList::ConstIterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
       {
         const ResourceManagerRequest* request = *it;
 
@@ -104,7 +104,7 @@ void ResourceManagerMultiThread::update(const Time& time)
     }
 
     // check if anything to process
-    if ( ! m_processList.empty())
+    if ( ! m_processList.isEmpty())
     {
       // wake up worker thread
       m_commandsToProcess->wakeOne();
@@ -118,7 +118,7 @@ void ResourceManagerMultiThread::update(const Time& time)
       // NOTE: this should be repeated until all groups are unloaded and removed
       unloadAll();
 
-      if (m_groups.empty())
+      if (m_groups.isEmpty())
       {
         // done
         setState(EModuleStateClosed);
@@ -137,17 +137,17 @@ EGEResult ResourceManagerMultiThread::loadGroup(const String& name)
   MutexLocker locker(m_mutex);
 
   // check if already in pending list
-  for (ProcessingBatchList::iterator it = m_processList.begin(); it != m_processList.end(); ++it)
+  for (ProcessingBatchList::Iterator it = m_processList.begin(); it != m_processList.end(); ++it)
   {
     ProcessingBatch& batch = *it;
 
-    if (batch.groups.back() == name)
+    if (batch.groups.last() == name)
     {
       // check if scheduled for unloading and not started yet
       if ( ! batch.load && (0 == batch.startTime.microseconds()))
       {
         // remove from pool
-        m_processList.erase(it);
+        m_processList.remove(it);
   
         // TAGE - should notification (fake) be sent ?
         return EGE_SUCCESS;
@@ -173,7 +173,7 @@ EGEResult ResourceManagerMultiThread::loadGroup(const String& name)
     return EGE_ERROR;
   }
 
-  m_processList.push_back(batch);
+  m_processList.append(batch);
 
   // update statistics
   m_totalResourcesToProcess += batch.resourcesCount;
@@ -186,17 +186,17 @@ void ResourceManagerMultiThread::unloadGroup(const String& name)
   MutexLocker locker(m_mutex);
 
   // check if already in pending list
-  for (ProcessingBatchList::iterator it = m_processList.begin(); it != m_processList.end(); ++it)
+  for (ProcessingBatchList::Iterator it = m_processList.begin(); it != m_processList.end(); ++it)
   {
     ProcessingBatch& batch = *it;
 
-    if (batch.groups.back() == name)
+    if (batch.groups.last() == name)
     {
       // check if scheduled for unloading and not started yet
       if (batch.load && (0 == batch.startTime.microseconds()))
       {
         // remove from pool
-        m_processList.erase(it);
+        m_processList.remove(it);
 
         // TAGE - should notification (fake) be sent ?
         return;
@@ -222,7 +222,7 @@ void ResourceManagerMultiThread::unloadGroup(const String& name)
     return;
   }
 
-  m_processList.push_back(batch);
+  m_processList.append(batch);
 
   // update statistics
   m_totalResourcesToProcess += batch.resourcesCount;
@@ -233,7 +233,7 @@ void ResourceManagerMultiThread::threadUpdate()
   m_mutex->lock();
 
   // check if nothing to process
-  if (m_processList.empty() && (EModuleStateRunning == state()))
+  if (m_processList.isEmpty() && (EModuleStateRunning == state()))
   {
     // wait for data
     // NOTE: this unlocks mutex
@@ -243,7 +243,7 @@ void ResourceManagerMultiThread::threadUpdate()
   }
 
   // check if nothing to process
-  if ( ! m_processList.empty() && (EModuleStateRunning == state()))
+  if ( ! m_processList.isEmpty() && (EModuleStateRunning == state()))
   {
     processBatch();
   }
@@ -290,7 +290,7 @@ void ResourceManagerMultiThread::onGroupLoaded(const PResourceGroup& group, EGER
   ResourceManagerGroupLoadedRequest* request = ege_new ResourceManagerGroupLoadedRequest(group, result);
 
   MutexLocker lock(m_emitRequstsMutex);
-  m_emissionRequests.push_back(request);
+  m_emissionRequests.append(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerMultiThread::onGroupUnloaded(const PResourceGroup& group, EGEResult result)
@@ -300,14 +300,14 @@ void ResourceManagerMultiThread::onGroupUnloaded(const PResourceGroup& group, EG
   ResourceManagerGroupUnloadedRequest* request = ege_new ResourceManagerGroupUnloadedRequest(group, result);
 
   MutexLocker lock(m_emitRequstsMutex);
-  m_emissionRequests.push_back(request);
+  m_emissionRequests.append(request);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerMultiThread::processBatch()
 {
   // NOTE: mutex is locked
 
-  ProcessingBatch& batch = m_processList.front();
+  ProcessingBatch& batch = m_processList.first();
 
   // check if batch has NOT been started yet
   if (batch.resources.empty() && (0 == batch.startTime.microseconds()))
@@ -319,7 +319,7 @@ void ResourceManagerMultiThread::processBatch()
       egeCritical(KResourceManagerDebugName) << "Could not finalize processing batch for group" << batch.groups.last("");
       
       // remove from pool
-      m_processList.pop_front();
+      m_processList.removeFirst();
 
       // do not process any further
       return;

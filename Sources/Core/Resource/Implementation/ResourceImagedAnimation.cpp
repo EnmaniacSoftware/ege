@@ -112,7 +112,7 @@ EGEResult ResourceImagedAnimation::load()
     {
       ObjectData& dataObject = *it;
 
-      for (ObjectChildDataList::iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
+      for (ObjectChildDataList::Iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
       {
         ObjectChildData& childData = *itChild;
 
@@ -136,7 +136,7 @@ EGEResult ResourceImagedAnimation::load()
     }
 
     // load all sequencers
-    for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+    for (SequenceResourceList::Iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
     {
       PResourceSequencer seqResource = *it;
       if (EGE_SUCCESS != (result = seqResource->load()))
@@ -160,7 +160,7 @@ void ResourceImagedAnimation::unload()
   {
     ObjectData& dataObject = *it;
 
-    for (ObjectChildDataList::iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
+    for (ObjectChildDataList::Iterator itChild = dataObject.children.begin(); itChild != dataObject.children.end(); ++itChild)
     {
       ObjectChildData& childData = *itChild;
 
@@ -211,7 +211,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
     object.id = data.id;
 
     // go thru all children
-    for (ObjectChildDataList::const_iterator itChild = data.children.begin(); itChild != data.children.end(); ++itChild)
+    for (ObjectChildDataList::ConstIterator itChild = data.children.begin(); itChild != data.children.end(); ++itChild)
     {
       const ObjectChildData& childData = *itChild;
 
@@ -234,12 +234,12 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 
   // add frames
   List<List<EGEImagedAnimation::ActionData> > allActions;
-  for (FrameDataList::const_iterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
+  for (FrameDataList::ConstIterator itFrame = m_frames.begin(); itFrame != m_frames.end(); ++itFrame)
   {
     const FrameData& frameData = *itFrame;
 
     List<EGEImagedAnimation::ActionData> actions;
-    for (FrameActionDataList::const_iterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
+    for (FrameActionDataList::ConstIterator itAction = frameData.actions.begin(); itAction != frameData.actions.end(); ++itAction)
     {
       const FrameActionData& action = *itAction;
 
@@ -254,7 +254,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
       actionData.color    = action.color;
 
       // add to pool
-      actions.push_back(actionData);
+      actions.append(actionData);
     }
 
     allActions << actions;
@@ -269,7 +269,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
   instance->addData(objects, allActions);
 
   // add sequencers
-  for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  for (SequenceResourceList::Iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
   {
     PResourceSequencer seqRes = *it;
 
@@ -366,7 +366,7 @@ EGEResult ResourceImagedAnimation::addFrame(const PXmlElement& tag)
     child = child->nextChild();
   }
 
-  m_frames.push_back(data);
+  m_frames.append(data);
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -391,7 +391,7 @@ EGEResult ResourceImagedAnimation::addAction(const PXmlElement& tag, FrameData* 
   }
 
   // add to frame
-  frameData->actions.push_back(action);
+  frameData->actions.append(action);
 
   return EGE_SUCCESS;
 }
@@ -416,7 +416,7 @@ EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
   }
 
   // check if such sequence already exists
-  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  for (SequenceResourceList::ConstIterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
   {
     const PResourceSequencer& resource = *it;
     if (resource->name() == seqRes->name())
@@ -427,7 +427,7 @@ EGEResult ResourceImagedAnimation::addSequence(const PXmlElement& tag)
   }
 
   // add to pool
-  m_sequenceResources.push_back(seqRes);
+  m_sequenceResources.append(seqRes);
 
   return EGE_SUCCESS;
 }

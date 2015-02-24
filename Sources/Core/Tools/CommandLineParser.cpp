@@ -27,7 +27,7 @@ CommandLineParser::CommandLineParser(int argc, char** argv)
 CommandLineParser::CommandLineParser(const StringList& list)
 {
   String string;
-  for (StringList::const_iterator it = list.begin(); it != list.end(); ++it)
+  for (StringList::ConstIterator it = list.begin(); it != list.end(); ++it)
   {
     const String& value = *it;
     

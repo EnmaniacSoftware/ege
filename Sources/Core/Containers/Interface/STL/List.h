@@ -1,6 +1,11 @@
 #ifndef EGE_CORE_LIST_H
 #define EGE_CORE_LIST_H
 
+/** Lists are sequence containers that allow constant time insert and erase operations anywhere within the sequence, and iteration in both directions.
+ *  Lists perform generally better in inserting, extracting and moving elements in any position within the container for which an iterator has already 
+ *  been obtained, and therefore also in algorithms that make intensive use of these, like sorting algorithms.
+ */
+
 #include "EGETypes.h"
 #include <list>
 #include <algorithm>
@@ -8,13 +13,15 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-class List : public std::list<T>
+template <class T>
+class List
 {
   public:
 
-    typedef std::list<T>::iterator Iterator;
-    typedef std::list<T>::const_iterator ConstIterator;
+    typedef typename std::list<T>::iterator Iterator;
+    typedef typename std::list<T>::const_iterator ConstIterator;
+    typedef typename std::list<T>::reverse_iterator ReverseIterator;
+    typedef typename std::list<T>::const_reverse_iterator ConstReverseIterator;
 
   public:
 
@@ -27,7 +34,7 @@ class List : public std::list<T>
     /*! Appends given list. */
     List& operator << (const List& other);
     /*! Appends given element. */
-    List& operator << (const T& value);
+    List& operator << (const T& object);
 
   public:
 
@@ -38,22 +45,48 @@ class List : public std::list<T>
     /*! Returns TRUE if list is empty. */
     bool isEmpty() const;
 
-    /*! Removes element at a given index position.
-     *  @param  index 0-based index at which element is to be removed from this list.
-     *  @note If index is out of range no operation is performed.
+    /*! Removes element pointed by an iterator.
+     *  @param  iterator  Iterator pointing into element to be removed from this list.
+     *  @return Iterator to an element after the removed one.
+     *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
      */
-    void removeAt(s32 index);
+    typename Iterator remove(typename ConstIterator iterator);
 
-    /*! Returns first element.
+    /*! Removes first element containing given object from this list.
+     *  @param  object  Object to search for.
+     */
+    void remove(const T& object);
+
+    /*! Removes the first item in the list. 
+     *  @note List cannot be empty. Otherwise, behaviour is undefined.
+     */
+    void removeFirst();
+    /*! Removes the last item in the list. 
+     *  @note List cannot be empty. Otherwise, behaviour is undefined.
+     */
+    void removeLast();
+
+    /*! Returns list's first element.
      *  @param  defaultValue  Value to return in case of an empty list.
      *  @return First element or default one.
      */
-    const T first(const T& defaultValue) const;
-    /*! Returns last element.
+    const T& first(const T& defaultValue = T()) const;
+    /*! Returns list's first element.
+     *  @return First element of this list.
+     *  @note List must contain at least one element. Otherwise, it causes undefiend behavior.
+     */
+    T& first();
+
+    /*! Returns list's last element.
      *  @param  defaultValue  Value to return in case of an empty list.
      *  @return Last element or default one.
      */
-    const T last(const T& defaultValue) const;
+    const T& last(const T& defaultValue = T()) const;
+    /*! Returns list's Last element.
+     *  @return Last element of this list.
+     *  @note List must contain at least one element. Otherwise, it causes undefiend behavior.
+     */
+    T& last();
 
     /*! Checks for existance of the given element in this list.
      *  @param  object  Element to look for in this list.
@@ -67,140 +100,229 @@ class List : public std::list<T>
      */
     void copy(const List& from);
 
-    /*! Returns an STL-style iterator pointing to the first item in the list. */
-    Iterator begin();
-    ConstIterator begin() const;
+    /*! Adds given object to the end of the list. 
+     *  @param  object  Object to be appended.
+     */
+    void append(const T& object);
+   
+    /*! Adds given object to the front of the list. 
+     *  @param  object  Object to be prepended.
+     */
+    void prepend(const T& object);
 
-    /*! Returns an STL-style iterator pointing to the imaginary item after the last item in the list. */
-    Iterator end();
-    ConstIterator end() const;
+    /*! Inserts element into the list.
+     *  @param  position  Position iterator immediately before which given element should be inserted.
+     *  @param  obejct    Element to be inserted.
+     *  @return Iterator pointing to the inserted object.
+     */
+    typename Iterator insert(typename ConstIterator position, const T& object);
+
+    /*! Returns a STL-style iterator pointing to the first item in the list. */
+    typename Iterator begin();
+    typename ConstIterator begin() const;
+
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list. */
+    typename Iterator end();
+    typename ConstIterator end() const;
+
+    /*! Returns a STL-style iterator pointing to the first item in the list, counting from the end. */
+    typename ReverseIterator rbegin();
+    typename ConstReverseIterator rbegin() const;
+
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list, counting from the end. */
+    typename ReverseIterator rend();
+    typename ConstReverseIterator rend() const;
+
+  private:
+
+    /*! Underlying container. */
+    std::list<T> m_data;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 List<T>::List()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 List<T>::List(const T& object)
 {
-  this->push_back(object);
+  m_data.push_back(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 List<T>::List(const List<T>& list, s32 count)
 {
   if (0 > count)
   {
-    count = list.size();
+    count = list.length();
   }
 
-  typename List<T>::const_iterator it;
+  ConstIterator it;
   for (it = list.begin(); (it != list.end()) && (0 < count); ++it, --count)
   {
-    this->push_back(*it);
+    m_data.push_back(*it);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-void List<T>::removeAt(s32 index)
+template <class T>
+typename List<T>::Iterator List<T>::remove(typename List<T>::ConstIterator iterator)
 {
-  // TAGE - uncomment when EGE #101 is implemented
-  // EGE_ASSERT(0 <= index);
-  // EGE_ASSERT(index < size());
-
-  if ((0 <= index) && (index < static_cast<s32>(this->size())))
-  {
-    typename List<T>::iterator it = this->begin();
-    while (0 != index--)
-    {
-      ++it;
-    }
-
-    this->erase(it);
-  }
+  return m_data.erase(iterator);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-const T List<T>::first(const T& defaultValue) const
+template <class T>
+void List<T>::remove(const T& object)
 {
-  return (0 == this->size()) ? defaultValue : this->front();
+  m_data.remove(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-const T List<T>::last(const T& defaultValue) const
+template <class T>
+void List<T>::removeFirst()
 {
-  return (0 == this->size()) ? defaultValue : this->back();
+  m_data.pop_front();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
+void List<T>::removeLast()
+{
+  m_data.pop_back();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+T& List<T>::first()
+{
+  return m_data.front();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+const T& List<T>::first(const T& defaultValue) const
+{
+  return isEmpty() ? defaultValue : m_data.front();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+T& List<T>::last()
+{
+  return m_data.back();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+const T& List<T>::last(const T& defaultValue) const
+{
+  return isEmpty() ? defaultValue : m_data.back();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
 bool List<T>::contains(const T object) const
 {
-  typename List<T>::const_iterator it = std::find(this->begin(), this->end(), object);
-  return (it != this->end());
+  ConstIterator it = std::find(begin(), end(), object);
+  return (it != end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 void List<T>::copy(const List<T>& other)
 {
-  this->clear();
-  this->insert(this->begin(), other.begin(), other.end());
+  clear();
+  m_data.insert(begin(), other.begin(), other.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
+void List<T>::append(const T& object)
+{
+  m_data.push_back(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+void List<T>::prepend(const T& object)
+{
+  m_data.push_front(object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+typename List<T>::Iterator List<T>::insert(typename List<T>::ConstIterator position, const T& object)
+{
+  return m_data.insert(position, object);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
 typename List<T>::Iterator List<T>::begin()
 {
-  return std::list<T>::begin();
+  return m_data.begin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 typename List<T>::ConstIterator List<T>::begin() const
 {
-  return std::list<T>::begin();
+  return m_data.begin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 typename List<T>::Iterator List<T>::end()
 {
-  return std::list<T>::end();
+  return m_data.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 typename List<T>::ConstIterator List<T>::end() const
 {
-  return std::list<T>::end();
+  return m_data.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
+typename List<T>::ReverseIterator List<T>::rbegin()
+{
+  return m_data.rbegin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+typename List<T>::ConstReverseIterator List<T>::rbegin() const
+{
+  return m_data.rbegin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+typename List<T>::ReverseIterator List<T>::rend()
+{
+  return m_data.rend();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
+typename List<T>::ConstReverseIterator List<T>::rend() const
+{
+  return m_data.rend();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <class T>
 List<T>& List<T>::operator << (const List<T>& other)
 {
-  this->insert(this->end(), other.begin(), other.end());
+  m_data.insert(end(), other.begin(), other.end());
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 List<T>& List<T>::operator << (const T& value)
 {
-  this->push_back(value);
+  m_data.push_back(value);
   return *this;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 s32 List<T>::length() const
 {
-  return static_cast<s32>(size());
+  return static_cast<s32>(m_data.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 void List<T>::clear()
 {
-  std::list<T>::clear();
+  m_data.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
+template <class T>
 bool List<T>::isEmpty() const
 {
-  return empty();
+  return m_data.empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

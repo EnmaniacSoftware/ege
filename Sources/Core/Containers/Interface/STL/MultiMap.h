@@ -44,7 +44,7 @@ void MultiMap<T, U>::values(const T& key, List<U>& list) const
   // add values into list
   for (typename std::multimap<T, U>::const_iterator it = range.first; it != range.second; ++it)
   {
-    list.push_back(it->second);
+    list.append(it->second);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

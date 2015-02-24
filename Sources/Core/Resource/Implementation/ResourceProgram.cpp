@@ -96,7 +96,7 @@ EGEResult ResourceProgram::load()
         List<PShader> shaders;
         for (ShaderMap::const_iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
         {
-          shaders.push_back(it->second);
+          shaders.append(it->second);
         }
 
         // request program

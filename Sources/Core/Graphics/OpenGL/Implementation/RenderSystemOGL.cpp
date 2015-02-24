@@ -85,7 +85,7 @@ void RenderSystemOGL::flush()
   {
     const List<PRenderQueue>& queueList = itQueue->second;
 
-    if (5 < queueList.size())
+    if (5 < queueList.length())
     {
       egeWarning(KOpenGLDebugName) << "Possible batch optimization. Hash:" << itQueue->first;
     }
@@ -103,7 +103,7 @@ void RenderSystemOGL::flush()
     statisticsData.queues.push_back(queueData);
 
     // render queue list
-    for (List<PRenderQueue>::const_iterator it = queueList.begin(); it != queueList.end(); ++it)
+    for (List<PRenderQueue>::ConstIterator it = queueList.begin(); it != queueList.end(); ++it)
     {
       PRenderQueue queue = *it;
 
@@ -577,7 +577,7 @@ void RenderSystemOGL::createAndSetupVAOs()
   List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
 
   // check if VAO is supported and can be used (ie VBO is supported)
-  if (vaos.empty() && 
+  if (vaos.isEmpty() && 
       Device::HasRenderCapability(ERenderCapabilityVertexArrayObjects) && 
       Device::HasRenderCapability(ERenderCapabilityVertexBufferObjects))
   {
@@ -593,7 +593,7 @@ void RenderSystemOGL::createAndSetupVAOs()
       else
       {
         // add to local pool
-        vaos.push_back(vao);
+        vaos.append(vao);
 
         // set it up
         setupVAO(vao, component->vertexBuffer(), component->indexBuffer(), material->pass(pass));
@@ -605,7 +605,7 @@ void RenderSystemOGL::createAndSetupVAOs()
   if ( ! result)
   {
     // remove all VAOs
-    for (List<PComponent> ::const_iterator it = vaos.begin(); it != vaos.end(); ++it)
+    for (List<PComponent> ::ConstIterator it = vaos.begin(); it != vaos.end(); ++it)
     {
       component->removeComponent(*it);
     }

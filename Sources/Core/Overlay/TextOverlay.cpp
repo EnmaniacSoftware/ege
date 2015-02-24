@@ -73,7 +73,7 @@ void TextOverlay::updateRenderData()
 
       // go thru all lines of text
       float32 startPosX = pos.x;
-      for (TextLineDataList::const_iterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
+      for (TextLineDataList::ConstIterator it = m_textLines.begin(); it != m_textLines.end(); ++it)
       {
         const TextLineData& lineData = *it;
 
@@ -216,7 +216,7 @@ void TextOverlay::updateTextData()
       lineData.end = i;
 
       // add to pool
-      m_textLines.push_back(lineData);
+      m_textLines.append(lineData);
 
       // update text width
       textSize.x = Math::Max(textSize.x, lineData.width);
@@ -248,14 +248,14 @@ void TextOverlay::updateTextData()
   if (lineData.start != m_text.length())
   {
     // add to pool
-    m_textLines.push_back(lineData);
+    m_textLines.append(lineData);
 
     // update text width
     textSize.x = Math::Max(textSize.x, lineData.width);
   }
 
   // set text total height
-  textSize.y = static_cast<float32>(m_textLines.size() * currentFont->height());
+  textSize.y = static_cast<float32>(m_textLines.length() * currentFont->height());
 
   // update overlay size
   setSize(textSize);

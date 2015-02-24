@@ -46,6 +46,10 @@ class TestBase : public ::testing::Test
      *  @return Generated random angle.
      */
     float32 randomAngle() const;
+    /*! Returns random integer value. 
+     *  @return Randomly generated integer value.
+     */
+    s32 randomInteger() const;
 
     /*! Returns floating point epsilon value. */
     float32 epsilon() const;

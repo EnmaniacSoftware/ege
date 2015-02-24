@@ -116,7 +116,7 @@ EGEResult ResourceSpriteAnimation::load()
     }
 
     // load all sequencers
-    for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+    for (SequenceResourceList::Iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
     {
       PResourceSequencer seqResource = *it;
       if (EGE_SUCCESS != (result = seqResource->load()))
@@ -190,7 +190,7 @@ EGEResult ResourceSpriteAnimation::setInstance(const PSpriteAnimation& instance)
   instance->setTexture(texture);
 
   // add sequencers
-  for (SequenceResourceList::iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  for (SequenceResourceList::Iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
   {
     PResourceSequencer seqRes = *it;
 
@@ -258,7 +258,7 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   }
 
   // check if such sequence already exists
-  for (SequenceResourceList::const_iterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
+  for (SequenceResourceList::ConstIterator it = m_sequenceResources.begin(); it != m_sequenceResources.end(); ++it)
   {
     const PResourceSequencer& resource = *it;
     if (resource->name() == seqRes->name())
@@ -269,7 +269,7 @@ EGEResult ResourceSpriteAnimation::addSequence(const PXmlElement& tag)
   }
 
   // add to pool
-  m_sequenceResources.push_back(seqRes);
+  m_sequenceResources.append(seqRes);
 
   return EGE_SUCCESS;
 }

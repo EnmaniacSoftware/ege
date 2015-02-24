@@ -211,7 +211,7 @@ void RenderComponent::onProgramChanged(PRenderPass pass)
 void RenderComponent::removeAllVertexArrayObjects()
 {
   List<PComponent> list = components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
-  for (List<PComponent>::const_iterator it = list.begin(); it != list.end(); ++it)
+  for (List<PComponent>::ConstIterator it = list.begin(); it != list.end(); ++it)
   {
     removeComponent(*it);
   }

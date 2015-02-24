@@ -231,7 +231,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
   List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
 
   // check if no VAOs present
-  if (vaos.empty())
+  if (vaos.isEmpty())
   {
     // bind vertex and index buffers
     // NOTE: this is valid for all passes
@@ -254,9 +254,9 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
-    if ( ! vaos.empty())
+    if ( ! vaos.isEmpty())
     {
-      vaos.pop_front();
+      vaos.removeFirst();
     }
 
     // apply vertex arrays
@@ -342,7 +342,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     }
   }
 
-  if (vaos.empty())
+  if (vaos.isEmpty())
   {
     // unbind vertex and index buffers
     vertexBuffer->unbind();

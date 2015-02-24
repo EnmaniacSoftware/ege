@@ -240,7 +240,7 @@ EGEResult DatabaseSqlite::execute(const SqlQuery& query)
       // bind values
       const List<PObject>& objects = query.values();
       s32 i = 1;
-      for (List<PObject>::const_iterator it = objects.begin(); (it != objects.end()) && (EGE_SUCCESS == result); ++it, ++i)
+      for (List<PObject>::ConstIterator it = objects.begin(); (it != objects.end()) && (EGE_SUCCESS == result); ++it, ++i)
       {
         const PObject object = *it;
 

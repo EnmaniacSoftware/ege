@@ -185,7 +185,7 @@ void ResourceManagerTestBase::waitUntilGroupsAreLoaded(const StringList& groupNa
 
     // check if all groups loaded
     allLoaded = true;
-    for (StringList::const_iterator it = groupNames.begin(); it != groupNames.end(); ++it)
+    for (StringList::ConstIterator it = groupNames.begin(); it != groupNames.end(); ++it)
     {
       allLoaded = allLoaded && m_loadedGroups.contains(*it);
     }
@@ -210,7 +210,7 @@ void ResourceManagerTestBase::waitUntilGroupsAreUnloaded(const StringList& group
 
     // check if all groups loaded
     allLoaded = true;
-    for (StringList::const_iterator it = groupNames.begin(); it != groupNames.end(); ++it)
+    for (StringList::ConstIterator it = groupNames.begin(); it != groupNames.end(); ++it)
     {
       allLoaded = allLoaded && m_unloadedGroups.contains(*it);
     }

@@ -62,7 +62,7 @@ void RenderQueue::render(IComponentRenderer& renderer)
   prepareRenderList(list);
 
   // render all data
-  for (RenderDataList::const_iterator it = list.begin(); it != list.end(); ++it)
+  for (RenderDataList::ConstIterator it = list.begin(); it != list.end(); ++it)
   {
     const SRENDERDATA& data = *it;
 

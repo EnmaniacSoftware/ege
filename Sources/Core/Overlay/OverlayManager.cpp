@@ -18,7 +18,7 @@ OverlayManager::~OverlayManager()
 void OverlayManager::update(const Time& time)
 {
   // update all overlays
-  for (OverlayList::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::Iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -36,7 +36,7 @@ EGEResult OverlayManager::add(const POverlay& overlay)
   }
 
   // add to pool
-  m_overlays.push_back(overlay);
+  m_overlays.append(overlay);
 
   return EGE_SUCCESS;
 }
@@ -44,7 +44,7 @@ EGEResult OverlayManager::add(const POverlay& overlay)
 void OverlayManager::remove(const String& name)
 {
   // go thru all overlays
-  for (OverlayList::iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::Iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     POverlay object = *it;
 
@@ -52,7 +52,7 @@ void OverlayManager::remove(const String& name)
     if (object->name() == name)
     {
       object = NULL;
-      m_overlays.erase(it);
+      m_overlays.remove(it);
       break;
     }
   }
@@ -71,7 +71,7 @@ void OverlayManager::removeAll()
 POverlay OverlayManager::overlay(const String& name) const
 {
   // go thru all overlays
-  for (OverlayList::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::ConstIterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 
@@ -89,7 +89,7 @@ POverlay OverlayManager::overlay(const String& name) const
 void OverlayManager::render(Viewport* viewport, IRenderer* renderer)
 {
   // go thru all overlays
-  for (OverlayList::const_iterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
+  for (OverlayList::ConstIterator it = m_overlays.begin(); it != m_overlays.end(); ++it)
   {
     Overlay* object = *it;
 

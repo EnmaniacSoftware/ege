@@ -22,7 +22,7 @@ EGEResult SimpleRenderQueue::addForRendering(const PRenderComponent& component, 
   data.modelMatrix  = modelMatrix;
   data.component    = component;
 
-  m_renderData.push_back(data);
+  m_renderData.append(data);
 
   return EGE_SUCCESS;
 }

@@ -83,7 +83,7 @@ bool Sound::addEffect(PSoundEffect effect)
 {
   if (NULL != effect)
   {
-    m_effects.push_back(effect);
+    m_effects.append(effect);
 
     // do initial update
     effect->update(0LL, this);
@@ -98,14 +98,14 @@ SoundEffectList Sound::effects(u32 uid) const
   SoundEffectList list;
 
   // go thru all effects
-  for (SoundEffectList::const_iterator it = m_effects.begin(); it != m_effects.end(); ++it)
+  for (SoundEffectList::ConstIterator it = m_effects.begin(); it != m_effects.end(); ++it)
   {
     const PSoundEffect& effect = *it;
 
     // check if effect should be added
     if ((effect->uid() == uid) || (EGE_OBJECT_UID_GENERIC == uid))
     {
-      list.push_back(effect);
+      list.append(effect);
     }
   }
 
@@ -133,7 +133,7 @@ void Sound::notifyVolumeChanged(float32 oldVolume)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Sound::updateSoundEffects(const Time& time)
 {
-  for (SoundEffectList::iterator it = m_effects.begin(); it != m_effects.end(); )
+  for (SoundEffectList::Iterator it = m_effects.begin(); it != m_effects.end(); )
   {
     PSoundEffect& effect = *it;
 
@@ -141,7 +141,7 @@ void Sound::updateSoundEffects(const Time& time)
     if (effect->update(time, this))
     {
       // effect is over, remove
-      it = m_effects.erase(it);
+      it = m_effects.remove(it);
     }
     else
     {

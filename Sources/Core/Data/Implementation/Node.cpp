@@ -28,7 +28,7 @@ Node* Node::parent() const
 void Node::deleteChildNode(const String& name)
 {
   // go thru all child nodes
-  for (List<Node*>::iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::Iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     Node* node = *iter;
 
@@ -39,7 +39,7 @@ void Node::deleteChildNode(const String& name)
       EGE_DELETE(node);
 
       // remove from vector
-      m_children.erase(iter);
+      m_children.remove(iter);
 
       // we are done
       return;
@@ -49,13 +49,13 @@ void Node::deleteChildNode(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 Node::childNodeCount() const
 {
-  return static_cast<u32>(m_children.size());
+  return static_cast<u32>(m_children.length());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Node* Node::childNode(const String& name) const
 {
   // go thru all child nodes
-  for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::ConstIterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     Node* node = *iter;
 
@@ -86,13 +86,13 @@ Node* Node::childNode(const String& name) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Node::deleteAllChildNodes()
 {
-  for (List<Node*>::iterator iter = m_children.begin(); iter != m_children.end();)
+  for (List<Node*>::Iterator iter = m_children.begin(); iter != m_children.end();)
   {
     Node* node = *iter;
 
     EGE_DELETE(node);
 
-    iter = m_children.erase(iter);
+    iter = m_children.remove(iter);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

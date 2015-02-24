@@ -169,7 +169,7 @@ void BatchedRenderQueue::prepareRenderList(RenderDataList& list)
     data.component    = m_renderData;
     data.modelMatrix  = Matrix4f::IDENTITY;
 
-    list.push_back(data);
+    list.append(data);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -212,7 +212,7 @@ bool BatchedRenderQueue::appendComponent(const PRenderComponent& component, cons
   List<const Rectf*> textureRects;
   for (u32 i = 0 ; i < component->material()->pass(0)->textureCount(); ++i)
   {
-    textureRects.push_back(&component->material()->pass(0)->texture(i)->rect());
+    textureRects.append(&component->material()->pass(0)->texture(i)->rect());
   }
 
   // append vertex buffer first
@@ -292,7 +292,7 @@ bool BatchedRenderQueue::appendBuffer(const PVertexBuffer& buffer, const List<co
             u8* duplicateVertexData = outData - vertexBufferOut->vertexDeclaration().vertexSize();
 
             List<const Rectf*> textureRect;
-            textureRect.push_back(&Rectf::UNIT);
+            textureRect.append(&Rectf::UNIT);
 
             // duplicate last vertex
             convertVertices(reinterpret_cast<float32*>(outData), reinterpret_cast<const float32*>(duplicateVertexData), 1, textureRect, Matrix4f::IDENTITY);
@@ -443,7 +443,7 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
   for (u32 i = 0; i < count; ++i)
   {
     // point to first texture coords
-    List<const Rectf*>::const_iterator itTextureRect = textureRects.begin();
+    List<const Rectf*>::ConstIterator itTextureRect = textureRects.begin();
   
     VertexElementArray::const_iterator itLast = vertexElements.end();
     for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)
@@ -530,7 +530,7 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
   for (u32 i = 0; i < count; ++i)
   {
     // point to first texture coords
-    List<const Rectf*>::const_iterator itTextureRect = textureRects.begin();
+    List<const Rectf*>::ConstIterator itTextureRect = textureRects.begin();
   
     VertexElementArray::const_iterator itLast = vertexElements.end();
     for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)

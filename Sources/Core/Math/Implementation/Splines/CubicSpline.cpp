@@ -82,11 +82,11 @@ bool CubicSpline::addPoints(const List<Vector3f>& points)
   // NOTE: few different scenarios are possible here:
   //       - if currently no segment is given, new list should contain at least 4 points (for first segment) and/or 3 points for every next segment
   //       - if at least one segment is already specified, new list should contain 3 or mulitple of 3 points for another segment(s)
-  if ((m_segments.empty() && ((KFirstSegmentPointCount == points.size()) || (0 == (points.size() - KFirstSegmentPointCount) % KNextSegmentPointCount))) ||
-      ( ! m_segments.empty() && (0 == (points.size() % KNextSegmentPointCount))))
+  if ((m_segments.empty() && ((KFirstSegmentPointCount == points.length()) || (0 == (points.length() - KFirstSegmentPointCount) % KNextSegmentPointCount))) ||
+      ( ! m_segments.empty() && (0 == (points.length() % KNextSegmentPointCount))))
   {
     // add all points to spline
-    for (List<Vector3f>::const_iterator it = points.begin(); it != points.end(); )
+    for (List<Vector3f>::ConstIterator it = points.begin(); it != points.end(); )
     {
       SegmentData segment;
 

@@ -37,7 +37,7 @@ bool Program::detachAll()
   List<PShader> copy(m_attachedShaders);
 
   bool result = true;
-  for (List<PShader>::const_iterator it = copy.begin(); it != copy.end(); ++it)
+  for (List<PShader>::ConstIterator it = copy.begin(); it != copy.end(); ++it)
   {
     const PShader& shader = *it;
 

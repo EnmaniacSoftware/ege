@@ -106,7 +106,7 @@ void UIScrollablePageView::addForRendering(IRenderer* renderer, const Matrix4f& 
     Matrix4f matrix = contentMatrix;
     matrix.setTranslation(matrix.translationX() + i * pageSize().x, matrix.translationY(), matrix.translationZ());
 
-    for (ObjectsList::const_iterator it = list.begin(); it != list.end(); ++it)
+    for (ObjectsList::ConstIterator it = list.begin(); it != list.end(); ++it)
     {
       switch ((*it)->uid())
       {
@@ -146,7 +146,7 @@ void UIScrollablePageView::update(const Time& time)
   for (s32 i = fromPage; i <= toPage; ++i)
   {
     const ObjectsList& list = m_objects[i];
-    for (ObjectsList::const_iterator it = list.begin(); it != list.end(); ++it)
+    for (ObjectsList::ConstIterator it = list.begin(); it != list.end(); ++it)
     {
       switch ((*it)->uid())
       {
@@ -204,7 +204,7 @@ EGEResult UIScrollablePageView::addObject(PObject object, u32 pageIdx)
     case EGE_OBJECT_UID_OVERLAY_IMAGE:
 
       // add to pool
-      m_objects[pageIdx].push_back(object);
+      m_objects[pageIdx].append(object);
 
       result = EGE_SUCCESS;
       break;
@@ -219,13 +219,13 @@ void UIScrollablePageView::removeObject(PObject object)
   for (PageObjects::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     ObjectsList& list = it->second;
-    for (ObjectsList::iterator itList = list.begin(); itList != list.end(); ++itList)
+    for (ObjectsList::Iterator itList = list.begin(); itList != list.end(); ++itList)
     {
       PObject& listObject = *itList;
       if (object == listObject)
       {
         // remove from list
-        list.erase(itList);
+        list.remove(itList);
 
         // done
         return;
@@ -240,7 +240,7 @@ PObject UIScrollablePageView::object(const String& name) const
   for (PageObjects::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     const ObjectsList& list = it->second;
-    for (ObjectsList::const_iterator itList = list.begin(); itList != list.end(); ++itList)
+    for (ObjectsList::ConstIterator itList = list.begin(); itList != list.end(); ++itList)
     {
       // process according to object id
       switch ((*itList)->uid())

@@ -117,7 +117,7 @@ EGEResult ResourceParticleEmitter::load()
     }
 
     // load all affectors
-    for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+    for (StringList::ConstIterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
       PResourceParticleAffector affectorResource = engine().resourceManager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
@@ -169,7 +169,7 @@ PParticleEmitter ResourceParticleEmitter::createInstance()
     }
 
     // add affectors
-    for (StringList::const_iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+    for (StringList::ConstIterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
     {
       // get affector resource
       PResourceParticleAffector affectorResource = engine().resourceManager()->resource(RESOURCE_NAME_PARTICLE_AFFECTOR, *it);
@@ -199,7 +199,7 @@ EGEResult ResourceParticleEmitter::addAffector(const PXmlElement& tag)
     return EGE_ERROR;
   }
 
-  m_affectors.push_back(name);
+  m_affectors.append(name);
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

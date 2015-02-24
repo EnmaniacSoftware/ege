@@ -96,7 +96,7 @@ EGEResult ResourceCurve::create(const String& path, const PObject& data)
       }
 
       // add into list
-      m_points.push_back(point);
+      m_points.append(point);
     }
 
     // check if failed
@@ -139,7 +139,7 @@ CubicSpline ResourceCurve::createInstance() const
   List<Vector3f> points;
 
   // add points
-  for (PointDataList::const_iterator it = m_points.begin(); it != m_points.end(); ++it)
+  for (PointDataList::ConstIterator it = m_points.begin(); it != m_points.end(); ++it)
   {
     const PointData& point = *it;
 
@@ -147,32 +147,32 @@ CubicSpline ResourceCurve::createInstance() const
     const Vector3f tangent(point.tangent.x, point.tangent.y, point.tangent.z);
 
     // check if not points defined yet
-    if (points.empty())
+    if (points.isEmpty())
     {
       // add begin and tangent-1
-      points.push_back(pos);
-      points.push_back(tangent);
+      points.append(pos);
+      points.append(tangent);
     }
     // check if begining of the first segment defined only
-    else if (2 == points.size())
+    else if (2 == points.length())
     {
       // add tangent-2 and end point
-      points.push_back(tangent);
-      points.push_back(pos);
+      points.append(tangent);
+      points.append(pos);
     }
     else
     {
       // last segment control point 2 and two new points defines next segment
       // NOTE: if control point is given use it instead of copying last segment control point 2
-      List<Vector3f>::const_iterator it = points.end();
+      List<Vector3f>::ConstIterator it = points.end();
       it--;
 
       const Vector3f endPoint = *it;
       const Vector3f control1 = (point.beginTangentOverride) ? point.beginTangent : *(--it);
 
-      points.push_back(control1);
-      points.push_back(tangent);
-      points.push_back(pos);
+      points.append(control1);
+      points.append(tangent);
+      points.append(pos);
     }
   }
 

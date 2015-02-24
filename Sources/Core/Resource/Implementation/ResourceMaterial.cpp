@@ -281,11 +281,11 @@ EGEResult ResourceMaterial::load()
       {
         PassData& pass = *passIt;
 
-        for (TextureImageDataList::const_iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+        for (TextureImageDataList::ConstIterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
         {
           const TextureImageData& textureImageData = *it;
 
-          pass.m_textureImages.push_back(textureImageData.textureImage);
+          pass.m_textureImages.append(textureImageData.textureImage);
         }
       }
 
@@ -305,14 +305,14 @@ void ResourceMaterial::unload()
     {
       PassData& pass = *passIt;
 
-      for (TextureImageList::iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
+      for (TextureImageList::Iterator it = pass.m_textureImages.begin(); it != pass.m_textureImages.end(); ++it)
       {
         *it = NULL;
       }
       pass.m_textureImages.clear();
 
       // unload all textures for current pass
-      for (TextureImageDataList::iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+      for (TextureImageDataList::Iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
       {
         TextureImageData& textureImageData = *it;
 
@@ -361,7 +361,7 @@ EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData
   textureData.envMode           = MapTextureEnvironmentMode(tag->attribute(KAttributeTextureEnvMode, "modulate"), EM_MODULATE);
   textureData.manual            = tag->attribute(KAttributeTextureManual, "false").toBool(&error);
   textureData.rotationAngle     = StringUtils::ToAngle(tag->attribute(KAttributeTextureRotation, "0"), &error);
-  textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, static_cast<s32>(pass.m_textureImageData.size()));
+  textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, pass.m_textureImageData.length());
 
   // check if obligatory data is wrong
   if (error || textureData.name.isEmpty())
@@ -372,7 +372,7 @@ EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData
   }
 
   // add into pool
-  pass.m_textureImageData.push_back(textureData);
+  pass.m_textureImageData.append(textureData);
 
   return result;
 }
@@ -508,7 +508,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
 
     renderPass->setProgram(pass.m_program);
 
-    for (TextureImageList::const_iterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
+    for (TextureImageList::ConstIterator itTexture = pass.m_textureImages.begin(); itTexture != pass.m_textureImages.end(); ++itTexture)
     {
       // allocate new texture image
       PTextureImage texImg = ege_new TextureImage();
@@ -577,7 +577,7 @@ EGEResult ResourceMaterial::loadDependencies()
     PassData& pass = *passIt;
 
     // load all textures for current pass
-    for (TextureImageDataList::iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
+    for (TextureImageDataList::Iterator it = pass.m_textureImageData.begin(); it != pass.m_textureImageData.end(); ++it)
     {
       TextureImageData& textureImageData = *it;
 

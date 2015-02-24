@@ -66,7 +66,7 @@ void UIScrollableView::update(const Time& time)
   }
 
   // update objects
-  for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectsList::Iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     switch ((*it)->uid())
     {
@@ -107,7 +107,7 @@ void UIScrollableView::addForRendering(IRenderer* renderer, const Matrix4f& tran
   pos = Vector4f(combined.translationX(), combined.translationY(), combined.translationZ());
 
   // render all objects
-  for (ObjectsList::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectsList::Iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     switch ((*it)->uid())
     {
@@ -145,7 +145,7 @@ EGEResult UIScrollableView::addObject(PObject object)
     case EGE_OBJECT_UID_OVERLAY_IMAGE:
 
       // add to pool
-      m_objects.push_back(object);
+      m_objects.append(object);
 
       // invalidate content
       m_dirtyContent = true;
@@ -195,7 +195,7 @@ void UIScrollableView::recaluclateContentSize()
   Vector2f newContentSize = Vector2f::ZERO;
 
   // go thru all objects
-  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectsList::ConstIterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     // process according to object id
     switch ((*it)->uid())
@@ -239,7 +239,7 @@ bool UIScrollableView::initialize(const Dictionary& params)
 PObject UIScrollableView::object(const String& name) const
 {
   // go thru all objects
-  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectsList::ConstIterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     // process according to object id
     switch ((*it)->uid())
@@ -266,7 +266,7 @@ PObject UIScrollableView::object(const String& name) const
 void UIScrollableView::setAlpha(float32 alpha)
 {
   // apply to all objects
-  for (ObjectsList::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectsList::ConstIterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     // process according to object id
     switch ((*it)->uid())

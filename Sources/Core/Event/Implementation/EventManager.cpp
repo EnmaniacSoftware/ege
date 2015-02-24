@@ -27,7 +27,7 @@ void EventManager::update(const Time& time)
   EGE_UNUSED(time);
 
   // check if any pending events
-  if ( ! m_pendingEvents.empty())
+  if ( ! m_pendingEvents.isEmpty())
   {
     EventList localList;
 
@@ -48,8 +48,8 @@ void EventManager::update(const Time& time)
     }
     
     // propagate
-    EventList::const_iterator itEnd = localList.end();
-    for (EventList::const_iterator it = localList.begin(); it != itEnd; ++it)
+    EventList::ConstIterator itEnd = localList.end();
+    for (EventList::ConstIterator it = localList.begin(); it != itEnd; ++it)
     {
       notify(*it);
     }
@@ -74,7 +74,7 @@ EGEResult EventManager::send(s32 id, bool immediate)
   {
     // add to pending
     MutexLocker locker(m_mutex);
-    m_pendingEvents.push_back(event);
+    m_pendingEvents.append(event);
   }
 
   return EGE_SUCCESS;
@@ -107,7 +107,7 @@ EGEResult EventManager::send(s32 id, s32 data, bool immediate)
   {
     // add to pending
     MutexLocker locker(m_mutex);
-    m_pendingEvents.push_back(event);
+    m_pendingEvents.append(event);
   }
 
   return EGE_SUCCESS;
@@ -140,7 +140,7 @@ EGEResult EventManager::send(s32 id, float32 data, bool immediate)
   {
     // add to pending
     MutexLocker locker(m_mutex);
-    m_pendingEvents.push_back(event);
+    m_pendingEvents.append(event);
   }
 
   return EGE_SUCCESS;
@@ -166,7 +166,7 @@ EGEResult EventManager::send(s32 id, PObject data, bool immediate)
   {
     // add to pending
     MutexLocker locker(m_mutex);
-    m_pendingEvents.push_back(event);
+    m_pendingEvents.append(event);
   }
 
   return EGE_SUCCESS;

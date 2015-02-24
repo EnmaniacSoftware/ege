@@ -63,7 +63,7 @@ EGEResult RenderSystem::construct()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystem::update(const Time& time)
 {
-  if ( ! m_requests.empty())
+  if ( ! m_requests.isEmpty())
   {
     // copy for processing
     m_requestsMutex->lock();
@@ -72,7 +72,7 @@ void RenderSystem::update(const Time& time)
     m_requestsMutex->unlock();
 
     // process locally
-    for (RequestDataList::iterator it = queue.begin(); it != queue.end(); ++it)
+    for (RequestDataList::Iterator it = queue.begin(); it != queue.end(); ++it)
     {
       RequestData& request = *it;
 
@@ -86,7 +86,7 @@ void RenderSystem::update(const Time& time)
         setTextureMipMapping(request.textureMipMapping);
 
         // create texture
-        PImage image = request.objects.front();
+        PImage image = request.objects.first();
         PTexture2D texture = createTexture2D(request.name, image);
 
         // signal
@@ -109,7 +109,7 @@ void RenderSystem::update(const Time& time)
       }
       else if (REQUEST_CREATE_SHADER == request.type)
       {
-        PDataBuffer data = request.objects.front();
+        PDataBuffer data = request.objects.first();
         PShader shader = createShader(request.shaderType, request.name, data);
 
         // signal
@@ -133,7 +133,7 @@ void RenderSystem::update(const Time& time)
       else if (REQUEST_CREATE_PROGRAM == request.type)
       {
         List<PShader> shadersList;
-        for (ObjectList::const_iterator itObject = request.objects.begin(); itObject != request.objects.end(); ++itObject)
+        for (ObjectList::ConstIterator itObject = request.objects.begin(); itObject != request.objects.end(); ++itObject)
         {
           shadersList << *itObject;
         }
@@ -198,7 +198,7 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
       List<PRenderQueue>& queueList = m_renderQueues.at(hash);
 
       // try to add to one of the existing render queues
-      for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
+      for (List<PRenderQueue>::Iterator it = queueList.begin(); it != queueList.end(); ++it)
       {
         PRenderQueue& queue = *it;
 
@@ -243,7 +243,7 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
       {
         if (renderQueueForHashPresent)
         {
-          m_renderQueues.at(hash).push_back(queue);
+          m_renderQueues.at(hash).append(queue);
         }
         else
         {
@@ -271,7 +271,7 @@ EGEResult RenderSystem::addForRendering(const PRenderQueue& queue)
     List<PRenderQueue>& queueList = m_renderQueues.at(hash);
 
     // try to find the same queue
-    for (List<PRenderQueue>::iterator it = queueList.begin(); it != queueList.end(); ++it)
+    for (List<PRenderQueue>::Iterator it = queueList.begin(); it != queueList.end(); ++it)
     {
       PRenderQueue& curQueue = *it;
 
@@ -291,7 +291,7 @@ EGEResult RenderSystem::addForRendering(const PRenderQueue& queue)
     if (EGE_ERROR == result)
     {
       // add to list
-      queueList.push_back(queue);
+      queueList.append(queue);
 
       // done
       result = EGE_SUCCESS;
@@ -402,7 +402,7 @@ bool RenderSystem::requestCreateTexture2D(const String& name, const PImage& imag
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
   
   return true;
 }
@@ -417,7 +417,7 @@ bool RenderSystem::requestDestroyTexture2D(PTexture2D texture, const HardwareRes
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
 
   egeDebug(KRenderSystemDebugName) << "Requested texture destroy:" << texture->name();
 
@@ -436,7 +436,7 @@ bool RenderSystem::requestCreateShader(EGEGraphics::ShaderType type, const Strin
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
 
   return true;
 }
@@ -451,7 +451,7 @@ bool RenderSystem::requestDestroyShader(PShader shader, const HardwareResourcePr
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
 
   return true;
 }
@@ -464,14 +464,14 @@ bool RenderSystem::requestCreateProgram(const String& name, const List<PShader>&
   request.callbackSlot  = slot;
   request.name = name;
 
-  for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
+  for (List<PShader>::ConstIterator it = shaders.begin(); it != shaders.end(); ++it)
   {
     request.objects << *it;
   }
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
 
   return true;
 }
@@ -486,7 +486,7 @@ bool RenderSystem::requestDestroyProgram(PProgram program, const HardwareResourc
 
   // queue it
   MutexLocker locker(m_requestsMutex);
-  m_requests.push_back(request);
+  m_requests.append(request);
 
   return true;
 }

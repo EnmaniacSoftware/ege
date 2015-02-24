@@ -135,7 +135,7 @@ void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
              << " Batch Count: " << queueData.batchCount << " Indexed Batch Count: " << queueData.indexedBatchCount << " Vertex Count: " 
              << queueData.vertexCount << "\n";
       
-      for (StringList::const_iterator itName = queueData.componentNames.begin(); dumpComponentNames && (itName != queueData.componentNames.end()); ++itName)
+      for (StringList::ConstIterator itName = queueData.componentNames.begin(); dumpComponentNames && (itName != queueData.componentNames.end()); ++itName)
       {
         buffer << "   " << *itName << "\n";
       }

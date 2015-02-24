@@ -43,7 +43,7 @@ bool SceneNode::attachObject(PSceneNodeObject object)
   }
 
   // add object into pool
-  m_objects.push_back(object);
+  m_objects.append(object);
 
   // set new parent
   object->setParentNode(this);
@@ -57,7 +57,7 @@ bool SceneNode::attachObject(PSceneNodeObject object)
 PSceneNodeObject SceneNode::attachedObject(const String& name) const
 {
   // go thru all objects
-  for (List<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (List<PSceneNodeObject>::ConstIterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     PSceneNodeObject pObject = *iter;
 
@@ -75,7 +75,7 @@ PSceneNodeObject SceneNode::attachedObject(const String& name) const
 void SceneNode::removeObject(const String& name)
 {
   // go thru all objects
-  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (List<PSceneNodeObject>::Iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     SceneNodeObject* object = *iter;
 
@@ -91,7 +91,7 @@ void SceneNode::removeObject(const String& name)
       *iter = NULL;
 
       // remove from pool
-      m_objects.erase(iter);
+      m_objects.remove(iter);
       break;
     }
   }
@@ -100,7 +100,7 @@ void SceneNode::removeObject(const String& name)
 void SceneNode::removeAllAttachedObjects()
 {
   // go thru all objects
-  for (List<PSceneNodeObject>::iterator iter = m_objects.begin(); iter != m_objects.end();)
+  for (List<PSceneNodeObject>::Iterator iter = m_objects.begin(); iter != m_objects.end();)
   {
     SceneNodeObject* object = *iter;
 
@@ -112,7 +112,7 @@ void SceneNode::removeAllAttachedObjects()
 
     *iter = NULL;
 
-    iter = m_objects.erase(iter);
+    iter = m_objects.remove(iter);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -141,7 +141,7 @@ void SceneNode::update(const Time& time)
 //  if ( m_bChildrenNeedUpdate == true )
   {
     // go thru all children
-    for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+    for (List<Node*>::ConstIterator iter = m_children.begin(); iter != m_children.end(); ++iter)
     {
       SceneNode* node = (SceneNode*) *iter;
       node->update(time);
@@ -170,7 +170,7 @@ SceneNode* SceneNode::createChildSceneNode(const String& name, EGEPhysics::Compo
     if (NULL != node)
     {
       // add into vector
-      m_children.push_back(node);
+      m_children.append(node);
     }
     else
     {
@@ -207,7 +207,7 @@ void SceneNode::onTransformationChanged()
   m_worldMatrix.invalidate();
 
   // invalidate child nodes
-  for (List<Node*>::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (List<Node*>::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     SceneNode* node = static_cast<SceneNode*>(*it);
     node->onTransformationChanged();
@@ -275,7 +275,7 @@ bool SceneNode::addForRendering(PCamera& camera, IRenderer* renderer) const
   //notifyVisible();
 
   // check attached objects
-  for (List<PSceneNodeObject>::const_iterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
+  for (List<PSceneNodeObject>::ConstIterator iter = m_objects.begin(); iter != m_objects.end(); ++iter)
   {
     const PSceneNodeObject& object = *iter;
 
@@ -291,7 +291,7 @@ bool SceneNode::addForRendering(PCamera& camera, IRenderer* renderer) const
   }
 
   // go thru all the children
-  for (List<Node*>::const_iterator iter = m_children.begin(); iter != m_children.end(); ++iter)
+  for (List<Node*>::ConstIterator iter = m_children.begin(); iter != m_children.end(); ++iter)
   {
     const SceneNode* node = (SceneNode*) *iter;
 

@@ -178,7 +178,7 @@ PProgram RenderSystemProgrammableOGL::createProgram(const String& name, const Li
   else
   {
     // attach shaders
-    for (List<PShader>::const_iterator it = shaders.begin(); it != shaders.end(); ++it)
+    for (List<PShader>::ConstIterator it = shaders.begin(); it != shaders.end(); ++it)
     {
       const PShader& shader = *it;
 
@@ -223,7 +223,7 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
   List<PComponent> vaos = component->components(EGE_OBJECT_UID_VERTEX_ARRAY_OBJECT);
 
   // check if no VAOs present
-  if (vaos.empty())
+  if (vaos.isEmpty())
   {
     // bind vertex and index buffers
     // NOTE: this is valid for all passes
@@ -245,9 +245,9 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
 
     // get first vao from the list and shrink the list
     PVertexArrayObject vao = vaos.first(NULL);
-    if ( ! vaos.empty())
+    if ( ! vaos.isEmpty())
     {
-      vaos.pop_front();
+      vaos.removeFirst();
     }
 
     // bind
@@ -324,7 +324,7 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
     }
   }
 
-  if (vaos.empty())
+  if (vaos.isEmpty())
   {
     // unbind vertex and index buffers
     vertexBuffer->unbind();

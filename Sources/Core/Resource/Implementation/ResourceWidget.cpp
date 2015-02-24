@@ -136,7 +136,7 @@ PWidget ResourceWidget::createInstance()
     }
 
     // add children
-    for (ChildDataList::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+    for (ChildDataList::ConstIterator it = m_children.begin(); it != m_children.end(); ++it)
     {
       const ChildData& childData = *it;
 
@@ -201,7 +201,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
   }
 
   // check if child with such name exists
-  for (ChildDataList::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildDataList::ConstIterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     if ((*it).name == childData.name)
     {
@@ -211,7 +211,7 @@ EGEResult ResourceWidget::processChild(const PXmlElement& tag)
   }
 
   // add to pool
-  m_children.push_back(childData);
+  m_children.append(childData);
 
   return result;
 }

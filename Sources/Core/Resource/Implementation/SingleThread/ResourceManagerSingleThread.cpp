@@ -25,7 +25,7 @@ void ResourceManagerSingleThread::update(const Time& time)
 {
   EGE_UNUSED(time)
 
-  if ( ! m_processList.empty() && (EModuleStateRunning == state()))
+  if ( ! m_processList.isEmpty() && (EModuleStateRunning == state()))
   {
     processBatch();
   }
@@ -35,7 +35,7 @@ void ResourceManagerSingleThread::update(const Time& time)
     // NOTE: this should be repeated until all groups are unloaded and removed
     unloadAll();
 
-    if (m_groups.empty())
+    if (m_groups.isEmpty())
     {
       // done
       setState(EModuleStateClosed);
@@ -46,11 +46,11 @@ void ResourceManagerSingleThread::update(const Time& time)
 EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
 {
   // check if already scheduled for processing
-  for (ProcessingBatchList::iterator it = m_processList.begin(); it != m_processList.end(); ++it)
+  for (ProcessingBatchList::Iterator it = m_processList.begin(); it != m_processList.end(); ++it)
   {
     ProcessingBatch& batch = *it;
 
-    if ((batch.groups.back() == name))
+    if ((batch.groups.last() == name))
     {
       // check if scheduled for unloading
       if ( ! batch.load)
@@ -59,7 +59,7 @@ EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
         m_totalResourcesToProcess -= batch.resourcesCount;
 
         // remove from pool
-        m_processList.erase(it);
+        m_processList.remove(it);
         return EGE_ERROR_ALREADY_EXISTS;
       }
       else
@@ -83,7 +83,7 @@ EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
   }
 
   // add to pool
-  m_processList.push_back(batch);
+  m_processList.append(batch);
 
   // update statistics
   m_totalResourcesToProcess += batch.resourcesCount;
@@ -96,11 +96,11 @@ EGEResult ResourceManagerSingleThread::loadGroup(const String& name)
 void ResourceManagerSingleThread::unloadGroup(const String& name)
 {
   // check if already scheduled for processing
-  for (ProcessingBatchList::iterator it = m_processList.begin(); it != m_processList.end(); ++it)
+  for (ProcessingBatchList::Iterator it = m_processList.begin(); it != m_processList.end(); ++it)
   {
     ProcessingBatch& batch = *it;
 
-    if (batch.groups.back() == name)
+    if (batch.groups.last() == name)
     {
       // check if scheduled for loading
       if (batch.load)
@@ -109,7 +109,7 @@ void ResourceManagerSingleThread::unloadGroup(const String& name)
         m_totalResourcesToProcess -= batch.resourcesCount;
        
         // remove from pool
-        m_processList.erase(it);
+        m_processList.remove(it);
         return;
       }
       else
@@ -133,7 +133,7 @@ void ResourceManagerSingleThread::unloadGroup(const String& name)
   }
 
   // add to pool
-  m_processList.push_back(batch);
+  m_processList.append(batch);
 
   // update statistics
   m_totalResourcesToProcess += batch.resourcesCount;

@@ -476,7 +476,7 @@ void ParticleEmitter::setMaterial(const PMaterial& material)
 void ParticleEmitter::applyAffectors(const Time& time)
 {
   // go thru all affectors
-  for (ParticleAffectorList::iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
+  for (ParticleAffectorList::Iterator it = m_affectors.begin(); it != m_affectors.end(); ++it)
   {
     PParticleAffector& affector = *it;
 
@@ -487,7 +487,7 @@ void ParticleEmitter::applyAffectors(const Time& time)
 void ParticleEmitter::addAffector(PParticleAffector& affector)
 {
   affector->m_emitter = this;
-  m_affectors.push_back(affector);
+  m_affectors.append(affector);
 
   // check if affector needs detailed particle info
   if (affector->detailedParticleInfoRequired())

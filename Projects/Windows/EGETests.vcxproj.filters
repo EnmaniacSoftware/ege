@@ -88,6 +88,12 @@
     <Filter Include="Tests\Resource\ComponentTests">
       <UniqueIdentifier>{4eedd8e3-acf4-4817-9920-127d59105df3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Containers">
+      <UniqueIdentifier>{2472a327-af3e-4d81-a183-8423213a61bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Containers\Unittests">
+      <UniqueIdentifier>{06c60bb1-9c80-4c53-adfb-006bf40d0f26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
@@ -236,6 +242,18 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextTest.cpp">
       <Filter>Tests\String\UnitTests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\DynamicArrayTest.cpp">
+      <Filter>Tests\Containers\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\ListTests.cpp">
+      <Filter>Tests\Containers\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MapTests.cpp">
+      <Filter>Tests\Containers\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MultiMapTests.cpp">
+      <Filter>Tests\Containers\Unittests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

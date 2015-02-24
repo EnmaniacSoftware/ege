@@ -221,12 +221,12 @@ void Debug::PrintWithArgs(const char* string, ...)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Debug::EnableNames(const StringList& names)
 {
-  for (StringList::const_iterator it = names.begin(); it != names.end(); ++it)
+  for (StringList::ConstIterator it = names.begin(); it != names.end(); ++it)
   {
     if ( ! l_enabledName.contains(*it))
     {
       // add to pool
-      l_enabledName.push_back(*it);
+      l_enabledName.append(*it);
     }
   }
 }
