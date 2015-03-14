@@ -8,16 +8,17 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderTarget)
 EGE_DEFINE_DELETE_OPERATORS(RenderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderTarget::RenderTarget(const Dictionary& params) : Object()
-                                                     , m_vertexCount(0)
-                                                     , m_batchCount(0)
-                                                     , m_physicalWidth(0)
-                                                     , m_physicalHeight(0)
-                                                     , m_width(0)
-                                                     , m_height(0)
-                                                     , m_orientationRotation(0.0f)
-                                                     , m_zoom(1.0f)
-                                                     , m_enabled(true)
+RenderTarget::RenderTarget(const Dictionary& params) 
+: Object()
+, m_vertexCount(0)
+, m_batchCount(0)
+, m_physicalWidth(0)
+, m_physicalHeight(0)
+, m_width(0)
+, m_height(0)
+, m_orientationRotation(0.0f)
+, m_zoom(1.0f)
+, m_enabled(true)
 {
   // decompose param list
   Dictionary::const_iterator iterName   = params.find(EGE_RENDER_TARGET_PARAM_NAME);
@@ -54,7 +55,7 @@ PViewport RenderTarget::addViewport(const String& name, PCamera camera)
   PViewport viewport = ege_new Viewport(name, camera, this);
   if (NULL != viewport)
   {
-    m_viewports.push_back(viewport);
+    m_viewports.append(viewport);
   }
 
   return viewport;
@@ -62,7 +63,7 @@ PViewport RenderTarget::addViewport(const String& name, PCamera camera)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderTarget::removeViewport(const String& name)
 {
-  for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::Iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -70,7 +71,7 @@ void RenderTarget::removeViewport(const String& name)
     {
       viewport = NULL;
 
-      m_viewports.erase(iter);
+      m_viewports.remove(iter);
       return;
     }
   }
@@ -78,7 +79,7 @@ void RenderTarget::removeViewport(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PViewport RenderTarget::viewport(const String& name) const
 {
-  for (DynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::ConstIterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 
@@ -93,11 +94,11 @@ PViewport RenderTarget::viewport(const String& name) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderTarget::removeAllViewports()
 {
-  for (DynamicArray<PViewport>::iterator iter = m_viewports.begin(); iter != m_viewports.end();)
+  for (DynamicArray<PViewport>::Iterator iter = m_viewports.begin(); iter != m_viewports.end();)
   {
     *iter = NULL;
 
-    iter = m_viewports.erase(iter);
+    iter = m_viewports.remove(iter);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -108,7 +109,7 @@ void RenderTarget::render()
   m_vertexCount = 0;
 
   // go thru all viewports
-  for (DynamicArray<PViewport>::const_iterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
+  for (DynamicArray<PViewport>::ConstIterator iter = m_viewports.begin(); iter != m_viewports.end(); ++iter)
   {
     PViewport viewport = *iter;
 

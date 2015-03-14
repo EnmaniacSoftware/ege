@@ -287,7 +287,7 @@ void ParticleEmitter::setParticleSpinSpeedVariance(float32 variance)
 bool ParticleEmitter::allocateParticlesData()
 {
   // resize array
-  m_particles.resize(m_particleMaxCount);
+  m_particles.setLength(m_particleMaxCount);
 
   // properly adjust active particles count
   m_activeParticlesCount = Math::Min(m_activeParticlesCount, m_particleMaxCount);

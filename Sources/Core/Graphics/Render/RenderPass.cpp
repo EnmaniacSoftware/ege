@@ -8,14 +8,15 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RenderPass)
 EGE_DEFINE_DELETE_OPERATORS(RenderPass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderPass::RenderPass() : Object()
-                         , m_diffuseColor(Color::WHITE)
-                         , m_ambientColor(Color::WHITE)
-                         , m_specularColor(Color::BLACK)
-                         , m_shininess(0)
-                         , m_emissionColor(Color::BLACK)
-                         , m_srcBlendFactor(EGEGraphics::BF_ONE)
-                         , m_dstBlendFactor(EGEGraphics::BF_ZERO)
+RenderPass::RenderPass() 
+: Object()
+, m_diffuseColor(Color::WHITE)
+, m_ambientColor(Color::WHITE)
+, m_specularColor(Color::BLACK)
+, m_shininess(0)
+, m_emissionColor(Color::BLACK)
+, m_srcBlendFactor(EGEGraphics::BF_ONE)
+, m_dstBlendFactor(EGEGraphics::BF_ZERO)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,7 +27,7 @@ RenderPass::~RenderPass()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult RenderPass::addTexture(PTextureImage texture)
 {
-  m_textures.push_back(texture);
+  m_textures.append(texture);
 
   return EGE_SUCCESS;
 }
@@ -34,7 +35,7 @@ EGEResult RenderPass::addTexture(PTextureImage texture)
 EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
 {
   // check if index out of range
-  if (index >= static_cast<u32>(m_textures.size()))
+  if (index >= static_cast<u32>(m_textures.length()))
   {
     // error!
     return EGE_ERROR;
@@ -48,7 +49,7 @@ EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
 EGEResult RenderPass::setTexture(const String& name, PTextureImage texture)
 {
   // find texture with given name
-  for (TextureImageArray::iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+  for (TextureImageArray::Iterator it = m_textures.begin(); it != m_textures.end(); ++it)
   {
     // check if texture image
     if (EGE_OBJECT_UID_TEXTURE_IMAGE == (*it)->uid())
@@ -79,7 +80,7 @@ void RenderPass::removeTexture(s32 index)
   {
     m_textures.clear();
   }
-  else if (index < static_cast<s32>(m_textures.size()))
+  else if (index < m_textures.length())
   {
     m_textures.removeAt(index);
   }
@@ -87,7 +88,7 @@ void RenderPass::removeTexture(s32 index)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderPass::textureCount() const
 {
-  return (u32) m_textures.size();
+  return static_cast<u32>(m_textures.length());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTextureImage RenderPass::texture(u32 index) const
@@ -136,12 +137,12 @@ PRenderPass RenderPass::clone() const
   if (NULL != pass)
   {
     // clone texture images
-    for (TextureImageArray::const_iterator it = m_textures.begin(); it != m_textures.end(); ++it)
+    for (TextureImageArray::ConstIterator it = m_textures.begin(); it != m_textures.end(); ++it)
     {
       const TextureImage& currentTextureImage = *it->object();
 
       PTextureImage textureImage = ege_new TextureImage(currentTextureImage);
-      pass->m_textures.push_back(textureImage);
+      pass->m_textures.append(textureImage);
     }
 
     pass->m_srcBlendFactor        = m_srcBlendFactor;
@@ -180,14 +181,14 @@ bool RenderPass::operator == (const RenderPass& other) const
   bool result = false;
 
   // check if same blending factors, number of textures, same colors
-  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.size() == other.m_textures.size()) &&
+  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.length() == other.m_textures.length()) &&
       (m_ambientColor == other.m_ambientColor) && (m_diffuseColor == other.m_diffuseColor) && (m_diffuseColorTransform == other.m_diffuseColorTransform) &&
       (m_emissionColor == other.m_emissionColor) && (m_shininess == other.m_shininess))
   {
     result = true;
 
     // check if textures are different
-    for (s32 i = 0; i < static_cast<s32>(m_textures.size()); ++i)
+    for (s32 i = 0; i < m_textures.length(); ++i)
     {
       // NOTE: assuptions:
       //       - textures can be compared by pointer

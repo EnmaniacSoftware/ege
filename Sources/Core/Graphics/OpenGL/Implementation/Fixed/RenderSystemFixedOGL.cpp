@@ -39,7 +39,7 @@ RenderSystemFixedOGL::RenderSystemFixedOGL(Engine& engine) : RenderSystemOGL(eng
   defaultUnitState.m_textureCoordIndex = 0;
   for (u32 i = 0; i < Device::TextureUnitsCount(); ++i)
   {
-    m_textureUnitStates.push_back(defaultUnitState);
+    m_textureUnitStates.append(defaultUnitState);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -279,10 +279,10 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     // update statistics
     statisticsData.vertexCount += vertexCount;
     statisticsData.batchCount++;
-    statisticsData.queues.rbegin()->indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
-    statisticsData.queues.rbegin()->batchCount++;
-    statisticsData.queues.rbegin()->vertexCount += vertexCount;
-    statisticsData.queues.rbegin()->componentNames << component->name();
+    statisticsData.queues.last().indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
+    statisticsData.queues.last().batchCount++;
+    statisticsData.queues.last().vertexCount += vertexCount;
+    statisticsData.queues.last().componentNames << component->name();
 
     // set model-view matrix
     glLoadMatrixf(m_viewMatrix.multiply(modelMatrix).data);
@@ -315,7 +315,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     }
 
     // clean up
-    for (s32 i = static_cast<s32>(m_textureUnitStates.size()) - 1; i >= 0; --i)
+    for (s32 i = m_textureUnitStates.length() - 1; i >= 0; --i)
     {
       // disable texturing on server side
       activateTextureUnit(i);
@@ -362,7 +362,7 @@ void RenderSystemFixedOGL::setClientStateEnabled(u32 state, bool set)
     glEnableClientState(static_cast<GLenum>(state));
     OGL_CHECK()
 
-    m_activeClientStates.push_back(state);
+    m_activeClientStates.append(state);
   }
   else if ( ! set && isSet)
   {
@@ -391,7 +391,7 @@ void RenderSystemFixedOGL::applyVertexArrays()
 
   // go thru all arrays
   const VertexElementArray& vertexElements = vertexDeclaration.vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  for (VertexElementArray::ConstIterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
     // set according to buffer type
     switch (itElement->semantic())
@@ -479,7 +479,7 @@ void RenderSystemFixedOGL::setupVAO(PVertexArrayObject& vertexArrayObject, const
   // go thru all arrays
   s32 textureCoordIndex = 0;
   const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  for (VertexElementArray::ConstIterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
     // set according to buffer type
     switch (itElement->semantic())

@@ -310,7 +310,7 @@ void ResourceManagerMultiThread::processBatch()
   ProcessingBatch& batch = m_processList.first();
 
   // check if batch has NOT been started yet
-  if (batch.resources.empty() && (0 == batch.startTime.microseconds()))
+  if (batch.resources.isEmpty() && (0 == batch.startTime.microseconds()))
   {
     // finalize batch
     if ( ! finalizeProcessingBatch(batch))

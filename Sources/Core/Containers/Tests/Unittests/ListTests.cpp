@@ -252,7 +252,7 @@ TEST_F(ListTest, Last)
 
   // modify returned value
   list.last() = 200;
-  EXPECT_EQ(200, list.first());
+  EXPECT_EQ(200, list.last());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, Contains)

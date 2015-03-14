@@ -41,7 +41,7 @@ RenderSystemStatistics::RenderSystemStatistics(Engine& engine, const String& log
   // create empty records in front
   while (0 < recordsCount--)
   {
-    m_records.push_back(RenderSystemFrameStatisticData());
+    m_records.append(RenderSystemFrameStatisticData());
   }
 
   // connect
@@ -63,7 +63,7 @@ RenderSystemFrameStatisticData& RenderSystemStatistics::currentRecord()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const RenderSystemFrameStatisticData& RenderSystemStatistics::lastRecord() const
 {
-  const s32 index = (0 == m_currentIndex) ? static_cast<s32>(m_records.size() - 1) : static_cast<s32>(m_currentIndex);
+  const s32 index = (0 == m_currentIndex) ? (m_records.length() - 1) : m_currentIndex;
   return m_records[index];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ void RenderSystemStatistics::onRenderEnd()
   currentRecord().renderDuration = Timer::GetMicroseconds() - currentRecord().renderDuration;
 
   // move to next index
-  ++m_currentIndex %= m_records.size();
+  ++m_currentIndex %= m_records.length();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
@@ -113,9 +113,9 @@ void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
   StringBuffer buffer;
 
   // go thru all records backwards
-  for (s32 i = 0; i < static_cast<s32>(m_records.size()); ++i)
+  for (s32 i = 0; i < m_records.length(); ++i)
   {
-    const s32 index = (0 <= (m_currentIndex - i - 1)) ? (m_currentIndex - i - 1) : (static_cast<s32>(m_records.size()) + m_currentIndex - i - 1);
+    const s32 index = (0 <= (m_currentIndex - i - 1)) ? (m_currentIndex - i - 1) : (m_records.length() + m_currentIndex - i - 1);
 
     const RenderSystemFrameStatisticData& data = m_records[index];
 
@@ -126,8 +126,8 @@ void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
     buffer << "Batch Count      : " << data.batchCount << "\n";
     buffer << "Vertex Count     : " << data.vertexCount << "\n";
 
-    buffer << "Render queues: " << static_cast<s32>(data.queues.size()) << "\n";
-    for (DynamicArray<RenderSystemRenderQueueData>::const_iterator it = data.queues.begin(); it != data.queues.end(); ++it)
+    buffer << "Render queues: " << data.queues.length() << "\n";
+    for (DynamicArray<RenderSystemRenderQueueData>::ConstIterator it = data.queues.begin(); it != data.queues.end(); ++it)
     {
       const RenderSystemRenderQueueData& queueData = *it;
 
@@ -164,10 +164,10 @@ void RenderSystemStatistics::clearCurrentRecord()
   record.vertexCount       = 0;
 
   const s32 KRenderQueuesReservedItemCount = 200;
-  EGE_ASSERT_X(KRenderQueuesReservedItemCount >= record.queues.size(), "Increase reserve value!");
+  EGE_ASSERT_X(KRenderQueuesReservedItemCount >= record.queues.length(), "Increase reserve value!");
 
   record.queues.clear();
-  record.queues.reserve(KRenderQueuesReservedItemCount);
+  record.queues.setCapacity(KRenderQueuesReservedItemCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Engine& RenderSystemStatistics::engine() const

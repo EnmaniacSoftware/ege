@@ -91,7 +91,7 @@ bool VertexBufferVBO::setSize(u32 count)
   EGE_ASSERT(!m_locked);
 
   // check if there is NO buffer to be created
-  if (vertexDeclaration().vertexElements().empty())
+  if (vertexDeclaration().vertexElements().isEmpty())
   {
     // error!
     return false;

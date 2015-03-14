@@ -108,7 +108,7 @@ EGEResult ResourceImagedAnimation::load()
   if (STATE_LOADED != m_state)
   {
     // load all objects materials
-    for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+    for (ObjectDataArray::Iterator it = m_objects.begin(); it != m_objects.end(); ++it)
     {
       ObjectData& dataObject = *it;
 
@@ -156,7 +156,7 @@ EGEResult ResourceImagedAnimation::load()
 void ResourceImagedAnimation::unload() 
 { 
   // unload all objects materials
-  for (ObjectDataArray::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectDataArray::Iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     ObjectData& dataObject = *it;
 
@@ -203,7 +203,7 @@ EGEResult ResourceImagedAnimation::setInstance(const PImagedAnimation& instance)
 
   // add objects
   Map<s32, EGEImagedAnimation::Object> objects;
-  for (ObjectDataArray::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (ObjectDataArray::ConstIterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     const ObjectData& data = *it;
 
@@ -334,7 +334,7 @@ EGEResult ResourceImagedAnimation::addObject(const PXmlElement& tag)
     child = child->nextChild();
   }
 
-  m_objects.push_back(data);
+  m_objects.append(data);
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

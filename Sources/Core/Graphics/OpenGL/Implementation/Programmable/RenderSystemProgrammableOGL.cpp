@@ -280,10 +280,10 @@ void RenderSystemProgrammableOGL::renderComponent(const PRenderComponent& compon
     // update statistics
     statisticsData.vertexCount += vertexCount;
     statisticsData.batchCount++;
-    statisticsData.queues.rbegin()->indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
-    statisticsData.queues.rbegin()->batchCount++;
-    statisticsData.queues.rbegin()->vertexCount += vertexCount;
-    statisticsData.queues.rbegin()->componentNames << component->name();
+    statisticsData.queues.last().indexedBatchCount += (0 < indexBuffer->indexCount()) ? 1 : 0;
+    statisticsData.queues.last().batchCount++;
+    statisticsData.queues.last().vertexCount += vertexCount;
+    statisticsData.queues.last().componentNames << component->name();
 
     // check if INDICIES are to be used
     if (0 < indexBuffer->indexCount())
@@ -352,7 +352,7 @@ void RenderSystemProgrammableOGL::applyVertexArrays()
 
   // go thru all arrays
   const VertexElementArray& vertexElements = vertexDeclaration.vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  for (VertexElementArray::ConstIterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
     GLint location;
 
@@ -439,7 +439,7 @@ void RenderSystemProgrammableOGL::setupVAO(PVertexArrayObject& vertexArrayObject
 
   // go thru all arrays
   const VertexElementArray& vertexElements = vertexBuffer->vertexDeclaration().vertexElements();
-  for (VertexElementArray::const_iterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
+  for (VertexElementArray::ConstIterator itElement = vertexElements.begin(); itElement != vertexElements.end(); ++itElement)
   {
     GLint location;
 

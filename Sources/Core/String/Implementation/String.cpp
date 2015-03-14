@@ -487,7 +487,7 @@ StringArray String::split(const String& separator) const
     }
 
     // add to list
-    list.push_back(String(subString));
+    list.append(String(subString));
   }
 
   return list;

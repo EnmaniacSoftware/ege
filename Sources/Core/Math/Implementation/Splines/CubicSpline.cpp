@@ -2,7 +2,7 @@
 #include "EGEMath.h"
 #include "EGEVector3.h"
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static Matrix4f BezierMatrix(-1.0f,  3.0f, -3.0f, 1.0f,                 // column 0 (start)
@@ -82,8 +82,8 @@ bool CubicSpline::addPoints(const List<Vector3f>& points)
   // NOTE: few different scenarios are possible here:
   //       - if currently no segment is given, new list should contain at least 4 points (for first segment) and/or 3 points for every next segment
   //       - if at least one segment is already specified, new list should contain 3 or mulitple of 3 points for another segment(s)
-  if ((m_segments.empty() && ((KFirstSegmentPointCount == points.length()) || (0 == (points.length() - KFirstSegmentPointCount) % KNextSegmentPointCount))) ||
-      ( ! m_segments.empty() && (0 == (points.length() % KNextSegmentPointCount))))
+  if ((m_segments.isEmpty() && ((KFirstSegmentPointCount == points.length()) || (0 == (points.length() - KFirstSegmentPointCount) % KNextSegmentPointCount))) ||
+      ( ! m_segments.isEmpty() && (0 == (points.length() % KNextSegmentPointCount))))
   {
     // add all points to spline
     for (List<Vector3f>::ConstIterator it = points.begin(); it != points.end(); )
@@ -91,7 +91,7 @@ bool CubicSpline::addPoints(const List<Vector3f>& points)
       SegmentData segment;
 
       // check if first segment
-      if (m_segments.empty())
+      if (m_segments.isEmpty())
       {
         segment.begin     = *it++;
         segment.control1  = *it++;
@@ -107,7 +107,7 @@ bool CubicSpline::addPoints(const List<Vector3f>& points)
       }
 
       // add segment to pool
-      m_segments.push_back(segment);
+      m_segments.append(segment);
     }
 
     // invalidate length
@@ -131,7 +131,7 @@ Vector3f CubicSpline::value(float32 parameter) const
   parameter *= length();
 
   // go thru all segments and find the one which contains point at given location
-  for (DynamicArray<SegmentData>::const_iterator it = m_segments.begin(); (it != m_segments.end() && (0 <= parameter)); ++it)
+  for (DynamicArray<SegmentData>::ConstIterator it = m_segments.begin(); (it != m_segments.end() && (0 <= parameter)); ++it)
   {
     const SegmentData& segment = *it;
 
@@ -195,7 +195,7 @@ float32 CubicSpline::length() const
     float32 length = 0;
 
     // go thru all segments and sum up their lengths
-    for (SegmentArray::const_iterator it = m_segments.begin(); it != m_segments.end(); ++it)
+    for (SegmentArray::ConstIterator it = m_segments.begin(); it != m_segments.end(); ++it)
     {
       const SegmentData& segment = *it;
 
@@ -217,3 +217,5 @@ float32 CubicSpline::length() const
   return m_length;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

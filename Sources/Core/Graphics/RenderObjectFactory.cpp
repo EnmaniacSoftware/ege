@@ -148,20 +148,20 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   {
     case EGEGraphics::RPT_TRIANGLE_STRIPS:
 
-      vertexList.push_back(1);
-      vertexList.push_back(2);
-      vertexList.push_back(0);
-      vertexList.push_back(3);
+      vertexList.append(1);
+      vertexList.append(2);
+      vertexList.append(0);
+      vertexList.append(3);
       break;
 
     case EGEGraphics::RPT_TRIANGLES:
 
-      vertexList.push_back(0);
-      vertexList.push_back(1);
-      vertexList.push_back(2);
-      vertexList.push_back(0);
-      vertexList.push_back(2);
-      vertexList.push_back(3);
+      vertexList.append(0);
+      vertexList.append(1);
+      vertexList.append(2);
+      vertexList.append(0);
+      vertexList.append(2);
+      vertexList.append(3);
       break;
 
     default:
@@ -171,14 +171,14 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   }
 
   // resize vertex buffer
-  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.length())))
   {
     // error!
     return false;
   }
 
   // lock vertex buffer
-  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.length())));
   if (NULL == data)
   {
     // error!
@@ -186,13 +186,13 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   }
 
   // go thru all vertices
-  for (IntArray::const_iterator it = vertexList.begin(); it != vertexList.end(); ++it)
+  for (IntArray::ConstIterator it = vertexList.begin(); it != vertexList.end(); ++it)
   {
     const VertexData& vertex = vertices[*it];
 
     // go thru all vertex arrays one by one
     const VertexElementArray& vertexElements = component->vertexBuffer()->vertexDeclaration().vertexElements();
-    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
+    for (VertexElementArray::ConstIterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
     {
       switch (it->semantic())
       {
@@ -313,56 +313,56 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   {
     case EGEGraphics::RPT_TRIANGLE_STRIPS:
 
-      vertexList.push_back(1);
-      vertexList.push_back(2);
-      vertexList.push_back(0);
-      vertexList.push_back(3);
-      vertexList.push_back(3);  // degenerated
-      vertexList.push_back(2);  // degenerated
-      vertexList.push_back(2);
-      vertexList.push_back(4);
-      vertexList.push_back(3);
-      vertexList.push_back(5);
-      vertexList.push_back(5);  // degenerated
-      vertexList.push_back(6);  // degenerated
-      vertexList.push_back(6);
-      vertexList.push_back(7);
-      vertexList.push_back(1);
-      vertexList.push_back(2);
-      vertexList.push_back(2);  // degenerated
-      vertexList.push_back(7);  // degenerated
-      vertexList.push_back(7);
-      vertexList.push_back(8);
-      vertexList.push_back(2);
-      vertexList.push_back(4);
+      vertexList.append(1);
+      vertexList.append(2);
+      vertexList.append(0);
+      vertexList.append(3);
+      vertexList.append(3);  // degenerated
+      vertexList.append(2);  // degenerated
+      vertexList.append(2);
+      vertexList.append(4);
+      vertexList.append(3);
+      vertexList.append(5);
+      vertexList.append(5);  // degenerated
+      vertexList.append(6);  // degenerated
+      vertexList.append(6);
+      vertexList.append(7);
+      vertexList.append(1);
+      vertexList.append(2);
+      vertexList.append(2);  // degenerated
+      vertexList.append(7);  // degenerated
+      vertexList.append(7);
+      vertexList.append(8);
+      vertexList.append(2);
+      vertexList.append(4);
       break;
 
     case EGEGraphics::RPT_TRIANGLES:
 
-      vertexList.push_back(0);
-      vertexList.push_back(1);
-      vertexList.push_back(2);
-      vertexList.push_back(0);
-      vertexList.push_back(2);
-      vertexList.push_back(3);
-      vertexList.push_back(3);
-      vertexList.push_back(2);
-      vertexList.push_back(4);
-      vertexList.push_back(3);
-      vertexList.push_back(4);
-      vertexList.push_back(5);
-      vertexList.push_back(1);
-      vertexList.push_back(6);
-      vertexList.push_back(7);
-      vertexList.push_back(1);
-      vertexList.push_back(7);
-      vertexList.push_back(2);
-      vertexList.push_back(2);
-      vertexList.push_back(7);
-      vertexList.push_back(8);
-      vertexList.push_back(2);
-      vertexList.push_back(8);
-      vertexList.push_back(4);
+      vertexList.append(0);
+      vertexList.append(1);
+      vertexList.append(2);
+      vertexList.append(0);
+      vertexList.append(2);
+      vertexList.append(3);
+      vertexList.append(3);
+      vertexList.append(2);
+      vertexList.append(4);
+      vertexList.append(3);
+      vertexList.append(4);
+      vertexList.append(5);
+      vertexList.append(1);
+      vertexList.append(6);
+      vertexList.append(7);
+      vertexList.append(1);
+      vertexList.append(7);
+      vertexList.append(2);
+      vertexList.append(2);
+      vertexList.append(7);
+      vertexList.append(8);
+      vertexList.append(2);
+      vertexList.append(8);
+      vertexList.append(4);
       break;
 
     default:
@@ -372,14 +372,14 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   }
 
   // resize vertex buffer
-  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.length())))
   {
     // error!
     return false;
   }
 
   // lock vertex buffer
-  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.length())));
   if (NULL == data)
   {
     // error!
@@ -387,13 +387,13 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   }
 
   // go thru all vertices
-  for (IntArray::const_iterator it = vertexList.begin(); it != vertexList.end(); ++it)
+  for (IntArray::ConstIterator it = vertexList.begin(); it != vertexList.end(); ++it)
   {
     const VertexData& vertex = vertices[*it];
 
     // go thru all vertex arrays one by one
     const VertexElementArray& vertexElements = component->vertexBuffer()->vertexDeclaration().vertexElements();
-    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
+    for (VertexElementArray::ConstIterator it = vertexElements.begin(); it != vertexElements.end(); ++it)
     {
       switch (it->semantic())
       {

@@ -230,7 +230,7 @@ void ResourceSpriteAnimation::calculateFrameData()
                                                                   i / sheet()->framesPerRow() * cellHeight, cellWidth, cellHeight));
 
       // add to pool
-      m_frameData.push_back(data);
+      m_frameData.append(data);
     }
 
     // validate

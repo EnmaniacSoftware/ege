@@ -100,7 +100,7 @@ void RenderSystemOGL::flush()
     queueData.batchCount        = 0;
     queueData.vertexCount       = 0;
     queueData.indexedBatchCount = 0;
-    statisticsData.queues.push_back(queueData);
+    statisticsData.queues.append(queueData);
 
     // render queue list
     for (List<PRenderQueue>::ConstIterator it = queueList.begin(); it != queueList.end(); ++it)

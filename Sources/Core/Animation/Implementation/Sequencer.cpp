@@ -8,9 +8,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Sequencer)
 EGE_DEFINE_DELETE_OPERATORS(Sequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Sequencer::Sequencer() : Object()
-                       , m_frameIndex(0)
-                       , m_repeatable(false)
+Sequencer::Sequencer() 
+: Object()
+, m_frameIndex(0)
+, m_repeatable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -25,13 +26,13 @@ void Sequencer::update(const Time& time)
   if (0 >= m_frameTimeLeft.microseconds())
   {
     // check if end reached
-    if (m_frameIndex >= static_cast<s32>(m_framesIds.size()) - 1)
+    if (m_frameIndex >= m_framesIds.length() - 1)
     {
       // check if done
       if (!m_repeatable)
       {
         // make sure we stop at end of one before last frame
-        m_frameIndex    = static_cast<s32>(m_framesIds.size() - 1);
+        m_frameIndex    = m_framesIds.length() - 1;
         m_frameTimeLeft = m_frameDuration;
 
         // emit
@@ -94,7 +95,7 @@ void Sequencer::setName(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Sequencer::frameId(s32 frameIndex) const
 {
-  s32 index = Math::Clamp(frameIndex, 0, static_cast<s32>(m_framesIds.size() - 1));
+  s32 index = Math::Clamp(frameIndex, 0, m_framesIds.length() - 1);
 
   return m_framesIds[index];
 }
@@ -117,7 +118,7 @@ s32 Sequencer::currentFrameIndex() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s32 Sequencer::frameCount() const 
 { 
-  return static_cast<s32>(m_framesIds.size()); 
+  return m_framesIds.length(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& Sequencer::name() const 

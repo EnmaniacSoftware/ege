@@ -445,8 +445,8 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
     // point to first texture coords
     List<const Rectf*>::ConstIterator itTextureRect = textureRects.begin();
   
-    VertexElementArray::const_iterator itLast = vertexElements.end();
-    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)
+    VertexElementArray::ConstIterator itLast = vertexElements.end();
+    for (VertexElementArray::ConstIterator it = vertexElements.begin(); it != itLast; ++it)
     {
       switch (it->semantic())
       {
@@ -532,8 +532,8 @@ void BatchedRenderQueue::convertVertices(float32* outData, const float32* inData
     // point to first texture coords
     List<const Rectf*>::ConstIterator itTextureRect = textureRects.begin();
   
-    VertexElementArray::const_iterator itLast = vertexElements.end();
-    for (VertexElementArray::const_iterator it = vertexElements.begin(); it != itLast; ++it)
+    VertexElementArray::ConstIterator itLast = vertexElements.end();
+    for (VertexElementArray::ConstIterator it = vertexElements.begin(); it != itLast; ++it)
     {
       switch (it->semantic())
       {

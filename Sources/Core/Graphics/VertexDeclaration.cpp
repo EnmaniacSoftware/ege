@@ -39,7 +39,7 @@ bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic
   u32 index = 0;
  
   // go thru all semantics
-  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     // calculate according to type
     switch (iter->semantic())
@@ -67,7 +67,7 @@ bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic
   }
 
   // add to pool
-  m_vertexElements.push_back(VertexElement(semantic, offset * sizeof(float32), index));
+  m_vertexElements.append(VertexElement(semantic, offset * sizeof(float32), index));
 
   // reset cached vertex size
   m_vertexSize = 0;
@@ -78,7 +78,7 @@ bool VertexDeclaration::addElement(NVertexBuffer::VertexElementSemantic semantic
 u32 VertexDeclaration::elementCount(NVertexBuffer::VertexElementSemantic semantic) const
 {
   u32 count = 0;
-  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     if (semantic == iter->semantic())
     {
@@ -95,7 +95,7 @@ u32 VertexDeclaration::vertexSize() const
   if (0 == m_vertexSize)
   {
     // go thru all buffers
-    for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+    for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
     {
       m_vertexSize += iter->size();
     }
@@ -120,7 +120,7 @@ const VertexElement* VertexDeclaration::vertexElement(NVertexBuffer::VertexEleme
   const VertexElement* element = NULL;
 
   // go thru all elements
-  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     const VertexElement& current = *iter;
 
@@ -141,7 +141,7 @@ NVertexBuffer::VertexElementSemantic VertexDeclaration::findPositionSemantic() c
   NVertexBuffer::VertexElementSemantic semantic = NVertexBuffer::VES_NONE;
 
   // go thru all elements
-  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     const VertexElement& current = *iter;
 
@@ -162,7 +162,7 @@ VertexElementArray VertexDeclaration::vertexElements(NVertexBuffer::VertexElemen
   VertexElementArray array;
 
   // go thru all elements
-  for (VertexElementArray::const_iterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
+  for (VertexElementArray::ConstIterator iter = m_vertexElements.begin(); iter != m_vertexElements.end(); ++iter)
   {
     const VertexElement& current = *iter;
 

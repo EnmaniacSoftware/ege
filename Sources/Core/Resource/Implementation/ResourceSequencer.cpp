@@ -41,13 +41,13 @@ EGEResult ResourceSequencer::create(const String& path, const PObject& data)
   String frameIds = tag->attribute("frames");
   StringArray frames = frameIds.split(" ");
 
-  for (int i = 0; i < static_cast<s32>(frames.size()); ++i)
+  for (int i = 0; i < frames.length(); ++i)
   {
-    m_frameIds.push_back(frames[i].toInt(&error));
+    m_frameIds.append(frames[i].toInt(&error));
   }
 
   // check if obligatory data is wrong
-  if (m_name.isEmpty() || m_frameIds.empty() || error)
+  if (m_name.isEmpty() || m_frameIds.isEmpty() || error)
   {
     // error!
     egeWarning(KResourceSequencerDebugName) << "Failed for name:" << m_name;

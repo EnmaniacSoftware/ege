@@ -208,7 +208,7 @@ Alignment StringUtils::ToAlignment(const String& string, bool* error)
   const StringArray parts = string.split("-");
 
   Alignment alignment;
-  for (StringArray::const_iterator it = parts.begin(); it != parts.end(); ++it)
+  for (StringArray::ConstIterator it = parts.begin(); it != parts.end(); ++it)
   {
     // remove whitespaces on both sides
     String final = it->trimmed();

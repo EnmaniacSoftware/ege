@@ -9,7 +9,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(VertexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(VertexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexBufferVA::VertexBufferVA(const String& name, const VertexDeclaration& vertexDeclaration) : VertexBuffer(name, vertexDeclaration)
+VertexBufferVA::VertexBufferVA(const String& name, const VertexDeclaration& vertexDeclaration) 
+: VertexBuffer(name, vertexDeclaration)
 {
   m_buffer = ege_new DataBuffer();
 }
@@ -28,7 +29,7 @@ bool VertexBufferVA::setSize(u32 count)
   EGE_ASSERT(!m_locked);
 
   // check if there is NO buffer to be created
-  if (vertexDeclaration().vertexElements().empty())
+  if (vertexDeclaration().vertexElements().isEmpty())
   {
     // error!
     return false;

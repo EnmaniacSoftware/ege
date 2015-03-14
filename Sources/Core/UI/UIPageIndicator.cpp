@@ -121,7 +121,7 @@ void UIPageIndicator::updateRenderData()
     renderData->setMaterial((page() == i) ? m_onMaterials.at(i, NULL) : m_offMaterials.at(i, NULL));
 
     // add to pool
-    m_renderData.push_back(renderData);
+    m_renderData.append(renderData);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ void UIPageIndicator::addForRendering(IRenderer* renderer, const Matrix4f& trans
   // render
   const Vector2f indicatorSize(m_indicatorSize * pageCount() + INDICATOR_SPACING * (pageCount() - 1), static_cast<float32>(m_indicatorSize));
   const Vector2f offset = (size() - indicatorSize) * 0.5f;
-  for (s32 i = 0; i < static_cast<s32>(m_renderData.size()); ++i)
+  for (s32 i = 0; i < m_renderData.length(); ++i)
   {
     Vector4f pos = Vector4f(offset.x + i * (m_indicatorSize + INDICATOR_SPACING), offset.y, 0);
     Matrix4f matrix = Math::CreateMatrix(pos, Vector4f::ONE, Quaternionf::IDENTITY);

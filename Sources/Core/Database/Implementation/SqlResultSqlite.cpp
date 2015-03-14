@@ -8,7 +8,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(SqlResultSqlite)
 EGE_DEFINE_DELETE_OPERATORS(SqlResultSqlite)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SqlResultSqlite::SqlResultSqlite() : SqlResult()
+SqlResultSqlite::SqlResultSqlite() 
+: SqlResult()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,14 +54,14 @@ u32 SqlResultSqlite::rowCount() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SqlResultSqlite::addColumnName(const String& name)
 {
-  m_columnNames.push_back(name);
+  m_columnNames.append(name);
 
   return EGE_SUCCESS;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 SqlResultSqlite::columnCount() const
 {
-  return static_cast<u32>(m_columnNames.size());
+  return static_cast<u32>(m_columnNames.length());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SqlResultSqlite::addValue(s32 index, const char* value)
@@ -80,7 +81,7 @@ EGEResult SqlResultSqlite::addValue(s32 index, const char* value)
     *valueObject << value;
 
     // add it to pool
-    m_rows[index].push_back(valueObject);
+    m_rows[index].append(valueObject);
   }
 
   return result;
@@ -100,7 +101,7 @@ EGEResult SqlResultSqlite::addValue(s32 index, s32 value)
   else
   {
     // add it to pool
-    m_rows[index].push_back(valueObject);
+    m_rows[index].append(valueObject);
   }
 
   return result;
@@ -120,7 +121,7 @@ EGEResult SqlResultSqlite::addValue(s32 index, float32 value)
   else
   {
     // add it to pool
-    m_rows[index].push_back(valueObject);
+    m_rows[index].append(valueObject);
   }
 
   return result;
@@ -148,7 +149,7 @@ EGEResult SqlResultSqlite::addValue(s32 index, const void* buffer, s32 size)
     else
     {
       // add it to pool
-      m_rows[index].push_back(valueObject);
+      m_rows[index].append(valueObject);
     }
   }
 

@@ -706,7 +706,7 @@ void RenderWindowOGLWin32::detectCapabilities()
   }
 #endif // EGE_RENDERING_OPENGL_FIXED
   
-  if (extensionArray.empty())
+  if (extensionArray.isEmpty())
   {
     // determine if glGetStringi is available
     glGetStringi = reinterpret_cast<PFNGLGETSTRINGIPROC>(wglGetProcAddress("glGetStringi"));
@@ -719,12 +719,12 @@ void RenderWindowOGLWin32::detectCapabilities()
       // process extensions
       for (GLint i = 0; i < extensionsCount; ++i)
       {
-        extensionArray.push_back(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)));
+        extensionArray.append(reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)));
       }
     }
   }
 
-  for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
+  for (StringArray::ConstIterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
     egeDebug(KOpenGLDebugName) << "Available OGL extension:" << *it;
   }

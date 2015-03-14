@@ -33,7 +33,7 @@ EGEResult KeyFrameAnimation::addSequencer(const PSequencer& sequencer)
   else
   {
     // add to pool
-    m_sequencers.push_back(sequencer);
+    m_sequencers.append(sequencer);
   }
 
   return result;
@@ -42,7 +42,7 @@ EGEResult KeyFrameAnimation::addSequencer(const PSequencer& sequencer)
 PSequencer KeyFrameAnimation::sequencer(const String& name) const
 {
   // go thru all sequencers
-  for (SequencerArray::const_iterator it = m_sequencers.begin(); it != m_sequencers.end(); ++it)
+  for (SequencerArray::ConstIterator it = m_sequencers.begin(); it != m_sequencers.end(); ++it)
   {
     const PSequencer& current = *it;
     if (current->name() == name)

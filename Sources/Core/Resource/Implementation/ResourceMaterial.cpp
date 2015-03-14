@@ -209,14 +209,17 @@ EGEResult ResourceMaterial::create(const String& path, const PObject& data)
   }
 
   // check if no single pass has been defined
-  if (m_passes.empty() || defaultPassInUse)
+  if (m_passes.isEmpty() || defaultPassInUse)
   {
     // add default one to the front
-    m_passes.insert(m_passes.begin(), defaultPass);
+    EGE_ASSERT(m_passes.isEmpty());
+    m_passes.append(defaultPass);
+    // TAGE - check what is going on here ie if 2 texture-refs are defined are there 2 different default passes created ?!
+//    m_passes.insert(m_passes.begin(), defaultPass);
   }
 
   // apply override modifier to all passes
-  for (PassDataArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  for (PassDataArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
   {
     PassData& pass = *it;
 
@@ -277,7 +280,7 @@ EGEResult ResourceMaterial::load()
     if (EGE_SUCCESS == result)
     {
       // fetch data to passes
-      for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+      for (PassDataArray::Iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
       {
         PassData& pass = *passIt;
 
@@ -301,7 +304,7 @@ void ResourceMaterial::unload()
 {
   if (STATE_LOADED == m_state)
   {
-    for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+    for (PassDataArray::Iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
     {
       PassData& pass = *passIt;
 
@@ -382,10 +385,10 @@ EGEResult ResourceMaterial::addPass(const PXmlElement& tag)
   EGEResult result = EGE_SUCCESS;
 
   // add new pass to pool
-  m_passes.push_back(PassData());
+  m_passes.append(PassData());
 
   // retrieve reference to it
-  PassData& pass = m_passes.back();
+  PassData& pass = m_passes.last();
 
   bool error = false;
 
@@ -483,7 +486,7 @@ EGEResult ResourceMaterial::setInstance(const PMaterial& instance) const
   instance->clear();
 
   // create render passes
-  for (PassDataArray::const_iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+  for (PassDataArray::ConstIterator it = m_passes.begin(); it != m_passes.end(); ++it)
   {
     const PassData& pass = *it;
 
@@ -572,7 +575,7 @@ float32 ResourceMaterial::shininess(u32 pass) const
 EGEResult ResourceMaterial::loadDependencies()
 {
   // try to load (if necessary) textures, shaders (for all passes)
-  for (PassDataArray::iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
+  for (PassDataArray::Iterator passIt = m_passes.begin(); passIt != m_passes.end(); ++passIt)
   {
     PassData& pass = *passIt;
 

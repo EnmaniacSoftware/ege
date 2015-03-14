@@ -331,7 +331,7 @@ bool ResourceManager::initializeProcessingBatch(ProcessingBatch& batch, const St
 bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
 {
   // reserve space
-  batch.resources.reserve(batch.resourcesCount);
+  batch.resources.setCapacity(batch.resourcesCount);
 
   // go thru all groups
   for (StringList::ConstIterator it = batch.groups.begin(); it != batch.groups.end(); ++it)
@@ -351,7 +351,7 @@ bool ResourceManager::finalizeProcessingBatch(ProcessingBatch& batch) const
     // add them all into batch
     for (List<PResource>::ConstIterator itRes = resources.begin(); itRes != resources.end(); ++itRes)
     {
-      batch.resources.push_back(*itRes);
+      batch.resources.append(*itRes);
     }
   }
 
@@ -365,7 +365,7 @@ void ResourceManager::processBatch()
   ProcessingBatch& batch = m_processList.first();
 
   // check if batch has been processed
-  if (batch.resources.empty())
+  if (batch.resources.isEmpty())
   {
     // do nothing
     return;

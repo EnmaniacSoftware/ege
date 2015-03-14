@@ -68,7 +68,7 @@ EGEResult ImagedAnimation::addForRendering(IRenderer& renderer)
       m_renderDataNeedsUpdate = false;
     }
 
-    EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < static_cast<s32>(m_renderComponents.size()));
+    EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < m_renderComponents.length());
 
     // get current frame render data
     PRenderComponent& renderComponent = m_renderComponents[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];
@@ -268,7 +268,7 @@ void ImagedAnimation::updateRenderData()
     vertexBuffer->unlock(data - 1);
 
     // add to pool
-    m_renderComponents.push_back(frameRenderData);
+    m_renderComponents.append(frameRenderData);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

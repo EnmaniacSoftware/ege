@@ -6,7 +6,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(Material)
 EGE_DEFINE_DELETE_OPERATORS(Material)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Material::Material() : Object()
+Material::Material() 
+: Object()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,7 +34,7 @@ PRenderPass Material::addPass(const PRenderPass& pass)
 
   if (NULL != renderPass)
   {
-    m_passes.push_back(renderPass);
+    m_passes.append(renderPass);
   }
 
   return renderPass;
@@ -41,7 +42,7 @@ PRenderPass Material::addPass(const PRenderPass& pass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool Material::isValid() const
 {
-  return ! m_passes.empty();
+  return ! m_passes.isEmpty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex)
@@ -53,7 +54,7 @@ void Material::setSrcBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -71,7 +72,7 @@ void Material::setDstBlendFactor(EGEGraphics::BlendFactor factor, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -89,7 +90,7 @@ void Material::setDiffuseColor(const Color& color, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -107,7 +108,7 @@ void Material::setDiffuseAlpha(float32 alpha, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -125,7 +126,7 @@ void Material::setAmbientColor(const Color& color, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -143,7 +144,7 @@ void Material::setSpecularColor(const Color& color, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -161,7 +162,7 @@ void Material::setShininess(float32 shininess, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -179,7 +180,7 @@ void Material::setEmissionColor(const Color& color, s32 passIndex)
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -197,7 +198,7 @@ void Material::setDiffuseColorTransformation(const ColorTransform& transformatio
   }
   else if (0 > passIndex)
   {
-    for (PassArray::iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::Iterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       pass = *it;
 
@@ -217,7 +218,7 @@ PMaterial Material::clone() const
   if (NULL != material)
   {
     // clone passes
-    for (PassArray::const_iterator it = m_passes.begin(); it != m_passes.end(); ++it)
+    for (PassArray::ConstIterator it = m_passes.begin(); it != m_passes.end(); ++it)
     {
       PRenderPass clonedPass = (*it)->clone();
       if (NULL == clonedPass)
@@ -243,7 +244,7 @@ bool Material::operator == (const Material& other) const
     result = true;
 
     // go thru all passes
-    for (s32 i = 0; i < static_cast<s32>(m_passes.size()); ++i)
+    for (s32 i = 0; i < m_passes.length(); ++i)
     {
       // check if passes differ
       if (*m_passes[i] != *other.m_passes[i])

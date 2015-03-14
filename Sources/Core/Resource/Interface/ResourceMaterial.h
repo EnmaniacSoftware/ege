@@ -108,7 +108,7 @@ class ResourceMaterial : public IResource
     /*! Returns shinness value for a given pass. */
     float32 shininess(u32 pass) const;
     /*! Returns number of passes. */
-    const u32 passCount() const { return static_cast<u32>(m_passes.size()); }
+    const u32 passCount() const { return static_cast<u32>(m_passes.length()); }
 
   private:
 

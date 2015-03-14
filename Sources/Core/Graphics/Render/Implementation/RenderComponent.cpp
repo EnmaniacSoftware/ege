@@ -97,7 +97,7 @@ void RenderComponent::calculateHash()
   // NOTE: generated value is from range [0 - 100000)
   // NOTE: max occurences of a particular array is 9
   const VertexElementArray& vertexElementArray = vertexBuffer()->vertexDeclaration().vertexElements();
-  for (VertexElementArray::const_iterator it = vertexElementArray.begin(); it != vertexElementArray.end(); ++it)
+  for (VertexElementArray::ConstIterator it = vertexElementArray.begin(); it != vertexElementArray.end(); ++it)
   {
     switch (it->semantic())
     {

@@ -617,7 +617,7 @@ TEST_F(StringTest, Split)
 
   // split valid string
   StringArray parts = string.split(" ");
-  EXPECT_EQ(5, parts.size());
+  EXPECT_EQ(5, parts.length());
   EXPECT_STREQ("This", parts[0].toAscii());
   EXPECT_STREQ("is", parts[1].toAscii());
   EXPECT_STREQ("another", parts[2].toAscii());
@@ -626,12 +626,12 @@ TEST_F(StringTest, Split)
 
   // split with non-existing separator
   parts = string.split("X");
-  EXPECT_EQ(1, parts.size());
+  EXPECT_EQ(1, parts.length());
   EXPECT_STREQ(string.toAscii(), parts[0].toAscii());
 
   // split with multicharacter separator
   parts = string.split("is");
-  EXPECT_EQ(3, parts.size());
+  EXPECT_EQ(3, parts.length());
   EXPECT_STREQ("Th", parts[0].toAscii());
   EXPECT_STREQ(" ", parts[1].toAscii());
   EXPECT_STREQ(" another STD String", parts[2].toAscii());
