@@ -284,7 +284,7 @@ void RenderWindowOGLIOS::detectCapabilities()
   String extensionString(reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS)));
   StringArray extensionArray = extensionString.split(" ");
   
-  for (StringArray::const_iterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
+  for (StringArray::ConstIterator it = extensionArray.begin(); it != extensionArray.end(); ++it)
   {
     egeDebug(KOpenGLDebugName) << "Available OGL extension:" << *it;
   }
