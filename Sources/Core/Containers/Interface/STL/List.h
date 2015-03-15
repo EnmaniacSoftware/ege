@@ -50,7 +50,7 @@ class List
      *  @return Iterator to an element after the removed one.
      *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
      */
-    typename List::Iterator remove(typename List::ConstIterator iterator);
+    Iterator remove(ConstIterator iterator);
 
     /*! Removes first element containing given object from this list.
      *  @param  object  Object to search for.
@@ -115,23 +115,23 @@ class List
      *  @param  obejct    Element to be inserted.
      *  @return Iterator pointing to the inserted object.
      */
-    typename List::Iterator insert(typename List::ConstIterator position, const T& object);
+    Iterator insert(ConstIterator position, const T& object);
 
     /*! Returns a STL-style iterator pointing to the first item in the list. */
-    typename List::Iterator begin();
-    typename List::ConstIterator begin() const;
+    Iterator begin();
+    ConstIterator begin() const;
 
     /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list. */
-    typename List::Iterator end();
-    typename List::ConstIterator end() const;
+    Iterator end();
+    ConstIterator end() const;
 
     /*! Returns a STL-style iterator pointing to the first item in the list, counting from the end. */
-    typename List::ReverseIterator rbegin();
-    typename List::ConstReverseIterator rbegin() const;
+    ReverseIterator rbegin();
+    ConstReverseIterator rbegin() const;
 
     /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list, counting from the end. */
-    typename List::ReverseIterator rend();
-    typename List::ConstReverseIterator rend() const;
+    ReverseIterator rend();
+    ConstReverseIterator rend() const;
 
   private:
 
