@@ -20,11 +20,11 @@ class Map : public std::map<T, U>
     bool contains(const T& key) const;
 
     /*! Returns value associated with a given key.
-     *  @param  key Key under which value of interest is stored.
+     *  @param  key           Key under which value of interest is stored.
      *  @oaram  defaultValue  Value to be returned if requested key is not found.
      *  @return Value under the given key or default one.
      */
-    U value(const T& key, const U defaultValue) const;
+    const U& value(const T& key, const U& defaultValue) const;
 
     /*! Inserts key value pair into this map.
      *  @param  key   Key at which value is to be inserted.
@@ -35,17 +35,12 @@ class Map : public std::map<T, U>
 
     /*! Merges another map into this one. 
      *  @param  other               Other map to merge with this one.
-     *  @param  overrideDuplicated  If set, in case of key duplicates, original values will be overriden with new values. 
-                                    Otherwise, original values will be kept.
+     *  @param  overrideDuplicates  If set, in case of key duplicates, original values will be overriden with new values. 
+     *                              Otherwise, original values will be kept.
      */
     void merge(const Map& other, bool overrideDuplicates = false);
 
-    /*! Returns value. */
-    U& at(const T& key);
-    /*! Returns value. */
-    const U& at(const T& key) const;
-
-    /*! Removes first key-value entry where value is equal to the given one.
+    /*! Removes key-value entry where value is equal to the given one.
      *  @param  value Value to check for while deciding if entry is to be removed.
      *  @return TRUE if entry has been removed. Otherwise, FALSE.
      */
@@ -64,7 +59,7 @@ bool Map<T, U>::contains(const T& key) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-U Map<T, U>::value(const T& key, const U defaultValue) const
+const U& Map<T, U>::value(const T& key, const U& defaultValue) const
 {
   typename Map<T, U>::const_iterator it = this->find(key);
   return (it != this->end()) ? it->second : defaultValue;
@@ -90,22 +85,6 @@ void Map<T, U>::merge(const Map& other, bool overrideDuplicates)
   {
     std::map<T, U>::insert(other.begin(), other.end());
   }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T, typename U>
-U& Map<T, U>::at(const T& key)
-{
-  typename Map<T, U>::iterator it = this->find(key);
-  EGE_ASSERT(it != this->end());
-  return it->second;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T, typename U>
-const U& Map<T, U>::at(const T& key) const
-{
-  typename Map<T, U>::const_iterator it = this->find(key);
-  EGE_ASSERT(it != this->end());
-  return it->second;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
