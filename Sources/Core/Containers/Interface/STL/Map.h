@@ -1,6 +1,13 @@
 #ifndef EGE_CORE_CONTAINER_MAP_H
 #define EGE_CORE_CONTAINER_MAP_H
 
+/*! Maps are associative containers that store elements formed by a combination of a key value and a mapped value, following a specific order.
+ *  In a map, the key values are generally used to sort and uniquely identify the elements, while the mapped values store the content associated to this key. 
+ *
+ *  Internally, the elements in a map are always sorted by its key following a specific strict weak ordering criterion indicated by its internal comparison 
+ *  object.
+ */
+
 #include "Core/Platform.h"
 #include "EGEDebug.h"
 #include <map>
@@ -9,9 +16,35 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-class Map : public std::map<T, U>
+class Map
 {
   public:
+
+    typedef typename std::map<T, U>::iterator Iterator;
+    typedef typename std::map<T, U>::const_iterator ConstIterator;
+    typedef typename std::map<T, U>::reverse_iterator ReverseIterator;
+    typedef typename std::map<T, U>::const_reverse_iterator ConstReverseIterator;
+
+  public:
+
+    Map();
+
+  operators:
+
+    /*! Returns reference to a value associated by a given key. If such key does not exists it is added to the container with default contructed value.
+     *  @param  key Key under which value of interest is stored.
+     *  @return Value under the given key or default constructed one.
+     */
+    U& operator[](const T& key);
+
+  public:
+
+    /*! Returns size of the container. */
+    s32 size() const;
+    /*! Clears the container by removing all data. */
+    void clear();
+    /*! Returns TRUE if container is empty. */
+    bool isEmpty() const;
 
     /*! Checks for existance of the given key in this map.
      *  @param  key Key to look for in this map.
@@ -24,7 +57,7 @@ class Map : public std::map<T, U>
      *  @oaram  defaultValue  Value to be returned if requested key is not found.
      *  @return Value under the given key or default one.
      */
-    const U& value(const T& key, const U& defaultValue) const;
+    const U& value(const T& key, const U& defaultValue = U()) const;
 
     /*! Inserts key value pair into this map.
      *  @param  key   Key at which value is to be inserted.
@@ -50,25 +83,81 @@ class Map : public std::map<T, U>
      *  @return TRUE if entry has been removed. Otherwise, FALSE.
      */
     bool removeByKey(const T key);
+    /*! Removes key-value pointed by an iterator.
+     *  @param  iterator  Iterator pointing into key-value element to be removed from this container.
+     *  @return Iterator to an element after the removed one.
+     *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
+     */
+    Iterator remove(ConstIterator iterator);
+
+    /*! Returns a STL-style iterator pointing to the first item in the container. */
+    Iterator begin();
+    ConstIterator begin() const;
+
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the container. */
+    Iterator end();
+    ConstIterator end() const;
+
+    /*! Returns a STL-style iterator pointing to the first item in the container, counting from the end. */
+    ReverseIterator rbegin();
+    ConstReverseIterator rbegin() const;
+
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the container, counting from the end. */
+    ReverseIterator rend();
+    ConstReverseIterator rend() const;
+
+  private:
+
+    /*! Underlying container. */
+    std::map<T, U> m_data;
 };
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+Map<T, U>::Map()
+{
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+U& Map<T, U>::operator[](const T& key)
+{
+  return m_data[key];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+s32 Map<T, U>::size() const
+{
+  return m_data.size();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+void Map<T, U>::clear()
+{
+  m_data.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+bool Map<T, U>::isEmpty() const
+{
+  return m_data.empty();
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
 bool Map<T, U>::contains(const T& key) const
 {
-  return this->find(key) != this->end();
+  return m_data.find(key) != m_data.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
 const U& Map<T, U>::value(const T& key, const U& defaultValue) const
 {
-  typename Map<T, U>::const_iterator it = this->find(key);
-  return (it != this->end()) ? it->second : defaultValue;
+  typename std::map<T, U>::const_iterator it = m_data.find(key);
+  return (it != m_data.end()) ? it->second : defaultValue;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
 void Map<T, U>::insert(const T& key, const U& value)
 {
-  std::map<T, U>::insert(std::pair<T, U>(key, value));
+  m_data.insert(std::pair<T, U>(key, value));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
@@ -76,25 +165,25 @@ void Map<T, U>::merge(const Map& other, bool overrideDuplicates)
 {
   if (overrideDuplicates)
   {
-    for (typename Map<T, U>::const_iterator it = other.begin(); it != other.end(); ++it)
+    for (typename std::map<T, U>::const_iterator it = other.m_data.begin(); it != other.m_data.end(); ++it)
     {
-      this->operator[](it->first) = it->second;
+      m_data[it->first] = it->second;
     }
   }
   else
   {
-    std::map<T, U>::insert(other.begin(), other.end());
+    m_data.insert(other.m_data.begin(), other.m_data.end());
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
 bool Map<T, U>::removeByValue(const U value)
 {
-  for (typename Map<T, U>::iterator it = this->begin(); it != this->end(); ++it)
+  for (typename std::map<T, U>::iterator it = m_data.begin(); it != m_data.end(); ++it)
   {
     if (it->second == value)
     {
-      this->erase(it);
+      m_data.erase(it);
       return true;
     }
   }
@@ -105,14 +194,68 @@ bool Map<T, U>::removeByValue(const U value)
 template <typename T, typename U>
 bool Map<T, U>::removeByKey(const T key)
 {
-  typename Map<T, U>::iterator it = this->find(key);
-  if (it != this->end())
+  typename std::map<T, U>::iterator it = m_data.find(key);
+  if (it != m_data.end())
   {
-    this->erase(it);
+    m_data.erase(it);
     return true;
   }
 
   return false;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::Iterator Map<T, U>::remove(typename Map<T, U>::ConstIterator iterator)
+{
+  return m_data.erase(iterator);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::Iterator Map<T, U>::begin()
+{
+  return m_data.begin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ConstIterator Map<T, U>::begin() const
+{
+  return m_data.begin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::Iterator Map<T, U>::end()
+{
+  return m_data.end();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ConstIterator Map<T, U>::end() const
+{
+  return m_data.end();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ReverseIterator Map<T, U>::rbegin()
+{
+  return m_data.rbegin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ConstReverseIterator Map<T, U>::rbegin() const
+{
+  return m_data.rbegin();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ReverseIterator Map<T, U>::rend()
+{
+  return m_data.rend();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+template <typename T, typename U>
+typename Map<T, U>::ConstReverseIterator Map<T, U>::rend() const
+{
+  return m_data.rend();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

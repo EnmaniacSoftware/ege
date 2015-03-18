@@ -81,7 +81,7 @@ void RenderSystemOGL::flush()
   RenderSystemFrameStatisticData& statisticsData = ege_cast<RenderSystemStatistics*>(this->component(EGE_OBJECT_UID_RENDER_SYSTEM_STATISTICS))->currentRecord();
 
   // go thru all render queues
-  for (Map<s32, List<PRenderQueue> >::const_iterator itQueue = m_renderQueues.begin(); itQueue != m_renderQueues.end(); ++itQueue)
+  for (Map<s32, List<PRenderQueue> >::ConstIterator itQueue = m_renderQueues.begin(); itQueue != m_renderQueues.end(); ++itQueue)
   {
     const List<PRenderQueue>& queueList = itQueue->second;
 

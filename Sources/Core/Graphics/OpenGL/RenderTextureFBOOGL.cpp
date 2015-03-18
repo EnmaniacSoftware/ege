@@ -37,13 +37,9 @@ RenderTextureFBOOGL::RenderTextureFBOOGL(const Dictionary& params, GLenum textur
     glBindFramebuffer(GL_FRAMEBUFFER, m_defaultFBOId);
   }
 
-  // decompose param list
-  Dictionary::const_iterator iterWidth  = params.find(EGE_RENDER_TARGET_PARAM_WIDTH);
-  Dictionary::const_iterator iterHeight = params.find(EGE_RENDER_TARGET_PARAM_HEIGHT);
-
   // set physical size to logical one
-  m_physicalWidth  = (iterWidth != params.end()) ? iterWidth->second.toInt() : 0;
-  m_physicalHeight = (iterHeight != params.end()) ? iterHeight->second.toInt() : 0;
+  m_physicalWidth  = params.value(EGE_RENDER_TARGET_PARAM_WIDTH, "0").toInt();
+  m_physicalHeight = params.value(EGE_RENDER_TARGET_PARAM_HEIGHT, "0").toInt();
 
   egeDebug(KOpenGLDebugName) << "Creating FBO:" << m_physicalWidth << m_physicalHeight << m_defaultFBOId << m_frameBufferObjectId;
 }

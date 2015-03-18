@@ -42,7 +42,7 @@ EGEResult ImagedAnimation::play(const String& sequencerName)
   EGEResult result = EGE_ERROR;
 
   // check if appropriate animation data is present
-  if ( ! m_objects.empty() && ! m_framesActionsList.isEmpty())
+  if ( ! m_objects.isEmpty() && ! m_framesActionsList.isEmpty())
   {
     // try to start animation
     result = KeyFrameAnimation::play(sequencerName);
@@ -159,7 +159,7 @@ void ImagedAnimation::updateRenderData()
       const EGEImagedAnimation::ActionData& action = *itAction;
       
       // go thru all action children
-      const EGEImagedAnimation::Object& object = m_objects.at(action.objectId);
+      const EGEImagedAnimation::Object& object = m_objects.value(action.objectId);
       for (EGEImagedAnimation::ChildObjectList::ConstIterator itObject = object.children.begin(); itObject != object.children.end(); ++itObject)
       {
         const EGEImagedAnimation::ChildObject& child = *itObject;
@@ -292,7 +292,7 @@ u32 ImagedAnimation::calculateFrameVertexCount(const EGEImagedAnimation::ObjectM
     const EGEImagedAnimation::ActionData& action = *itAction;
       
     // go thru all action children
-    const EGEImagedAnimation::Object& object = objects.at(action.objectId);
+    const EGEImagedAnimation::Object& object = objects.value(action.objectId);
 
     // update vertex count (number of objects)
     vertexCount += object.children.length();

@@ -3,12 +3,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RenderWindow::RenderWindow(const Dictionary& params) : RenderTarget(params)
-                                                     , m_fullScreen(false)
+RenderWindow::RenderWindow(const Dictionary& params) 
+: RenderTarget(params)
+, m_fullScreen(false)
 {
   // decompose param list
-  Dictionary::const_iterator iterTitle = params.find(EGE_RENDER_WINDOW_PARAM_TITLE);
-  m_title = (iterTitle != params.end()) ? iterTitle->second : "";
+  m_title = params.value(EGE_RENDER_WINDOW_PARAM_TITLE);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 RenderWindow::~RenderWindow()

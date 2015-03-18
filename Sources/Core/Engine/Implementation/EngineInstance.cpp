@@ -75,7 +75,7 @@ EngineInstance::~EngineInstance()
   EGE_DELETE(m_purchaseServices);
   EGE_DELETE(m_socialServices);
 
-  for (EngineModulesPool::reverse_iterator it = m_modules.rbegin(); it != m_modules.rend(); ++it)
+  for (EngineModulesPool::ReverseIterator it = m_modules.rbegin(); it != m_modules.rend(); ++it)
   {
     delete it->second;
   }
@@ -182,7 +182,7 @@ void EngineInstance::update()
     m_updateAccumulator -= m_updateInterval;
 
     // process all modules
-    for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+    for (EngineModulesPool::Iterator it = m_modules.begin(); it != m_modules.end(); ++it)
     {
       IEngineModule* module = it->second;
 
@@ -228,7 +228,7 @@ void EngineInstance::shutdown()
   if ((EStateQuitting != m_state) && (EStateClosed != m_state))
   {
     // notify modules
-    for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+    for (EngineModulesPool::Iterator it = m_modules.begin(); it != m_modules.end(); ++it)
     {
       IEngineModule* module = it->second;
 
@@ -383,7 +383,7 @@ void EngineInstance::onEventRecieved(PEvent event)
         m_application->onSuspend();
 
         // notify modules
-        for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+        for (EngineModulesPool::Iterator it = m_modules.begin(); it != m_modules.end(); ++it)
         {
           IEngineModule* module = it->second;
 
@@ -401,7 +401,7 @@ void EngineInstance::onEventRecieved(PEvent event)
         egeDebug(KEngineDebugName) << "RESUME request received";
 
         // notify modules
-        for (EngineModulesPool::iterator it = m_modules.begin(); it != m_modules.end(); ++it)
+        for (EngineModulesPool::Iterator it = m_modules.begin(); it != m_modules.end(); ++it)
         {
           IEngineModule* module = it->second;
 
@@ -561,7 +561,7 @@ EGEResult EngineInstance::constructModules()
   EGEResult result = EGE_SUCCESS;
 
   // construct modules
-  for (EngineModulesPool::iterator it = m_modules.begin(); (it != m_modules.end()) && (EGE_SUCCESS == result); ++it)
+  for (EngineModulesPool::Iterator it = m_modules.begin(); (it != m_modules.end()) && (EGE_SUCCESS == result); ++it)
   {
     IEngineModule* module = it->second;
 

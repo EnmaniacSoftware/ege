@@ -122,7 +122,7 @@ bool PushButton::initialize(const Dictionary& params)
   // check if material name is defined
   if (params.contains("material"))
   {
-    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.at("material"));
+    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.value("material"));
     EGE_ASSERT(materialResource);
     if (materialResource)
     {
@@ -146,7 +146,7 @@ bool PushButton::initialize(const Dictionary& params)
   // check if font name is defined
   if (params.contains("font"))
   {
-    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.value("font"));
     if (fontResource)
     {
       // set new font
@@ -161,7 +161,7 @@ bool PushButton::initialize(const Dictionary& params)
 
   if (params.contains("text-alignment"))
   {
-    Alignment alignment = StringUtils::ToAlignment(params.at("text-alignment"), &error);
+    Alignment alignment = StringUtils::ToAlignment(params.value("text-alignment"), &error);
     label->setTextAlignment(alignment);
   }
 

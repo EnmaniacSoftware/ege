@@ -59,7 +59,7 @@ bool Widget::initialize(const Dictionary& params)
 
   if (params.contains("alignment"))
   {
-    Alignment alignment = StringUtils::ToAlignment(params.at("alignment"), &error);
+    Alignment alignment = StringUtils::ToAlignment(params.value("alignment"), &error);
     setAlignment(alignment);
   }
 
@@ -69,7 +69,7 @@ bool Widget::initialize(const Dictionary& params)
 void Widget::update(const Time& time)
 {
   // update children
-  for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::ConstIterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     const ChildData& childData = it->second;
 
@@ -105,7 +105,7 @@ void Widget::addForRendering(IRenderer* renderer, const Matrix4f& transform)
     }
 
     // render children
-    for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+    for (ChildrenDataMap::ConstIterator it = m_children.begin(); it != m_children.end(); ++it)
     {
       const ChildData& childData = it->second;
 
@@ -159,12 +159,12 @@ EGEResult Widget::addChild(PWidget widget)
 void Widget::removeChild(PWidget widget)
 {
   // find proper widget
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     if (it->second.widget == widget)
     {
       // remove from pool
-      m_children.erase(it);
+      m_children.remove(it);
 
       // reset parent
       widget->m_parent = NULL;
@@ -176,14 +176,14 @@ void Widget::removeChild(PWidget widget)
 void Widget::removeChild(const String& name)
 {
   // find proper widget
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     if (it->first == name)
     {
       PWidget widget = it->second.widget;
 
       // remove from pool
-      m_children.erase(it);
+      m_children.remove(it);
 
       // reset parent
       widget->m_parent = NULL;
@@ -195,7 +195,7 @@ void Widget::removeChild(const String& name)
 void Widget::removeAllChildren()
 {
   // go thru all children
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     PWidget& widget = it->second.widget;
 
@@ -257,17 +257,7 @@ Vector2f Widget::size() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PWidget Widget::child(const String& name) const
 {
-  // go thru all children
-  for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
-  {
-    // check if found
-    if (it->first == name)
-    {
-      return it->second.widget;
-    }
-  }
-
-  return NULL;
+  return m_children.value(name, ChildData()).widget;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Widget::setName(const String& name)
@@ -280,7 +270,7 @@ Vector2f Widget::contentSize()
   Vector2f biggestSize = Vector2f::ZERO;
 
   // go thru all children
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     //const ChildData& data = it->second;
 
@@ -335,7 +325,7 @@ void Widget::setAlpha(float32 alpha)
   }
 
   // apply to all children
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     ChildData& data = it->second;
 
@@ -360,7 +350,7 @@ void Widget::onTransformationChanged()
     m_globalTransformationMatrixInvalid = true;
 
     // notify children
-    for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+    for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
     {
       it->second.widget->onTransformationChanged();
     }
@@ -418,7 +408,7 @@ void Widget::onPointerEvent(const PointerEvent& event)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Widget::notifyPointerEvent(const PointerEvent& event)
 {
-  for (ChildrenDataMap::const_iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::ConstIterator it = m_children.begin(); it != m_children.end(); ++it)
   {
     const ChildData& childData = it->second;
 

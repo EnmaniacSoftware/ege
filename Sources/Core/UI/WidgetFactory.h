@@ -41,6 +41,8 @@ class WidgetFactory
     {
       public:
 
+        WidgetRegistryEntry() : createFunc(NULL) {}
+
         egeWidgetCreateFunc createFunc;
     };
 

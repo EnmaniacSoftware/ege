@@ -94,7 +94,7 @@ EGEResult ResourceProgram::load()
       if (STATE_LOADING != m_state)
       {
         List<PShader> shaders;
-        for (ShaderMap::const_iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
+        for (ShaderMap::ConstIterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
         {
           shaders.append(it->second);
         }
@@ -122,7 +122,7 @@ void ResourceProgram::unload()
   if (STATE_LOADED == m_state)
   {
     // unload shaders
-    for (ShaderMap::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
+    for (ShaderMap::Iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
     {
       const String& name = it->first;
       PResourceShader resource = engine().resourceManager()->resource(RESOURCE_NAME_SHADER, name);
@@ -173,7 +173,7 @@ EGEResult ResourceProgram::addShaderReference(const PXmlElement& tag)
 EGEResult ResourceProgram::loadDependencies()
 {
   // try to load (if necessary) shaders
-  for (ShaderMap::iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
+  for (ShaderMap::Iterator it = m_shaders.begin(); it != m_shaders.end(); ++it)
   {
     const String& name = it->first;
 

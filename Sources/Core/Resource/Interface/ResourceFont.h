@@ -25,6 +25,8 @@ class GlyphData
 {
   public:
 
+    GlyphData() : m_textureRect(Rectf::INVALID), m_width(0) {}
+
     /*! Coordinates on texture of the glyph. */
     Rectf m_textureRect;
     /*! Screen width (in pixels) of glyph. */

@@ -89,12 +89,12 @@ PParticleEmitter ParticleFactory::createEmitter(const String& typeName, const St
 {
   PParticleEmitter emitter;
 
-  // file emitter with given type name
-  ParticleEmitterRegisterMap::const_iterator it = m_registeredEmitters.find(typeName);
-  if (it != m_registeredEmitters.end())
+  // find emitter with given type name
+  const ParticleEmitterRegistryEntry& entry = m_registeredEmitters.value(typeName, ParticleEmitterRegistryEntry());
+  if (NULL != entry.m_createFunc)
   {
     // create resource
-    emitter = it->second.m_createFunc(engine(), name);
+    emitter = entry.m_createFunc(engine(), name);
   }
 
   return emitter;
@@ -127,12 +127,12 @@ PParticleAffector ParticleFactory::createAffector(const String& typeName, const 
 {
   PParticleAffector affector;
 
-  // file emitter with given type name
-  ParticleAffectorRegisterMap::const_iterator it = m_registeredAffectors.find(typeName);
-  if (it != m_registeredAffectors.end())
+  // find affector with given type name
+  const ParticleAffectorRegistryEntry& entry = m_registeredAffectors.value(typeName, ParticleAffectorRegistryEntry());
+  if (NULL != entry.m_createFunc)
   {
     // create resource
-    affector = it->second.m_createFunc(name);
+    affector = entry.m_createFunc(name);
   }
 
   return affector;

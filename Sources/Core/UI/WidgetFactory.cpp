@@ -20,8 +20,8 @@ static BuiltInWidget l_widgetsToRegister[] = {  { "dialog", Dialog::Create },
                                                 { "scrollable-page-view", UIScrollablePageView::Create }
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WidgetFactory::WidgetFactory(Engine& engine) : m_engine(engine)
-                              
+WidgetFactory::WidgetFactory(Engine& engine) 
+: m_engine(engine)                              
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -70,12 +70,12 @@ PWidget WidgetFactory::createWidget(const String& typeName, const String& name) 
 {
   PWidget widget;
 
-  // file emitter with given type name
-  WidgetRegisterMap::const_iterator it = m_registeredWidgets.find(typeName);
-  if (it != m_registeredWidgets.end())
+  // find widget with given type name
+  const WidgetRegistryEntry& entry = m_registeredWidgets.value(typeName, WidgetRegistryEntry());
+  if (NULL != entry.createFunc)
   {
     // create resource
-    widget = it->second.createFunc(engine(), name);
+    widget = entry.createFunc(engine(), name);
   }
 
   return widget;

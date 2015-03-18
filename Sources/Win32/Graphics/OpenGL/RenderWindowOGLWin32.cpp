@@ -21,7 +21,7 @@ static Key MapVirtualKeyToFramework(DWORD virtualKey)
   static Map<DWORD, Key> mapping;
   
   // check if not filled yet
-  if (mapping.empty())
+  if (mapping.isEmpty())
   {
     mapping[VK_BACK]   = EKeyBackspace;
     mapping[VK_TAB]    = EKeyTab;
@@ -168,11 +168,8 @@ EGEResult RenderWindowOGLWin32::construct(const Dictionary& params)
   bool error = false;
 
   // decompose param list
-  Dictionary::const_iterator iterFullscreen  = params.find(EGE_RENDER_WINDOW_PARAM_FULLSCREEN);
-  Dictionary::const_iterator iterLandscape   = params.find(EGE_ENGINE_PARAM_LANDSCAPE_MODE);
-
-  bool landscape  = (iterLandscape != params.end()) ? iterLandscape->second.toBool(&error) : false;
-  bool fullscreen = (iterFullscreen != params.end()) ? iterFullscreen->second.toBool(&error) : false;
+  bool landscape  = params.value(EGE_ENGINE_PARAM_LANDSCAPE_MODE, "false").toBool(&error);
+  bool fullscreen = params.value(EGE_RENDER_WINDOW_PARAM_FULLSCREEN, "false").toBool(&error);
 
   if (error)
   {
@@ -563,20 +560,17 @@ EGEResult RenderWindowOGLWin32::setupPixelFormat(const Dictionary& params)
   bool error = false;
 
   // decompose param list
-  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
-  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
+  s32 colorBits   = params.value(EGE_RENDER_TARGET_PARAM_COLOR_BITS, "0").toInt(&error);
+  s32 depthBits   = params.value(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS, "0").toInt(&error);
+  s32 accumBits   = 0;
+  s32 stencilBits = 0;
 
   // check if required parameters are NOT present
-  if (iterColorBits == params.end())
+  if (0 == colorBits)
   {
     // error!
     return EGE_ERROR_BAD_PARAM;
   }
-
-  s32 colorBits   = iterColorBits->second.toInt(&error);
-  s32 depthBits   = (iterDepthBits != params.end()) ? iterDepthBits->second.toInt(&error) : 0;
-  s32 accumBits   = 0;
-  s32 stencilBits = 0;
 
   if (error)
   {

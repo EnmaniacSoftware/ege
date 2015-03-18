@@ -157,7 +157,7 @@ bool Dialog::initialize(const Dictionary& params)
   // check if material name is defined
   if (params.contains("material"))
   {
-    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.at("material"));
+    PResourceMaterial materialResource = engine().resourceManager()->materialResource(params.value("material"));
     EGE_ASSERT(materialResource);
     if (materialResource)
     {
@@ -182,7 +182,7 @@ bool Dialog::initialize(const Dictionary& params)
   }
 
   // go thru all children
-  for (ChildrenDataMap::iterator it = m_children.begin(); it != m_children.end(); ++it)
+  for (ChildrenDataMap::Iterator it = m_children.begin(); it != m_children.end(); ++it)
   {
   }
 
@@ -192,7 +192,7 @@ bool Dialog::initialize(const Dictionary& params)
   // TITLE AREA
   if (params.contains("title-rect"))
   {
-    Rectf rect = StringUtils::ToRectf(params.at("title-rect"), &error);
+    Rectf rect = StringUtils::ToRectf(params.value("title-rect"), &error);
     
     titlelabel->setPosition(Vector4f(rect.x, rect.y, 0));
     titlelabel->setSize(Vector2f(rect.width, rect.height));
@@ -200,7 +200,7 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("title-font"))
   {
-    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("title-font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.value("title-font"));
     if (fontResource)
     {
       // set new font
@@ -215,14 +215,14 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("title-alignment"))
   {
-    Alignment alignment = StringUtils::ToAlignment(params.at("title-alignment"), &error);
+    Alignment alignment = StringUtils::ToAlignment(params.value("title-alignment"), &error);
     titlelabel->setTextAlignment(alignment);
   }
 
   // TEXT AREA
   if (params.contains("text-rect"))
   {
-    Rectf rect = StringUtils::ToRectf(params.at("text-rect"), &error);
+    Rectf rect = StringUtils::ToRectf(params.value("text-rect"), &error);
 
     textLabel->setPosition(Vector4f(rect.x, rect.y, 0));
     textLabel->setSize(Vector2f(rect.width, rect.height));
@@ -230,7 +230,7 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("text-font"))
   {
-    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("text-font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.value("text-font"));
     if (fontResource)
     {
       // set new font
@@ -245,19 +245,19 @@ bool Dialog::initialize(const Dictionary& params)
 
   if (params.contains("text-alignment"))
   {
-    Alignment alignment = StringUtils::ToAlignment(params.at("text-alignment"), &error);
+    Alignment alignment = StringUtils::ToAlignment(params.value("text-alignment"), &error);
     textLabel->setTextAlignment(alignment);
   }
 
   // TAIL
   if (params.contains("tail-rect"))
   {
-    m_tailRect = StringUtils::ToRecti(params.at("tail-rect"), &error);
+    m_tailRect = StringUtils::ToRecti(params.value("tail-rect"), &error);
   }
 
   if (params.contains("tail-offset"))
   {
-    m_tailOffset = StringUtils::ToVector2f(params.at("tail-offset"), &error);
+    m_tailOffset = StringUtils::ToVector2f(params.value("tail-offset"), &error);
   }
 
   return !error;

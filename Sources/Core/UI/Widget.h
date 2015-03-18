@@ -128,9 +128,13 @@ class Widget : public Object
   protected:
 
     /*! Child data. */
-    struct ChildData
+    class ChildData
     {
-      PWidget widget;                       /*!< Child widget. */
+      public:
+        
+        ChildData() : widget(NULL) {}
+
+        PWidget widget;                       /*!< Child widget. */
     };
 
     typedef Map<String, ChildData> ChildrenDataMap;

@@ -54,6 +54,8 @@ class ParticleFactory : public Object
     {
       public:
 
+        ParticleEmitterRegistryEntry() : m_createFunc(NULL) {}
+
         egeParticleEmitterCreateFunc m_createFunc;
     };
 
@@ -61,6 +63,8 @@ class ParticleFactory : public Object
     class ParticleAffectorRegistryEntry
     {
       public:
+
+        ParticleAffectorRegistryEntry() : m_createFunc(NULL) {}
 
         egeParticleAffectorCreateFunc m_createFunc;
     };

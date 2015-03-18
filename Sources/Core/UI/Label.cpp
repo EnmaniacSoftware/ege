@@ -91,7 +91,7 @@ bool Label::initialize(const Dictionary& params)
   // process font
   if (params.contains("font"))
   {
-    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.at("font"));
+    PResourceFont fontResource = engine().resourceManager()->resource(RESOURCE_NAME_FONT, params.value("font"));
     if (fontResource)
     {
       setFont(fontResource->font());
@@ -105,7 +105,7 @@ bool Label::initialize(const Dictionary& params)
 
   if (params.contains("text-alignment"))
   {
-    Alignment alignment = StringUtils::ToAlignment(params.at("text-alignment"), &error);
+    Alignment alignment = StringUtils::ToAlignment(params.value("text-alignment"), &error);
     setTextAlignment(alignment);
   }
 

@@ -216,7 +216,7 @@ EGEResult UIScrollablePageView::addObject(PObject object, u32 pageIdx)
 void UIScrollablePageView::removeObject(PObject object)
 {
   // locate object
-  for (PageObjects::iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (PageObjects::Iterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     ObjectsList& list = it->second;
     for (ObjectsList::Iterator itList = list.begin(); itList != list.end(); ++itList)
@@ -237,7 +237,7 @@ void UIScrollablePageView::removeObject(PObject object)
 PObject UIScrollablePageView::object(const String& name) const
 {
   // locate object
-  for (PageObjects::const_iterator it = m_objects.begin(); it != m_objects.end(); ++it)
+  for (PageObjects::ConstIterator it = m_objects.begin(); it != m_objects.end(); ++it)
   {
     const ObjectsList& list = it->second;
     for (ObjectsList::ConstIterator itList = list.begin(); itList != list.end(); ++itList)
@@ -294,7 +294,7 @@ UIScrollablePageView::ObjectsList UIScrollablePageView::objects(s32 pageIdx) con
   {
     if (m_objects.contains(pageIdx))
     {
-      list << m_objects.at(pageIdx);
+      list << m_objects.value(pageIdx);
     }
   }
 

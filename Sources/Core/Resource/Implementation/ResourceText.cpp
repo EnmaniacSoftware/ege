@@ -120,7 +120,7 @@ Text ResourceText::text(s32 numerous) const
   // check if translations for current language exists
   if (m_translations.contains(engine().language()))
   {
-    const TextArray& list = m_translations.at(engine().language());
+    const TextArray& list = m_translations.value(engine().language());
 
     index = Math::Clamp(index, static_cast<s32>(0), list.length() - 1);
     outText = list[index];
@@ -131,7 +131,7 @@ Text ResourceText::text(s32 numerous) const
     if (m_translations.contains("en"))
     {
       // get singular form just for indication that we could not find anything
-      outText = m_translations.at("en")[0];
+      outText = m_translations.value("en")[0];
     }
   }
 

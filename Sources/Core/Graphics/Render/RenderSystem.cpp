@@ -195,7 +195,7 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
     bool renderQueueForHashPresent = m_renderQueues.contains(hash);
     if (renderQueueForHashPresent)
     {
-      List<PRenderQueue>& queueList = m_renderQueues.at(hash);
+      List<PRenderQueue>& queueList = m_renderQueues[hash];
 
       // try to add to one of the existing render queues
       for (List<PRenderQueue>::Iterator it = queueList.begin(); it != queueList.end(); ++it)
@@ -243,7 +243,7 @@ EGEResult RenderSystem::addForRendering(const PRenderComponent& component, const
       {
         if (renderQueueForHashPresent)
         {
-          m_renderQueues.at(hash).append(queue);
+          m_renderQueues[hash].append(queue);
         }
         else
         {
@@ -268,7 +268,7 @@ EGEResult RenderSystem::addForRendering(const PRenderQueue& queue)
   bool renderQueueForHashPresent = m_renderQueues.contains(hash);
   if (renderQueueForHashPresent)
   {
-    List<PRenderQueue>& queueList = m_renderQueues.at(hash);
+    List<PRenderQueue>& queueList = m_renderQueues[hash];
 
     // try to find the same queue
     for (List<PRenderQueue>::Iterator it = queueList.begin(); it != queueList.end(); ++it)
