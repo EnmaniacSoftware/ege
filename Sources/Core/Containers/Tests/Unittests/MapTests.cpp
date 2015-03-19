@@ -189,7 +189,7 @@ TEST_F(MapTest, Contains)
   EXPECT_TRUE(container.contains(KExistingElementKey));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MapTest, Merge)
+TEST_F(MapTest, Append)
 {
   IntMap container;
   IntMap container2;
@@ -200,8 +200,8 @@ TEST_F(MapTest, Merge)
   container2[KExistingElementKey]    = KExistingElementValue + 1;
   container2[KNonExistingElementKey] = KNonExistingElementValue;
 
-  // merge without overrides
-  container.merge(container2, false);
+  // append without overrides
+  container.append(container2, false);
 
   EXPECT_EQ(KElementCount + 1, container.size());
   EXPECT_EQ(KExistingElementValue, container[KExistingElementKey]);
@@ -213,8 +213,8 @@ TEST_F(MapTest, Merge)
   container2[KExistingElementKey]    = KExistingElementValue + 1;
   container2[KNonExistingElementKey] = KNonExistingElementValue;
 
-  // merge with overrides
-  container.merge(container2, true);
+  // append with overrides
+  container.append(container2, true);
 
   EXPECT_EQ(KElementCount + 1, container.size());
   EXPECT_EQ(KExistingElementValue + 1, container[KExistingElementKey]);

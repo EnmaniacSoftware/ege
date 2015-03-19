@@ -66,12 +66,12 @@ class Map
      */
     void insert(const T& key, const U& value);
 
-    /*! Merges another map into this one. 
-     *  @param  other               Other map to merge with this one.
-     *  @param  overrideDuplicates  If set, in case of key duplicates, original values will be overriden with new values. 
-     *                              Otherwise, original values will be kept.
+    /*! Appends another map into this one. 
+     *  @param  other               Other map to append to this one.
+     *  @param  replaceDuplicates   If set, in case of key duplicates, original values accociated with them will be replaced with new ones. 
+     *                              Otherwise, original values will be preserved.
      */
-    void merge(const Map& other, bool overrideDuplicates = false);
+    void append(const Map& other, bool replaceDuplicates = false);
 
     /*! Removes key-value entry where value is equal to the given one.
      *  @param  value Value to check for while deciding if entry is to be removed.
@@ -161,9 +161,9 @@ void Map<T, U>::insert(const T& key, const U& value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-void Map<T, U>::merge(const Map& other, bool overrideDuplicates)
+void Map<T, U>::append(const Map& other, bool replaceDuplicates)
 {
-  if (overrideDuplicates)
+  if (replaceDuplicates)
   {
     for (typename std::map<T, U>::const_iterator it = other.m_data.begin(); it != other.m_data.end(); ++it)
     {
