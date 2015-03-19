@@ -37,14 +37,10 @@ RenderWindowOGLIOS::~RenderWindowOGLIOS()
 EGEResult RenderWindowOGLIOS::construct(const Dictionary& params)
 {
   bool error = false;
-
-  // decompose param list
-  Dictionary::const_iterator iterColorBits = params.find(EGE_RENDER_TARGET_PARAM_COLOR_BITS);
-  Dictionary::const_iterator iterDepthBits = params.find(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS);
   
   // set default paramerter values
-  s32 colorBits = iterColorBits->second.toInt(&error);
-  s32 depthBits = iterDepthBits->second.toInt(&error);
+  s32 colorBits = params.value(EGE_RENDER_TARGET_PARAM_COLOR_BITS).toInt(&error);
+  s32 depthBits = params.value(EGE_RENDER_WINDOW_PARAM_DEPTH_BITS).toInt(&error);
   
   if (error)
   {
