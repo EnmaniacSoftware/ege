@@ -322,6 +322,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		450100F51ABE0AF900A6E851 /* EGEMultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEMultiMap.h; path = ../../Sources/EGEMultiMap.h; sourceTree = "<group>"; };
 		4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomicBool.h; path = ../../Sources/EGEAtomicBool.h; sourceTree = "<group>"; };
 		4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomicInt.h; path = ../../Sources/EGEAtomicInt.h; sourceTree = "<group>"; };
 		4506A9BC1A893D9A009393B3 /* AtomicBool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AtomicBool.cpp; sourceTree = "<group>"; };
@@ -1100,6 +1101,7 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				450100F51ABE0AF900A6E851 /* EGEMultiMap.h */,
 				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
 				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
 				45660C2219FEDC1300E70859 /* EGERenderable.h */,

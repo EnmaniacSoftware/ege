@@ -12,7 +12,7 @@
  */
 
 #include "Core/Platform.h"
-#include <EGEList.h>
+#include "EGEList.h"
 #include <map>
 
 EGE_NAMESPACE_BEGIN
