@@ -2,10 +2,7 @@
 #define EGE_LIST_H
 
 #include "Core/Platform.h"
-
-#if EGE_CONTAINERS_STL
-  #include "Core/Containers/Interface/STL/List.h"
-#endif // EGE_CONTAINERS_STL
+#include "Core/Containers/Interface/STL/List.h"
 
 EGE_NAMESPACE_BEGIN
 
