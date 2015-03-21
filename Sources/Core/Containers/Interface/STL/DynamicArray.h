@@ -18,7 +18,7 @@
  *  perform worse than the others, and have less consistent iterators and references than lists.
  */
 
-#include "Core/Platform.h"
+#include "EGETypes.h"
 #include <vector>
 #include <algorithm>
 

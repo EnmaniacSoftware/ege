@@ -1,11 +1,8 @@
 #ifndef EGE_DYNAMIC_ARRAY_H
 #define EGE_DYNAMIC_ARRAY_H
 
-#include "EGETypes.h"
-
-#if EGE_CONTAINERS_STL
-  #include "Core/Containers/Interface/STL/DynamicArray.h"
-#endif // EGE_CONTAINERS_STL
+#include "Core/Platform.h"
+#include "Core/Containers/Interface/STL/DynamicArray.h"
 
 EGE_NAMESPACE_BEGIN
 
