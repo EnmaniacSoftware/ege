@@ -227,24 +227,25 @@ EGEResult ResourceGroup::create(const String& path, const PObject& data)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PResource ResourceGroup::resource(const String& typeName, const String& name) const
 {
-  PResource resource;
+  PResource result;
   
   // get all resources of a given type
-  std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);
+  List<PResource> resources = m_resources.values(typeName);
 
   // go thru all resources of a given type
-  for (ResourcesMap::const_iterator it = range.first; it != range.second; ++it)
+  for (List<PResource>::ConstIterator it = resources.begin(); (it != resources.end()) && (NULL == result); ++it)
   {
+    const PResource& resource = *it;
+
     // check if resource of a given name found
-    if (it->second->name() == name)
+    if (resource->name() == name)
     {
       // found
-      resource = it->second;
-      break;
+      result = resource;
     }
   }
 
-  return resource;
+  return result;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 List<PResource> ResourceGroup::resources(const String& typeName) const
@@ -255,19 +256,12 @@ List<PResource> ResourceGroup::resources(const String& typeName) const
   if ( ! typeName.isEmpty())
   {
     // get all resources of a given type
-    std::pair<ResourcesMap::const_iterator, ResourcesMap::const_iterator> range = m_resources.equal_range(typeName);
-
-    // go thru all resources of a given type
-    for (ResourcesMap::const_iterator it = range.first; it != range.second; ++it)
-    {
-      // add to list
-      list.append(it->second);
-    }
+    list = m_resources.values(typeName);
   }
   else
   {
     // add all resources
-    for (ResourcesMap::const_iterator it = m_resources.begin(); it != m_resources.end(); ++it)
+    for (ResourcesMap::ConstIterator it = m_resources.begin(); it != m_resources.end(); ++it)
     {
       // add to list
       list.append(it->second);
@@ -285,13 +279,13 @@ u32 ResourceGroup::resourceCount() const
 void ResourceGroup::destroy()
 {
   // go thru all resources
-  for (ResourcesMap::iterator it = m_resources.begin(); it != m_resources.end();)
+  for (ResourcesMap::Iterator it = m_resources.begin(); it != m_resources.end();)
   {
     // destroy it
     it->second = NULL;
 
     // remove from pool
-    m_resources.erase(it++);
+    it = m_resources.remove(it);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -346,13 +340,13 @@ EGEResult ResourceGroup::overrideBy(const PResourceGroup& group)
   }
 
   // process resources
-  for (ResourcesMap::const_iterator it = group->m_resources.begin(); it != group->m_resources.end(); ++it)
+  for (ResourcesMap::ConstIterator it = group->m_resources.begin(); it != group->m_resources.end(); ++it)
   {
     const PResource& incomingResource = it->second;
 
     // look for the resource of the same type and name
     PResource resource;
-    for (ResourcesMap::iterator itRes = m_resources.begin(); itRes != m_resources.end(); ++itRes)
+    for (ResourcesMap::Iterator itRes = m_resources.begin(); itRes != m_resources.end(); ++itRes)
     {
       resource = itRes->second;
       if ((resource->name() == incomingResource->name()) && (resource->typeName() == incomingResource->typeName()))
@@ -403,10 +397,10 @@ const String& ResourceGroup::name() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool ResourceGroup::isLoaded() const 
 {
-  bool loaded = ! m_resources.empty();
+  bool loaded = ! m_resources.isEmpty();
 
   // go through all resources and try to find not loaded one
-  for (ResourcesMap::const_iterator it = m_resources.begin(); (it != m_resources.end()) && loaded; ++it)
+  for (ResourcesMap::ConstIterator it = m_resources.begin(); (it != m_resources.end()) && loaded; ++it)
   {
     const PResource& resource = it->second;
 

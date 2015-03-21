@@ -533,6 +533,7 @@
     <ClInclude Include="..\..\Sources\EGELog.h" />
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
+    <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
     <ClInclude Include="..\..\Sources\EGENativeUI.h" />
     <ClInclude Include="..\..\Sources\EGEObjectList.h" />

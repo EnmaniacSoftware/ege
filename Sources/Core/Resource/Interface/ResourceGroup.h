@@ -10,7 +10,7 @@
 #include "EGEString.h"
 #include "EGEStringList.h"
 #include "EGEList.h"
-#include "EGEMap.h"
+#include "EGEMultiMap.h"
 #include "Core/Resource/Interface/Resource.h"
 
 EGE_NAMESPACE_BEGIN

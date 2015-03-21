@@ -2182,6 +2182,7 @@
     <ClInclude Include="..\..\Sources\Core\String\Interface\Text.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

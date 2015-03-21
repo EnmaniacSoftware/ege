@@ -7,7 +7,7 @@
 
 #include "EGE.h"
 #include "EGEString.h"
-#include "EGEMap.h"
+#include "EGEMultiMap.h"
 #include "EGEList.h"
 
 EGE_NAMESPACE_BEGIN

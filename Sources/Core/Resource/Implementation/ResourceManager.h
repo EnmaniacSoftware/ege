@@ -7,7 +7,7 @@
 #include "EGE.h"
 #include "EGEString.h"
 #include "EGEXml.h"
-#include "EGEMap.h"
+#include "EGEMultiMap.h"
 #include "EGEList.h"
 #include "EGEDynamicArray.h"
 #include "EGETime.h"

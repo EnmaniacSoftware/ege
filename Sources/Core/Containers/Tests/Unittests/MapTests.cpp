@@ -40,26 +40,6 @@ TEST_F(MapTest, Construct)
 {
   IntMap empty;
   EXPECT_EQ(0, empty.size());
-
-  //IntMap other;
-  //createMap(other);
-  //IntList list(other);
-  //EXPECT_EQ(other.length(), list.length());
-
-  //// check content
-  //checkContentEqual(other, list);
-
-  //createList(other);
-  //IntList list2(other, 2);
-  //EXPECT_EQ(2, list2.length());
-
-  //// check content
-  //IntList::ConstIterator it1 = list2.begin();
-  //IntList::ConstIterator it2 = other.begin();
-  //for (; (it1 != list2.end()) && (it2 != other.end()); ++it1, ++it2)
-  //{
-  //  EXPECT_EQ(*it1, *it2);
-  //}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(MapTest, IsEmpty)
@@ -70,6 +50,37 @@ TEST_F(MapTest, IsEmpty)
   IntMap other;
   create(other);
   EXPECT_FALSE(other.isEmpty());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MapTest, Clear)
+{
+  IntMap container;
+  EXPECT_TRUE(container.isEmpty());
+
+  create(container);
+  EXPECT_FALSE(container.isEmpty());
+
+  // clear
+  container.clear();
+  EXPECT_TRUE(container.isEmpty());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MapTest, Size)
+{
+  IntMap container;
+  EXPECT_EQ(0, container.size());
+
+  // insert element
+  container[10] = 10;
+  EXPECT_EQ(1, container.size());
+
+  // insert element
+  container[20] = 10;
+  EXPECT_EQ(2, container.size());
+
+  // replace existing element
+  container[20] = 20;
+  EXPECT_EQ(2, container.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(MapTest, RemoveByKey)

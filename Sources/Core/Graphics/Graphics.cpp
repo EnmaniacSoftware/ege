@@ -107,7 +107,7 @@ void Graphics::render()
   emit renderStart();
 
   // go thru all elements
-  for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::ConstIterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     PRenderTarget target = iter->second;
 
@@ -142,7 +142,7 @@ void Graphics::registerRenderTarget(PRenderTarget target)
 void Graphics::removeRenderTarget(const String& name)
 {
   // go thru all elements
-  for (RenderTargetMap::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::Iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -151,7 +151,7 @@ void Graphics::removeRenderTarget(const String& name)
       iter->second = NULL;
 
       // remove from pool
-      m_renderTargets.erase(iter);
+      m_renderTargets.remove(iter);
       break;
     }
   }
@@ -160,7 +160,7 @@ void Graphics::removeRenderTarget(const String& name)
 PRenderTarget Graphics::renderTarget(const String& name) const
 {
   // go thru all elements
-  for (RenderTargetMap::const_iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
+  for (RenderTargetMap::ConstIterator iter = m_renderTargets.begin(); iter != m_renderTargets.end(); ++iter)
   {
     // check if given render target has been found
     if (name == iter->second->name())
@@ -175,13 +175,13 @@ PRenderTarget Graphics::renderTarget(const String& name) const
 void Graphics::unregisterAllRenderTargets()
 {
   // go thru all elements
-  for (RenderTargetMap::iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
+  for (RenderTargetMap::Iterator iter = m_renderTargets.begin(); iter != m_renderTargets.end();)
   {
     // deallocate
     iter->second = NULL;
 
     // remove from pool
-    m_renderTargets.erase(iter++);
+    iter = m_renderTargets.remove(iter);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
