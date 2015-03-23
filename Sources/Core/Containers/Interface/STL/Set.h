@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_CONTAINER_TREE_H
-#define EGE_CORE_CONTAINER_TREE_H
+#ifndef EGE_CORE_CONTAINER_SET_H
+#define EGE_CORE_CONTAINER_SET_H
 
 /*! Sets are containers that store unique elements following a specific order.
  *  In a set, the value of an element also identifies it (the value is itself the key), and each value must be unique. The value of the elements in a set 
@@ -15,7 +15,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-class Tree
+class Set
 {
   public:
 
@@ -26,7 +26,7 @@ class Tree
 
   public:
 
-    Tree();
+    Set();
 
   public:
 
@@ -77,43 +77,43 @@ class Tree
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-Tree<T>::Tree()
+Set<T>::Set()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-s32 Tree<T>::size() const
+s32 Set<T>::size() const
 {
   return m_data.size();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void Tree<T>::clear()
+void Set<T>::clear()
 {
   m_data.clear();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool Tree<T>::isEmpty() const
+bool Set<T>::isEmpty() const
 {
   return m_data.empty();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-bool Tree<T>::contains(const T& value) const
+bool Set<T>::contains(const T& value) const
 {
   typename std::set<T>::const_iterator it = m_data.find(value);
   return (it != m_data.end());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void Tree<T>::insert(const T& value)
+void Set<T>::insert(const T& value)
 {
   m_data.insert(value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-void Tree<T>::remove(const T& value)
+void Set<T>::remove(const T& value)
 {
   typename std::set<T>::iterator it = m_data.find(value);
   if (it != m_data.end())
@@ -123,49 +123,49 @@ void Tree<T>::remove(const T& value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::Iterator Tree<T>::begin()
+typename Set<T>::Iterator Set<T>::begin()
 {
   return m_data.begin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ConstIterator Tree<T>::begin() const
+typename Set<T>::ConstIterator Set<T>::begin() const
 {
   return m_data.begin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::Iterator Tree<T>::end()
+typename Set<T>::Iterator Set<T>::end()
 {
   return m_data.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ConstIterator Tree<T>::end() const
+typename Set<T>::ConstIterator Set<T>::end() const
 {
   return m_data.end();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ReverseIterator Tree<T>::rbegin()
+typename Set<T>::ReverseIterator Set<T>::rbegin()
 {
   return m_data.rbegin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ConstReverseIterator Tree<T>::rbegin() const
+typename Set<T>::ConstReverseIterator Set<T>::rbegin() const
 {
   return m_data.rbegin();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ReverseIterator Tree<T>::rend()
+typename Set<T>::ReverseIterator Set<T>::rend()
 {
   return m_data.rend();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-typename Tree<T>::ConstReverseIterator Tree<T>::rend() const
+typename Set<T>::ConstReverseIterator Set<T>::rend() const
 {
   return m_data.rend();
 }
@@ -173,4 +173,4 @@ typename Tree<T>::ConstReverseIterator Tree<T>::rend() const
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CONTAINER_TREE_H
+#endif // EGE_CORE_CONTAINER_SET_H

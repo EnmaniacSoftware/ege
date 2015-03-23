@@ -1,28 +1,26 @@
-#ifndef EGE_CORE_CONTAINER_MULTITREE_H
-#define EGE_CORE_CONTAINER_MULTITREE_H
+#ifndef EGE_CORE_CONTAINER_MULTISET_H
+#define EGE_CORE_CONTAINER_MULTISET_H
 
-#include "Core/Platform.h"
+#include "EGETypes.h"
 #include <set>
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 template <typename T>
-class MultiTree : public std::multiset<T>
+class MultiSet : public std::multiset<T>
 {
   public:
 
     /* Removes given object from set. */
     void remove(const T object);
 };
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Removes given object from set. */
 template <typename T>
-void MultiTree<T>::remove(const T object)
+void MultiSet<T>::remove(const T object)
 {
-  typename MultiTree<T>::iterator it = this->find(object);
+  typename MultiSet<T>::iterator it = this->find(object);
   if (it != this->end())
   {
     erase(it);
@@ -32,4 +30,4 @@ void MultiTree<T>::remove(const T object)
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_CONTAINER_MULTITREE_H
+#endif // EGE_CORE_CONTAINER_MULTISET_H

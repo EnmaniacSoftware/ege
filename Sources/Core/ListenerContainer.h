@@ -11,7 +11,7 @@ class ListenerContainer
 {
   protected:
 
-    typedef Tree<T*> ListenersContainer;
+    typedef Set<T*> ListenersContainer;
    
   public:
 

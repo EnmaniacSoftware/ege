@@ -1,9 +1,7 @@
-#ifndef EGE_TREE_H
-#define EGE_TREE_H
+#ifndef EGE_SET_H
+#define EGE_SET_H
 
 #include "Core/Platform.h"
+#include "Core/Containers/Interface/STL/Set.h"
 
-#include "Core/Containers/Interface/STL/Tree.h"
-#include "Core/Containers/Interface/STL/MultiTree.h"
-
-#endif // EGE_TREE_H
+#endif // EGE_SET_H
