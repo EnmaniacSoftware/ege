@@ -150,14 +150,17 @@ TEST_F(MapTest, Insert)
   IntMap container;
 
   // via operators
-
-  // via methods
   container[KExistingElementKey] = KExistingElementValue;
   EXPECT_EQ(1, container.size());
   EXPECT_EQ(KExistingElementValue, container.value(KExistingElementKey, KNonExistingElementValue));
-  container.clear();
 
-  // insert into empty container
+  // reinsert different value for the same key
+  container[KExistingElementKey] = KNonExistingElementValue;
+  EXPECT_EQ(1, container.size());
+  EXPECT_EQ(KNonExistingElementValue, container[KExistingElementKey]);
+
+  // via methods
+  container.clear();
   container.insert(KExistingElementKey, KExistingElementValue);
   EXPECT_EQ(1, container.size());
   EXPECT_EQ(KExistingElementValue, container[KExistingElementKey]);

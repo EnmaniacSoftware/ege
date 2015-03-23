@@ -77,12 +77,12 @@ class Map
      *  @param  value Value to check for while deciding if entry is to be removed.
      *  @return TRUE if entry has been removed. Otherwise, FALSE.
      */
-    bool removeByValue(const U value);
+    bool removeByValue(const U& value);
     /*! Removes key-value entry for a given key.
      *  @param  key Key of the entry to be removed.
      *  @return TRUE if entry has been removed. Otherwise, FALSE.
      */
-    bool removeByKey(const T key);
+    bool removeByKey(const T& key);
     /*! Removes key-value pointed by an iterator.
      *  @param  iterator  Iterator pointing into key-value element to be removed from this container.
      *  @return Iterator to an element after the removed one.
@@ -177,7 +177,7 @@ void Map<T, U>::append(const Map& other, bool replaceDuplicates)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-bool Map<T, U>::removeByValue(const U value)
+bool Map<T, U>::removeByValue(const U& value)
 {
   for (typename std::map<T, U>::iterator it = m_data.begin(); it != m_data.end(); ++it)
   {
@@ -192,7 +192,7 @@ bool Map<T, U>::removeByValue(const U value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T, typename U>
-bool Map<T, U>::removeByKey(const T key)
+bool Map<T, U>::removeByKey(const T& key)
 {
   typename std::map<T, U>::iterator it = m_data.find(key);
   if (it != m_data.end())
