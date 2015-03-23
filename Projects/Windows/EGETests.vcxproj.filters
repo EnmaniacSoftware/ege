@@ -255,6 +255,9 @@
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MultiMapTests.cpp">
       <Filter>Tests\Containers\Unittests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\SetTests.cpp">
+      <Filter>Tests\Containers\Unittests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">

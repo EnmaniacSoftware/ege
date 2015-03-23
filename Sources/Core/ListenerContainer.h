@@ -23,17 +23,20 @@ class ListenerContainer
      *  @return TRUE if object has been added into the pool. Otherwise, FALSE.
      */
     virtual bool addListener(T* const object);
+
     /*! Checks if given object is in the listsners pool.
      *  @param  object  Object to check against the pool.
      *  @return TRUE if object is in the pool. Otherwise, FALSE.
      */
-    bool isListening(const T* object) const;
+    bool isListening(T* const object) const;
     /*! Removes object from listeners pool. 
      *  @param  object  Object to be removed from pool.
      */
-    void removeListener(const T* object);
+
+    void removeListener(T* const object);
     /*! Removes all objects from listeners pool. */
     void removeAllListeners();
+    
     /*! Returns pool of listeners. */
     const ListenersContainer& listeners() const;
 
@@ -68,19 +71,9 @@ bool ListenerContainer<T>::addListener(T* const object)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template<typename T>
-void ListenerContainer<T>::removeListener(const T* object)
+void ListenerContainer<T>::removeListener(T* const object)
 {
-  if (NULL == object)
-  {
-    // do nothing
-    return;
-  }
-
-  typename ListenersContainer::const_iterator iter = m_listeners.find(const_cast<T*>(object));
-  if (iter != m_listeners.end())
-  {
-    m_listeners.erase(iter);
-  }
+  m_listeners.remove(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template<typename T>
@@ -90,10 +83,9 @@ void ListenerContainer<T>::removeAllListeners()
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template<typename T>
-bool ListenerContainer<T>::isListening(const T* object) const
+bool ListenerContainer<T>::isListening(T* const object) const
 {
-  typename ListenersContainer::const_iterator iter = m_listeners.find(const_cast<T*>(object));
-  return (iter != m_listeners.end());
+  return m_listeners.contains(object);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template<typename T>

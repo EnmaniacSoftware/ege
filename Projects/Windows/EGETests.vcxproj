@@ -92,6 +92,7 @@
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\ListTests.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MapTests.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MultiMapTests.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\SetTests.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />

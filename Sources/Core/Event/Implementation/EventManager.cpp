@@ -177,8 +177,8 @@ void EventManager::notify(PEvent event)
   const ListenersContainer& objects = listeners();
 
   // go thru all listners
-  ListenersContainer::const_iterator iterEnd = objects.end();
-  for (ListenersContainer::const_iterator iter = objects.begin(); iter != iterEnd; ++iter)
+  ListenersContainer::Iterator iterEnd = objects.end();
+  for (ListenersContainer::Iterator iter = objects.begin(); iter != iterEnd; ++iter)
   {
     (*iter)->onEventRecieved(event);
   }
