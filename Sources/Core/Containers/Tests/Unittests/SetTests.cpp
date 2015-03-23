@@ -1,5 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
-#include <EGETree.h>
+#include <EGESet.h>
 #include <list>
 
 EGE_NAMESPACE

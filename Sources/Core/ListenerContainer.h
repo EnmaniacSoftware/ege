@@ -1,7 +1,7 @@
 #ifndef EGE_CORE_LISTENERCONTAINER_H
 #define EGE_CORE_LISTENERCONTAINER_H
 
-#include "EGETree.h"
+#include "EGESet.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -1334,7 +1334,6 @@
       <Filter>Core\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGERect.h" />
-    <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGEDynamicArray.h" />
     <ClInclude Include="..\..\Sources\EGEMap.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
@@ -2032,12 +2031,6 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiMap.h">
       <Filter>Core\Containers\Interface\STL</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiTree.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
@@ -2183,6 +2176,14 @@
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiSet.h">
+      <Filter>Core\Containers\Interface\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Set.h">
+      <Filter>Core\Containers\Interface\STL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGESet.h" />
+    <ClInclude Include="..\..\Sources\EGEMultiSet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

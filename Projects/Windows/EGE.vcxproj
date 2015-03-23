@@ -288,8 +288,8 @@
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\List.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Map.h" />
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiMap.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiTree.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Tree.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiSet.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Set.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h" />
@@ -534,6 +534,7 @@
     <ClInclude Include="..\..\Sources\EGEMaterial.h" />
     <ClInclude Include="..\..\Sources\EGEMatrix.h" />
     <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
+    <ClInclude Include="..\..\Sources\EGEMultiSet.h" />
     <ClInclude Include="..\..\Sources\EGEMutex.h" />
     <ClInclude Include="..\..\Sources\EGENativeUI.h" />
     <ClInclude Include="..\..\Sources\EGEObjectList.h" />
@@ -619,6 +620,7 @@
     <ClInclude Include="..\..\Sources\EGEResources.h" />
     <ClInclude Include="..\..\Sources\EGEScene.h" />
     <ClInclude Include="..\..\Sources\EGESequencer.h" />
+    <ClInclude Include="..\..\Sources\EGESet.h" />
     <ClInclude Include="..\..\Sources\EGEShader.h" />
     <ClInclude Include="..\..\Sources\EGESignal.h" />
     <ClInclude Include="..\..\Sources\EGESocialServices.h" />
@@ -637,7 +639,6 @@
     <ClInclude Include="..\..\Sources\EGETime.h" />
     <ClInclude Include="..\..\Sources\EGETimeline.h" />
     <ClInclude Include="..\..\Sources\EGETimer.h" />
-    <ClInclude Include="..\..\Sources\EGETree.h" />
     <ClInclude Include="..\..\Sources\EGETweener.h" />
     <ClInclude Include="..\..\Sources\EGETypes.h" />
     <ClInclude Include="..\..\Sources\EGEUI.h" />
