@@ -2,6 +2,6 @@
 #define EGE_SET_H
 
 #include "Core/Platform.h"
-#include "Core/Containers/Interface/STL/Set.h"
+#include "Core/Containers/Interface/Set.h"
 
 #endif // EGE_SET_H
