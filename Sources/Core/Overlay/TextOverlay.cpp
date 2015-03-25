@@ -255,7 +255,7 @@ void TextOverlay::updateTextData()
   }
 
   // set text total height
-  textSize.y = static_cast<float32>(m_textLines.length() * currentFont->height());
+  textSize.y = static_cast<float32>(m_textLines.size() * currentFont->height());
 
   // update overlay size
   setSize(textSize);

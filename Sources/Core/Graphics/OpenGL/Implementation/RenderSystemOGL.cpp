@@ -85,7 +85,7 @@ void RenderSystemOGL::flush()
   {
     const List<PRenderQueue>& queueList = itQueue->second;
 
-    if (5 < queueList.length())
+    if (5 < queueList.size())
     {
       egeWarning(KOpenGLDebugName) << "Possible batch optimization. Hash:" << itQueue->first;
     }

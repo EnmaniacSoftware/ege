@@ -38,98 +38,98 @@ class List
 
   public:
 
-    /*! Returns length of the list. */
-    s32 length() const;
-    /*! Clears the list by removing all elements. */
+    /*! Returns size of the container. */
+    s32 size() const;
+    /*! Clears the container by removing all elements. */
     void clear();
-    /*! Returns TRUE if list is empty. */
+    /*! Returns TRUE if container is empty. */
     bool isEmpty() const;
 
     /*! Removes element pointed by an iterator.
-     *  @param  iterator  Iterator pointing into element to be removed from this list.
+     *  @param  iterator  Iterator pointing into element to be removed from this container.
      *  @return Iterator to an element after the removed one.
      *  @note Given iterator needs to be valid. Othwise, the behavior is underfined.
      */
     Iterator remove(ConstIterator iterator);
 
-    /*! Removes first element containing given object from this list.
+    /*! Removes first element containing given object from this container.
      *  @param  object  Object to search for.
      */
     void remove(const T& object);
 
-    /*! Removes the first item in the list. 
-     *  @note List cannot be empty. Otherwise, behaviour is undefined.
+    /*! Removes the first item in the container. 
+     *  @note Container cannot be empty. Otherwise, behaviour is undefined.
      */
     void removeFirst();
-    /*! Removes the last item in the list. 
-     *  @note List cannot be empty. Otherwise, behaviour is undefined.
+    /*! Removes the last item in the container. 
+     *  @note Container cannot be empty. Otherwise, behaviour is undefined.
      */
     void removeLast();
 
-    /*! Returns list's first element.
-     *  @param  defaultValue  Value to return in case of an empty list.
+    /*! Returns container's first element.
+     *  @param  defaultValue  Value to return in case of an empty container.
      *  @return First element or default one.
      */
     const T& first(const T& defaultValue = T()) const;
-    /*! Returns list's first element.
-     *  @return First element of this list.
-     *  @note List must contain at least one element. Otherwise, it causes undefiend behavior.
+    /*! Returns container's first element.
+     *  @return First element of this container.
+     *  @note Container must contain at least one element. Otherwise, it causes undefiend behavior.
      */
     T& first();
 
-    /*! Returns list's last element.
-     *  @param  defaultValue  Value to return in case of an empty list.
+    /*! Returns container's last element.
+     *  @param  defaultValue  Value to return in case of an empty container.
      *  @return Last element or default one.
      */
     const T& last(const T& defaultValue = T()) const;
-    /*! Returns list's Last element.
-     *  @return Last element of this list.
-     *  @note List must contain at least one element. Otherwise, it causes undefiend behavior.
+    /*! Returns container's Last element.
+     *  @return Last element of this container.
+     *  @note Container must contain at least one element. Otherwise, it causes undefiend behavior.
      */
     T& last();
 
-    /*! Checks for existance of the given element in this list.
-     *  @param  object  Element to look for in this list.
-     *  @return TRUE if given element is present is this list. Otherwise, FALSE.
+    /*! Checks for existance of the given element in this container.
+     *  @param  object  Element to look for in this container.
+     *  @return TRUE if given element is present is this container. Otherwise, FALSE.
      */
     bool contains(const T object) const;
 
-    /*! Copies all data from a given list to this one.
-     *  @param  from  List to copy data from.
-     *  @note All data present in this list before the copy operation will be removed.
+    /*! Copies all data from a given container to this one.
+     *  @param  from  Container to copy data from.
+     *  @note All data present in this container before the copy operation will be removed.
      */
     void copy(const List& from);
 
-    /*! Adds given object to the end of the list. 
+    /*! Adds given object to the end of the container. 
      *  @param  object  Object to be appended.
      */
     void append(const T& object);
    
-    /*! Adds given object to the front of the list. 
+    /*! Adds given object to the front of the container. 
      *  @param  object  Object to be prepended.
      */
     void prepend(const T& object);
 
-    /*! Inserts element into the list.
+    /*! Inserts element into the container.
      *  @param  position  Position iterator immediately before which given element should be inserted.
      *  @param  obejct    Element to be inserted.
      *  @return Iterator pointing to the inserted object.
      */
     Iterator insert(ConstIterator position, const T& object);
 
-    /*! Returns a STL-style iterator pointing to the first item in the list. */
+    /*! Returns a STL-style iterator pointing to the first item in the container. */
     Iterator begin();
     ConstIterator begin() const;
 
-    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list. */
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the container. */
     Iterator end();
     ConstIterator end() const;
 
-    /*! Returns a STL-style iterator pointing to the first item in the list, counting from the end. */
+    /*! Returns a STL-style iterator pointing to the first item in the container, counting from the end. */
     ReverseIterator rbegin();
     ConstReverseIterator rbegin() const;
 
-    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the list, counting from the end. */
+    /*! Returns a STL-style iterator pointing to the imaginary item after the last item in the container, counting from the end. */
     ReverseIterator rend();
     ConstReverseIterator rend() const;
 
@@ -155,7 +155,7 @@ List<T>::List(const List<T>& list, s32 count)
 {
   if (0 > count)
   {
-    count = list.length();
+    count = list.size();
   }
 
   ConstIterator it;
@@ -308,7 +308,7 @@ List<T>& List<T>::operator << (const T& value)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-s32 List<T>::length() const
+s32 List<T>::size() const
 {
   return static_cast<s32>(m_data.size());
 }

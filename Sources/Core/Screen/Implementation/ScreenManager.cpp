@@ -300,7 +300,7 @@ bool ScreenManager::isVisible(const PScreen& screen) const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 ScreenManager::screenCount() const
 {
-  return static_cast<u32>(m_screens.length());
+  return static_cast<u32>(m_screens.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Engine& ScreenManager::engine() const

@@ -154,7 +154,7 @@ CubicSpline ResourceCurve::createInstance() const
       points.append(tangent);
     }
     // check if begining of the first segment defined only
-    else if (2 == points.length())
+    else if (2 == points.size())
     {
       // add tangent-2 and end point
       points.append(tangent);

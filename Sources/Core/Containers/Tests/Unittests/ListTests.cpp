@@ -38,12 +38,12 @@ void ListTest::createList(IntList& list) const
   list << 30;
   list << 100;
 
-  EXPECT_EQ(KListElementCount, list.length());
+  EXPECT_EQ(KListElementCount, list.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ListTest::checkContentEqual(const IntList& list1, const IntList& list2) const
 {
-  EXPECT_EQ(list1.length(), list2.length());
+  EXPECT_EQ(list1.size(), list2.size());
 
   IntList::ConstIterator it1 = list1.begin();
   IntList::ConstIterator it2 = list2.begin();
@@ -56,22 +56,22 @@ void ListTest::checkContentEqual(const IntList& list1, const IntList& list2) con
 TEST_F(ListTest, Construct)
 {
   IntList empty;
-  EXPECT_EQ(0, empty.length());
+  EXPECT_EQ(0, empty.size());
 
   IntList single(10);
-  EXPECT_EQ(1, single.length());
+  EXPECT_EQ(1, single.size());
 
   IntList other;
   createList(other);
   IntList list(other);
-  EXPECT_EQ(other.length(), list.length());
+  EXPECT_EQ(other.size(), list.size());
 
   // check content
   checkContentEqual(other, list);
 
   createList(other);
   IntList list2(other, 2);
-  EXPECT_EQ(2, list2.length());
+  EXPECT_EQ(2, list2.size());
 
   // check content
   IntList::ConstIterator it1 = list2.begin();
@@ -85,14 +85,14 @@ TEST_F(ListTest, Construct)
 TEST_F(ListTest, Length)
 {
   IntList list;
-  EXPECT_EQ(0, list.length());
+  EXPECT_EQ(0, list.size());
 
   IntList list2(10);
-  EXPECT_EQ(1, list2.length());
+  EXPECT_EQ(1, list2.size());
 
   IntList list3;
   list3 << 1 << 2 << 3;
-  EXPECT_EQ(3, list3.length());
+  EXPECT_EQ(3, list3.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, Clear)
@@ -101,7 +101,7 @@ TEST_F(ListTest, Clear)
   createList(list);
 
   list.clear(); 
-  EXPECT_EQ(0, list.length());
+  EXPECT_EQ(0, list.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, IsEmpty)
@@ -130,7 +130,7 @@ TEST_F(ListTest, RemoveByIterator)
   // remove existing element
   IntList::Iterator second = ++list.begin();
   EXPECT_EQ(second, list.remove(list.begin()));
-  EXPECT_EQ(KListElementCount - 1, list.length());
+  EXPECT_EQ(KListElementCount - 1, list.size());
 
   // check content
   IntList reference;
@@ -151,11 +151,11 @@ TEST_F(ListTest, RemoveByValue)
 
   // remove non-existing element
   list.remove(KNonExistingElementValue);
-  EXPECT_EQ(KListElementCount, list.length());
+  EXPECT_EQ(KListElementCount, list.size());
 
   // remove existing element
   list.remove(KExistingElementValue);
-  EXPECT_EQ(KListElementCount - 1, list.length());
+  EXPECT_EQ(KListElementCount - 1, list.size());
 
   // check content
   IntList::ConstIterator it = list.begin();
@@ -182,7 +182,7 @@ TEST_F(ListTest, RemoveFirst)
     list.removeFirst();
     itemsRemoved++;
     it++;
-    EXPECT_EQ(KListElementCount - itemsRemoved, list.length()); 
+    EXPECT_EQ(KListElementCount - itemsRemoved, list.size()); 
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -201,7 +201,7 @@ TEST_F(ListTest, RemoveLast)
     list.removeLast();
     
     itemsRemoved++;
-    EXPECT_EQ(KListElementCount - itemsRemoved, list.length()); 
+    EXPECT_EQ(KListElementCount - itemsRemoved, list.size()); 
   
     IntList::Iterator it1 = list.begin();
     IntList::Iterator it2 = referenceList.begin();
@@ -275,7 +275,7 @@ TEST_F(ListTest, Copy)
   checkContentEqual(other, list);
 
   list.copy(IntList());
-  EXPECT_EQ(0, list.length());
+  EXPECT_EQ(0, list.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(ListTest, Append)
@@ -284,13 +284,13 @@ TEST_F(ListTest, Append)
 
   // operators
   list << 10;
-  EXPECT_EQ(1, list.length());
+  EXPECT_EQ(1, list.size());
   EXPECT_EQ(10, list.first(KNonExistingElementValue));
 
   IntList other;
   createList(other);
   list << other;
-  EXPECT_EQ(KListElementCount + 1, list.length());
+  EXPECT_EQ(KListElementCount + 1, list.size());
 
   // check content
   IntList::ConstIterator it1 = list.begin();
@@ -306,7 +306,7 @@ TEST_F(ListTest, Append)
   // methods
   list.clear();
   list.append(11);
-  EXPECT_EQ(1, list.length());
+  EXPECT_EQ(1, list.size());
   EXPECT_EQ(11, list.first(KNonExistingElementValue));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -320,13 +320,13 @@ TEST_F(ListTest, Prepend)
 
   // prepend to empty list
   list.prepend(KRandomValue);
-  EXPECT_EQ(1, list.length());
+  EXPECT_EQ(1, list.size());
   EXPECT_EQ(KRandomValue, list.first());
 
   // prepend to non-empty list
   createList(list);
   list.prepend(KRandomValue);
-  EXPECT_EQ(KListElementCount + 1, list.length());
+  EXPECT_EQ(KListElementCount + 1, list.size());
 
   // check content
   IntList::ConstIterator it1 = list.begin();
@@ -349,13 +349,13 @@ TEST_F(ListTest, Insert)
 
   // insert into empty list
   IntList::Iterator returnIt = list.insert(list.begin(), KRandomValue);
-  EXPECT_EQ(1, list.length());
+  EXPECT_EQ(1, list.size());
   EXPECT_EQ(KRandomValue, *returnIt);
   EXPECT_EQ(*list.begin(), *returnIt);
 
   list.clear();
   returnIt = list.insert(list.end(), KRandomValue);
-  EXPECT_EQ(1, list.length());
+  EXPECT_EQ(1, list.size());
   EXPECT_EQ(KRandomValue, *returnIt);
   EXPECT_EQ(*list.begin(), *returnIt);
 
@@ -364,7 +364,7 @@ TEST_F(ListTest, Insert)
   createList(other);
   other.prepend(KRandomValue);
   returnIt = list.insert(list.begin(), KRandomValue);
-  EXPECT_EQ(KListElementCount + 1, list.length());
+  EXPECT_EQ(KListElementCount + 1, list.size());
   checkContentEqual(other, list);
 
   // insert (append) into non-empty list
@@ -372,7 +372,7 @@ TEST_F(ListTest, Insert)
   createList(other);
   other.append(KRandomValue);
   returnIt = list.insert(list.end(), KRandomValue);
-  EXPECT_EQ(KListElementCount + 1, list.length());
+  EXPECT_EQ(KListElementCount + 1, list.size());
   checkContentEqual(other, list);
 
   // insert (in the middle) into non-empty list
@@ -386,7 +386,7 @@ TEST_F(ListTest, Insert)
   }
 
   returnIt = list.insert(returnIt, KRandomValue);
-  EXPECT_EQ(KListElementCount + 1, list.length());
+  EXPECT_EQ(KListElementCount + 1, list.size());
   EXPECT_EQ(KRandomValue, *returnIt);
 
   // check entire content

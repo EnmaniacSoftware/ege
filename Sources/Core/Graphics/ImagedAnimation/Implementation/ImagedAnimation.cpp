@@ -295,7 +295,7 @@ u32 ImagedAnimation::calculateFrameVertexCount(const EGEImagedAnimation::ObjectM
     const EGEImagedAnimation::Object& object = objects.value(action.objectId);
 
     // update vertex count (number of objects)
-    vertexCount += object.children.length();
+    vertexCount += object.children.size();
   }
 
   // (6 vertices per object/quad)

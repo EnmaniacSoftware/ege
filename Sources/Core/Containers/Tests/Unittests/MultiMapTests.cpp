@@ -133,17 +133,17 @@ TEST_F(MultiMapTest, Values)
 
   // retrieve values for a non-existing key;
   values = container.values(KNonExistingElementKey);
-  EXPECT_EQ(0, values.length());
+  EXPECT_EQ(0, values.size());
 
   // retrieve values for an existing key;
   values = container.values(KExistingElementKey);
-  EXPECT_EQ(1, values.length());
+  EXPECT_EQ(1, values.size());
 
   // add additional elements for an existing key
   container.insert(KExistingElementKey, KExistingElementValue + 1);
 
   // retrieve values for an existing key again
   values = container.values(KExistingElementKey);
-  EXPECT_EQ(2, values.length());
+  EXPECT_EQ(2, values.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

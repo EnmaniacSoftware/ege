@@ -364,7 +364,7 @@ EGEResult ResourceMaterial::addTextureReference(const PXmlElement& tag, PassData
   textureData.envMode           = MapTextureEnvironmentMode(tag->attribute(KAttributeTextureEnvMode, "modulate"), EM_MODULATE);
   textureData.manual            = tag->attribute(KAttributeTextureManual, "false").toBool(&error);
   textureData.rotationAngle     = StringUtils::ToAngle(tag->attribute(KAttributeTextureRotation, "0"), &error);
-  textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, pass.m_textureImageData.length());
+  textureData.textureCoordIndex = tag->attribute(KAttributeTextureTexCoordsIndex, pass.m_textureImageData.size());
 
   // check if obligatory data is wrong
   if (error || textureData.name.isEmpty())
