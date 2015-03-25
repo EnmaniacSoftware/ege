@@ -89,10 +89,10 @@
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicIntTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicOperationsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\DynamicArrayTest.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\ListTests.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MapTests.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MultiMapTests.cpp" />
-    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\SetTests.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\ListTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MapTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MultiMapTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\SetTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherAESTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CipherXORTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
