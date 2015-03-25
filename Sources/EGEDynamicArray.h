@@ -2,7 +2,7 @@
 #define EGE_DYNAMIC_ARRAY_H
 
 #include "Core/Platform.h"
-#include "Core/Containers/Interface/STL/DynamicArray.h"
+#include "Core/Containers/Interface/DynamicArray.h"
 
 EGE_NAMESPACE_BEGIN
 
