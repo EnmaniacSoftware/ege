@@ -1,6 +1,7 @@
 #ifndef EGE_MAP_H
 #define EGE_MAP_H
 
-#include "Core/Containers/Interface/STL/Map.h"
+#include "Core/Platform.h"
+#include "Core/Containers/Interface/Map.h"
 
 #endif // EGE_MAP_H
