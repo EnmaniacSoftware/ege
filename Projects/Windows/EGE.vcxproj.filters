@@ -2176,14 +2176,10 @@
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiSet.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Set.h">
       <Filter>Core\Containers\Interface\STL</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGESet.h" />
-    <ClInclude Include="..\..\Sources\EGEMultiSet.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
