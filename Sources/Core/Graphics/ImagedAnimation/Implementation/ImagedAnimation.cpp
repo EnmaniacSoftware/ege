@@ -68,7 +68,7 @@ EGEResult ImagedAnimation::addForRendering(IRenderer& renderer)
       m_renderDataNeedsUpdate = false;
     }
 
-    EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < m_renderComponents.length());
+    EGE_ASSERT(m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex()) < m_renderComponents.size());
 
     // get current frame render data
     PRenderComponent& renderComponent = m_renderComponents[m_currentSequencer->frameId(m_currentSequencer->currentFrameIndex())];

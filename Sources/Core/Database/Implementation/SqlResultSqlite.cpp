@@ -61,7 +61,7 @@ EGEResult SqlResultSqlite::addColumnName(const String& name)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 SqlResultSqlite::columnCount() const
 {
-  return static_cast<u32>(m_columnNames.length());
+  return static_cast<u32>(m_columnNames.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult SqlResultSqlite::addValue(s32 index, const char* value)

@@ -87,7 +87,7 @@ void ParticleEmitterPoint::setParticleStartPositionVariance(const Vector3f& vari
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ParticleEmitterPoint::initializeParticle(s32 index)
 {
-  EGE_ASSERT((0 <= index) && (index < m_particles.length()));
+  EGE_ASSERT((0 <= index) && (index < m_particles.size()));
 
   EGEParticle::ParticleData& particleData = m_particles[index];
 

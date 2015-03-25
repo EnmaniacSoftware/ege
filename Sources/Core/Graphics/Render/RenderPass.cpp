@@ -35,7 +35,7 @@ EGEResult RenderPass::addTexture(PTextureImage texture)
 EGEResult RenderPass::setTexture(u32 index, PTextureImage texture)
 {
   // check if index out of range
-  if (index >= static_cast<u32>(m_textures.length()))
+  if (index >= static_cast<u32>(m_textures.size()))
   {
     // error!
     return EGE_ERROR;
@@ -80,7 +80,7 @@ void RenderPass::removeTexture(s32 index)
   {
     m_textures.clear();
   }
-  else if (index < m_textures.length())
+  else if (index < m_textures.size())
   {
     m_textures.removeAt(index);
   }
@@ -88,7 +88,7 @@ void RenderPass::removeTexture(s32 index)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 u32 RenderPass::textureCount() const
 {
-  return static_cast<u32>(m_textures.length());
+  return static_cast<u32>(m_textures.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PTextureImage RenderPass::texture(u32 index) const
@@ -181,14 +181,14 @@ bool RenderPass::operator == (const RenderPass& other) const
   bool result = false;
 
   // check if same blending factors, number of textures, same colors
-  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.length() == other.m_textures.length()) &&
+  if ((m_srcBlendFactor == other.m_srcBlendFactor) && (m_dstBlendFactor == other.m_dstBlendFactor) && (m_textures.size() == other.m_textures.size()) &&
       (m_ambientColor == other.m_ambientColor) && (m_diffuseColor == other.m_diffuseColor) && (m_diffuseColorTransform == other.m_diffuseColorTransform) &&
       (m_emissionColor == other.m_emissionColor) && (m_shininess == other.m_shininess))
   {
     result = true;
 
     // check if textures are different
-    for (s32 i = 0; i < m_textures.length(); ++i)
+    for (s32 i = 0; i < m_textures.size(); ++i)
     {
       // NOTE: assuptions:
       //       - textures can be compared by pointer

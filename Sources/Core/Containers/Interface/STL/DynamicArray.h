@@ -11,7 +11,7 @@
  *  to the container.
  *
  *  Instead, dynamic array containers may allocate some extra storage to accommodate for possible growth, and thus the container may have an actual capacity 
- *  greater than the storage strictly needed to contain its elements (i.e., its length). 
+ *  greater than the storage strictly needed to contain its elements (i.e., its size). 
  *
  *  Compared to the other dynamic sequence containers (lists), dynamic arrays are very efficient accessing its elements (just like arrays) and relatively 
  *  efficient adding or removing elements from its end. For operations that involve inserting or removing elements at positions other than the end, they 
@@ -79,9 +79,9 @@ class DynamicArray
      *        to reach requested size. 
      *        If requested number is also greater than the current container capacity, an automatic reallocation of the allocated storage space takes place.
      */
-    void setLength(s32 count);
-    /*! Returns length of the container. */
-    s32 length() const;
+    void setSize(s32 count);
+    /*! Returns size of the container. */
+    s32 size() const;
 
     /*! Removes element from this container. 
      *  @param  object  Element to be removed.
@@ -220,11 +220,11 @@ void DynamicArray<T>::remove(const T object)
 template <typename T>
 void DynamicArray<T>::removeAt(s32 index)
 {
-// TAGE - uncomment once EGE #110 is done
+// TAGE - uncomment once EGE #111 is done
 //  EGE_ASSERT(0 <= index);
 //  EGE_ASSERT(index < size());
 
-  if ((0 <= index) && (index < length()))
+  if ((0 <= index) && (index < size()))
   {
     typename std::vector<T>::iterator it = m_data.begin() + index;
     m_data.erase(it);
@@ -258,7 +258,7 @@ typename DynamicArray<T>::ConstReference DynamicArray<T>::first(const T& default
 template <typename T>
 typename DynamicArray<T>::ConstReference DynamicArray<T>::last(const T& defaultValue) const
 {
-  return at(length() - 1, defaultValue);
+  return at(size() - 1, defaultValue);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
@@ -304,7 +304,7 @@ DynamicArray<T>& DynamicArray<T>::operator << (const T& value)
 template <typename T>
 typename DynamicArray<T>::ConstReference DynamicArray<T>::at(s32 index, const T& defaultValue) const
 {
-  if ((0 <= index) && (index < length()))
+  if ((0 <= index) && (index < size()))
   {
     return m_data[(static_cast<size_t>(index))];
   }
@@ -330,7 +330,7 @@ s32 DynamicArray<T>::indexOf(const T& object) const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-s32 DynamicArray<T>::length() const
+s32 DynamicArray<T>::size() const
 {
   return static_cast<s32>(m_data.size());
 }
@@ -354,7 +354,7 @@ void DynamicArray<T>::setCapacity(s32 count)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <class T>
-void DynamicArray<T>::setLength(s32 count)
+void DynamicArray<T>::setSize(s32 count)
 {
   m_data.resize(count);
 }

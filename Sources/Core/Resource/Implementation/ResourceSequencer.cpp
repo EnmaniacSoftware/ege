@@ -41,7 +41,7 @@ EGEResult ResourceSequencer::create(const String& path, const PObject& data)
   String frameIds = tag->attribute("frames");
   StringArray frames = frameIds.split(" ");
 
-  for (int i = 0; i < frames.length(); ++i)
+  for (int i = 0; i < frames.size(); ++i)
   {
     m_frameIds.append(frames[i].toInt(&error));
   }

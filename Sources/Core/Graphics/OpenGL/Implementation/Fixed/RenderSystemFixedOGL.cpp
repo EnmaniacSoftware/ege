@@ -315,7 +315,7 @@ void RenderSystemFixedOGL::renderComponent(const PRenderComponent& component, co
     }
 
     // clean up
-    for (s32 i = m_textureUnitStates.length() - 1; i >= 0; --i)
+    for (s32 i = m_textureUnitStates.size() - 1; i >= 0; --i)
     {
       // disable texturing on server side
       activateTextureUnit(i);

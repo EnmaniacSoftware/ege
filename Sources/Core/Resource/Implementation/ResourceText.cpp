@@ -122,7 +122,7 @@ Text ResourceText::text(s32 numerous) const
   {
     const TextArray& list = m_translations.value(engine().language());
 
-    index = Math::Clamp(index, static_cast<s32>(0), list.length() - 1);
+    index = Math::Clamp(index, static_cast<s32>(0), list.size() - 1);
     outText = list[index];
   }
   else

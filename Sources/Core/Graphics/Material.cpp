@@ -244,7 +244,7 @@ bool Material::operator == (const Material& other) const
     result = true;
 
     // go thru all passes
-    for (s32 i = 0; i < m_passes.length(); ++i)
+    for (s32 i = 0; i < m_passes.size(); ++i)
     {
       // check if passes differ
       if (*m_passes[i] != *other.m_passes[i])

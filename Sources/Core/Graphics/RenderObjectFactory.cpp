@@ -171,14 +171,14 @@ bool RenderObjectFactory::DoCreateQuadXY(PRenderComponent& component, Vector4f p
   }
 
   // resize vertex buffer
-  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.length())))
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
   {
     // error!
     return false;
   }
 
   // lock vertex buffer
-  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.length())));
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
   if (NULL == data)
   {
     // error!
@@ -372,14 +372,14 @@ bool RenderObjectFactory::DoCreateQuatroQuadXY(PRenderComponent& component, Vect
   }
 
   // resize vertex buffer
-  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.length())))
+  if ( ! component->vertexBuffer()->setSize(static_cast<u32>(vertexList.size())))
   {
     // error!
     return false;
   }
 
   // lock vertex buffer
-  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.length())));
+  float32* data = reinterpret_cast<float32*>(component->vertexBuffer()->lock(0, static_cast<u32>(vertexList.size())));
   if (NULL == data)
   {
     // error!

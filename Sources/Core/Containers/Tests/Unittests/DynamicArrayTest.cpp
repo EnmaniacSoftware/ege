@@ -29,13 +29,13 @@ void DynamicArrayTest::createArray(IntArray& array) const
   array << 30;
   array << 100;
 
-  EXPECT_EQ(KDefaultArraySize, array.length());
+  EXPECT_EQ(KDefaultArraySize, array.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DynamicArrayTest, Construct)
 {
   IntArray empty;
-  EXPECT_EQ(0, empty.length());
+  EXPECT_EQ(0, empty.size());
 
   IntArray other;
   other << 1;
@@ -43,20 +43,20 @@ TEST_F(DynamicArrayTest, Construct)
   other << 3;
 
   IntArray another(other);
-  EXPECT_EQ(other.length(), another.length());
+  EXPECT_EQ(other.size(), another.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DynamicArrayTest, Length)
 {
   IntArray array;
-  EXPECT_EQ(0, array.length());
+  EXPECT_EQ(0, array.size());
 
   IntArray array2(10);
-  EXPECT_EQ(1, array2.length());
+  EXPECT_EQ(1, array2.size());
 
   IntArray array3;
   array3 << 1 << 2 << 3;
-  EXPECT_EQ(3, array3.length());
+  EXPECT_EQ(3, array3.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DynamicArrayTest, Clear)
@@ -65,7 +65,7 @@ TEST_F(DynamicArrayTest, Clear)
   createArray(array);
 
   array.clear(); 
-  EXPECT_EQ(0, array.length());
+  EXPECT_EQ(0, array.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DynamicArrayTest, IsEmpty)
@@ -93,13 +93,13 @@ TEST_F(DynamicArrayTest, Remove)
 
   // remove unexisting value
   array.remove(KNonExistingValue);
-  EXPECT_EQ(KDefaultArraySize, array.length());
+  EXPECT_EQ(KDefaultArraySize, array.size());
 
   // remove existing value
   array.remove(KExistingValue);
-  EXPECT_EQ(KDefaultArraySize - 1, array.length());
+  EXPECT_EQ(KDefaultArraySize - 1, array.size());
 
-  for (s32 i = 0; i < array.length(); ++i)
+  for (s32 i = 0; i < array.size(); ++i)
   {
     EXPECT_TRUE(KExistingValue != array.at(i, KExistingValue));
   }
@@ -112,16 +112,16 @@ TEST_F(DynamicArrayTest, RemoveAt)
 
   // remove value at unexisting index
   array.removeAt(-1);
-  EXPECT_EQ(KDefaultArraySize, array.length());
+  EXPECT_EQ(KDefaultArraySize, array.size());
 
   array.removeAt(KDefaultArraySize);
-  EXPECT_EQ(KDefaultArraySize, array.length());
+  EXPECT_EQ(KDefaultArraySize, array.size());
 
   // remove value at existing index
   array.removeAt(KExistingValueIndex);
-  EXPECT_EQ(KDefaultArraySize - 1, array.length());
+  EXPECT_EQ(KDefaultArraySize - 1, array.size());
 
-  for (s32 i = 0; i < array.length(); ++i)
+  for (s32 i = 0; i < array.size(); ++i)
   {
     EXPECT_TRUE(KExistingValue != array.at(i, KExistingValue));
   }
@@ -135,7 +135,7 @@ TEST_F(DynamicArrayTest, RemoveByIterator)
   // remove existing element
   s32 secondValue = array[1];
   EXPECT_EQ(secondValue, *array.remove(array.begin()));
-  EXPECT_EQ(KDefaultArraySize - 1, array.length());
+  EXPECT_EQ(KDefaultArraySize - 1, array.size());
 
   // check content
   IntArray reference;
@@ -164,7 +164,7 @@ TEST_F(DynamicArrayTest, RemoveLast)
     array.removeLast();
     
     itemsRemoved++;
-    EXPECT_EQ(KDefaultArraySize - itemsRemoved, array.length()); 
+    EXPECT_EQ(KDefaultArraySize - itemsRemoved, array.size()); 
   
     IntArray::Iterator it1 = array.begin();
     IntArray::Iterator it2 = referenceArray.begin();
@@ -235,12 +235,12 @@ TEST_F(DynamicArrayTest, Copy)
   createArray(array2);
 
   array1 << 1;
-  EXPECT_EQ(1, array1.length());
+  EXPECT_EQ(1, array1.size());
 
   // make a copy
   array1.copy(array2);
-  EXPECT_EQ(array2.length(), array1.length());
-  for (s32 i = 0; i < array1.length(); ++i)
+  EXPECT_EQ(array2.size(), array1.size());
+  for (s32 i = 0; i < array1.size(); ++i)
   {
     EXPECT_EQ(array2.at(i, -1), array1.at(i, -2));
   }
@@ -248,7 +248,7 @@ TEST_F(DynamicArrayTest, Copy)
   // copy empty array
   IntArray empty;
   array1.copy(empty);
-  EXPECT_EQ(0, array1.length());
+  EXPECT_EQ(0, array1.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(DynamicArrayTest, Append)
@@ -257,19 +257,19 @@ TEST_F(DynamicArrayTest, Append)
   
   // operators
   array << 100;
-  EXPECT_EQ(1, array.length());
+  EXPECT_EQ(1, array.size());
   EXPECT_EQ(100, array.at(0, 0));
 
   array << 101;
-  EXPECT_EQ(2, array.length());
+  EXPECT_EQ(2, array.size());
   EXPECT_EQ(101, array.at(1, 0));
 
   IntArray array2;
   createArray(array2);
 
   array << array2;
-  EXPECT_EQ(2 + KDefaultArraySize, array.length());
-  for (s32 i = 2; i < array.length(); ++i)
+  EXPECT_EQ(2 + KDefaultArraySize, array.size());
+  for (s32 i = 2; i < array.size(); ++i)
   {
     EXPECT_EQ(array2.at(i - 2, -1), array.at(i, -2));
   }
@@ -277,7 +277,7 @@ TEST_F(DynamicArrayTest, Append)
   // methods
   array.clear();
   array.append(11);
-  EXPECT_EQ(1, array.length());
+  EXPECT_EQ(1, array.size());
   EXPECT_EQ(11, array.at(0, KNonExistingValue));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -339,7 +339,7 @@ TEST_F(DynamicArrayTest, SetCapacity)
   array.setCapacity(2);
 
   // check content
-  EXPECT_EQ(3, array.length());
+  EXPECT_EQ(3, array.size());
   EXPECT_EQ(1, array[0]);
   EXPECT_EQ(2, array[1]);
   EXPECT_EQ(3, array[2]);
@@ -348,7 +348,7 @@ TEST_F(DynamicArrayTest, SetCapacity)
   array.setCapacity(3);
 
   // check content
-  EXPECT_EQ(3, array.length());
+  EXPECT_EQ(3, array.size());
   EXPECT_EQ(1, array[0]);
   EXPECT_EQ(2, array[1]);
   EXPECT_EQ(3, array[2]);
@@ -357,7 +357,7 @@ TEST_F(DynamicArrayTest, SetCapacity)
   array.setCapacity(10);
 
   // check content
-  EXPECT_EQ(3, array.length());
+  EXPECT_EQ(3, array.size());
   EXPECT_EQ(1, array[0]);
   EXPECT_EQ(2, array[1]);
   EXPECT_EQ(3, array[2]);
@@ -369,16 +369,16 @@ TEST_F(DynamicArrayTest, SetLength)
   IntArray array2;
   
   // set some initial capacity
-  array.setLength(3);
-  EXPECT_EQ(3, array.length());
+  array.setSize(3);
+  EXPECT_EQ(3, array.size());
 
   // fill in with known data
   createArray(array);
   createArray(array2);
 
   // shrink
-  const s32 KShrinkedLength = array.length() / 2;
-  array.setLength(KShrinkedLength);
+  const s32 KShrinkedLength = array.size() / 2;
+  array.setSize(KShrinkedLength);
 
   // check content
   for (s32 i = 0; i < KShrinkedLength; ++i)
@@ -389,12 +389,12 @@ TEST_F(DynamicArrayTest, SetLength)
   // expand
   createArray(array);
 
-  const s32 KExpandedLength = array.length() * 2;
-  array.setLength(KExpandedLength);
-  EXPECT_EQ(KExpandedLength, array.length());
+  const s32 KExpandedLength = array.size() * 2;
+  array.setSize(KExpandedLength);
+  EXPECT_EQ(KExpandedLength, array.size());
 
   // check content
-  for (s32 i = 0; i < array2.length(); ++i)
+  for (s32 i = 0; i < array2.size(); ++i)
   {
     EXPECT_EQ(array2[i], array[i]);
   }
@@ -402,11 +402,11 @@ TEST_F(DynamicArrayTest, SetLength)
   // set the same size
   createArray(array);
 
-  array.setCapacity(array.length());
-  EXPECT_EQ(array2.length(), array.length());
+  array.setCapacity(array.size());
+  EXPECT_EQ(array2.size(), array.size());
 
   // check content
-  for (s32 i = 0; i < array.length(); ++i)
+  for (s32 i = 0; i < array.size(); ++i)
   {
     EXPECT_EQ(array2[i], array[i]);
   }
