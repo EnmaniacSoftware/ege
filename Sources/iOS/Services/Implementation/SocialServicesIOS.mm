@@ -121,7 +121,7 @@ EGEResult SocialServicesIOS::saveAchievements(const AchievementDataList& achieve
     m_pendingAchievementSaveList << achievements;
 
     // process next achievement
-    result = ((m_pendingAchievementSaveList.length() == achievements.length()) && ! achievements.isEmpty()) ? saveNextAchievement() : EGE_SUCCESS;
+    result = ((m_pendingAchievementSaveList.size() == achievements.size()) && ! achievements.isEmpty()) ? saveNextAchievement() : EGE_SUCCESS;
   }
   
   return result;

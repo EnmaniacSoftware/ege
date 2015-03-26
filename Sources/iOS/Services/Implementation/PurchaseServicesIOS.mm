@@ -49,7 +49,7 @@ EGEResult PurchaseServicesIOS::purchase(const String& product)
     m_pendingPurchases << product;
     
     // check if first item added
-    if (1 == m_pendingPurchases.length())
+    if (1 == m_pendingPurchases.size())
     {
       // process immediately
       processNextPurchase();

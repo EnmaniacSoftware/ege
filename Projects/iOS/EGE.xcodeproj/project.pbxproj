@@ -414,7 +414,6 @@
 		45146EC218C522EA00AAC617 /* EGETime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETime.h; path = ../../Sources/EGETime.h; sourceTree = "<group>"; };
 		45146EC318C522EA00AAC617 /* EGETimeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETimeline.h; path = ../../Sources/EGETimeline.h; sourceTree = "<group>"; };
 		45146EC418C522EA00AAC617 /* EGETimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETimer.h; path = ../../Sources/EGETimer.h; sourceTree = "<group>"; };
-		45146EC518C522EA00AAC617 /* EGETree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETree.h; path = ../../Sources/EGETree.h; sourceTree = "<group>"; };
 		45146EC618C522EA00AAC617 /* EGETweener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETweener.h; path = ../../Sources/EGETweener.h; sourceTree = "<group>"; };
 		45146EC718C522EA00AAC617 /* EGETypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETypes.h; path = ../../Sources/EGETypes.h; sourceTree = "<group>"; };
 		45146EC818C522EA00AAC617 /* EGEUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEUI.h; path = ../../Sources/EGEUI.h; sourceTree = "<group>"; };
@@ -887,12 +886,6 @@
 		457C565C19E5C29900E35A51 /* StringUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringUtils.cpp; sourceTree = "<group>"; };
 		457C566119E5C29900E35A51 /* StringBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuffer.h; sourceTree = "<group>"; };
 		457C566219E5C29900E35A51 /* StringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringUtils.h; sourceTree = "<group>"; };
-		457C566919E5C2AA00E35A51 /* DynamicArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicArray.h; sourceTree = "<group>"; };
-		457C566A19E5C2AA00E35A51 /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
-		457C566B19E5C2AA00E35A51 /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
-		457C566C19E5C2AA00E35A51 /* MultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiMap.h; sourceTree = "<group>"; };
-		457C566D19E5C2AA00E35A51 /* MultiTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiTree.h; sourceTree = "<group>"; };
-		457C566E19E5C2AA00E35A51 /* Tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tree.h; sourceTree = "<group>"; };
 		45877DA516F09F5B00B4252B /* libEGE.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libEGE.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		45877DA816F09F5B00B4252B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		458AA79718FF1F0E00333B67 /* Time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Time.cpp; sourceTree = "<group>"; };
@@ -943,6 +936,12 @@
 		45C3AD3C18CDF4520009ABA3 /* DeviceServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceServicesIOS.h; sourceTree = "<group>"; };
 		45C3AD3D18CDF4520009ABA3 /* PurchaseServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseServicesIOS.h; sourceTree = "<group>"; };
 		45C3AD3E18CDF4520009ABA3 /* SocialServicesIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SocialServicesIOS.h; sourceTree = "<group>"; };
+		45C6F7731AC4A1CA00EE3E6B /* DynamicArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicArray.h; sourceTree = "<group>"; };
+		45C6F7741AC4A1CA00EE3E6B /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
+		45C6F7751AC4A1CA00EE3E6B /* Map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
+		45C6F7761AC4A1CA00EE3E6B /* MultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiMap.h; sourceTree = "<group>"; };
+		45C6F7771AC4A1CA00EE3E6B /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
+		45C6F7781AC4A1E600EE3E6B /* EGESet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGESet.h; path = ../../Sources/EGESet.h; sourceTree = "<group>"; };
 		45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libChartboost.a; path = ../../External/chartboost/lib/iOS/libChartboost.a; sourceTree = "<group>"; };
 		45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		45D6D0D119B3C58E00B3DA64 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -1101,25 +1100,16 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
-				450100F51ABE0AF900A6E851 /* EGEMultiMap.h */,
-				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
-				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
-				45660C2219FEDC1300E70859 /* EGERenderable.h */,
-				45660C2319FEDC1300E70859 /* EGEResource.h */,
-				45660C2419FEDC1300E70859 /* EGEResourceFactory.h */,
-				456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */,
-				4563CFA019F3D52100A61978 /* EGEResourceManager.h */,
-				45B6770119E30788009DB9FC /* EGEFileUtils.h */,
-				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
-				45E4DC11199BF950000FB4B8 /* EGEEngine.h */,
-				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
-				4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
+				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
 				45146E7618C522EA00AAC617 /* EGEAngle.h */,
 				45146E7818C522EA00AAC617 /* EGEApplication.h */,
 				45146E7918C522EA00AAC617 /* EGEAtomic.h */,
+				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
+				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
 				45146E7A18C522EA00AAC617 /* EGEAudio.h */,
+				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
 				45146E7B18C522EA00AAC617 /* EGEByteOrder.h */,
 				45146E7C18C522EA00AAC617 /* EGECachedObject.h */,
 				45146E7D18C522EA00AAC617 /* EGECipher.h */,
@@ -1137,8 +1127,10 @@
 				45146E8818C522EA00AAC617 /* EGEDictionary.h */,
 				45146E8918C522EA00AAC617 /* EGEDirectory.h */,
 				45146E8A18C522EA00AAC617 /* EGEDynamicArray.h */,
+				45E4DC11199BF950000FB4B8 /* EGEEngine.h */,
 				45146E8B18C522EA00AAC617 /* EGEEvent.h */,
 				45146E8C18C522EA00AAC617 /* EGEFile.h */,
+				45B6770119E30788009DB9FC /* EGEFileUtils.h */,
 				45146E8D18C522EA00AAC617 /* EGEFlags.h */,
 				45146E8E18C522EA00AAC617 /* EGEGraphics.h */,
 				45146E8F18C522EA00AAC617 /* EGEHash.h */,
@@ -1147,6 +1139,7 @@
 				45146E9218C522EA00AAC617 /* EGEImageLoader.h */,
 				45146E9318C522EA00AAC617 /* EGEIndexBuffer.h */,
 				45146E9418C522EA00AAC617 /* EGEInput.h */,
+				4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */,
 				45146E9518C522EA00AAC617 /* EGELine2.h */,
 				45146E9618C522EA00AAC617 /* EGEList.h */,
 				45146E9718C522EA00AAC617 /* EGELog.h */,
@@ -1155,6 +1148,7 @@
 				45146E9A18C522EA00AAC617 /* EGEMath.h */,
 				45146E9B18C522EA00AAC617 /* EGEMatrix.h */,
 				45146E9C18C522EA00AAC617 /* EGEMemory.h */,
+				450100F51ABE0AF900A6E851 /* EGEMultiMap.h */,
 				45146E9D18C522EA00AAC617 /* EGEMutex.h */,
 				45146E9E18C522EA00AAC617 /* EGENativeUI.h */,
 				45146E9F18C522EA00AAC617 /* EGEObjectList.h */,
@@ -1167,14 +1161,20 @@
 				45146EA618C522EA00AAC617 /* EGEQuaternion.h */,
 				45146EA718C522EA00AAC617 /* EGERandom.h */,
 				45146EA818C522EA00AAC617 /* EGERect.h */,
+				45660C2219FEDC1300E70859 /* EGERenderable.h */,
 				45146EA918C522EA00AAC617 /* EGERenderComponent.h */,
 				45146EAA18C522EA00AAC617 /* EGERenderer.h */,
 				45146EAB18C522EA00AAC617 /* EGERenderQueues.h */,
 				45146EAC18C522EA00AAC617 /* EGERenderSystem.h */,
+				45660C2319FEDC1300E70859 /* EGEResource.h */,
+				45660C2419FEDC1300E70859 /* EGEResourceFactory.h */,
+				456CA22E19F83B4F00868FA1 /* EGEResourceLoader.h */,
+				4563CFA019F3D52100A61978 /* EGEResourceManager.h */,
 				45146EAD18C522EA00AAC617 /* EGEResources.h */,
 				45146EAE18C522EA00AAC617 /* EGEScene.h */,
 				45146EAF18C522EA00AAC617 /* EGEScreen.h */,
 				45146EB018C522EA00AAC617 /* EGESequencer.h */,
+				45C6F7781AC4A1E600EE3E6B /* EGESet.h */,
 				45146EB118C522EA00AAC617 /* EGEShader.h */,
 				45146EB218C522EA00AAC617 /* EGESignal.h */,
 				45146EB318C522EA00AAC617 /* EGESocialServices.h */,
@@ -1193,7 +1193,6 @@
 				45146EC218C522EA00AAC617 /* EGETime.h */,
 				45146EC318C522EA00AAC617 /* EGETimeline.h */,
 				45146EC418C522EA00AAC617 /* EGETimer.h */,
-				45146EC518C522EA00AAC617 /* EGETree.h */,
 				45146EC618C522EA00AAC617 /* EGETweener.h */,
 				45146EC718C522EA00AAC617 /* EGETypes.h */,
 				45146EC818C522EA00AAC617 /* EGEUI.h */,
@@ -2742,22 +2741,13 @@
 		457C566719E5C2AA00E35A51 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				457C566819E5C2AA00E35A51 /* STL */,
+				45C6F7731AC4A1CA00EE3E6B /* DynamicArray.h */,
+				45C6F7741AC4A1CA00EE3E6B /* List.h */,
+				45C6F7751AC4A1CA00EE3E6B /* Map.h */,
+				45C6F7761AC4A1CA00EE3E6B /* MultiMap.h */,
+				45C6F7771AC4A1CA00EE3E6B /* Set.h */,
 			);
 			path = Interface;
-			sourceTree = "<group>";
-		};
-		457C566819E5C2AA00E35A51 /* STL */ = {
-			isa = PBXGroup;
-			children = (
-				457C566919E5C2AA00E35A51 /* DynamicArray.h */,
-				457C566A19E5C2AA00E35A51 /* List.h */,
-				457C566B19E5C2AA00E35A51 /* Map.h */,
-				457C566C19E5C2AA00E35A51 /* MultiMap.h */,
-				457C566D19E5C2AA00E35A51 /* MultiTree.h */,
-				457C566E19E5C2AA00E35A51 /* Tree.h */,
-			);
-			path = STL;
 			sourceTree = "<group>";
 		};
 		45877D9C16F09F5B00B4252B = {
@@ -3531,7 +3521,6 @@
 					EGE_RANDOM_STDC,
 					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
-					EGE_CONTAINERS_STL,
 					EGE_FEATURE_OPENGL_DEBUG,
 					TIXML_USE_STL,
 				);
@@ -3574,7 +3563,6 @@
 					EGE_RANDOM_STDC,
 					EGE_AUDIO_OPENAL,
 					EGE_XML_TINYXML,
-					EGE_CONTAINERS_STL,
 					TIXML_USE_STL,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
