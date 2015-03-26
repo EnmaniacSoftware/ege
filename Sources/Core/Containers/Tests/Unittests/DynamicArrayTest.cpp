@@ -46,7 +46,7 @@ TEST_F(DynamicArrayTest, Construct)
   EXPECT_EQ(other.size(), another.size());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(DynamicArrayTest, Length)
+TEST_F(DynamicArrayTest, Size)
 {
   IntArray array;
   EXPECT_EQ(0, array.size());
@@ -363,7 +363,7 @@ TEST_F(DynamicArrayTest, SetCapacity)
   EXPECT_EQ(3, array[2]);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(DynamicArrayTest, SetLength)
+TEST_F(DynamicArrayTest, SetSize)
 {
   IntArray array;
   IntArray array2;
