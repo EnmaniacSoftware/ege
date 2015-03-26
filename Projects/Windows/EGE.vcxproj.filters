@@ -430,9 +430,6 @@
     <Filter Include="Core\Containers\Interface">
       <UniqueIdentifier>{8abe4fce-e80c-4329-bba6-457bd86141ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Containers\Interface\STL">
-      <UniqueIdentifier>{34a47d82-3164-431f-961a-426174f3c28a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\String\Interface">
       <UniqueIdentifier>{31e35aeb-9ac1-49c9-94b1-8286ecd8e5ab}</UniqueIdentifier>
     </Filter>
@@ -2019,18 +2016,6 @@
       <Filter>Core\File\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEFileUtils.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\DynamicArray.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\List.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Map.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiMap.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
@@ -2176,10 +2161,22 @@
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEMultiMap.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Set.h">
-      <Filter>Core\Containers\Interface\STL</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\EGESet.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\DynamicArray.h">
+      <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\List.h">
+      <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\Map.h">
+      <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\MultiMap.h">
+      <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\Set.h">
+      <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

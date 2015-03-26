@@ -29,9 +29,6 @@ inline void ege_noop() {}
 // EGE_PURCHASE_SERVICES_NULL
 // EGE_PURCHASE_SERVICES_APPSTORE
 
-// Available containers implementations
-// EGE_CONTAINERS_STL
-
 #if WIN32
   #define EGE_PLATFORM_WIN32 1
   #define PLATFORM_CLASSNAME(classname) classname##Win32

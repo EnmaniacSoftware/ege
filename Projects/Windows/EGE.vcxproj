@@ -284,11 +284,11 @@
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Box2D\PhysicsComponentBox2D_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\Null\PhysicsComponentNull_p.h" />
     <ClInclude Include="..\..\Sources\Core\Component\Physics\PhysicsComponent.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\DynamicArray.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\List.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Map.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\MultiMap.h" />
-    <ClInclude Include="..\..\Sources\Core\Containers\Interface\STL\Set.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\DynamicArray.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\List.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\Map.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\MultiMap.h" />
+    <ClInclude Include="..\..\Sources\Core\Containers\Interface\Set.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\Cipher.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherAES.h" />
     <ClInclude Include="..\..\Sources\Core\Crypto\Interface\Cipher\CipherKey.h" />
