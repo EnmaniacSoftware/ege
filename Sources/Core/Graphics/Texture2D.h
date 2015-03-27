@@ -28,8 +28,10 @@ enum TextureAddressingMode
   AM_REPEAT             /*< Texture repeats at values over 1.0. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+class Engine;
 class IHardwareResourceProvider;
+
+EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Texture2D : public Object
 {

@@ -50,6 +50,8 @@ struct RenderSystemContinuousStatisticData
   u32 fps;                    /*!< Frames per second. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Engine;
+
 EGE_DECLARE_SMART_CLASS(RenderSystemStatistics, PRenderSystemStatistics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemStatistics : public Component

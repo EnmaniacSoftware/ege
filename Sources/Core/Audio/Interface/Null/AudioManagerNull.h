@@ -13,10 +13,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Engine;
+
 EGE_DECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class AudioManagerNull : public Object 
-                       , public IAudioManagerBase
+class AudioManagerNull : public IAudioManagerBase
                        , public EngineModule<IAudioManager>
 {
   public:

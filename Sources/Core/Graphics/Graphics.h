@@ -11,12 +11,13 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Engine;
+class IHardwareResourceProvider;
+class IRenderer;
+class IRenderSystem;
 class ParticleFactory;
 class RenderSystem;
 class WidgetFactory;
-class IRenderSystem;
-class IRenderer;
-class IHardwareResourceProvider;
 
 EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)

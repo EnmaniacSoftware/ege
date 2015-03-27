@@ -19,6 +19,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Engine;
 class IPhysicsManager;
 
 EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
