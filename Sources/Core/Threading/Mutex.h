@@ -40,6 +40,8 @@ class Mutex : public Object
 
     /*! Flag indicating wheter mutex if locked. For debugging purposes. */
     AtomicBool m_locked;
+    /*! Type. */
+    EGEMutex::EType m_type;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

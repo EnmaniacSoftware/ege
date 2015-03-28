@@ -132,7 +132,7 @@ void MutexTest::waitUntilThreadsFinish()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MutexTest, LockUnlock)
+TEST_F(MutexTest, LockUnlock_)
 {
   createMutex(EGEMutex::Normal);
   createThreads(KThreadCount, MutexTest::Increment);
@@ -141,12 +141,22 @@ TEST_F(MutexTest, LockUnlock)
   EXPECT_EQ(KThreadCount * KRepetitionsCount, m_counter);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MutexTest, LockUnlockRecursive)
+TEST_F(MutexTest, LockUnlockRecursiveSingleThread)
 {
   createMutex(EGEMutex::Recursive);
   createThreads(1, MutexTest::RecursiveIncrement);
   waitUntilThreadsFinish();
 
   EXPECT_EQ(KRepetitionsCount, m_counter);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(MutexTest, LockUnlockRecursiveMultiThread)
+{
+  createMutex(EGEMutex::Recursive);
+  createThreads(KThreadCount, MutexTest::RecursiveIncrement);
+  waitUntilThreadsFinish();
+
+  // NOTE: only the first thread will be able to process requested amount of times. Rest will simply increment once.
+  EXPECT_EQ(KRepetitionsCount + (KThreadCount - 1), m_counter);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
