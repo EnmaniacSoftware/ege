@@ -67,13 +67,8 @@ class FilePrivate
 {
   public:
 
-    FilePrivate(File* base);
+    FilePrivate(const String& filePath);
    ~FilePrivate();
-
-    EGE_DECLARE_NEW_OPERATORS
-    EGE_DECLARE_DELETE_OPERATORS
-
-    EGE_DECLARE_PUBLIC_IMPLEMENTATION(File)
   
     /*! @see File::open. */
     EGEResult open(FileMode mode);
@@ -89,11 +84,15 @@ class FilePrivate
     s64 tell();
     /*! @see File::isOpen. */
     bool isOpen() const;
-
+    /*! @see File::filePath. */
+    const String& filePath() const;
+  
   private:
 
     /*! File handle. */
     void* m_file;
+    /*! File path. */
+    String m_filePath;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

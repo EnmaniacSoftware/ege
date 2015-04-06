@@ -225,10 +225,8 @@
 		459972FE19EDC798001B63C3 /* PointerEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F319EDC798001B63C3 /* PointerEvent.cpp */; };
 		459972FF19EDC798001B63C3 /* TouchEvent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 459972F419EDC798001B63C3 /* TouchEvent.cpp */; };
 		45B6770919E307A7009DB9FC /* FileUtilsIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */; };
-		45B91A9419DB5BF6009856BD /* File.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9119DB5BF6009856BD /* File.cpp */; };
 		45B91A9E19DB5C09009856BD /* Event.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9619DB5C09009856BD /* Event.cpp */; };
 		45B91A9F19DB5C09009856BD /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45B91A9719DB5C09009856BD /* EventManager.cpp */; };
-		45B91AA419DB5C21009856BD /* FileIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45B91AA119DB5C21009856BD /* FileIOS_p.mm */; };
 		45BDD9A918CA6FD7004B33E3 /* SqlQuery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A618CA6FD7004B33E3 /* SqlQuery.cpp */; };
 		45BDD9AA18CA6FD7004B33E3 /* SqlResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A718CA6FD7004B33E3 /* SqlResult.cpp */; };
 		45BDD9AB18CA6FD7004B33E3 /* SqlResultSqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45BDD9A818CA6FD7004B33E3 /* SqlResultSqlite.cpp */; };
@@ -238,6 +236,7 @@
 		45C3AD4118CDF4520009ABA3 /* GameCenterDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3818CDF4520009ABA3 /* GameCenterDelegate.mm */; };
 		45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */; };
 		45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */; };
+		45C858F41AD30EF3003A0635 /* FileIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F31AD30EF3003A0635 /* FileIOS.mm */; };
 		45D6D0CE19B3C3EB00B3DA64 /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */; };
 		45D6D0D019B3C58200B3DA64 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */; };
 		45D6D0D219B3C58E00B3DA64 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0D119B3C58E00B3DA64 /* StoreKit.framework */; };
@@ -907,7 +906,6 @@
 		45B6770119E30788009DB9FC /* EGEFileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEFileUtils.h; path = ../../Sources/EGEFileUtils.h; sourceTree = "<group>"; };
 		45B6770719E30796009DB9FC /* FileUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileUtils.h; sourceTree = "<group>"; };
 		45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileUtilsIOS.mm; sourceTree = "<group>"; };
-		45B91A9119DB5BF6009856BD /* File.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
 		45B91A9319DB5BF6009856BD /* File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		45B91A9619DB5C09009856BD /* Event.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Event.cpp; sourceTree = "<group>"; };
 		45B91A9719DB5C09009856BD /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventManager.cpp; sourceTree = "<group>"; };
@@ -916,8 +914,6 @@
 		45B91A9B19DB5C09009856BD /* EventIDs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventIDs.h; sourceTree = "<group>"; };
 		45B91A9C19DB5C09009856BD /* EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventListener.h; sourceTree = "<group>"; };
 		45B91A9D19DB5C09009856BD /* IEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IEventManager.h; sourceTree = "<group>"; };
-		45B91AA119DB5C21009856BD /* FileIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS_p.mm; sourceTree = "<group>"; };
-		45B91AA319DB5C21009856BD /* FileIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileIOS_p.h; sourceTree = "<group>"; };
 		45BDD99E18CA6FBA004B33E3 /* SqlQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlQuery.h; sourceTree = "<group>"; };
 		45BDD99F18CA6FBA004B33E3 /* SqlResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResult.h; sourceTree = "<group>"; };
 		45BDD9A518CA6FD7004B33E3 /* SqlResultSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SqlResultSqlite.h; sourceTree = "<group>"; };
@@ -942,6 +938,8 @@
 		45C6F7761AC4A1CA00EE3E6B /* MultiMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiMap.h; sourceTree = "<group>"; };
 		45C6F7771AC4A1CA00EE3E6B /* Set.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Set.h; sourceTree = "<group>"; };
 		45C6F7781AC4A1E600EE3E6B /* EGESet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGESet.h; path = ../../Sources/EGESet.h; sourceTree = "<group>"; };
+		45C858F31AD30EF3003A0635 /* FileIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS.mm; sourceTree = "<group>"; };
+		45C858F51AD30EFA003A0635 /* FileIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileIOS.h; sourceTree = "<group>"; };
 		45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libChartboost.a; path = ../../External/chartboost/lib/iOS/libChartboost.a; sourceTree = "<group>"; };
 		45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		45D6D0D119B3C58E00B3DA64 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -1497,7 +1495,6 @@
 		45146F5418C5231800AAC617 /* File */ = {
 			isa = PBXGroup;
 			children = (
-				45B91A9019DB5BF6009856BD /* Implementation */,
 				45B91A9219DB5BF6009856BD /* Interface */,
 			);
 			path = File;
@@ -2863,14 +2860,6 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
-		45B91A9019DB5BF6009856BD /* Implementation */ = {
-			isa = PBXGroup;
-			children = (
-				45B91A9119DB5BF6009856BD /* File.cpp */,
-			);
-			path = Implementation;
-			sourceTree = "<group>";
-		};
 		45B91A9219DB5BF6009856BD /* Interface */ = {
 			isa = PBXGroup;
 			children = (
@@ -2904,8 +2893,8 @@
 		45B91AA019DB5C21009856BD /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45C858F31AD30EF3003A0635 /* FileIOS.mm */,
 				45B6770819E307A7009DB9FC /* FileUtilsIOS.mm */,
-				45B91AA119DB5C21009856BD /* FileIOS_p.mm */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -2913,7 +2902,7 @@
 		45B91AA219DB5C21009856BD /* Interface */ = {
 			isa = PBXGroup;
 			children = (
-				45B91AA319DB5C21009856BD /* FileIOS_p.h */,
+				45C858F51AD30EFA003A0635 /* FileIOS.h */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
@@ -3306,6 +3295,7 @@
 				4514718918C5231900AAC617 /* Overlay.cpp in Sources */,
 				4514718B18C5231900AAC617 /* OverlayManager.cpp in Sources */,
 				456CA28419F83B6500868FA1 /* ResourceShader.cpp in Sources */,
+				45C858F41AD30EF3003A0635 /* FileIOS.mm in Sources */,
 				4514718C18C5231900AAC617 /* TextOverlay.cpp in Sources */,
 				4514718D18C5231900AAC617 /* DebugDrawBox2D.cpp in Sources */,
 				450E126619351E2E00B9F785 /* Device.cpp in Sources */,
@@ -3331,7 +3321,6 @@
 				4514719C18C5231900AAC617 /* RandomGeneratorStdC_p.cpp in Sources */,
 				453C83F9193E6AD200FBA4AA /* AudioCodecOgg.cpp in Sources */,
 				45E4DC36199C0395000FB4B8 /* DeviceServices.cpp in Sources */,
-				45B91AA419DB5C21009856BD /* FileIOS_p.mm in Sources */,
 				45E4DC3A199C0395000FB4B8 /* SocialServicesNull.cpp in Sources */,
 				456CA28319F83B6500868FA1 /* ResourceSequencer.cpp in Sources */,
 				45B91A9E19DB5C09009856BD /* Event.cpp in Sources */,
@@ -3341,7 +3330,6 @@
 				451471B518C5231900AAC617 /* SceneNode.cpp in Sources */,
 				456CA28019F83B6500868FA1 /* ResourceParticleAffector.cpp in Sources */,
 				451471B618C5231900AAC617 /* SceneNodeObject.cpp in Sources */,
-				45B91A9419DB5BF6009856BD /* File.cpp in Sources */,
 				453C83FF193E6AD200FBA4AA /* SoundNull.cpp in Sources */,
 				451471C318C5231900AAC617 /* Mutex.cpp in Sources */,
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
