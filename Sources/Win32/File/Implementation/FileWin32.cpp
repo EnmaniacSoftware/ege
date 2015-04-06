@@ -1,4 +1,4 @@
-#include "Win32/File/Interface/FileWin32_p.h"
+#include "Win32/File/Interface/FileWin32.h"
 #include "EGEFileUtils.h"
 #include "EGEDataBuffer.h"
 #include "EGEMath.h"

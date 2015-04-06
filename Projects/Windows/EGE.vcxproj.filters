@@ -1050,9 +1050,6 @@
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp">
       <Filter>Core\Factory\Event\Implementation</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp">
-      <Filter>Win32\File\Implementation</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp">
       <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
@@ -1175,6 +1172,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Implementation\Text.cpp">
       <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32.cpp">
+      <Filter>Win32\File\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2003,9 +2003,6 @@
     <ClInclude Include="..\..\Sources\Core\File\Interface\File.h">
       <Filter>Core\File\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h">
-      <Filter>Win32\File\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\Interface\FileUtils.h">
       <Filter>Core\File\Interface</Filter>
     </ClInclude>
@@ -2170,6 +2167,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Containers\Interface\Set.h">
       <Filter>Core\Containers\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32.h">
+      <Filter>Win32\File\Interface</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

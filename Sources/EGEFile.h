@@ -4,9 +4,9 @@
 #include "Core/Platform.h"
 
 #if EGE_PLATFORM_WIN32
-  #include "Win32/File/Interface/FileWin32_p.h"
+  #include "Win32/File/Interface/FileWin32.h"
 #elif EGE_PLATFORM_IOS
-  #include "iOS/File/Interface/FileIOS_p.h"
+  #include "iOS/File/Interface/FileIOS.h"
 #endif // EGE_PLATFORM_WIN32
 
 #include "Core/File/Interface/File.h"

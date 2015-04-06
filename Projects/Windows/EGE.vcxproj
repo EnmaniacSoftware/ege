@@ -242,7 +242,7 @@
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp" />
-    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\main.cpp" />
@@ -647,7 +647,7 @@
     <ClInclude Include="..\..\Sources\EGEWaitCondition.h" />
     <ClInclude Include="..\..\Sources\EGEXml.h" />
     <ClInclude Include="..\..\Sources\Win32\Engine\Interface\EngineInstanceWin32.h" />
-    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32_p.h" />
+    <ClInclude Include="..\..\Sources\Win32\File\Interface\FileWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\ExtensionsOGLWin32.h" />
     <ClInclude Include="..\..\Sources\Win32\Graphics\OpenGL\RenderWindowOGLWin32.h" />
