@@ -409,9 +409,6 @@
     <Filter Include="Core\Graphics\Interface">
       <UniqueIdentifier>{55797d27-ab1b-4afb-aaeb-d28c08303d51}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\File\Implementation">
-      <UniqueIdentifier>{4aaf6be3-d46a-41ab-9415-64140e2d476f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\File\Interface">
       <UniqueIdentifier>{857185a6-cc75-422a-803b-2c4bf6929003}</UniqueIdentifier>
     </Filter>
@@ -1052,9 +1049,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp">
       <Filter>Core\Factory\Event\Implementation</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Implementation\File.cpp">
-      <Filter>Core\File\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileWin32_p.cpp">
       <Filter>Win32\File\Implementation</Filter>

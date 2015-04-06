@@ -9,6 +9,14 @@ class FileTest : public FileTestBase
 {
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(FileTest, ObjectUID)
+{
+  const String KFilePath = "some-dummy-path.tht";
+
+  File file(KFilePath);
+  EXPECT_EQ(EGE_OBJECT_UID_FILE, file.uid());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileTest, IsOpenExisting)
 {
   // verify there is such file

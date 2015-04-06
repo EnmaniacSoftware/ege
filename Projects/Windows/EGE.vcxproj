@@ -71,7 +71,6 @@
     <ClCompile Include="..\..\Sources\Core\Engine\Implementation\EngineInstance.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\Event.cpp" />
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp" />
-    <ClCompile Include="..\..\Sources\Core\File\Implementation\File.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Camera.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\Color.cpp" />
     <ClCompile Include="..\..\Sources\Core\Graphics\Color\ColorTransform.cpp" />

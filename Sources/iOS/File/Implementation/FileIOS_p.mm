@@ -9,12 +9,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(FilePrivate)
-EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) 
-: m_d(base)
-, m_file(nil)
+FilePrivate::FilePrivate(const String& filePath) 
+: m_file(nil)
+, m_filePath(filePath)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -33,20 +30,20 @@ EGEResult FilePrivate::open(FileMode mode)
     case EFileModeReadOnly:
       
       // first try to open file in Documents folder
-      m_file = [NSFileHandle fileHandleForReadingAtPath: StringHelper::Convert(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForReadingAtPath: StringHelper::Convert(filePath())];
       break;
       
     case EFileModeWriteOnly:
     
       // check if file exists
-      if ( ! FileUtils::Exists(d_func()->filePath()))
+      if ( ! FileUtils::Exists(filePath()))
       {
         // create new one
-        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
+        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(filePath()) contents: nil attributes: nil];
       }
 
       // open
-      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(filePath())];
       
       // truncate to make sure no garbage gets through
       [(id) m_file truncateFileAtOffset: 0];
@@ -55,14 +52,14 @@ EGEResult FilePrivate::open(FileMode mode)
     case EFileModeWriteAppend:
       
       // check if file exists
-      if ( ! FileUtils::Exists(d_func()->filePath()))
+      if ( ! FileUtils::Exists(filePath()))
       {
         // create new one
-        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(d_func()->filePath()) contents: nil attributes: nil];
+        [[NSFileManager defaultManager] createFileAtPath: StringHelper::Convert(filePath()) contents: nil attributes: nil];
       }
 
       // open
-      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(d_func()->filePath())];
+      m_file = [NSFileHandle fileHandleForWritingAtPath: StringHelper::Convert(filePath())];
 
       // move file pointer to the end of the file
       [(id) m_file seekToEndOfFile];
@@ -89,7 +86,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // check if entire file should be read
   if (0 > size)
   {
-    size = FileUtils::Size(d_func()->filePath());
+    size = FileUtils::Size(filePath());
   }
 
   // store current write offset in data buffer
@@ -218,7 +215,7 @@ s64 FilePrivate::seek(s64 offset, FileSeek mode)
         
       case EFileSeekEnd:
         
-        [(id) m_file seekToFileOffset: FileUtils::Size(d_func()->filePath()) + offset];
+        [(id) m_file seekToFileOffset: FileUtils::Size(filePath()) + offset];
         break;
         
       default:
@@ -248,6 +245,11 @@ s64 FilePrivate::tell()
 bool FilePrivate::isOpen() const
 {
   return (nil != m_file);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& FilePrivate::filePath() const
+{
+  return m_filePath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

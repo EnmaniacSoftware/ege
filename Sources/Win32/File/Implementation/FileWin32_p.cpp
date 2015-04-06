@@ -7,12 +7,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DEFINE_NEW_OPERATORS(FilePrivate)
-EGE_DEFINE_DELETE_OPERATORS(FilePrivate)
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-FilePrivate::FilePrivate(File* base) 
-: m_d(base) 
-, m_file(NULL)
+FilePrivate::FilePrivate(const String& filePath) 
+: m_file(NULL)
+, m_filePath(filePath)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +36,7 @@ EGEResult FilePrivate::open(FileMode mode)
   }
 
   // open file
-  if (0 != fopen_s(&m_file, d_func()->filePath().toAscii(), modeInternal.toAscii()))
+  if (0 != fopen_s(&m_file, filePath().toAscii(), modeInternal.toAscii()))
   {
     // error!
     return EGE_ERROR_IO;
@@ -77,7 +74,7 @@ s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
   // check if entire file should be read
   if (0 > size)
   {
-    size = FileUtils::Size(d_func()->filePath());
+    size = FileUtils::Size(filePath());
   }
 
   // store current write offset in data buffer
@@ -211,6 +208,11 @@ s64 FilePrivate::tell()
 bool FilePrivate::isOpen() const
 {
   return (NULL != m_file);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const String& FilePrivate::filePath() const
+{
+  return m_filePath;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
