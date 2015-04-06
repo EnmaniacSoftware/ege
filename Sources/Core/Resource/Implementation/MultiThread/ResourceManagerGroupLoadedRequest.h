@@ -11,7 +11,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
+EGE_PREDECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerGroupLoadedRequest : public ResourceManagerRequest
 {

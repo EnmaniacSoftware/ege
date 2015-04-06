@@ -17,7 +17,7 @@ class Engine;
 class IRenderer;
 class Viewport;
 
-EGE_DECLARE_SMART_CLASS(Screen, PScreen)
+EGE_PREDECLARE_SMART_CLASS(Screen, PScreen)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Screen : public Object
 {

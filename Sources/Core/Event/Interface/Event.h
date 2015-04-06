@@ -7,8 +7,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Event, PEvent)
-EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_PREDECLARE_SMART_CLASS(Event, PEvent)
+EGE_PREDECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Event : public Object
 {

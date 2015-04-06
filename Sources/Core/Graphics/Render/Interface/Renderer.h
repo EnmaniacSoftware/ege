@@ -9,8 +9,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer
 {

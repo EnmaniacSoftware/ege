@@ -11,7 +11,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(ParticleAffectorForce, PParticleAffectorForce)
+EGE_PREDECLARE_SMART_CLASS(ParticleAffectorForce, PParticleAffectorForce)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ParticleAffectorForce : public ParticleAffector
 {

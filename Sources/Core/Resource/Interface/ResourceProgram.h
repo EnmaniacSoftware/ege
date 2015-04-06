@@ -17,9 +17,9 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceProgram, PResourceProgram)
-EGE_DECLARE_SMART_CLASS(Shader, PShader)
-EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_PREDECLARE_SMART_CLASS(ResourceProgram, PResourceProgram)
+EGE_PREDECLARE_SMART_CLASS(Shader, PShader)
+EGE_PREDECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceProgram : public IResource
 {

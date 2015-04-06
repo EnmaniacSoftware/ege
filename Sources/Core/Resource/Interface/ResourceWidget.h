@@ -19,7 +19,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceWidget, PResourceWidget)
+EGE_PREDECLARE_SMART_CLASS(ResourceWidget, PResourceWidget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceWidget : public IResource
 {

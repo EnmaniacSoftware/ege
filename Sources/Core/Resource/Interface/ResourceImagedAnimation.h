@@ -19,10 +19,10 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
-EGE_DECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
-EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
-EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
+EGE_PREDECLARE_SMART_CLASS(ResourceImagedAnimation, PResourceImagedAnimation)
+EGE_PREDECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
+EGE_PREDECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_PREDECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceImagedAnimation : public IResource
 {

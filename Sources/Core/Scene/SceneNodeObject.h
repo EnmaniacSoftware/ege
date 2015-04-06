@@ -9,7 +9,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
+EGE_PREDECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SceneNodeObject : public Object
 {

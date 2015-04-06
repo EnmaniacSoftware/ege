@@ -9,9 +9,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Image, PImage)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_PREDECLARE_SMART_CLASS(Image, PImage)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Image : public Object
 {

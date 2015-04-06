@@ -11,11 +11,11 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
-EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
-EGE_DECLARE_SMART_CLASS(VertexArrayObject, PVertexArrayObject)
-EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
+EGE_PREDECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
+EGE_PREDECLARE_SMART_CLASS(VertexArrayObject, PVertexArrayObject)
+EGE_PREDECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemOGL : public RenderSystem
 {

@@ -14,10 +14,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
-EGE_DECLARE_SMART_CLASS(PhysicsJointDistance, PPhysicsJointDistance)
-EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
-EGE_DECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
+EGE_PREDECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJointDistance, PPhysicsJointDistance)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
 
 class PhysicsManager;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

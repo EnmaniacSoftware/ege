@@ -9,7 +9,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(UIHorizontalScrollbar, PUIHorizontalScrollbar)
+EGE_PREDECLARE_SMART_CLASS(UIHorizontalScrollbar, PUIHorizontalScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class UIHorizontalScrollbar : public UIAbstractScrollbar
 {

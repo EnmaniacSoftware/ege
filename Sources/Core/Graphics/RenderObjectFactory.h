@@ -17,7 +17,7 @@ EGE_NAMESPACE_BEGIN
 class CubicSpline;
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderObjectFactory
 {

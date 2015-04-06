@@ -20,9 +20,9 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
-EGE_DECLARE_SMART_CLASS(Program, PProgram)
+EGE_PREDECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_PREDECLARE_SMART_CLASS(TextureImage, PTextureImage)
+EGE_PREDECLARE_SMART_CLASS(Program, PProgram)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceMaterial : public IResource
 {

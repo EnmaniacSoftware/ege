@@ -6,8 +6,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
-EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
+EGE_PREDECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PhysicsJoint : public Object
 {

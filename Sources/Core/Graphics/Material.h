@@ -10,8 +10,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(RenderPass, PRenderPass)
+EGE_PREDECLARE_SMART_CLASS(Material, PMaterial)
+EGE_PREDECLARE_SMART_CLASS(RenderPass, PRenderPass)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Material : public Object
 {

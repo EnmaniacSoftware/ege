@@ -22,8 +22,8 @@ EGE_NAMESPACE_BEGIN
 class Engine;
 class IPhysicsManager;
 
-EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
-EGE_DECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
+EGE_PREDECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJoint, PPhysicsJoint)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PhysicsComponent : public Component
 {

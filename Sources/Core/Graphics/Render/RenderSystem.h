@@ -23,12 +23,12 @@ EGE_NAMESPACE_BEGIN
 class SceneNode;
 class RenderPass;
 
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(Viewport, PViewport)
+EGE_PREDECLARE_SMART_CLASS(Material, PMaterial)
+EGE_PREDECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
+EGE_PREDECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystem : public ComponentHost
                    , public IRenderer

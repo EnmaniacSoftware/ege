@@ -11,8 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
-EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_PREDECLARE_SMART_CLASS(TextureImage, PTextureImage)
+EGE_PREDECLARE_SMART_CLASS(Texture2D, PTexture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class TextureImage : public Object
 {

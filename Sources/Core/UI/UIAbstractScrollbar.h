@@ -15,7 +15,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(UIAbstractScrollbar, PUIAbstractScrollbar)
+EGE_PREDECLARE_SMART_CLASS(UIAbstractScrollbar, PUIAbstractScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class UIAbstractScrollbar : public Widget
 {

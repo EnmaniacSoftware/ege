@@ -15,7 +15,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
+EGE_PREDECLARE_SMART_CLASS(ResourceText, PResourceText)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceText : public IResource
 {

@@ -52,7 +52,7 @@ struct RenderSystemContinuousStatisticData
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(RenderSystemStatistics, PRenderSystemStatistics)
+EGE_PREDECLARE_SMART_CLASS(RenderSystemStatistics, PRenderSystemStatistics)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderSystemStatistics : public Component
 {

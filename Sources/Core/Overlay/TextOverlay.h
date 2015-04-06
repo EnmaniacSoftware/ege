@@ -10,7 +10,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(TextOverlay, PTextOverlay)
+EGE_PREDECLARE_SMART_CLASS(TextOverlay, PTextOverlay)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! @brief TextOverlay is an overlay containing raw text. Text dimensions will define final size of overlay. */
 class TextOverlay : public Overlay

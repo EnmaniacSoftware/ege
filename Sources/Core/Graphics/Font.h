@@ -10,8 +10,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class GlyphData;
 
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(Font, PFont)
+EGE_PREDECLARE_SMART_CLASS(Material, PMaterial)
+EGE_PREDECLARE_SMART_CLASS(Font, PFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Font : public Object
 {

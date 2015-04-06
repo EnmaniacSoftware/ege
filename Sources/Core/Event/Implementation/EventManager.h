@@ -19,7 +19,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_PREDECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class EventManager : public EngineModule<IEventManager>
                    , public ListenerContainer<IEventListener>

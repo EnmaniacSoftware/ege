@@ -16,8 +16,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
-EGE_DECLARE_SMART_CLASS(TextureImage, PTextureImage)
+EGE_PREDECLARE_SMART_CLASS(ResourceSpritesheet, PResourceSpritesheet)
+EGE_PREDECLARE_SMART_CLASS(TextureImage, PTextureImage)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceSpritesheet : public IResource
 {

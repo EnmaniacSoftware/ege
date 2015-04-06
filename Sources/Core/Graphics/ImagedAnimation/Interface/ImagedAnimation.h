@@ -22,10 +22,10 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer;
-EGE_DECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_PREDECLARE_SMART_CLASS(ImagedAnimation, PImagedAnimation)
+EGE_PREDECLARE_SMART_CLASS(Material, PMaterial)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ImagedAnimation : public KeyFrameAnimation
                       , public Renderable

@@ -15,7 +15,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(KeyFrameAnimation, PKeyFrameAnimation)
+EGE_PREDECLARE_SMART_CLASS(KeyFrameAnimation, PKeyFrameAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class KeyFrameAnimation : public Object
 {

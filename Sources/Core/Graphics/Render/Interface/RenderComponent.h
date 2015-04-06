@@ -12,10 +12,10 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(Material, PMaterial)
-EGE_DECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
-EGE_DECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(Material, PMaterial)
+EGE_PREDECLARE_SMART_CLASS(VertexBuffer, PVertexBuffer)
+EGE_PREDECLARE_SMART_CLASS(IndexBuffer, PIndexBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderComponent : public Component
 {

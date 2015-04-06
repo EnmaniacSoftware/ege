@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJointAttract, PPhysicsJointAttract)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PhysicsJointAttract : public PhysicsJoint
 {

@@ -18,8 +18,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceParticleEmitter, PResourceParticleEmitter)
-EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_PREDECLARE_SMART_CLASS(ResourceParticleEmitter, PResourceParticleEmitter)
+EGE_PREDECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceParticleEmitter : public IResource
 {

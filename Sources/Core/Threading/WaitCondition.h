@@ -8,8 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(WaitCondition, PWaitCondition)
-EGE_DECLARE_SMART_CLASS(Mutex, PMutex)
+EGE_PREDECLARE_SMART_CLASS(WaitCondition, PWaitCondition)
+EGE_PREDECLARE_SMART_CLASS(Mutex, PMutex)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WaitCondition : public Object
 {

@@ -37,7 +37,7 @@ extern const char* KOpenALAudioManagerName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(Sound, PSound)
+EGE_PREDECLARE_SMART_CLASS(Sound, PSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioManagerOpenAL : public IAudioManagerBase
                          , public EngineModule<IAudioManager>

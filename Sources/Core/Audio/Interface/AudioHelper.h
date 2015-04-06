@@ -12,8 +12,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
-EGE_DECLARE_SMART_CLASS(Sound, PSound)
-EGE_DECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
+EGE_PREDECLARE_SMART_CLASS(Sound, PSound)
+EGE_PREDECLARE_SMART_CLASS(SoundEffect, PSoundEffect)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AudioHelper
 {

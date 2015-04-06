@@ -19,10 +19,10 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
-EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(Object, PObject)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(Object, PObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef Delegate1<PObject> HardwareResourceProviderSlot;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

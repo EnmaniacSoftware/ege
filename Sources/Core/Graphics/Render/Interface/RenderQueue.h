@@ -14,7 +14,7 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IComponentRenderer;
-EGE_DECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
+EGE_PREDECLARE_SMART_CLASS(RenderQueue, PRenderQueue)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderQueue : public Object
                   , public IRenderer

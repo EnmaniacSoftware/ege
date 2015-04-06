@@ -10,8 +10,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer;
 class SceneNode;
-EGE_DECLARE_SMART_CLASS(Camera, PCamera)
-EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
+EGE_PREDECLARE_SMART_CLASS(Camera, PCamera)
+EGE_PREDECLARE_SMART_CLASS(Viewport, PViewport)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ISceneManager
 {

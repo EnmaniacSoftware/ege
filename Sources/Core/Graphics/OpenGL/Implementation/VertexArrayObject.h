@@ -12,7 +12,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(VertexArrayObject, PVertexArrayObject)
+EGE_PREDECLARE_SMART_CLASS(VertexArrayObject, PVertexArrayObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class VertexArrayObject : public Component
 {

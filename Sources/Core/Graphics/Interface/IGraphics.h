@@ -13,7 +13,7 @@ class IRenderSystem;
 class IRenderer;
 class IHardwareResourceProvider;
 
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
+EGE_PREDECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IGraphics
 {

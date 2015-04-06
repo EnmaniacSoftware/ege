@@ -9,7 +9,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(UIPageIndicator, PUIPageIndicator)
+EGE_PREDECLARE_SMART_CLASS(UIPageIndicator, PUIPageIndicator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class UIPageIndicator : public Widget
 {

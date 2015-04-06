@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 class ResourceGroup;
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(IResource, PResource)
+EGE_PREDECLARE_SMART_CLASS(IResource, PResource)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IResource : public Object
 {

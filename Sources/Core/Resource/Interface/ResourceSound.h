@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
+EGE_PREDECLARE_SMART_CLASS(ResourceSound, PResourceSound)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceSound : public IResource
 {

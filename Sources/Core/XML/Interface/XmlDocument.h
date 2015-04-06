@@ -8,9 +8,9 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class XmlElement;
-EGE_DECLARE_SMART_CLASS(XmlDocument, PXmlDocument)
-EGE_DECLARE_SMART_CLASS(XmlElement, PXmlElement)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(XmlDocument, PXmlDocument)
+EGE_PREDECLARE_SMART_CLASS(XmlElement, PXmlElement)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class XmlDocument : public Object
 {

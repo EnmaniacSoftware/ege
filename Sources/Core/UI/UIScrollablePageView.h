@@ -15,9 +15,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(UIPageIndicator, PUIPageIndicator)
-EGE_DECLARE_SMART_CLASS(UIScrollView, PUIScrollView)
-EGE_DECLARE_SMART_CLASS(UIScrollablePageView, PUIScrollablePageView)
+EGE_PREDECLARE_SMART_CLASS(UIPageIndicator, PUIPageIndicator)
+EGE_PREDECLARE_SMART_CLASS(UIScrollView, PUIScrollView)
+EGE_PREDECLARE_SMART_CLASS(UIScrollablePageView, PUIScrollablePageView)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class UIScrollablePageView : public UIScrollView
 {

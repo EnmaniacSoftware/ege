@@ -21,8 +21,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
-EGE_DECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
+EGE_PREDECLARE_SMART_CLASS(ParticleEmitter, PParticleEmitter)
+EGE_PREDECLARE_SMART_CLASS(ParticleAffector, PParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ParticleEmitter : public SceneNodeObject
 {

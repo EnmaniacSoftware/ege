@@ -17,7 +17,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceParticleAffector, PResourceParticleAffector)
+EGE_PREDECLARE_SMART_CLASS(ResourceParticleAffector, PResourceParticleAffector)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceParticleAffector : public IResource
 {

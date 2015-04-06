@@ -10,7 +10,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
+EGE_PREDECLARE_SMART_CLASS(PhysicsJointPulley, PPhysicsJointPulley)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PhysicsJointPulley : public PhysicsJoint
 {

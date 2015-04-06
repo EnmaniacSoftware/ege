@@ -30,7 +30,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer;
 class SceneManager;
-EGE_DECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
+EGE_PREDECLARE_SMART_CLASS(SceneNodeObject, PSceneNodeObject)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SceneNode : public Object
                 , public Node

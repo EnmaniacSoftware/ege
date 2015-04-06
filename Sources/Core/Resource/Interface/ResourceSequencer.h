@@ -14,8 +14,8 @@ EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
-EGE_DECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
-EGE_DECLARE_SMART_CLASS(Sequencer, PSequencer)
+EGE_PREDECLARE_SMART_CLASS(ResourceSequencer, PResourceSequencer)
+EGE_PREDECLARE_SMART_CLASS(Sequencer, PSequencer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceSequencer : public IResource
 {

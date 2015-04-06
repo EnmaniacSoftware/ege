@@ -14,7 +14,7 @@ extern const char* KDefaultAdNetworkName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Engine;
 
-EGE_DECLARE_SMART_CLASS(AdNetwork, PAdNetwork)
+EGE_PREDECLARE_SMART_CLASS(AdNetwork, PAdNetwork)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AdNetwork : public Object
 {

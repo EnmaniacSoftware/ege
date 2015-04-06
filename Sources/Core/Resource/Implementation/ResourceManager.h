@@ -19,12 +19,12 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
-EGE_DECLARE_SMART_CLASS(IResource, PResource)
-EGE_DECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
-EGE_DECLARE_SMART_CLASS(ResourceText, PResourceText)
-EGE_DECLARE_SMART_CLASS(ResourceSound, PResourceSound)
-EGE_DECLARE_SMART_CLASS(Event, PEvent)
+EGE_PREDECLARE_SMART_CLASS(ResourceGroup, PResourceGroup)
+EGE_PREDECLARE_SMART_CLASS(IResource, PResource)
+EGE_PREDECLARE_SMART_CLASS(ResourceMaterial, PResourceMaterial)
+EGE_PREDECLARE_SMART_CLASS(ResourceText, PResourceText)
+EGE_PREDECLARE_SMART_CLASS(ResourceSound, PResourceSound)
+EGE_PREDECLARE_SMART_CLASS(Event, PEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef PResource (*egeResourceCreateFunc)(Engine& engine, ResourceGroup* group);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -11,8 +11,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Shader, PShader)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(Shader, PShader)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Shader : public Object

@@ -6,8 +6,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Integer, PInteger)
-EGE_DECLARE_SMART_CLASS(Float, PFloat)
+EGE_PREDECLARE_SMART_CLASS(Integer, PInteger)
+EGE_PREDECLARE_SMART_CLASS(Float, PFloat)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Integer : public Object
 {

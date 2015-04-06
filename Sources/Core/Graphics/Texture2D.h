@@ -31,7 +31,7 @@ enum TextureAddressingMode
 class Engine;
 class IHardwareResourceProvider;
 
-EGE_DECLARE_SMART_CLASS(Texture2D, PTexture2D)
+EGE_PREDECLARE_SMART_CLASS(Texture2D, PTexture2D)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Texture2D : public Object
 {

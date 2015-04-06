@@ -19,9 +19,9 @@ class ParticleFactory;
 class RenderSystem;
 class WidgetFactory;
 
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-EGE_DECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
-EGE_DECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
+EGE_PREDECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
+EGE_PREDECLARE_SMART_CLASS(RenderWindow, PRenderWindow)
+EGE_PREDECLARE_SMART_CLASS(DataBuffer, PDataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Graphics : public EngineModule<IGraphics>
 {

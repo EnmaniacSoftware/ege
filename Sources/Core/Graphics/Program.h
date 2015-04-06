@@ -13,8 +13,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(Shader, PShader)
-EGE_DECLARE_SMART_CLASS(Program, PProgram)
+EGE_PREDECLARE_SMART_CLASS(Shader, PShader)
+EGE_PREDECLARE_SMART_CLASS(Program, PProgram)
 class IHardwareResourceProvider;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class Program : public Component

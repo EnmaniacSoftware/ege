@@ -28,9 +28,9 @@ struct SpriteAnimationFrameData
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class IRenderer;
-EGE_DECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
-EGE_DECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
-EGE_DECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
+EGE_PREDECLARE_SMART_CLASS(SpriteAnimation, PSpriteAnimation)
+EGE_PREDECLARE_SMART_CLASS(RenderComponent, PRenderComponent)
+EGE_PREDECLARE_SMART_CLASS(PhysicsComponent, PPhysicsComponent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class SpriteAnimation : public KeyFrameAnimation
                       , public Renderable

@@ -15,9 +15,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(UIScrollView, PUIScrollView)
-EGE_DECLARE_SMART_CLASS(UIHorizontalScrollbar, PUIHorizontalScrollbar)
-EGE_DECLARE_SMART_CLASS(UIVerticalScrollbar, PUIVerticalScrollbar)
+EGE_PREDECLARE_SMART_CLASS(UIScrollView, PUIScrollView)
+EGE_PREDECLARE_SMART_CLASS(UIHorizontalScrollbar, PUIHorizontalScrollbar)
+EGE_PREDECLARE_SMART_CLASS(UIVerticalScrollbar, PUIVerticalScrollbar)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class UIScrollView : public Widget
 {

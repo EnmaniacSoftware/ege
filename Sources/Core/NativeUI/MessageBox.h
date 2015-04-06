@@ -8,7 +8,7 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(MessageBox, PMessageBox)
+EGE_PREDECLARE_SMART_CLASS(MessageBox, PMessageBox)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! @brief Implementation for native message box. */
 class MessageBox : public Object

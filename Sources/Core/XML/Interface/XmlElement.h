@@ -10,8 +10,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class XmlElementPrivate;
 
-EGE_DECLARE_SMART_CLASS(XmlElement, PXmlElement)
-EGE_DECLARE_SMART_CLASS(XmlAttribute, PXmlAttribute)
+EGE_PREDECLARE_SMART_CLASS(XmlElement, PXmlElement)
+EGE_PREDECLARE_SMART_CLASS(XmlAttribute, PXmlAttribute)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class XmlElement : public Object
 {

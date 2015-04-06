@@ -9,9 +9,9 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
-EGE_DECLARE_SMART_CLASS(Viewport, PViewport)
-EGE_DECLARE_SMART_CLASS(Camera, PCamera)
+EGE_PREDECLARE_SMART_CLASS(RenderTarget, PRenderTarget)
+EGE_PREDECLARE_SMART_CLASS(Viewport, PViewport)
+EGE_PREDECLARE_SMART_CLASS(Camera, PCamera)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class RenderTarget : public Object
 {

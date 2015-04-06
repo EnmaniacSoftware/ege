@@ -18,7 +18,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManager;
 
-EGE_DECLARE_SMART_CLASS(ResourceCurve, PResourceCurve)
+EGE_PREDECLARE_SMART_CLASS(ResourceCurve, PResourceCurve)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceCurve : public IResource
 {

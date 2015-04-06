@@ -16,7 +16,7 @@ enum PointerAction
   EPointerActionMove
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(PointerEvent, PPointerEvent)
+EGE_PREDECLARE_SMART_CLASS(PointerEvent, PPointerEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class PointerEvent : public Object
 {

@@ -18,8 +18,8 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceGroup;
 
-EGE_DECLARE_SMART_CLASS(ResourceFont, PResourceFont)
-EGE_DECLARE_SMART_CLASS(Font, PFont)
+EGE_PREDECLARE_SMART_CLASS(ResourceFont, PResourceFont)
+EGE_PREDECLARE_SMART_CLASS(Font, PFont)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class GlyphData
 {

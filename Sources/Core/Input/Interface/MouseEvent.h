@@ -20,7 +20,7 @@ enum MouseButton
   EMouseButtonWheelDown
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-EGE_DECLARE_SMART_CLASS(MouseEvent, PMouseEvent)
+EGE_PREDECLARE_SMART_CLASS(MouseEvent, PMouseEvent)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class MouseEvent : public PointerEvent
 {
