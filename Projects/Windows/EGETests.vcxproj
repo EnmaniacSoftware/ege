@@ -98,6 +98,10 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamIntegralOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamNonIntegralOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp" />
@@ -173,6 +177,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\IODeviceMock.h" />
     <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.h" />

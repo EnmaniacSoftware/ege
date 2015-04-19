@@ -14,21 +14,8 @@ class TestBase : public ::testing::Test
 {
   protected:
 
-    static void SetUpTestCase();
-
-    /*! Compares two floating point numbers with given accuracy.
-     *  @param  value1    Expected value.
-     *  @param  value2    Actual value.
-     *  @param  epsilon   Maximum allowed difference for which values are treated as equal.
-     *  @param  fileName  File name from which call to this method occured.
-     *  @param  lineNo    Line number within the file at which the call has been made to this function.
-     *  @note Last two parameters are used to better track where exactly the values under test came from.
-     */
-    void ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo);
-
-  protected:
-
     TestBase(float32 epsilon = std::numeric_limits<float32>::epsilon());
+    virtual ~TestBase();
 
     /*! Returns random number. 
      *  @param  scale Scale of the returned value.
@@ -53,6 +40,16 @@ class TestBase : public ::testing::Test
 
     /*! Returns floating point epsilon value. */
     float32 epsilon() const;
+
+    /*! Compares two floating point numbers with given accuracy.
+     *  @param  value1    Expected value.
+     *  @param  value2    Actual value.
+     *  @param  epsilon   Maximum allowed difference for which values are treated as equal.
+     *  @param  fileName  File name from which call to this method occured.
+     *  @param  lineNo    Line number within the file at which the call has been made to this function.
+     *  @note Last two parameters are used to better track where exactly the values under test came from.
+     */
+    void ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo);
 
   private:
 

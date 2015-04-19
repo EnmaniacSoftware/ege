@@ -5,25 +5,13 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TestBase::SetUpTestCase()
+TestBase::TestBase(float32 epsilon) 
+: m_epsilon(epsilon)
 {
   srand(static_cast<unsigned int>(time(NULL)));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void TestBase::ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo)
-{
-  if (fabs(expected - actual) > epsilon)
-  {
-    std::cout << "Actual  : " << actual << std::endl 
-              << "Expected: " << expected << std::endl 
-              << "epsilon : " << epsilon << std::endl
-              << std::endl;
-
-    ADD_FAILURE_AT(fileName, lineNo);
-  }
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TestBase::TestBase(float32 epsilon) : m_epsilon(epsilon)
+TestBase::~TestBase()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -56,5 +44,18 @@ s32 TestBase::randomInteger() const
 float32 TestBase::epsilon() const
 {
   return m_epsilon;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo)
+{
+  if (fabs(expected - actual) > epsilon)
+  {
+    std::cout << "Actual  : " << actual << std::endl 
+              << "Expected: " << expected << std::endl 
+              << "epsilon : " << epsilon << std::endl
+              << std::endl;
+
+    ADD_FAILURE_AT(fileName, lineNo);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

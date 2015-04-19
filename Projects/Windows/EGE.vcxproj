@@ -61,6 +61,7 @@
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlQuery.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Implementation\SqlResult.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataBuffer.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataStream.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\Node.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp" />
@@ -301,12 +302,14 @@
     <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlQuery.h" />
     <ClInclude Include="..\..\Sources\Core\Database\Interface\SqlResult.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Interface\DataBuffer.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\DataStream.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Node.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h" />
     <ClInclude Include="..\..\Sources\Core\Device\Interface\Device.h" />
+    <ClInclude Include="..\..\Sources\Core\Device\Interface\IODevice.h" />
     <ClInclude Include="..\..\Sources\Core\Directory\Interface\Directory.h" />
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\Engine.h" />
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\EngineApplication.h" />
@@ -517,6 +520,7 @@
     <ClInclude Include="..\..\Sources\EGEComplex.h" />
     <ClInclude Include="..\..\Sources\EGEComponent.h" />
     <ClInclude Include="..\..\Sources\EGEDatabase.h" />
+    <ClInclude Include="..\..\Sources\EGEDataStream.h" />
     <ClInclude Include="..\..\Sources\EGEDeviceServices.h" />
     <ClInclude Include="..\..\Sources\EGEDictionary.h" />
     <ClInclude Include="..\..\Sources\EGEDirectory.h" />
@@ -526,6 +530,7 @@
     <ClInclude Include="..\..\Sources\EGEHash.h" />
     <ClInclude Include="..\..\Sources\EGEImagedAnimation.h" />
     <ClInclude Include="..\..\Sources\EGEIndexBuffer.h" />
+    <ClInclude Include="..\..\Sources\EGEIODevice.h" />
     <ClInclude Include="..\..\Sources\EGEKeyFrameAnimation.h" />
     <ClInclude Include="..\..\Sources\EGELine2.h" />
     <ClInclude Include="..\..\Sources\EGELog.h" />

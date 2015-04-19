@@ -94,6 +94,12 @@
     <Filter Include="Tests\Containers\Unittests">
       <UniqueIdentifier>{06c60bb1-9c80-4c53-adfb-006bf40d0f26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Data">
+      <UniqueIdentifier>{b45925db-9168-471c-bb77-1d74a5dd81f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Data\Unittests">
+      <UniqueIdentifier>{6a218f5a-a7e7-473d-8341-d5203c50b3c0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\TestFramework\Implementation\TestBase.cpp">
@@ -258,6 +264,18 @@
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\SetTest.cpp">
       <Filter>Tests\Containers\Unittests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.cpp">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamIntegralOperatorsTest.cpp">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamNonIntegralOperatorsTest.cpp">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTest.cpp">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">
@@ -298,6 +316,12 @@
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.h">
       <Filter>Tests\Resource\ComponentTests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\IODeviceMock.h">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.h">
+      <Filter>Tests\Data\Unittests</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
