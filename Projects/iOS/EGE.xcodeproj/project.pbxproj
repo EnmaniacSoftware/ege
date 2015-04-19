@@ -266,6 +266,7 @@
 		45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E4DC2A199C0395000FB4B8 /* SpecialURLs.cpp */; };
 		45EE1AEF19EEF6E10036D0AA /* Screen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EE1AE919EEF6E10036D0AA /* Screen.cpp */; };
 		45EE1AF019EEF6E10036D0AA /* ScreenManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45EE1AEA19EEF6E10036D0AA /* ScreenManager.cpp */; };
+		45F3D7CD1AE3D577000CB980 /* DataStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45F3D7CC1AE3D577000CB980 /* DataStream.cpp */; };
 		45FB05DC18C69499005F4062 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DA18C69499005F4062 /* libcrypto.a */; };
 		45FB05DD18C69499005F4062 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45FB05DB18C69499005F4062 /* libssl.a */; };
 /* End PBXBuildFile section */
@@ -995,6 +996,11 @@
 		45EE1AEC19EEF6E10036D0AA /* IScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreenManager.h; sourceTree = "<group>"; };
 		45EE1AED19EEF6E10036D0AA /* Screen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Screen.h; sourceTree = "<group>"; };
 		45EE1AEE19EEF6E10036D0AA /* ScreenManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenManager.h; sourceTree = "<group>"; };
+		45F3D7C51AE3D553000CB980 /* EGEDataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEDataStream.h; path = ../../Sources/EGEDataStream.h; sourceTree = "<group>"; };
+		45F3D7C61AE3D553000CB980 /* EGEIODevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEIODevice.h; path = ../../Sources/EGEIODevice.h; sourceTree = "<group>"; };
+		45F3D7CC1AE3D577000CB980 /* DataStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataStream.cpp; sourceTree = "<group>"; };
+		45F3D7CE1AE3D57C000CB980 /* DataStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataStream.h; sourceTree = "<group>"; };
+		45F3D7CF1AE3D590000CB980 /* IODevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IODevice.h; path = Interface/IODevice.h; sourceTree = "<group>"; };
 		45FB05DA18C69499005F4062 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libcrypto.a"; sourceTree = "<group>"; };
 		45FB05DB18C69499005F4062 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = "../../External/OpenSSL 1.0.1f/lib/iOS/libssl.a"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1082,6 +1088,7 @@
 		450E126419351E2100B9F785 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45F3D7CF1AE3D590000CB980 /* IODevice.h */,
 				450E126719351E3400B9F785 /* Device.h */,
 			);
 			name = Interface;
@@ -1098,6 +1105,8 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
+				45F3D7C51AE3D553000CB980 /* EGEDataStream.h */,
+				45F3D7C61AE3D553000CB980 /* EGEIODevice.h */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
 				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
@@ -2940,6 +2949,7 @@
 		45E0F0C11909AFBC0003E15F /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45F3D7CC1AE3D577000CB980 /* DataStream.cpp */,
 				45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */,
 				45E0F0C31909AFBC0003E15F /* Node.cpp */,
 			);
@@ -2949,6 +2959,7 @@
 		45E0F0C41909AFBC0003E15F /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45F3D7CE1AE3D57C000CB980 /* DataStream.h */,
 				45E0F0C51909AFBC0003E15F /* DataBuffer.h */,
 				45E0F0C61909AFBC0003E15F /* Node.h */,
 				45E0F0C71909AFBC0003E15F /* Serializable.h */,
@@ -3285,6 +3296,7 @@
 				457C566519E5C29900E35A51 /* StringBuffer.cpp in Sources */,
 				4514716E18C5231900AAC617 /* Spline.cpp in Sources */,
 				4514716F18C5231900AAC617 /* BackTweener.cpp in Sources */,
+				45F3D7CD1AE3D577000CB980 /* DataStream.cpp in Sources */,
 				4514717018C5231900AAC617 /* LinearTweener.cpp in Sources */,
 				4514717118C5231900AAC617 /* PowerTweener.cpp in Sources */,
 				4514717218C5231900AAC617 /* SineTweener.cpp in Sources */,
