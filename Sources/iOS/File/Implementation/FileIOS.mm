@@ -79,112 +79,57 @@ void FilePrivate::close()
   m_file = nil;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
+s64 FilePrivate::read(void* data, s64 length)
+//s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
 {
-  EGE_ASSERT(NULL != dst);
-
-  // check if entire file should be read
-  if (0 > size)
-  {
-    size = FileUtils::Size(filePath());
-  }
-
-  // store current write offset in data buffer
-  s64 writeOffset = dst->writeOffset();
-
   if ( ! isOpen())
   {
     // error!
-    return 0;
-  }
-
-  // make sure buffer is big enough
-  if (EGE_SUCCESS != dst->setSize(writeOffset + size))
-  {
-    // error!
-    return 0;
+    return -1;
   }
 
   // read data into buffer
-  NSData* data = [(id) m_file readDataOfLength: size];
+  NSData* dataBuffer = [(id) m_file readDataOfLength: length];
   
   // retrieve number of bytes read
-  s64 readCount = [data length];
+  s64 readCount = [dataBuffer length];
   
   // check if EOF reached
-  if (readCount < size)
+  if (readCount < length)
   {
-    // this is not error, however, we need to reflect real number of bytes read in buffer itself
-    // NOTE: call below should never fail as we are effectively shirnking the data size
-    EGEResult result = dst->setSize(writeOffset + readCount);
-    if (EGE_SUCCESS != result)
-    {
-      // error!
-      EGE_ASSERT(EGE_SUCCESS == result);
-      return 0;
-    }
+    // TAGE - apparently it is not easy to do so with NSFileHandle...
   }
   
   // copy data into destination buffer
-  EGE_MEMCPY(dst->data(writeOffset), [data bytes], readCount);
-
-  // manually update write offset in buffer
-  if (writeOffset != dst->setWriteOffset(writeOffset + readCount))
-  {
-    // error!
-    return 0;
-  }
+  EGE_MEMCPY(data, [dataBuffer bytes], readCount);
 
   return readCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::write(const PDataBuffer& src, s64 size)
+s64 FilePrivate::write(const void* data, s64 length)
 {
-  EGE_ASSERT(NULL != src);
-
-  // check if entire buffer should be written
-  if (0 > size)
-  {
-    size = src->size();
-  }
-
-  EGE_ASSERT(0 <= size);
-
   if ( ! isOpen())
   {
     // error!
-    return 0;
+    return -1;
   }
-
-  // store current read offset from data buffer
-  const s64 readOffset = src->readOffset();
-
-  // dont allow to read beyond the size boundary of buffer
-  size = Math::Min(size, src->size() - src->readOffset());
-
+  
   // convert data
-  NSData* data = [NSData dataWithBytes: src->data(readOffset) length: size];
+  NSData* dataBuffer = [NSData dataWithBytes: data length: length];
   
   // store to file
   @try
   {
-    [(id) m_file writeData: data];
+    [(id) m_file writeData: dataBuffer];
   }
   @catch (NSException* exception)
   {
-    return 0;
+    return -1;
   }
   
   // NOTE: at this point it is assumed 'all' requested data was managed to be written
 
-  // manually update read offset in the buffer
-  if (readOffset != src->setReadOffset(readOffset + size))
-  {
-    // error!
-    return 0;
-  }
-
-  return size;
+  return length;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, FileSeek mode) 
