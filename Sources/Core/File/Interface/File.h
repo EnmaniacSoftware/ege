@@ -2,8 +2,11 @@
 #define EGE_CORE_FILE_H
 
 #include "EGE.h"
-#include "EGEString.h"
 #include "EGEDataBuffer.h"
+#include "EGEFileUtils.h"
+#include "EGEIODevice.h"
+#include "EGEMath.h"
+#include "EGEString.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -26,6 +29,7 @@ enum FileSeek
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 class TFile : public Object
+            , public IODevice
 {
   public:
 
@@ -42,20 +46,11 @@ class TFile : public Object
      *  @return EGE_SUCCESS on success. Otherwise, EGE_ERROR_IO.
      */
     EGEResult open(FileMode mode);
+    /*! Returns TRUE if file is opened. */
+    bool isOpen() const;
     /*! Closes file. */
     void close();
-    /*! Reads data from file into buffer.
-     *  @param  dst   Buffer to write aquired data to.
-     *  @param  size  Size of data (in bytes) to read from the file. If negative, all data will be read.
-     *  @return Returns number of bytes read. This corresponds to number of bytes written to the buffer.
-     */
-    s64 read(const PDataBuffer& dst, s64 size = -1);
-    /*! Writes given amount of data from destination buffer to a file.
-     *  @param  src   Buffer the data is to be read from.
-     *  @param  size  Number of bytes to read from the buffer. If negative, all data will be read.
-     *  @return Returns number of bytes written to a file.
-     */
-    s64 write(const PDataBuffer& src, s64 size = -1);
+
     /*! Sets new position within file. 
      *  @param  offset  Offset to move the file pointer by. This can be negative.
      *  @param  mode    Initial origin from where the offset is to be applied.
@@ -66,34 +61,30 @@ class TFile : public Object
      *  @note Negative value is returned in case of an error. 
      */
     s64 tell();
-    /*! Returns TRUE if file is opened. */
-    bool isOpen() const;
+
     /*! Returns file path. */
     const String& filePath() const;
 
-    // TAGE - remove as well ??
-    TFile& operator << (u8 value);
-    TFile& operator << (s8 value);
-    TFile& operator << (u16 value);
-    TFile& operator << (s16 value);
-    TFile& operator << (u32 value);
-    TFile& operator << (s32 value);
-    TFile& operator << (u64 value);
-    TFile& operator << (s64 value);
-    TFile& operator << (bool value);
-    TFile& operator << (float32 value);
-    TFile& operator << (float64 value);
-    TFile& operator >> (u8& value);
-    TFile& operator >> (s8& value);
-    TFile& operator >> (u16& value);
-    TFile& operator >> (s16& value);
-    TFile& operator >> (u32& value);
-    TFile& operator >> (s32& value);
-    TFile& operator >> (u64& value);
-    TFile& operator >> (s64& value);
-    TFile& operator >> (bool& value);
-    TFile& operator >> (float32& value);
-    TFile& operator >> (float64& fValue);
+    /*! Reads data from a file into a buffer.
+     *  @param  dst   Buffer to write aquired data to.
+     *  @param  size  Size of data (in bytes) to read from the file. If negative, all data will be read.
+     *  @return Returns number of bytes read. This corresponds to number of bytes written to the buffer.
+     *          Returns negative value in case of an error.
+     */
+    s64 read(const PDataBuffer& dst, s64 size = -1);
+
+    /*! Writes given amount of data from a destination buffer to a file.
+     *  @param  src   Buffer the data is to be read from.
+     *  @param  size  Number of bytes to read from the buffer. If negative, all data will be read.
+     *  @return Returns number of bytes written to a file.
+     *          Returns negative value in case of an error.
+     */
+    s64 write(const PDataBuffer& src, s64 size = -1);
+   
+    /*! @see IODevice::read. */
+    s64 read(void* data, s64 length) override;
+    /*! @see IODevice::write. */
+    s64 write(const void* data, s64 length) override;
 
   private:
 
@@ -128,13 +119,81 @@ void TFile<T>::close()
 template <typename T>
 s64 TFile<T>::read(const PDataBuffer& dst, s64 size)
 {
-  return m_impl.read(dst, size);
+  if ( ! isOpen())
+  {
+    // error!
+    return -1;
+  }
+
+  // store current write offset in data buffer
+  s64 writeOffset = dst->writeOffset();
+
+  // check if entire file should be read
+  if (0 > size)
+  {
+    size = FileUtils::Size(filePath());
+  }
+
+  // make sure buffer is big enough
+  if (EGE_SUCCESS != dst->setSize(writeOffset + size))
+  {
+    // error!
+    return -1;
+  }
+
+  // read data in
+  const s64 readCount = m_impl.read(dst->data(writeOffset), size);
+
+  // manually update write offset in buffer
+  if (writeOffset != dst->setWriteOffset(writeOffset + readCount))
+  {
+    // error!
+    return -1;
+  }
+
+  return readCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
 s64 TFile<T>::write(const PDataBuffer& src, s64 size)
 {
-  return m_impl.write(src, size);
+  if ( ! isOpen())
+  {
+    // error!
+    return -1;
+  }
+
+  if (0 > size)
+  {
+    size = src->size();
+  }
+
+  EGE_ASSERT(0 <= size);
+
+  // store current read offset from data buffer
+  const s64 readOffset = src->readOffset();
+
+  // dont allow to read beyond the size boundary of buffer
+  size = Math::Min(size, src->size() - src->readOffset());
+
+  // write bytes
+  const s64 bytesWritten = m_impl.write(src->data(readOffset), size);
+
+  // check if error
+  if (0 > bytesWritten)
+  {
+    // error!
+    return bytesWritten;
+  }
+
+  // manually update read offset in the buffer
+  if (readOffset != src->setReadOffset(readOffset + bytesWritten))
+  {
+    // error!
+    return -1;
+  }
+
+  return bytesWritten;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
@@ -162,227 +221,15 @@ const String& TFile<T>::filePath() const
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TFile<T>& TFile<T>::operator << (u8 value)
+s64 TFile<T>::write(const void* data, s64 length)
 {
-  DataBuffer buf(&value, sizeof (value));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
+  return m_impl.write(data, length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 template <typename T>
-TFile<T>& TFile<T>::operator << (s8 value)
+s64 TFile<T>::read(void* data, s64 length)
 {
-  DataBuffer buf(&value, sizeof (value));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (u16 value)
-{
-  u8 data[2] = { static_cast<u8>(value & 0x00ff), static_cast<u8>((value & 0xff00) >> 8) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (s16 value)
-{
-  s8 data[2] = { static_cast<s8>(value & 0x00ff), static_cast<s8>((value & 0xff00) >> 8) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (u32 value)
-{
-  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (s32 value)
-{
-  u8 data[4] = { (u8)(value & 0x000000ff), (u8)((value & 0x0000ff00) >> 8), (u8)((value & 0x00ff0000) >> 16), (u8)((value & 0xff000000) >> 24) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (u64 value)
-{
-  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 00), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                  (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                  (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                  (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (s64 value)
-{
-  u8 data[8] = { (u8)((value & 0x00000000000000ffLL) >> 0), (u8)((value & 0x000000000000ff00LL) >> 8), 
-                  (u8)((value & 0x0000000000ff0000LL) >> 16), (u8)((value & 0x00000000ff000000LL) >> 24),
-                  (u8)((value & 0x000000ff00000000LL) >> 32), (u8)((value & 0x0000ff0000000000LL) >> 40), 
-                  (u8)((value & 0x00ff000000000000LL) >> 48), (u8)((value & 0xff00000000000000LL) >> 56) };
-
-  DataBuffer buf(&data, sizeof (data));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (bool value)
-{
-  return this->operator<< ((u8)(value ? 1 : 0));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (float32 value)
-{
-  DataBuffer buf(&value, sizeof (value));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator << (float64 value)
-{
-  DataBuffer buf(&value, sizeof (value));
-  m_impl.write(buf, sizeof (value));
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (u8& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (s8& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (u16& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (s16& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (u32& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (s32& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (u64& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (s64& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (bool& value)
-{
-  u8 data = 0;
-  this->operator>>(data);
-  value = (1 == data);
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (float32& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-template <typename T>
-TFile<T>& TFile<T>::operator >> (float64& value)
-{
-  DataBuffer buf;
-  m_impl.read(buf, sizeof (value));
-  buf >> value;
-
-  return *this;
+  return m_impl.read(data, length);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

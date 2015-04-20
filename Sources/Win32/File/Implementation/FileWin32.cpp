@@ -1,7 +1,5 @@
 #include "Win32/File/Interface/FileWin32.h"
-#include "EGEFileUtils.h"
 #include "EGEDataBuffer.h"
-#include "EGEMath.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -67,95 +65,46 @@ void FilePrivate::close()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::read(const PDataBuffer& dst, s64 size)
+s64 FilePrivate::read(void* data, s64 length)
 {
-  EGE_ASSERT(NULL != dst);
-
-  // check if entire file should be read
-  if (0 > size)
-  {
-    size = FileUtils::Size(filePath());
-  }
-
-  // store current write offset in data buffer
-  s64 writeOffset = dst->writeOffset();
-
   if ( ! isOpen())
   {
     // error!
-    return 0;
+    return -1;
   }
 
-  // make sure buffer is big enough
-  if (EGE_SUCCESS != dst->setSize(writeOffset + size))
-  {
-    // error!
-    return 0;
-  }
-
-  // read data into buffer
-  size_t readCount;
-  if ((readCount = fread(dst->data(writeOffset), 1, (size_t) size, m_file)) < size)
+  // read data
+  const size_t readCount = fread(data, 1, static_cast<size_t>(length), m_file);
+  if (readCount < length)
   {
     // check if EOF found
-    if (feof(m_file))
-    {
-      // this is not error, however, we need to reflect real number of bytes read in buffer itself
-      // NOTE: call below should never fail as we are effectively shirnking the data size
-      EGEResult result = dst->setSize(writeOffset + readCount);
-      EGE_ASSERT(EGE_SUCCESS == result);
-    }
-    else
+    if ( ! feof(m_file))
     {
       // error!
-      return 0;
+      return -1;
     }
   }
 
-  // manually update write offset in buffer
-  if (writeOffset != dst->setWriteOffset(writeOffset + readCount))
-  {
-    // error!
-    return 0;
-  }
-
-  return static_cast<s64>(readCount);
+  return readCount;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 FilePrivate::write(const PDataBuffer& src, s64 size)
+s64 FilePrivate::write(const void* data, s64 length)
 {
-  EGE_ASSERT(NULL != src);
-
-  if (0 > size)
-  {
-    size = src->size();
-  }
-
-  EGE_ASSERT(0 <= size);
-
   if ( ! isOpen())
   {
     // error!
-    return 0;
+    return -1;
   }
-
-  // store current read offset from data buffer
-  const s64 readOffset = src->readOffset();
-
-  // dont allow to read beyond the size boundary of buffer
-  size = Math::Min(size, src->size() - src->readOffset());
 
   // write bytes
-  const size_t bytesWritten = fwrite(src->data(readOffset), 1, static_cast<size_t>(size), m_file);
-
-  // manually update read offset in the buffer
-  if (readOffset != src->setReadOffset(readOffset + bytesWritten))
+  const size_t bytesWritten = fwrite(data, 1, static_cast<size_t>(length), m_file);
+  if (bytesWritten < length)
   {
     // error!
-    return 0;
+    return -1;
   }
 
-  return static_cast<s64>(bytesWritten);
+  return bytesWritten;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 FilePrivate::seek(s64 offset, FileSeek mode) 

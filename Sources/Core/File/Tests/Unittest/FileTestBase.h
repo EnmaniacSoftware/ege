@@ -6,7 +6,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class FileTestBase : public TestBase
 {
-  protected:
+  public:
 
     static void SetUpTestCase();
     static void TearDownTestCase();

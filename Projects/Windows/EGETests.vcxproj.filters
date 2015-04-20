@@ -141,9 +141,6 @@
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp">
       <Filter>Tests\Debug\UnitTests</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteOnlyModeTest.cpp">
-      <Filter>Tests\File\UnitTests</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp">
       <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
@@ -154,9 +151,6 @@
       <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileUtilsTest.cpp">
-      <Filter>Tests\File\UnitTests</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWriteAppendModeTest.cpp">
       <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Math\Tests\Unittest\AngleTest.cpp">
@@ -275,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTest.cpp">
       <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWritableModeTest.cpp">
+      <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -17,18 +17,21 @@ class FilePrivate
 
     /*! @see File::open. */
     EGEResult open(FileMode mode);
+    /*! @see File::isOpen. */
+    bool isOpen() const;
     /*! @see File::close. */
     void close();
-    /*! @see File::read. */
-    s64 read(const PDataBuffer& dst, s64 size);
-    /*! @see File::write. */
-    s64 write(const PDataBuffer& src, s64 size);
+    
+    /*! @see File::read(void*, length). */
+    s64 read(void* data, s64 length);
+    /*! @see File::write(const void*, length). */
+    s64 write(const void* data, s64 length);
+
     /*! @see File::seek. */
     s64 seek(s64 offset, FileSeek mode);
     /*! @see File::tell. */
     s64 tell();
-    /*! @see File::isOpen. */
-    bool isOpen() const;
+
     /*! @see File::filePath. */
     const String& filePath() const;
 

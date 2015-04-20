@@ -2,30 +2,58 @@
 #include <EGEFile.h>
 #include <EGEString.h>
 
+using namespace ::testing;
+
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-class FileWriteAppendModeTest : public FileTestBase
+class FileWritableModeTest : public FileTestBase
+                           , public ::testing::WithParamInterface<FileMode>
 {
   protected:
 
     /*! Returns generated file text content. */
     std::string generatedFileContent() const;
+    /*! Creates generated file. */
+    void createGeneratedFile() const;
+
+    /*! Returns TRUE if testing write-only access. */
+    bool isWriteOnly() const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::string FileWriteAppendModeTest::generatedFileContent() const
+std::string FileWritableModeTest::generatedFileContent() const
 {
-  return "This is dummy text";
+  return "This is dummy content for FileWritableModeTest! Yaya!";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, OpenNonExisting)
+void FileWritableModeTest::createGeneratedFile() const
+{
+  // verify there is no such file
+  EXPECT_FALSE(osFileExists(generatedFilePath()));
+
+  // create file with content
+  EXPECT_TRUE(osCreateFile(generatedFilePath(), generatedFileContent()));
+
+  // verify file exists
+  EXPECT_TRUE(osFileExists(generatedFilePath()));
+
+  // verify size of the file
+  EXPECT_EQ(generatedFileContent().length(), osFileSize(generatedFilePath()));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+bool FileWritableModeTest::isWriteOnly() const
+{
+  return (EFileModeWriteOnly == GetParam());
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_P(FileWritableModeTest, OpenNonExisting)
 {
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
 
   // open and close file
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
   file.close();
 
   // verify file exists
@@ -38,86 +66,72 @@ TEST_F(FileWriteAppendModeTest, OpenNonExisting)
   EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, OpenExisting)
+TEST_P(FileWritableModeTest, OpenExisting)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
-
-  // verify size of the file
-  EXPECT_EQ(KGeneratedFileContent.length(), osFileSize(generatedFilePath()));
+  // create generated file
+  createGeneratedFile();
 
   // open and close file
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
   file.close();
 
   // verify file exists
   EXPECT_TRUE(osFileExists(generatedFilePath()));
 
   // verify size of the file
-  EXPECT_EQ(KGeneratedFileContent.length(), osFileSize(generatedFilePath()));
-
-  // clean up
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
+  const int KExpectedSize = isWriteOnly() ? 0 : generatedFileContent().length();
+  EXPECT_EQ(KExpectedSize, osFileSize(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, Close)
+TEST_P(FileWritableModeTest, Close)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
-
-  // verify size of the file
-  EXPECT_EQ(KGeneratedFileContent.length(), osFileSize(generatedFilePath()));
+  // create generated file
+  createGeneratedFile();
 
   // open and close file
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // try to delete
   EXPECT_FALSE(osRemoveFile(generatedFilePath()));
 
   // close
   file.close();
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, Read)
+TEST_P(FileWritableModeTest, ReadWithBuffer)
 {
   DataBuffer buffer;
 
-  // open file for writting
+  // open new file for writing
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
-  // read all data from file
-  EXPECT_EQ(0, file.read(buffer, -1));
+  // try to read some data from file
+  EXPECT_GT(0, file.read(buffer, 10));
 
   // close file
   file.close();
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, WriteAll)
+TEST_P(FileWritableModeTest, ReadRaw)
+{
+  char buffer[256];
+  memset(buffer, 0, sizeof (buffer));
+
+  // open file for writing (ie create new file)
+  File file(generatedFilePath());
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
+
+  // try to read some data from file
+  EXPECT_GT(0, file.read(buffer, generatedFileContent().length()));
+
+  // close file
+  file.close();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_P(FileWritableModeTest, WriteAllWithBuffer)
 {
   const std::string KGeneratedFileContent = "This is dummy text";
 
@@ -131,7 +145,7 @@ TEST_F(FileWriteAppendModeTest, WriteAll)
 
   // open file for writting
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data to a file
   EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.write(buffer, -1));
@@ -144,12 +158,9 @@ TEST_F(FileWriteAppendModeTest, WriteAll)
 
   // verify data
   EXPECT_EQ(KGeneratedFileContent, writtenContent);
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, WritePartially)
+TEST_P(FileWritableModeTest, WritePartiallyWithBuffer)
 {
   const std::string KGeneratedFileContent = "This is dummy text";
 
@@ -163,7 +174,7 @@ TEST_F(FileWriteAppendModeTest, WritePartially)
 
   // open file for writting
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data in chunks
   s64 totalBytesToWrite = KGeneratedFileContent.length();
@@ -188,30 +199,87 @@ TEST_F(FileWriteAppendModeTest, WritePartially)
 
   // verify data
   EXPECT_EQ(KGeneratedFileContent, writtenContent);
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, SeekModes)
+TEST_P(FileWritableModeTest, WriteAllRaw)
 {
   const std::string KGeneratedFileContent = "This is dummy text";
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
 
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
+  // open file for writting
+  File file(generatedFilePath());
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // write all data to a file
+  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.write(KGeneratedFileContent.c_str(), KGeneratedFileContent.length()));
+
+  // close file
+  file.close();
+
+  // verify written content
+  const std::string writtenContent = osReadFile(generatedFilePath());
+
+  // verify data
+  EXPECT_EQ(KGeneratedFileContent, writtenContent);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_P(FileWritableModeTest, WritePartiallyRaw)
+{
+  const std::string KGeneratedFileContent = "This is dummy text";
+
+  // verify there is no such file
+  EXPECT_FALSE(osFileExists(generatedFilePath()));
 
   // open file for writting
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteAppend));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
+
+  // write all data in chunks
+  s64 totalBytesToWrite = KGeneratedFileContent.length();
+  do
+  {
+    // write 3 bytes to file
+    const s64 bytesWritten = file.write(KGeneratedFileContent.c_str() + KGeneratedFileContent.length() - totalBytesToWrite, 3);
+    
+    // expect at least 1 byte written
+    EXPECT_TRUE(0 < bytesWritten);
+
+    // update total bytes read
+    totalBytesToWrite -= bytesWritten;
+  }
+  while (0 < totalBytesToWrite);
+
+  // close file
+  file.close();
+
+  // verify written content
+  const std::string writtenContent = osReadFile(generatedFilePath());
+
+  // verify data
+  EXPECT_EQ(KGeneratedFileContent, writtenContent);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_P(FileWritableModeTest, SeekModes)
+{
+  // create data buffer
+  DataBuffer buffer;
+  buffer << generatedFileContent();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
+
+  // verify there is no such file
+  EXPECT_FALSE(osFileExists(generatedFilePath()));
+
+  // open file for writting
+  File file(generatedFilePath());
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
+
+  // write all data to a file
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.write(buffer, -1));
 
   // move the file pointer 2 bytes from the begining
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.seek(2, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(2, EFileSeekBegin));
 
   // move file another 2 bytes
   EXPECT_EQ(2, file.seek(2, EFileSeekCurrent));
@@ -220,7 +288,7 @@ TEST_F(FileWriteAppendModeTest, SeekModes)
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
 
   // move file back to begining
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(0, EFileSeekBegin));
 
   // try to move file pointer beyond the file content
   EXPECT_EQ(0, file.seek(124, EFileSeekBegin));
@@ -239,27 +307,25 @@ TEST_F(FileWriteAppendModeTest, SeekModes)
   EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(FileWriteAppendModeTest, FilePosition)
+TEST_P(FileWritableModeTest, FilePosition)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
-
   // create data buffer
   DataBuffer buffer;
-  buffer << KGeneratedFileContent;
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), buffer.size());
+  buffer << generatedFileContent();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
 
-  // open file for writting
+  // open new file
   File file(generatedFilePath());
-  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeWriteOnly));
+  EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data to a file
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.write(buffer, -1));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.write(buffer, -1));
 
   // move the file pointer 2 bytes from the begining
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.seek(2, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(2, EFileSeekBegin));
   EXPECT_EQ(2, file.tell());
 
   // move file another 2 bytes
@@ -268,10 +334,10 @@ TEST_F(FileWriteAppendModeTest, FilePosition)
 
   // move file to the end of the file
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.tell());
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.tell());
 
   // move file back to begining
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(0, EFileSeekBegin));
   EXPECT_EQ(0, file.tell());
 
   // close file
@@ -283,4 +349,6 @@ TEST_F(FileWriteAppendModeTest, FilePosition)
   // clean up
   EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+INSTANTIATE_TEST_CASE_P(File, FileWritableModeTest, ::testing::Values(EFileModeWriteOnly, EFileModeWriteAppend));
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 #include "Core/Graphics/Image/ImageHandlerPNG.h"
+#include "EGEDataStream.h"
 #include "EGEDebug.h"
 
 extern "C"
@@ -20,12 +21,9 @@ static void PngReadDataFromFileFunc(png_structp png_ptr, png_bytep outBytes, png
 
    // retrieve file data is read from
    File& source = *(File*) png_ptr->io_ptr;
-
-   // wrap PNG library supplied storage for convinience
-   DataBuffer buffer((void*) outBytes, (s64) byteCountToRead);
-   
+ 
    // read data from file into buffer
-   if (buffer.size() != source.read(buffer, buffer.size()))
+   if (byteCountToRead != source.read(outBytes, byteCountToRead))
    {
      // error!
      return;
@@ -62,10 +60,8 @@ static void PngWriteDataFunc(png_structp png_ptr, png_bytep data, png_size_t len
    }
 
    File& file = *(File*) png_ptr->io_ptr;
-
-   DataBuffer buffer((void*) data, (s64) length);
-   
-   if (buffer.size() != file.write(buffer, buffer.size()))
+ 
+   if (length != file.write(data, length))
    {
      // error!
      return;
@@ -85,17 +81,19 @@ bool ImageHandlerPNG::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
+    DataStream stream(file);
+
     if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u8 header[8];
-      *file >> header[0];
-      *file >> header[1];
-      *file >> header[2];
-      *file >> header[3];
-      *file >> header[4];
-      *file >> header[5];
-      *file >> header[6];
-      *file >> header[7];
+      stream >> header[0];
+      stream >> header[1];
+      stream >> header[2];
+      stream >> header[3];
+      stream >> header[4];
+      stream >> header[5];
+      stream >> header[6];
+      stream >> header[7];
 
       // check header
       if (0 == png_sig_cmp(header, 0, 8))

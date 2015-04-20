@@ -1,5 +1,6 @@
 #include "Core/Graphics/Image/ImageHandlerPVR.h"
 #include "EGEFileUtils.h"
+#include "EGEDataStream.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -34,10 +35,12 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
+    DataStream stream(file);
+
     if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u32 version;
-      *file >> version;
+      stream >> version;
 
       if (0x03525650 == version)
       {
@@ -96,18 +99,20 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   {
     PFile file = buffer;
 
-    *file >> header.version;
-    *file >> header.flags;
-    *file >> header.pixelFormat;
-    *file >> header.colorSpace;
-    *file >> header.channelType;
-    *file >> header.height;
-    *file >> header.width;
-    *file >> header.depth;
-    *file >> header.numSurfaces;
-    *file >> header.numFaces;
-    *file >> header.mipMapCount;
-    *file >> header.metaDataSize;
+    DataStream stream(file);
+
+    stream >> header.version;
+    stream >> header.flags;
+    stream >> header.pixelFormat;
+    stream >> header.colorSpace;
+    stream >> header.channelType;
+    stream >> header.height;
+    stream >> header.width;
+    stream >> header.depth;
+    stream >> header.numSurfaces;
+    stream >> header.numFaces;
+    stream >> header.mipMapCount;
+    stream >> header.metaDataSize;
 
     // skip meta data
     if (-1 == file->seek(header.metaDataSize, EFileSeekCurrent))

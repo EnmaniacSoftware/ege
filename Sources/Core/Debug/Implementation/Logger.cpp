@@ -147,8 +147,7 @@ void Logger::write()
     *m_buffer << "\n";
 
     // store data
-    DataBuffer buf(const_cast<void*>(reinterpret_cast<const void*>(m_buffer->string().toAscii())), m_buffer->string().length());    
-    file.write(buf, buf.size());   
+    file.write(reinterpret_cast<const void*>(m_buffer->string().toAscii()), m_buffer->string().length());   
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

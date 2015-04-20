@@ -7,6 +7,7 @@ extern "C"
 }
 
 #include "Core/Graphics/JpegDataSrcFile.h"
+#include "EGEDataStream.h"
 #include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
@@ -25,10 +26,12 @@ bool ImageHandlerJPG::IsValidFormat(PObject buffer)
   {
     PFile file = buffer;
 
+    DataStream stream(file);
+
     if (-1 != file->seek(0L, EFileSeekBegin))
     {
       u32 id;
-      *file >> id;
+      stream >> id;
 
       // check if ID is correct
 	    id <<= 8;
