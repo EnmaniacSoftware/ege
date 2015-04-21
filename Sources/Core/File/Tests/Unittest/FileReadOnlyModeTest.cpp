@@ -7,6 +7,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class FileReadOnlyModeTest : public FileTestBase
 {
+  protected:
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, OpenExisting)
@@ -24,19 +25,8 @@ TEST_F(FileReadOnlyModeTest, OpenNonExisting)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, Close)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
-
-  // verify size of the file
-  EXPECT_EQ(KGeneratedFileContent.length(), osFileSize(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open and close file
   File file(generatedFilePath());
@@ -47,64 +37,42 @@ TEST_F(FileReadOnlyModeTest, Close)
 
   // close
   file.close();
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, ReadAllWithBuffer)
 {
   DataBuffer buffer;
 
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
   EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
 
   // read all data from file
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.read(buffer, -1));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.read(buffer, -1));
 
   // verify data
-  EXPECT_EQ(0, memcmp(reinterpret_cast<const void*>(KGeneratedFileContent.c_str()), buffer.data(), KGeneratedFileContent.length()));
+  EXPECT_EQ(0, memcmp(reinterpret_cast<const void*>(generatedFileContent().c_str()), buffer.data(), generatedFileContent().length()));
 
   // close file
   file.close();
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, ReadPartiallyWithBuffer)
 {
   DataBuffer buffer;
 
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
   EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
 
   // read all data in chunks
-  s64 totalBytesToRead = KGeneratedFileContent.length();
+  s64 totalBytesToRead = generatedFileContent().length();
   do
   {
     // read 3 bytes from file
@@ -119,13 +87,34 @@ TEST_F(FileReadOnlyModeTest, ReadPartiallyWithBuffer)
   while (0 < totalBytesToRead);
 
   // verify data
-  EXPECT_EQ(0, memcmp(reinterpret_cast<const void*>(KGeneratedFileContent.c_str()), buffer.data(), KGeneratedFileContent.length()));
+  EXPECT_EQ(0, memcmp(reinterpret_cast<const void*>(generatedFileContent().c_str()), buffer.data(), generatedFileContent().length()));
 
   // close file
   file.close();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(FileReadOnlyModeTest, ReadMoreThanAvailableWithBuffer)
+{
+  // prepare buffer
+  DataBuffer buffer;
+  buffer << generatedFileContent();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
 
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
+
+  // open file for reading
+  File file(generatedFilePath());
+  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
+
+  // read more data from file than available
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.read(buffer, generatedFileContent().length() * 2));
+
+  // verify data
+  EXPECT_EQ(0, memcmp(reinterpret_cast<const void*>(generatedFileContent().c_str()), buffer.data(), generatedFileContent().length()));
+
+  // close file
+  file.close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, ReadAllRaw)
@@ -133,32 +122,21 @@ TEST_F(FileReadOnlyModeTest, ReadAllRaw)
   char buffer[256];
   memset(buffer, 0, sizeof (buffer));
 
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
   EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
 
   // read all data from file
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.read(buffer, KGeneratedFileContent.length()));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.read(buffer, generatedFileContent().length()));
 
   // verify data
-  EXPECT_STREQ(KGeneratedFileContent.c_str(), buffer);
+  EXPECT_STREQ(generatedFileContent().c_str(), buffer);
 
   // close file
   file.close();
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, ReadPartiallyRaw)
@@ -166,27 +144,19 @@ TEST_F(FileReadOnlyModeTest, ReadPartiallyRaw)
   char buffer[256];
   memset(buffer, 0, sizeof (buffer));
 
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
   EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
 
   // read all data in chunks
-  s64 totalBytesToRead = KGeneratedFileContent.length();
+  s64 totalBytesToRead = generatedFileContent().length();
   do
   {
     // read 3 bytes from file
-    const s64 bytesRead = file.read(buffer + KGeneratedFileContent.length() - totalBytesToRead, 3);
+    const s64 bytesRead = file.read(buffer + generatedFileContent().length() - totalBytesToRead, 3);
     
     // expect at least 1 byte read
     EXPECT_TRUE(0 < bytesRead);
@@ -197,18 +167,36 @@ TEST_F(FileReadOnlyModeTest, ReadPartiallyRaw)
   while (0 < totalBytesToRead);
 
   // verify data
-  EXPECT_STREQ(KGeneratedFileContent.c_str(), buffer);
+  EXPECT_STREQ(generatedFileContent().c_str(), buffer);
 
   // close file
   file.close();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(FileReadOnlyModeTest, ReadMoreThanAvailableRaw)
+{
+  char buffer[256];
+  memset(buffer, 0, sizeof (buffer));
 
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
+
+  // open file for reading
+  File file(generatedFilePath());
+  EXPECT_EQ(EGE_SUCCESS, file.open(EFileModeReadOnly));
+
+  // read more data from file than available
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.read(buffer, generatedFileContent().length() * 2));
+
+  // verify data
+  EXPECT_STREQ(generatedFileContent().c_str(), buffer);
+
+  // close file
+  file.close();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, WriteWithBuffer)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
   const std::string KBufferContent = "This is additional text";
 
   // prepare buffer
@@ -216,14 +204,8 @@ TEST_F(FileReadOnlyModeTest, WriteWithBuffer)
   buffer << KBufferContent;
   EXPECT_EQ(static_cast<s64>(KBufferContent.length()), buffer.size());
 
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
@@ -239,25 +221,15 @@ TEST_F(FileReadOnlyModeTest, WriteWithBuffer)
   const std::string writtenContent = osReadFile(generatedFilePath());
 
   // verify data
-  EXPECT_EQ(KGeneratedFileContent, writtenContent);
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
+  EXPECT_EQ(generatedFileContent(), writtenContent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, WriteRaw)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
   const std::string KBufferContent = "This is additional text";
 
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file for reading
   File file(generatedFilePath());
@@ -273,27 +245,13 @@ TEST_F(FileReadOnlyModeTest, WriteRaw)
   const std::string writtenContent = osReadFile(generatedFilePath());
 
   // verify data
-  EXPECT_EQ(KGeneratedFileContent, writtenContent);
-
-  // try to delete
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
+  EXPECT_EQ(generatedFileContent(), writtenContent);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, SeekModes)
 {
-  const std::string KGeneratedFileContent = "This is dummy text";
-
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), KGeneratedFileContent));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
-
-  // verify size of the file
-  EXPECT_EQ(KGeneratedFileContent.length(), osFileSize(generatedFilePath()));
+  // generate file
+  createGeneratedFile();
 
   // open file
   File file(generatedFilePath());
@@ -309,7 +267,7 @@ TEST_F(FileReadOnlyModeTest, SeekModes)
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
 
   // move file back to begining
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(0, EFileSeekBegin));
 
   // try to move file pointer beyond the file content
   EXPECT_EQ(0, file.seek(124, EFileSeekBegin));
@@ -323,9 +281,6 @@ TEST_F(FileReadOnlyModeTest, SeekModes)
 
   // close file
   file.close();
-
-  // clean up
-  EXPECT_TRUE(osRemoveFile(generatedFilePath()));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(FileReadOnlyModeTest, FilePosition)

@@ -12,34 +12,9 @@ class FileWritableModeTest : public FileTestBase
 {
   protected:
 
-    /*! Returns generated file text content. */
-    std::string generatedFileContent() const;
-    /*! Creates generated file. */
-    void createGeneratedFile() const;
-
     /*! Returns TRUE if testing write-only access. */
     bool isWriteOnly() const;
 };
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-std::string FileWritableModeTest::generatedFileContent() const
-{
-  return "This is dummy content for FileWritableModeTest! Yaya!";
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void FileWritableModeTest::createGeneratedFile() const
-{
-  // verify there is no such file
-  EXPECT_FALSE(osFileExists(generatedFilePath()));
-
-  // create file with content
-  EXPECT_TRUE(osCreateFile(generatedFilePath(), generatedFileContent()));
-
-  // verify file exists
-  EXPECT_TRUE(osFileExists(generatedFilePath()));
-
-  // verify size of the file
-  EXPECT_EQ(generatedFileContent().length(), osFileSize(generatedFilePath()));
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 bool FileWritableModeTest::isWriteOnly() const
 {

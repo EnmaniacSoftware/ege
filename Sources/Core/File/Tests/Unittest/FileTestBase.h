@@ -48,5 +48,10 @@ class FileTestBase : public TestBase
     const char* generatedFilePath() const;
     /*! Returns file path to existing file. */
     const char* existingFilePath() const;
+
+    /*! Returns generated file text content. */
+    std::string generatedFileContent() const;
+    /*! Creates generated file. */
+    void createGeneratedFile() const;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

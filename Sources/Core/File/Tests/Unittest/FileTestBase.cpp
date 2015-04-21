@@ -141,3 +141,23 @@ const char* FileTestBase::existingFilePath() const
   return "File-test/example.dat";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::string FileTestBase::generatedFileContent() const
+{
+  return "This is dummy content for FileWritableModeTest! Yaya!";
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void FileTestBase::createGeneratedFile() const
+{
+  // verify there is no such file
+  EXPECT_FALSE(osFileExists(generatedFilePath()));
+
+  // create file with content
+  EXPECT_TRUE(osCreateFile(generatedFilePath(), generatedFileContent()));
+
+  // verify file exists
+  EXPECT_TRUE(osFileExists(generatedFilePath()));
+
+  // verify size of the file
+  EXPECT_EQ(generatedFileContent().length(), osFileSize(generatedFilePath()));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
