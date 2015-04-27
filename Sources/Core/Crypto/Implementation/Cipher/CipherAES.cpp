@@ -1,16 +1,18 @@
 #include "Core/Crypto/Interface/Cipher/CipherAES.h"
 #include "Core/Crypto/Interface/Cipher/CipherKey.h"
+#include "EGEDataStream.h"
 #include "EGEDebug.h"
 #include "EGERandom.h"
 #include <openssl/aes.h>
 
-EGE_NAMESPACE
+EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGE_DEFINE_NEW_OPERATORS(CipherAES)
 EGE_DEFINE_DELETE_OPERATORS(CipherAES)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CipherAES::CipherAES(CipherDirection direction, const PCipherKey& key) : Cipher(direction, key)
+CipherAES::CipherAES(CipherDirection direction, const PCipherKey& key) 
+: Cipher(direction, key)
 {
   EGE_ASSERT(AES_BLOCK_SIZE == sizeof (m_initializationVector));
  
@@ -55,7 +57,8 @@ EGEResult CipherAES::addData(const char* data, s32 length)
     }
 
     // next, write length of data
-    m_result << length;
+    DataStream stream(&m_result);
+    stream << length;
 
     if (EGE_SUCCESS == result)
     {
@@ -95,9 +98,10 @@ EGEResult CipherAES::addData(const char* data, s32 length)
     {
       // read data length of next block
       DataBuffer buffer(reinterpret_cast<const void*>(data), KDataBlockLengthSize);
+      DataStream stream(&buffer);
 
       s32 dataBlockLength;
-      buffer >> dataBlockLength;
+      stream >> dataBlockLength;
 
       // make sure buffer is big enough
       result = m_result.setSize(m_result.size() + dataBlockLength);
@@ -143,3 +147,5 @@ void CipherAES::resetInitializationVectors()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+EGE_NAMESPACE_END

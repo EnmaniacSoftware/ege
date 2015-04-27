@@ -25,7 +25,6 @@ bool ImageHandlerJPG::IsValidFormat(PObject buffer)
   if (EGE_OBJECT_UID_FILE == buffer->uid())
   {
     PFile file = buffer;
-
     DataStream stream(file);
 
     if (-1 != file->seek(0L, EFileSeekBegin))
@@ -45,12 +44,13 @@ bool ImageHandlerJPG::IsValidFormat(PObject buffer)
   else if (EGE_OBJECT_UID_DATA_BUFFER == buffer->uid())
   {
     PDataBuffer data = buffer;
+    DataStream stream(data);
 
     u32 id;
 
     data->setReadOffset(0);
 
-    *data >> id;
+    stream >> id;
 
     // check if ID is correct
 	  id <<= 8;

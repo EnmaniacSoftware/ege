@@ -10,25 +10,25 @@ static const char* KDataBufferDebugName = "EGEDataBuffer";
 EGE_DEFINE_NEW_OPERATORS(DataBuffer)
 EGE_DEFINE_DELETE_OPERATORS(DataBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer() : Object(EGE_OBJECT_UID_DATA_BUFFER)
-                         , m_size(0)
-                         , m_capacity(0)
-                         , m_data(NULL)
-                         , m_readOffset(0)
-                         , m_writeOffset(0)
-                         , m_mutable(true)
-                         , m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer() 
+: Object(EGE_OBJECT_UID_DATA_BUFFER)
+, m_size(0)
+, m_capacity(0)
+, m_data(NULL)
+, m_readOffset(0)
+, m_writeOffset(0)
+, m_mutable(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(const DataBuffer& other) : Object(EGE_OBJECT_UID_DATA_BUFFER)
-                                                , m_size(0)
-                                                , m_capacity(0)
-                                                , m_data(NULL)
-                                                , m_readOffset(0)
-                                                , m_writeOffset(0)
-                                                , m_mutable(true)
-                                                , m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(const DataBuffer& other) 
+: Object(EGE_OBJECT_UID_DATA_BUFFER)
+, m_size(0)
+, m_capacity(0)
+, m_data(NULL)
+, m_readOffset(0)
+, m_writeOffset(0)
+, m_mutable(true)
 {
   // allocate space for data
   if (EGE_SUCCESS == setSize(other.size()))
@@ -37,20 +37,19 @@ DataBuffer::DataBuffer(const DataBuffer& other) : Object(EGE_OBJECT_UID_DATA_BUF
     EGE_MEMCPY(m_data, other.m_data, static_cast<size_t>(other.size()));
 
     // copy rest of data
-    m_readOffset    = other.readOffset();
-    m_writeOffset   = other.writeOffset();
-    m_byteOrdering  = other.byteOrdering();
+    m_readOffset  = other.readOffset();
+    m_writeOffset = other.writeOffset();
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(s64 size) : Object(EGE_OBJECT_UID_DATA_BUFFER)
-                                 , m_size(0)
-                                 , m_capacity(0)
-                                 , m_data(NULL)
-                                 , m_readOffset(0)
-                                 , m_writeOffset(0)
-                                 , m_mutable(true)
-                                 , m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(s64 size) 
+: Object(EGE_OBJECT_UID_DATA_BUFFER)
+, m_size(0)
+, m_capacity(0)
+, m_data(NULL)
+, m_readOffset(0)
+, m_writeOffset(0)
+, m_mutable(true)
 {
   if (EGE_SUCCESS != setSize(size))
   {
@@ -59,14 +58,14 @@ DataBuffer::DataBuffer(s64 size) : Object(EGE_OBJECT_UID_DATA_BUFFER)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataBuffer::DataBuffer(const void* data, s64 size) : Object(EGE_OBJECT_UID_DATA_BUFFER)
-                                                   , m_size(size)
-                                                   , m_capacity(size)
-                                                   , m_data(const_cast<void*>(data))
-                                                   , m_readOffset(0)
-                                                   , m_writeOffset(0)
-                                                   , m_mutable(false)
-                                                   , m_byteOrdering(ELittleEndian)
+DataBuffer::DataBuffer(const void* data, s64 size) 
+: Object(EGE_OBJECT_UID_DATA_BUFFER)
+, m_size(size)
+, m_capacity(size)
+, m_data(const_cast<void*>(data))
+, m_readOffset(0)
+, m_writeOffset(0)
+, m_mutable(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -77,7 +76,7 @@ DataBuffer::~DataBuffer()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void* DataBuffer::data(s64 offset) const
 {
-  return (offset < capacity()) ? (static_cast<u8*>(m_data) + offset) : NULL;
+  return ((offset < capacity()) && (0 <= offset)) ? (static_cast<u8*>(m_data) + offset) : NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void DataBuffer::clear(bool full)
@@ -103,7 +102,7 @@ void DataBuffer::clear(bool full)
 EGEResult DataBuffer::setCapacity(s64 newCapacity)
 {
   // check if data cannot be changed
-  if (!m_mutable)
+  if ( ! m_mutable)
   {
     return EGE_ERROR_NOT_SUPPORTED;
   }
@@ -132,6 +131,12 @@ EGEResult DataBuffer::setCapacity(s64 newCapacity)
 s64 DataBuffer::write(const void* data, s64 size)
 {
   EGE_ASSERT(0 <= size && data);
+
+  if ( ! m_mutable)
+  {
+    // error!
+    return -1;
+  }
 
   // check if there is NO enough capacity for new data
   if (size + writeOffset() > capacity())
@@ -175,6 +180,12 @@ s64 DataBuffer::read(void* data, s64 size)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult DataBuffer::setSize(s64 size)
 {
+  // check if data cannot be changed
+  if ( ! m_mutable)
+  {
+    return EGE_ERROR_NOT_SUPPORTED;
+  }
+
   // check if there is NO enough capacity for new size
   if (size > capacity())
   {
@@ -219,223 +230,7 @@ s64 DataBuffer::setReadOffset(s64 offset)
   return oldOffset;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void DataBuffer::setByteOrdering(Endianness ordering)
-{
-  m_byteOrdering = ordering;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (u8 value)
-{
-  write(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (s8 value)
-{
-  write(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (u16 value)
-{
-  u8 data[2];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (s16 value)
-{
-  u8 data[2];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (u32 value)
-{
-  u8 data[4];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (s32 value)
-{
-  u8 data[4];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (u64 value)
-{
-  u8 data[8];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (s64 value)
-{
-  u8 data[8];
-  ByteOrder::Convert(data, value, byteOrdering());
-
-  write(&data, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (bool value)
-{
-  return this->operator<< ((u8)(value ? 1 : 0));
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (float32 value)
-{
-  write(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (float64 value)
-{
-  write(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (const char* value)
-{
-  write(value, strlen(value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator << (const String& value)
-{
-  write(value.toAscii(), value.length());
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (u8& value)
-{
-  read(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (s8& value)
-{
-  read(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (u16& value)
-{
-  u8 data[2];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (s16& value)
-{
-  u8 data[2];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (u32& value)
-{
-  u8 data[4];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (s32& value)
-{
-  u8 data[4];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (u64& value)
-{
-  u8 data[8];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (s64& value)
-{
-  u8 data[8];
-  if (sizeof (value) == read(data, sizeof (value)))
-  {
-    ByteOrder::Convert(value, data, byteOrdering());
-  }
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (bool& value)
-{
-  u8 data;
-  this->operator>>(data);
-  value = (1 == data);
-
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (float32& value)
-{
-  read(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (float64& value)
-{
-  read(&value, sizeof (value));
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (const char* value)
-{
-  EGE_UNUSED(value);
-  
-  EGE_ASSERT_X(false, "Unsupported");
-  
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& DataBuffer::operator >> (String& value)
-{
-  EGE_UNUSED(value);
-  
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
+s64 DataBuffer::read(const PDataBuffer& destination, s64 size)
 {
   EGE_ASSERT(0 <= size);
 
@@ -444,20 +239,28 @@ s64 DataBuffer::read(const PDataBuffer& dst, s64 size)
 
   // copy new data
   // NOTE: dst buffer write offset will be updated automatically
-  dst->write(data(readOffset()), size);
+  const s64 written = destination->write(data(readOffset()), size);
+  if (0 < written)
+  {
+    // update read offset
+    m_readOffset += written;
+  }
 
-  // update read offset
-  m_readOffset += size;
-
-  return size;
+  return written;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-s64 DataBuffer::write(const PDataBuffer& src, s64 size)
+s64 DataBuffer::write(const PDataBuffer& source, s64 size)
 {
+  if ( ! m_mutable)
+  {
+    // error!
+    return -1;
+  }
+
   // check if all data from source buffer requested
   if (0 > size)
   {
-    size = src->size() - src->readOffset();
+    size = source->size() - source->readOffset();
   }
 
   // check if there is NO enough capacity for new data
@@ -467,22 +270,45 @@ s64 DataBuffer::write(const PDataBuffer& src, s64 size)
     if (EGE_SUCCESS != setCapacity(size + writeOffset() + 1))
     {
       // error!
-      return 0;
+      return -1;
     }
   }
 
   // copy new data
   // NOTE: src buffer read offset will be updated automatically
-  src->read(data(writeOffset()), size);
+  const s64 bytesRead = source->read(data(writeOffset()), size);
 
-  // set new size
-  // NOTE: taking MAX of what was before and after as we may want to overwrite data in the middle of buffer only
-  m_size = Math::Max(m_size, size + writeOffset());
+  if (0 < bytesRead)
+  {
+    // set new size
+    // NOTE: taking MAX of what was before and after as we may want to overwrite data in the middle of buffer only
+    m_size = Math::Max(m_size, writeOffset() + bytesRead);
 
-  // update write offset
-  m_writeOffset += size;
+    // update write offset
+    m_writeOffset += bytesRead;
+  }
 
-  return size;
+  return bytesRead;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s64 DataBuffer::writeOffset() const 
+{ 
+  return m_writeOffset; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s64 DataBuffer::readOffset() const 
+{ 
+  return m_readOffset; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s64 DataBuffer::size() const 
+{ 
+  return m_size; 
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+s64 DataBuffer::capacity() const 
+{ 
+  return m_capacity; 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -9,9 +9,9 @@ EGE_NAMESPACE_BEGIN
 //EGE_DEFINE_NEW_OPERATORS(DataStream)
 //EGE_DEFINE_DELETE_OPERATORS(DataStream)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DataStream::DataStream(IODevice* device) 
+DataStream::DataStream(IODevice* device, Endianness byteOrdering) 
 : m_device(device)
-, m_byteOrdering(ELittleEndian)
+, m_byteOrdering(byteOrdering)
 , m_good(true)
 {
 }

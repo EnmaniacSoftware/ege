@@ -273,6 +273,9 @@
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileWritableModeTest.cpp">
       <Filter>Tests\File\UnitTests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataBufferTest.cpp">
+      <Filter>Tests\Data\Unittests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h">

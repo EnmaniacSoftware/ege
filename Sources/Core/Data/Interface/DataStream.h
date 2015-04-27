@@ -16,7 +16,7 @@ class DataStream
 {
   public:
 
-    DataStream(IODevice* device);
+    explicit DataStream(IODevice* device, Endianness byteOrdering = ELittleEndian);
    ~DataStream();
 
   operators:
@@ -32,6 +32,8 @@ class DataStream
     DataStream& operator << (bool value);
     DataStream& operator << (float32 value);
     DataStream& operator << (float64 value);
+
+    /*! Stores terminating NULL character as well. */
     DataStream& operator << (const char* value);
 
     DataStream& operator >> (u8& value);
@@ -45,6 +47,8 @@ class DataStream
     DataStream& operator >> (bool& value);
     DataStream& operator >> (float32& value);
     DataStream& operator >> (float64& value);
+
+    /*! Reads until (and including) terminating NULL character. */
     DataStream& operator >> (char* value);
 
   public:

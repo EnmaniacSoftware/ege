@@ -1,9 +1,10 @@
 #include "Core/Audio/Implementation/Codecs/AudioCodecOgg.h"
-#include "Core/Audio/Implementation/Codecs/stb_vorbis.c"
 #include "EGEAudio.h"
-#include "EGEMath.h"
+#include "EGEDataStream.h"
 #include "EGEDebug.h"
 #include "EGEFile.h"
+#include "EGEMath.h"
+#include "Core/Audio/Implementation/Codecs/stb_vorbis.c"
 
 EGE_NAMESPACE_BEGIN
 
@@ -28,8 +29,9 @@ static s16 ClipToS16(s32 value)
   return static_cast<s16>(value);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) : AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream)
-                                                        , m_codecStream(NULL)
+AudioCodecOgg::AudioCodecOgg(const PDataBuffer& stream) 
+: AudioCodec(EGE_OBJECT_UID_AUDIO_CODEC_OGG, stream)
+, m_codecStream(NULL)
 {
   reset();
 }
@@ -151,41 +153,47 @@ bool AudioCodecOgg::decode(const PDataBuffer& out, s32 samplesCount, s32& sample
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioCodecOgg::uploadMonoChannel(const PDataBuffer& out, s32 outCount, s32 totalCount, float* channel)
 {
+  DataStream stream(out);
+  DataStream overflousStream(&m_overflousDecodedSamples);
+
   // process data which should end up directly in output buffer
   s32 i = 0;
   for (; i < outCount; ++i)
   {
     s16 x = ClipToS16(static_cast<s32>(channel[i] * Math::MAX_S16));
-    *out << x;
+    stream << x;
   }
 
   // process data which needs to be buffered (overflous samples)
   for (; i < totalCount; ++i)
   {
     s16 x = ClipToS16(static_cast<s32>(channel[i] * Math::MAX_S16));
-    m_overflousDecodedSamples << x;
+    overflousStream << x;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AudioCodecOgg::uploadStereoChannels(const PDataBuffer& out, s32 outCount, s32 totalCount, float* leftChannel, float* rightChannel)
 {
+  DataStream stream(out);
+  DataStream overflousStream(&m_overflousDecodedSamples);
+
   // process data which should end up directly in output buffer
   s32 i = 0;
   for (; i < outCount; ++i)
   {
     s16 x = ClipToS16(static_cast<s32>(leftChannel[i] * Math::MAX_S16));
-    *out << x;
+    stream << x;
     x = ClipToS16(static_cast<s32>(rightChannel[i] * Math::MAX_S16));
-    *out << x;
+    stream << x;
   }
 
   // process data which needs to be buffered (overflous samples)
   for (; i < totalCount; ++i)
   {
     s16 x = ClipToS16(static_cast<s32>(leftChannel[i] * Math::MAX_S16));
-    m_overflousDecodedSamples << x;
+    overflousStream << x;
     x = ClipToS16(static_cast<s32>(rightChannel[i] * Math::MAX_S16));
-    m_overflousDecodedSamples << x;
+    overflousStream << x;
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -255,7 +263,6 @@ bool AudioCodecOgg::reset()
 
   // preallocate memory for 512 samples
   m_overflousDecodedSamples.setCapacity(512 * (m_channels * (m_bitsPerSample >> 3)));
-  m_overflousDecodedSamples.setByteOrdering(ELittleEndian);
 
   return true;
 }

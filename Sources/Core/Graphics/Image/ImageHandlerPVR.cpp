@@ -52,12 +52,12 @@ bool ImageHandlerPVR::IsValidFormat(PObject buffer)
   else if (EGE_OBJECT_UID_DATA_BUFFER == buffer->uid())
   {
     PDataBuffer data = buffer;
+    DataStream stream(data);
 
     data->setReadOffset(0);
-    data->setByteOrdering(ELittleEndian);
 
     u32 version;
-    *data >> version;
+    stream >> version;
 
     if (0x03525650 == version)
     {
@@ -141,20 +141,20 @@ PImage ImageHandlerPVR::Load(PObject buffer, PixelFormat format)
   else if (EGE_OBJECT_UID_DATA_BUFFER == buffer->uid())
   {
     PDataBuffer data = buffer;
-    data->setByteOrdering(ELittleEndian);
+    DataStream stream(data);
 
-    *data >> header.version;
-    *data >> header.flags;
-    *data >> header.pixelFormat;
-    *data >> header.colorSpace;
-    *data >> header.channelType;
-    *data >> header.height;
-    *data >> header.width;
-    *data >> header.depth;
-    *data >> header.numSurfaces;
-    *data >> header.numFaces;
-    *data >> header.mipMapCount;
-    *data >> header.metaDataSize;
+    stream >> header.version;
+    stream >> header.flags;
+    stream >> header.pixelFormat;
+    stream >> header.colorSpace;
+    stream >> header.channelType;
+    stream >> header.height;
+    stream >> header.width;
+    stream >> header.depth;
+    stream >> header.numSurfaces;
+    stream >> header.numFaces;
+    stream >> header.mipMapCount;
+    stream >> header.metaDataSize;
 
     // skip meta data
     data->setReadOffset(data->readOffset() + header.metaDataSize);

@@ -1,5 +1,6 @@
 #include "Core/Audio/Implementation/AudioUtils.h"
 #include "EGEDataBuffer.h"
+#include "EGEDataStream.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -17,13 +18,15 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, AudioWavRiffHeader& rif
   EGE_MEMSET(&fmtHeader, 0, sizeof (fmtHeader));
   EGE_MEMSET(&dataHeader, 0, sizeof (dataHeader));
 
+  DataStream stream(data);
+
   // read in RIFF header
-  data->setByteOrdering(EBigEndian);
-  *data >> riffHeader.id;
-  data->setByteOrdering(ELittleEndian);
-  *data >> riffHeader.size;
-  data->setByteOrdering(EBigEndian);
-  *data >> riffHeader.format;
+  stream.setByteOrdering(EBigEndian);
+  stream >> riffHeader.id;
+  stream.setByteOrdering(ELittleEndian);
+  stream >> riffHeader.size;
+  stream.setByteOrdering(EBigEndian);
+  stream >> riffHeader.format;
 
   // check if there is a chance this is wav file
   if (WAVE_RIFF_HEADER_ID == riffHeader.id)
@@ -34,12 +37,12 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, AudioWavRiffHeader& rif
       // read chunk header
       u32 chunkId;
       u32 chunkSize;
-      data->setByteOrdering(EBigEndian);
-      *data >> chunkId;
+      stream.setByteOrdering(EBigEndian);
+      stream >> chunkId;
 
       // read chunk size
-      data->setByteOrdering(ELittleEndian);
-      *data >> chunkSize;
+      stream.setByteOrdering(ELittleEndian);
+      stream>> chunkSize;
 
       // check if FMT chunk
       switch (chunkId)
@@ -50,12 +53,12 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, AudioWavRiffHeader& rif
           fmtHeader.size = chunkSize;
 
           // read rest of header
-          *data >> fmtHeader.audioFormat;
-          *data >> fmtHeader.channels;
-          *data >> fmtHeader.sampleRate;
-          *data >> fmtHeader.byteRate;
-          *data >> fmtHeader.blockAlign;
-          *data >> fmtHeader.bitsPerSample;
+          stream >> fmtHeader.audioFormat;
+          stream >> fmtHeader.channels;
+          stream >> fmtHeader.sampleRate;
+          stream >> fmtHeader.byteRate;
+          stream >> fmtHeader.blockAlign;
+          stream >> fmtHeader.bitsPerSample;
 
           // skip extra data
           if (16 < fmtHeader.size)
@@ -83,6 +86,8 @@ void AudioUtils::ReadWavHeaders(const PDataBuffer& data, AudioWavRiffHeader& rif
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 AudioStreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
 {
+  DataStream stream(data);
+
   // check if WAVE stream
   data->setReadOffset(0);
 
@@ -106,10 +111,10 @@ AudioStreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
 
   // check if OGG stream
   data->setReadOffset(0);
-  data->setByteOrdering(EBigEndian);
+  stream.setByteOrdering(EBigEndian);
 
   u32 headerId;
-  *data >> headerId;
+  stream >> headerId;
  
   if (OGG_PAGE_HEADER_ID == headerId)
   {
@@ -124,9 +129,9 @@ AudioStreamType AudioUtils::DetectStreamType(const PDataBuffer& data)
   //    - if appened it is 10 bytes from the end of file (current not done!)
   // - for ENC header first two bytes needs to be 0xFFFB
   data->setReadOffset(0);
-  data->setByteOrdering(EBigEndian);
+  stream.setByteOrdering(EBigEndian);
   
-  *data >> headerId;
+  stream >> headerId;
   if ((MP3_ID3_HEADER_ID == (headerId & 0xffffff00)) || (MP3_ENC_HEADER_ID == (headerId & 0xffff0000)))
   {
     // found

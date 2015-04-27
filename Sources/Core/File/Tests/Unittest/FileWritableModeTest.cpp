@@ -1,4 +1,5 @@
 #include "Core/File/Tests/Unittest/FileTestBase.h"
+#include <EGEDataStream.h>
 #include <EGEFile.h>
 #include <EGEString.h>
 
@@ -112,8 +113,9 @@ TEST_P(FileWritableModeTest, WriteAllWithBuffer)
 
   // create data buffer
   DataBuffer buffer;
-  buffer << KGeneratedFileContent;
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << KGeneratedFileContent.c_str();
+  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length() + 1), buffer.size());
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
@@ -123,7 +125,7 @@ TEST_P(FileWritableModeTest, WriteAllWithBuffer)
   EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data to a file
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), file.write(buffer, -1));
+  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length() + 1), file.write(buffer, -1));
 
   // close file
   file.close();
@@ -141,8 +143,9 @@ TEST_P(FileWritableModeTest, WritePartiallyWithBuffer)
 
   // create data buffer
   DataBuffer buffer;
-  buffer << KGeneratedFileContent;
-  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << KGeneratedFileContent.c_str();
+  EXPECT_EQ(static_cast<s64>(KGeneratedFileContent.length() + 1), buffer.size());
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
@@ -152,7 +155,7 @@ TEST_P(FileWritableModeTest, WritePartiallyWithBuffer)
   EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data in chunks
-  s64 totalBytesToWrite = KGeneratedFileContent.length();
+  s64 totalBytesToWrite = KGeneratedFileContent.length() + 1;
   do
   {
     // write 3 bytes to file
@@ -240,8 +243,9 @@ TEST_P(FileWritableModeTest, SeekModes)
 {
   // create data buffer
   DataBuffer buffer;
-  buffer << generatedFileContent();
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << generatedFileContent().c_str();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), buffer.size());
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
@@ -251,10 +255,10 @@ TEST_P(FileWritableModeTest, SeekModes)
   EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data to a file
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.write(buffer, -1));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.write(buffer, -1));
 
   // move the file pointer 2 bytes from the begining
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(2, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.seek(2, EFileSeekBegin));
 
   // move file another 2 bytes
   EXPECT_EQ(2, file.seek(2, EFileSeekCurrent));
@@ -263,7 +267,7 @@ TEST_P(FileWritableModeTest, SeekModes)
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
 
   // move file back to begining
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.seek(0, EFileSeekBegin));
 
   // try to move file pointer beyond the file content
   EXPECT_EQ(0, file.seek(124, EFileSeekBegin));
@@ -286,8 +290,9 @@ TEST_P(FileWritableModeTest, FilePosition)
 {
   // create data buffer
   DataBuffer buffer;
-  buffer << generatedFileContent();
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << generatedFileContent().c_str();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), buffer.size());
 
   // verify there is no such file
   EXPECT_FALSE(osFileExists(generatedFilePath()));
@@ -297,10 +302,10 @@ TEST_P(FileWritableModeTest, FilePosition)
   EXPECT_EQ(EGE_SUCCESS, file.open(GetParam()));
 
   // write all data to a file
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.write(buffer, -1));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.write(buffer, -1));
 
   // move the file pointer 2 bytes from the begining
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(2, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.seek(2, EFileSeekBegin));
   EXPECT_EQ(2, file.tell());
 
   // move file another 2 bytes
@@ -309,10 +314,10 @@ TEST_P(FileWritableModeTest, FilePosition)
 
   // move file to the end of the file
   EXPECT_EQ(4, file.seek(0, EFileSeekEnd));
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.tell());
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.tell());
 
   // move file back to begining
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), file.seek(0, EFileSeekBegin));
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length() + 1), file.seek(0, EFileSeekBegin));
   EXPECT_EQ(0, file.tell());
 
   // close file

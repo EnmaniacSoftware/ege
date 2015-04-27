@@ -1845,9 +1845,6 @@
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Node.h">
       <Filter>Core\Data\Interface</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
-      <Filter>Core\Data\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Graphics\Render\Interface\Renderable.h">
       <Filter>Core\Graphics\Render\Interface</Filter>
     </ClInclude>
@@ -2182,6 +2179,9 @@
       <Filter>Core\Device\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEIODevice.h" />
+    <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
+      <Filter>Core\Data\Interface</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

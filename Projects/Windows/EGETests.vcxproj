@@ -98,6 +98,7 @@
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\CryptographicHashMD5Test.cpp" />
     <ClCompile Include="..\..\Sources\Core\Crypto\Tests\Unittest\HashTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Database\Tests\Unittest\DatabaseSqliteTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataBufferTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamIntegralOperatorsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamNonIntegralOperatorsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTest.cpp" />

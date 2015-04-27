@@ -1,4 +1,5 @@
 #include "Core/File/Tests/Unittest/FileTestBase.h"
+#include <EGEDataStream.h>
 #include <EGEFile.h>
 #include <EGEString.h>
 
@@ -97,8 +98,9 @@ TEST_F(FileReadOnlyModeTest, ReadMoreThanAvailableWithBuffer)
 {
   // prepare buffer
   DataBuffer buffer;
-  buffer << generatedFileContent();
-  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << generatedFileContent().c_str();
+  EXPECT_EQ(static_cast<s64>(generatedFileContent().length()), buffer.size() - 1);
 
   // generate file
   createGeneratedFile();
@@ -201,8 +203,9 @@ TEST_F(FileReadOnlyModeTest, WriteWithBuffer)
 
   // prepare buffer
   DataBuffer buffer;
-  buffer << KBufferContent;
-  EXPECT_EQ(static_cast<s64>(KBufferContent.length()), buffer.size());
+  DataStream stream(&buffer);
+  stream << KBufferContent.c_str();
+  EXPECT_EQ(static_cast<s64>(KBufferContent.length()), buffer.size() - 1);
 
   // generate file
   createGeneratedFile();
