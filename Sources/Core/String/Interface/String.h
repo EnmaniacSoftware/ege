@@ -113,12 +113,24 @@ class String
      *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
      */
     s32 toInt(bool* error = NULL) const;
+    /*! Converts current string to 32-bit unsigned integer.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
+    u32 toUInt(bool* error = NULL) const;
     /*! Converts current string to 64-bit signed integer.
      *  @param  error Optional placeholder for error flag.
      *  @return Converted value. In case of an error, this value should not be used.
      *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
      */
     s64 toInt64(bool* error = NULL) const;
+    /*! Converts current string to 64-bit unsigned integer.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
+    u64 toUInt64(bool* error = NULL) const;
     /*! Converts current string to boolean.
      *  @param  error Optional placeholder for error flag.
      *  @return Converted value. In case of an error, this value should not be used.

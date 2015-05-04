@@ -18,11 +18,41 @@ s32 StringUtils::ToInt(const char* text, bool* error)
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 StringUtils::ToUInt(const char* text, bool* error)
+{
+  char* end;
+
+  u32 value = strtoul(text, &end, 10);
+
+  // check for error
+  if (error && (0 != *end))
+  {
+    *error = true;
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 StringUtils::ToInt64(const char* text, bool* error)
 {
   char* end;
 
   s64 value = _strtoi64(text, &end, 10);
+
+  // check for error
+  if (error && (0 != *end))
+  {
+    *error = true;
+  }
+  
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u64 StringUtils::ToUInt64(const char* text, bool* error)
+{
+  char* end;
+
+  u64 value = _strtoui64(text, &end, 10);
 
   // check for error
   if (error && (0 != *end))

@@ -172,6 +172,23 @@ s32 String::toInt(bool* error) const
   return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u32 String::toUInt(bool* error) const
+{
+  if (m_value.empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
+  u32 value = StringUtils::ToUInt(m_value.c_str(), error);
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 s64 String::toInt64(bool* error) const
 {
   if (m_value.empty())
@@ -185,6 +202,23 @@ s64 String::toInt64(bool* error) const
   }
 
   s64 value = StringUtils::ToInt64(m_value.c_str(), error);
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+u64 String::toUInt64(bool* error) const
+{
+  if (m_value.empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
+  u64 value = StringUtils::ToUInt64(m_value.c_str(), error);
 
   return value;
 }

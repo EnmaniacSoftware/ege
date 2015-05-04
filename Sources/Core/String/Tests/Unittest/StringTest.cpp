@@ -402,6 +402,55 @@ TEST_F(StringTest, ToInt)
   EXPECT_FALSE(error);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(StringTest, ToUInt)
+{
+  bool error = false;
+
+  // empty string conversion
+  String string;
+  string.toUInt(&error);
+  EXPECT_TRUE(error);
+
+  // invalid values
+  error = false;
+  string = "Dummy Text";
+  string.toUInt(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "@123";
+  string.toUInt(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123$";
+  string.toUInt(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123.90";
+  string.toUInt(&error);
+  EXPECT_TRUE(error);
+
+  // valid values
+  error = false;
+  string = "3890";
+  EXPECT_EQ(3890, string.toUInt(&error));
+  EXPECT_FALSE(error);
+
+  string = "+4590";
+  EXPECT_EQ(4590, string.toUInt(&error));
+  EXPECT_FALSE(error);
+
+  string = "-100";
+  EXPECT_EQ(static_cast<u32>(-100), string.toUInt(&error));
+  EXPECT_FALSE(error);
+
+  string = "4294967295";
+  EXPECT_EQ(4294967295, string.toUInt(&error));
+  EXPECT_FALSE(error);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(StringTest, ToInt64)
 {
   bool error = false;
@@ -449,6 +498,56 @@ TEST_F(StringTest, ToInt64)
 
   string = "9223372036854775807";
   EXPECT_EQ(9223372036854775807LL, string.toInt64(&error));
+  EXPECT_FALSE(error);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(StringTest, ToUInt64)
+{
+  bool error = false;
+
+  // empty string conversion
+  String string;
+  error = false;
+  string.toUInt64(&error);
+  EXPECT_TRUE(error);
+
+  // invalid values
+  error = false;
+  string = "Dummy Text";
+  string.toUInt64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "@123";
+  string.toUInt64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123$";
+  string.toUInt64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123.90";
+  string.toUInt64(&error);
+  EXPECT_TRUE(error);
+
+  // valid values
+  error = false;
+  string = "3890";
+  EXPECT_EQ(3890, string.toUInt64(&error));
+  EXPECT_FALSE(error);
+  
+  string = "+4590";
+  EXPECT_EQ(4590, string.toUInt64(&error));
+  EXPECT_FALSE(error);
+
+  string = "-100";
+  EXPECT_EQ(static_cast<u64>(-100), string.toUInt64(&error));
+  EXPECT_FALSE(error);
+
+  string = "18446744073709551615";
+  EXPECT_EQ(18446744073709551615LL, string.toUInt64(&error));
   EXPECT_FALSE(error);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

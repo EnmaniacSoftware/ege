@@ -17,7 +17,9 @@ class StringUtils
   public:
 
     static s32 ToInt(const char* text, bool* error = NULL);
+    static u32 ToUInt(const char* text, bool* error = NULL);
     static s64 ToInt64(const char* text, bool* error = NULL);
+    static u64 ToUInt64(const char* text, bool* error = NULL);
     
     /*! Converts given hex value into integer representation. 
      *  @param  hexInText Textual representation of hexadecimal number which is to be converted.
