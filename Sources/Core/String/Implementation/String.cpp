@@ -275,7 +275,33 @@ float32 String::toFloat(bool* error) const
   const char* text = m_value.c_str();
   char* end;
 
-  float32 value = (float32) strtod(text, &end);
+  float32 value = static_cast<float32>(strtod(text, &end));
+
+  // check for error
+  if (error && (0 != *end))
+  {
+    *error = true;
+  }
+
+  return value;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+float64 String::toFloat64(bool* error) const
+{
+  if (m_value.empty())
+  {
+    if (error)
+    {
+      *error = true;
+    }
+
+    return 0;
+  }
+
+  const char* text = m_value.c_str();
+  char* end;
+
+  float64 value = static_cast<float64>(strtod(text, &end));
 
   // check for error
   if (error && (0 != *end))

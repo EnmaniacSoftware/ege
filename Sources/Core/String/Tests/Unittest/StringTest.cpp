@@ -657,6 +657,55 @@ TEST_F(StringTest, ToFloat)
   EXPECT_FALSE(error);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(StringTest, ToFloat64)
+{
+  bool error = false;
+
+  // empty string conversion
+  String string;
+  string.toFloat64(&error);
+  EXPECT_TRUE(error);
+
+  // invalid values
+  error = false;
+  string = "Dummy Text";
+  string.toFloat64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "@123";
+  string.toFloat64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123$";
+  string.toFloat64(&error);
+  EXPECT_TRUE(error);
+
+  error = false;
+  string = "123.12.23";
+  string.toFloat64(&error);
+  EXPECT_TRUE(error);
+
+  // valid values
+  error = false;
+  string = "3890";
+  EXPECT_EQ(3890.0, string.toFloat64(&error));
+  EXPECT_FALSE(error);
+
+  string = "4590.12";
+  EXPECT_EQ(4590.12, string.toFloat64(&error));
+  EXPECT_FALSE(error);
+
+  string = "+4590.12";
+  EXPECT_EQ(4590.12, string.toFloat64(&error));
+  EXPECT_FALSE(error);
+
+  string = "-0.32";
+  EXPECT_EQ(-0.32, string.toFloat64(&error));
+  EXPECT_FALSE(error);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(StringTest, Trim)
 {
   const char* KWhiteSpaces = " \t\n\r\v\f";

@@ -143,6 +143,12 @@ class String
      *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
      */
     float32 toFloat(bool* error = NULL) const;
+    /*! Converts current string to 64-bit float value.
+     *  @param  error Optional placeholder for error flag.
+     *  @return Converted value. In case of an error, this value should not be used.
+     *  @note If optional error placeholder is given and no error occurs during the conversion, its value is not modifed.
+     */
+    float64 toFloat64(bool* error = NULL) const;
 
     /*! Splits the string into array of substrings whenever seperator occurs. */
     // TAGE - move to StingUtils ? This will remove dependency to DynamicArray
