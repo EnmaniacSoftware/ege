@@ -1,5 +1,8 @@
-#ifndef EGE_CORE_DATABUFFER_H
-#define EGE_CORE_DATABUFFER_H
+#ifndef EGE_CORE_DATA_DATABUFFER_H
+#define EGE_CORE_DATA_DATABUFFER_H
+
+/*! Convinient buffer for binary data storage. Allows writing and reading and acts as an I/O device for streaming purposes.
+ */
 
 #include "EGE.h"
 #include "EGEIODevice.h"
@@ -94,9 +97,9 @@ class DataBuffer : public Object
     s64 m_capacity;
     /*! Pointer to allocated data. */
     void* m_data;
-    /*! Read pointer offset. */
+    /*! Read pointer offset (0-based). */
     s64 m_readOffset;
-    /*! Write pointer offset. */
+    /*! Write pointer offset (0-based). */
     s64 m_writeOffset;
     /*! TRUE if internal data can be changed, ie. realloc, free etc. */
     bool m_mutable;
@@ -105,4 +108,4 @@ class DataBuffer : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_DATABUFFER_H
+#endif // EGE_CORE_DATA_DATABUFFER_H
