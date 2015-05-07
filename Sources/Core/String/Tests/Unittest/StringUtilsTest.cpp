@@ -38,6 +38,20 @@ void StringUtilsTest::TearDown()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TEST_F(StringUtilsTest, IsWhiteSpace)
+{
+  const std::string KWhiteSpaces = " \t\n\r\v\f";
+
+  // go thru Ascii range
+  for (s32 c = 0; c < 128; ++c)
+  {
+    // check if character is a white space
+    const bool expectedWhitespaceFlag = (std::string::npos != KWhiteSpaces.find(static_cast<char>(c)));
+
+    EXPECT_EQ(expectedWhitespaceFlag, StringUtils::IsWhiteSpace(static_cast<char>(c)));
+  }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TEST_F(StringUtilsTest, ToInt)
 {
   //bool error = false;

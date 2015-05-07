@@ -1,14 +1,10 @@
 #include "Core/String/Interface/TextStream.h"
 #include "EGEDebug.h"
 #include "EGEIODevice.h"
+#include "EGEStringUtils.h"
 
 EGE_NAMESPACE_BEGIN
 
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static bool IsWhiteSpace(char c)
-{
-  return (' ' == c) || ('\t' == c) || ('\n' == c) || ('\r' == c) || ('\v' == c) || ('\f' == c);
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 /*! Local function reading next word from a device.
  *  @param  device      Device to the data from.
@@ -34,7 +30,7 @@ static s32 ReadWord(IODevice& device, char* buffer, s32 bufferSize)
     done = (1 != read);
 
     // check if whitespace
-    if ( ! done && IsWhiteSpace(c))
+    if ( ! done && StringUtils::IsWhiteSpace(c))
     {
       // has anything been read already
       if (0 < bytesRead)
@@ -76,7 +72,7 @@ static s32 ReadWord(IODevice& device, String& buffer)
     done = (1 != read);
 
     // check if whitespace
-    if ( ! done && IsWhiteSpace(c))
+    if ( ! done && StringUtils::IsWhiteSpace(c))
     {
       // has anything been read already
       if (0 < bytesRead)

@@ -12,12 +12,6 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const s32 KWorkBufferLength = 512;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-/*! Local function detrmining if given character is a white space. */
-static bool IsWhiteSpace(char c)
-{
-  return (' ' == c) || ('\t' == c) || ('\n' == c) || ('\r' == c) || ('\v' == c) || ('\f' == c);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 String::String()
 {
 }
@@ -563,7 +557,7 @@ String String::trimmed() const
   }
 
   // check if at the start and end there are non-white characters
-  if (!IsWhiteSpace(*m_value.begin()) && !IsWhiteSpace(*(m_value.end() - 1)))
+  if ( ! StringUtils::IsWhiteSpace(*m_value.begin()) && ! StringUtils::IsWhiteSpace(*(m_value.end() - 1)))
   {
     // done
     return *this;
@@ -573,7 +567,7 @@ String String::trimmed() const
   std::string::const_iterator endPos    = m_value.end() - 1;
 
   // skip white spaces from the begining
-  while ((startPos <= endPos) && IsWhiteSpace(*startPos))
+  while ((startPos <= endPos) && StringUtils::IsWhiteSpace(*startPos))
   {
     ++startPos;
   }
@@ -581,7 +575,7 @@ String String::trimmed() const
   if (startPos <= endPos)
   {
     // skip white spaces from the end
-    while ((endPos != m_value.begin()) && IsWhiteSpace(*endPos))
+    while ((endPos != m_value.begin()) && StringUtils::IsWhiteSpace(*endPos))
     {
       --endPos;
     }

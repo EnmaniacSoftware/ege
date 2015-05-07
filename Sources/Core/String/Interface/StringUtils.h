@@ -21,6 +21,9 @@ class StringUtils
     static s64 ToInt64(const char* text, bool* error = NULL);
     static u64 ToUInt64(const char* text, bool* error = NULL);
     
+    /*! Returns TRUE if given character is a whitespace. */
+    static bool IsWhiteSpace(char c);
+
     /*! Converts given hex value into integer representation. 
      *  @param  hexInText Textual representation of hexadecimal number which is to be converted.
      *  @param  error     Option placeholder for error value.
