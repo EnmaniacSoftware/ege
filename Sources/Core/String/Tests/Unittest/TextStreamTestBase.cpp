@@ -1,62 +1,43 @@
-#include "Core/Database/Interface/SqlQuery.h"
-#include "Core/ComplexTypes.h"
-#include "EGEStringBuffer.h"
-#include "EGETextStream.h"
+#include "TextStreamTestBase.h"
 
-EGE_NAMESPACE_BEGIN
+using namespace ::testing;
+
+EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SqlQuery::SqlQuery(const String& statement) 
-: m_query(statement)
+const std::string TextStreamTestBase::KWhiteSpaces = " \t\n\r\v\f";
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+TextStreamTestBase::TextStreamTestBase()
+: TestBase()
+, m_stream(&m_device)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-SqlQuery::~SqlQuery()
+TextStreamTestBase::~TextStreamTestBase()
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const String& SqlQuery::value() const
+void TextStreamTestBase::SetUp()
 {
-  return m_query;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool SqlQuery::addBindValue(const String& value)
+void TextStreamTestBase::TearDown()
 {
-  PStringBuffer buffer = ege_new StringBuffer();
-  TextStream stream(buffer);
-
-  if (NULL != buffer)
-  {
-    stream << value;
-
-    m_boundValues << buffer;
-  }
-
-  return (NULL != buffer);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool SqlQuery::addBindValue(PDataBuffer value)
+void TextStreamTestBase::makeDataStreamNotGood()
 {
-  m_boundValues << value;
+  // NOTE: its a bit workaround as there is currently no way to access private data members to do it directly
 
-  return true;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-bool SqlQuery::addBindValue(s32 value)
-{
-  PInteger valueObject = ege_new Integer(value);
-  if (NULL != valueObject)
-  {
-    m_boundValues << valueObject;
-  }
+  // set expectations
+  EXPECT_CALL(m_device, write(_, _))
+    .WillOnce(Return(-1));
 
-  return (NULL != valueObject);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-const List<PObject>& SqlQuery::values() const
-{
-  return m_boundValues;
+  // make a failed write 
+  m_stream << static_cast<u8>(0);
+
+  // check if bad
+  EXPECT_FALSE(m_stream.isGood());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-EGE_NAMESPACE_END

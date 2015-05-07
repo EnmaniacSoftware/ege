@@ -2,7 +2,7 @@
 #define EGE_CORE_DATA_TESTS_UNITTESTS_DATASTREAMTESTBASE_H
 
 #include "TestFramework/Interface/TestBase.h"
-#include "IODeviceMock.h"
+#include "TestFramework/Interface/IODeviceMock.h"
 #include <EGEDataStream.h>
 
 #include <gmock/gmock.h>

@@ -1,12 +1,14 @@
 #include "Core/Debug/Interface/Logger.h"
 #include "EGEFile.h"
+#include "EGETextStream.h"
 
 EGE_NAMESPACE_BEGIN
   
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Logger::Logger(const String& logFileName, bool timeStamp) : m_fileName(logFileName)
-                                                          , m_spaceSeperated(true)
-                                                          , m_timeStampEnabled(timeStamp)
+Logger::Logger(const String& logFileName, bool timeStamp) 
+: m_fileName(logFileName)
+, m_spaceSeperated(true)
+, m_timeStampEnabled(timeStamp)
 {
   // allocate buffer
   m_buffer = ege_new StringBuffer();
@@ -45,7 +47,9 @@ Logger& Logger::maybeSpace()
 { 
   if (m_spaceSeperated)
   {
-    *m_buffer << " ";
+    TextStream stream(m_buffer);
+
+    stream << " ";
   }
   
   return *this; 
@@ -53,31 +57,46 @@ Logger& Logger::maybeSpace()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (bool t)
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (s16 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (u16 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (s32 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (u32 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -89,37 +108,55 @@ Logger& Logger::operator << (u32 t)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (s64 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (u64 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (float32 t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (const char* t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (const String& t) 
 { 
-  *m_buffer << t; 
+  TextStream stream(m_buffer);
+
+  stream << t;
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 Logger& Logger::operator << (const void* t) 
 { 
-  *m_buffer << String::Format("%p", t); 
+  TextStream stream(m_buffer);
+
+  stream << String::Format("%p", t);
+
   return maybeSpace(); 
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -143,8 +180,10 @@ void Logger::write()
   // open file
   if (EGE_SUCCESS == file.open(EFileModeWriteAppend))
   {
+    TextStream stream(m_buffer);
+
     // add new line character
-    *m_buffer << "\n";
+    stream << "\n";
 
     // store data
     file.write(reinterpret_cast<const void*>(m_buffer->string().toAscii()), m_buffer->string().length());   

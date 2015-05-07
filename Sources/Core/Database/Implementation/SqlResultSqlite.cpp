@@ -1,6 +1,7 @@
 #include "Core/Database/Implementation/SqlResultSqlite.h"
 #include "Core/ComplexTypes.h"
 #include "EGEDataBuffer.h"
+#include "EGETextStream.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -77,8 +78,10 @@ EGEResult SqlResultSqlite::addValue(s32 index, const char* value)
   }
   else
   {
+    TextStream stream(valueObject);
+
     // add value to value object
-    *valueObject << value;
+    stream << value;
 
     // add it to pool
     m_rows[index].append(valueObject);

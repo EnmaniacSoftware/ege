@@ -5,6 +5,7 @@
 #include "EGEStringBuffer.h"
 #include "EGETimer.h"
 #include "EGEGraphics.h"
+#include "EGETextStream.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -111,6 +112,7 @@ void RenderSystemStatistics::onRenderEnd()
 void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
 {
   StringBuffer buffer;
+  TextStream stream(&buffer);
 
   // go thru all records backwards
   for (s32 i = 0; i < m_records.size(); ++i)
@@ -119,29 +121,29 @@ void RenderSystemStatistics::dumpDataToFile(bool dumpComponentNames)
 
     const RenderSystemFrameStatisticData& data = m_records[index];
 
-    buffer << "-- START RECORD\n";
-    buffer << "Render time      : " << data.renderDuration << " msec\n";
-    buffer << "DrawElementsCalls: " << data.drawElementsCalls << "\n";
-    buffer << "DrawArraysCalls  : " << data.drawArraysCalls << "\n";
-    buffer << "Batch Count      : " << data.batchCount << "\n";
-    buffer << "Vertex Count     : " << data.vertexCount << "\n";
+    stream << "-- START RECORD\n";
+    stream << "Render time      : " << data.renderDuration << " msec\n";
+    stream << "DrawElementsCalls: " << data.drawElementsCalls << "\n";
+    stream << "DrawArraysCalls  : " << data.drawArraysCalls << "\n";
+    stream << "Batch Count      : " << data.batchCount << "\n";
+    stream << "Vertex Count     : " << data.vertexCount << "\n";
 
-    buffer << "Render queues: " << data.queues.size() << "\n";
+    stream << "Render queues: " << data.queues.size() << "\n";
     for (DynamicArray<RenderSystemRenderQueueData>::ConstIterator it = data.queues.begin(); it != data.queues.end(); ++it)
     {
       const RenderSystemRenderQueueData& queueData = *it;
 
-      buffer << " Hash: "<< queueData.hash << " Priority: " << queueData.priority << " Primitive: " << PrimitiveTypeName(queueData.primitiveType) 
+      stream << " Hash: "<< queueData.hash << " Priority: " << queueData.priority << " Primitive: " << PrimitiveTypeName(queueData.primitiveType) 
              << " Batch Count: " << queueData.batchCount << " Indexed Batch Count: " << queueData.indexedBatchCount << " Vertex Count: " 
              << queueData.vertexCount << "\n";
       
       for (StringList::ConstIterator itName = queueData.componentNames.begin(); dumpComponentNames && (itName != queueData.componentNames.end()); ++itName)
       {
-        buffer << "   " << *itName << "\n";
+        stream << "   " << *itName << "\n";
       }
     }
 
-    buffer << "-- END RECORD\n\n";
+    stream << "-- END RECORD\n\n";
   }
 
   // write to file

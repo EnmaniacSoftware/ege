@@ -1,4 +1,5 @@
 #include "Core/Debug/Interface/Debug.h"
+#include "EGETextStream.h"
 #include <stdarg.h>
 
 EGE_NAMESPACE_BEGIN
@@ -9,9 +10,10 @@ const char* Debug::KErrorPrefix   = "ERROR: ";
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static StringList l_enabledName;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug::Debug(DebugMessageType type, const String& name) : m_spaceSeperated(true)
-                                                        , m_type(type)
-                                                        , m_enabled(false)
+Debug::Debug(DebugMessageType type, const String& name) 
+: m_spaceSeperated(true)
+, m_type(type)
+, m_enabled(false)
 {
   // check if enabled
   if (l_enabledName.contains(name))
@@ -22,11 +24,13 @@ Debug::Debug(DebugMessageType type, const String& name) : m_spaceSeperated(true)
     m_buffer = ege_new StringBuffer();
     if (NULL != m_buffer)
     {
+      TextStream stream(m_buffer);
+
       // init depending on type
       switch (m_type)
       {
-        case EWarning:  *m_buffer << KWarningPrefix; break;
-        case EError:    *m_buffer << KErrorPrefix; break;
+        case EWarning:  stream << KWarningPrefix; break;
+        case EError:    stream << KErrorPrefix; break;
       
         default:
           break;
@@ -60,7 +64,9 @@ Debug& Debug::operator << (bool t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -70,7 +76,9 @@ Debug& Debug::operator << (s16 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -80,7 +88,9 @@ Debug& Debug::operator << (u16 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
     
   return maybeSpace();
@@ -90,7 +100,9 @@ Debug& Debug::operator << (s32 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -100,7 +112,9 @@ Debug& Debug::operator << (u32 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -116,7 +130,9 @@ Debug& Debug::operator << (s64 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -126,7 +142,9 @@ Debug& Debug::operator << (u64 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -136,7 +154,9 @@ Debug& Debug::operator << (float32 t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -146,7 +166,9 @@ Debug& Debug::operator << (const char* t)
 { 
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -156,7 +178,9 @@ Debug& Debug::operator << (const String& t)
 {
   if (m_enabled)
   {
-    *m_buffer << t;
+    TextStream stream(m_buffer);
+
+    stream << t;
   }
 
   return maybeSpace();
@@ -166,7 +190,9 @@ Debug& Debug::operator << (const void* t)
 { 
   if (m_enabled)
   {
-    *m_buffer << String::Format("%p", t);
+    TextStream stream(m_buffer);
+
+    stream << String::Format("%p", t);
   }
 
   return maybeSpace();
@@ -201,7 +227,9 @@ Debug& Debug::maybeSpace()
 { 
   if (m_enabled && m_spaceSeperated)
   {
-    *m_buffer << " ";
+    TextStream stream(m_buffer);
+
+    stream << " ";
   }
   
   return *this; 

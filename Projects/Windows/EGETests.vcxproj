@@ -133,8 +133,14 @@
     <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.cpp" />
     <ClCompile Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.cpp" />
     <ClCompile Include="..\..\Sources\Core\Services\Tests\Unittest\DeviceServicesTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringBufferTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringUtilsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamFloatOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamIntegralOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamBooleanOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamStringOperatorsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamTestBase.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp" />
@@ -178,7 +184,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\Tests\Unittests\IODeviceMock.h" />
     <ClInclude Include="..\..\Sources\Core\File\Tests\Unittest\FileTestBase.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\GeneratorHelper.h" />
     <ClInclude Include="..\..\Sources\Core\Math\Tests\Unittest\Helpers\MathHelper.h" />
@@ -189,7 +194,9 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerSingleThreadMock.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceManagerTestBase.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Tests\ComponentTest\ResourceMock.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Tests\Unittest\TextStreamTestBase.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\EngineMock.h" />
+    <ClInclude Include="..\..\Sources\TestFramework\Interface\IODeviceMock.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\ResourceFactoryMock.h" />
     <ClInclude Include="..\..\Sources\TestFramework\Interface\TestBase.h" />
   </ItemGroup>

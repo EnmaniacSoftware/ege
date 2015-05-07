@@ -1,5 +1,6 @@
 #include "Core/String/Interface/StringBuffer.h"
 #include "EGEDebug.h"
+#include "EGEMath.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -7,7 +8,9 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(StringBuffer)
 EGE_DEFINE_DELETE_OPERATORS(StringBuffer)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-StringBuffer::StringBuffer() : Object(EGE_OBJECT_UID_STRING_BUFFER)
+StringBuffer::StringBuffer() 
+: Object(EGE_OBJECT_UID_STRING_BUFFER)
+, m_readOffset(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -20,173 +23,41 @@ const String& StringBuffer::string() const
   return m_buffer;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (u8 value)
+s32 StringBuffer::size() const
 {
-  m_buffer += String::Format("%u", value);
-  return *this;
+  return m_buffer.length();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (s8 value)
+s64 StringBuffer::read(void* data, s64 length)
 {
-  m_buffer += String::Format("%d", value);
-  return *this;
+  // calculate number of bytes to read
+  const s32 bytesToRead = Math::Min(static_cast<s32>(length), m_buffer.length() - m_readOffset);
+  
+  if (0 < bytesToRead)
+  {
+    // copy data
+    EGE_MEMCPY(data, m_buffer.toAscii() + m_readOffset, static_cast<size_t>(bytesToRead));
+  
+    // update read offset
+    m_readOffset += bytesToRead;
+  }
+
+  return bytesToRead;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (u16 value)
+s64 StringBuffer::write(const void* data, s64 length)
 {
-  m_buffer += String::Format("%u", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (s16 value)
-{
-  m_buffer += String::Format("%d", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (u32 value)
-{
-  m_buffer += String::Format("%u", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (s32 value)
-{
-  m_buffer += String::Format("%d", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (u64 value)
-{
-  m_buffer += String::Format("%llu", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (s64 value)
-{
-  m_buffer += String::Format("%lld", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (bool value)
-{
-  m_buffer += String::Format("%s", value ? "true" : "false");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (float32 value)
-{
-  m_buffer += String::Format("%f", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (float64 value)
-{
-  m_buffer += String::Format("%f", value);
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (const char* value)
-{
+  const String& value = String(reinterpret_cast<const char*>(data), static_cast<s32>(length));
+
   m_buffer += value;
-  return *this;
+
+  return length;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator << (const String& value)
+void StringBuffer::clear()
 {
-  m_buffer += value;
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (u8& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (s8& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (u16& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (s16& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (u32& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (s32& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (u64& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (s64& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (bool& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (float32& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (float64& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (const char* value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISerializable& StringBuffer::operator >> (String& value)
-{
-  EGE_UNUSED(value);
-  EGE_ASSERT_X(false, "Unsupported");
-  return *this;
+  m_buffer.clear();
+  m_readOffset = 0;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

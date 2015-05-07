@@ -207,6 +207,7 @@
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Implementation\StringUtils.cpp" />
     <ClCompile Include="..\..\Sources\Core\String\Implementation\Text.cpp" />
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\TextStream.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Mutex.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\MutexLocker.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\PThread\Mutex_p.cpp" />
@@ -471,6 +472,7 @@
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\StringUtils.h" />
     <ClInclude Include="..\..\Sources\Core\String\Interface\Text.h" />
+    <ClInclude Include="..\..\Sources\Core\String\Interface\TextStream.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\Mutex.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\MutexLocker.h" />
     <ClInclude Include="..\..\Sources\Core\Threading\PThread\Mutex_p.h" />
@@ -636,6 +638,7 @@
     <ClInclude Include="..\..\Sources\EGEText.h" />
     <ClInclude Include="..\..\Sources\EGETextArray.h" />
     <ClInclude Include="..\..\Sources\EGETextList.h" />
+    <ClInclude Include="..\..\Sources\EGETextStream.h" />
     <ClInclude Include="..\..\Sources\EGETexture.h" />
     <ClInclude Include="..\..\Sources\EGEThread.h" />
     <ClInclude Include="..\..\Sources\EGETime.h" />

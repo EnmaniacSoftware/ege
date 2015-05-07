@@ -1179,6 +1179,9 @@
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataStream.cpp">
       <Filter>Core\Data\Implementation</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\String\Implementation\TextStream.cpp">
+      <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Sources\Core\Graphics\Camera.h">
@@ -2182,6 +2185,10 @@
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
       <Filter>Core\Data\Interface</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\String\Interface\TextStream.h">
+      <Filter>Core\String\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGETextStream.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
