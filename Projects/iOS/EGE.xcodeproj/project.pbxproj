@@ -237,6 +237,7 @@
 		45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */; };
 		45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */; };
 		45C858F41AD30EF3003A0635 /* FileIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F31AD30EF3003A0635 /* FileIOS.mm */; };
+		45D039441AFBF7C600196704 /* TextStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45D039431AFBF7C600196704 /* TextStream.cpp */; };
 		45D6D0CE19B3C3EB00B3DA64 /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */; };
 		45D6D0D019B3C58200B3DA64 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */; };
 		45D6D0D219B3C58E00B3DA64 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0D119B3C58E00B3DA64 /* StoreKit.framework */; };
@@ -941,6 +942,9 @@
 		45C6F7781AC4A1E600EE3E6B /* EGESet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGESet.h; path = ../../Sources/EGESet.h; sourceTree = "<group>"; };
 		45C858F31AD30EF3003A0635 /* FileIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS.mm; sourceTree = "<group>"; };
 		45C858F51AD30EFA003A0635 /* FileIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileIOS.h; sourceTree = "<group>"; };
+		45D0393D1AFBF7A900196704 /* EGETextStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETextStream.h; path = ../../Sources/EGETextStream.h; sourceTree = "<group>"; };
+		45D039431AFBF7C600196704 /* TextStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextStream.cpp; sourceTree = "<group>"; };
+		45D039451AFBF7CF00196704 /* TextStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextStream.h; sourceTree = "<group>"; };
 		45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libChartboost.a; path = ../../External/chartboost/lib/iOS/libChartboost.a; sourceTree = "<group>"; };
 		45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		45D6D0D119B3C58E00B3DA64 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -1105,8 +1109,6 @@
 		45146E7118C522A000AAC617 /* EGE */ = {
 			isa = PBXGroup;
 			children = (
-				45F3D7C51AE3D553000CB980 /* EGEDataStream.h */,
-				45F3D7C61AE3D553000CB980 /* EGEIODevice.h */,
 				45146E7418C522EA00AAC617 /* EGE.h */,
 				45E4DC10199BF950000FB4B8 /* EGEAdNetwork.h */,
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
@@ -1128,6 +1130,7 @@
 				45146E8318C522EA00AAC617 /* EGEComponent.h */,
 				457A67C218C7DB220004D38F /* EGEDatabase.h */,
 				45146E8418C522EA00AAC617 /* EGEDataBuffer.h */,
+				45F3D7C51AE3D553000CB980 /* EGEDataStream.h */,
 				45146E8518C522EA00AAC617 /* EGEDebug.h */,
 				45146E8618C522EA00AAC617 /* EGEDevice.h */,
 				45146E8718C522EA00AAC617 /* EGEDeviceServices.h */,
@@ -1146,6 +1149,7 @@
 				45146E9218C522EA00AAC617 /* EGEImageLoader.h */,
 				45146E9318C522EA00AAC617 /* EGEIndexBuffer.h */,
 				45146E9418C522EA00AAC617 /* EGEInput.h */,
+				45F3D7C61AE3D553000CB980 /* EGEIODevice.h */,
 				4563A4D31971FB360002D632 /* EGEKeyFrameAnimation.h */,
 				45146E9518C522EA00AAC617 /* EGELine2.h */,
 				45146E9618C522EA00AAC617 /* EGEList.h */,
@@ -1195,6 +1199,7 @@
 				45146EBD18C522EA00AAC617 /* EGEText.h */,
 				45146EBE18C522EA00AAC617 /* EGETextArray.h */,
 				45146EBF18C522EA00AAC617 /* EGETextList.h */,
+				45D0393D1AFBF7A900196704 /* EGETextStream.h */,
 				45146EC018C522EA00AAC617 /* EGETexture.h */,
 				45146EC118C522EA00AAC617 /* EGEThread.h */,
 				45146EC218C522EA00AAC617 /* EGETime.h */,
@@ -2725,6 +2730,7 @@
 		457C565719E5C29900E35A51 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45D039431AFBF7C600196704 /* TextStream.cpp */,
 				45C17FE51A901A580018922D /* Text.cpp */,
 				4506A9D01A89614E009393B3 /* String.cpp */,
 				457C565B19E5C29900E35A51 /* StringBuffer.cpp */,
@@ -2736,6 +2742,7 @@
 		457C565D19E5C29900E35A51 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45D039451AFBF7CF00196704 /* TextStream.h */,
 				45C17FE71A901A5F0018922D /* Text.h */,
 				4506A9D21A896157009393B3 /* String.h */,
 				457C566119E5C29900E35A51 /* StringBuffer.h */,
@@ -3347,6 +3354,7 @@
 				451471C418C5231900AAC617 /* MutexLocker.cpp in Sources */,
 				45C17FE61A901A580018922D /* Text.cpp in Sources */,
 				4506A9C81A893D9A009393B3 /* AtomicInt.cpp in Sources */,
+				45D039441AFBF7C600196704 /* TextStream.cpp in Sources */,
 				451471C518C5231900AAC617 /* Mutex_p.cpp in Sources */,
 				451471C618C5231900AAC617 /* Thread_p.cpp in Sources */,
 				4506A9C71A893D9A009393B3 /* AtomicBool.cpp in Sources */,
