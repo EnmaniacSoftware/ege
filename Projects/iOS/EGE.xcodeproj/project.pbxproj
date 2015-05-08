@@ -958,7 +958,6 @@
 		45E0F0C31909AFBC0003E15F /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		45E0F0C51909AFBC0003E15F /* DataBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBuffer.h; sourceTree = "<group>"; };
 		45E0F0C61909AFBC0003E15F /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
-		45E0F0C71909AFBC0003E15F /* Serializable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Serializable.h; sourceTree = "<group>"; };
 		45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImagedAnimation.cpp; sourceTree = "<group>"; };
 		45E0F0CD1909B0DD0003E15F /* ImagedAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagedAnimation.h; sourceTree = "<group>"; };
 		45E246B019ABD52B00A538B0 /* EngineApplication.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EngineApplication.cpp; sourceTree = "<group>"; };
@@ -2969,7 +2968,6 @@
 				45F3D7CE1AE3D57C000CB980 /* DataStream.h */,
 				45E0F0C51909AFBC0003E15F /* DataBuffer.h */,
 				45E0F0C61909AFBC0003E15F /* Node.h */,
-				45E0F0C71909AFBC0003E15F /* Serializable.h */,
 			);
 			path = Interface;
 			sourceTree = "<group>";
