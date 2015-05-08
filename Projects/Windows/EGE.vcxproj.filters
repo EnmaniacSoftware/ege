@@ -2182,9 +2182,6 @@
       <Filter>Core\Device\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEIODevice.h" />
-    <ClInclude Include="..\..\Sources\Core\Data\Interface\Serializable.h">
-      <Filter>Core\Data\Interface</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Sources\Core\String\Interface\TextStream.h">
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
