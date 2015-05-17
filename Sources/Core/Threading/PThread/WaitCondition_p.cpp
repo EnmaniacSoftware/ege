@@ -34,7 +34,7 @@ bool WaitConditionPrivate::wait(Mutex* mutex)
   }
 
   // check if initially locked
-  bool locked = (mutex->m_owner != NULL);
+  bool locked = (NULL != mutex->m_owner.load());
   EGE_ASSERT(locked);
 
   if ( ! locked)
@@ -46,13 +46,13 @@ bool WaitConditionPrivate::wait(Mutex* mutex)
   // NOTE: pthread_cond_wait releases the mutex
   // NOTE: Mutex is locked so it is ok to change internal state
   mutex->m_lockCount = 0;
-  mutex->m_owner     = NULL;
+  mutex->m_owner.store(NULL);
 
   int result = pthread_cond_wait(&m_condition, &mutex->p_func()->m_mutex);
 
   // mutex is locked on pthread_cond_wait return
   mutex->m_lockCount = 1;
-  mutex->m_owner     = Thread::CurrentId();
+  mutex->m_owner.store(Thread::CurrentId());
 
   return (0 == result);
 }
