@@ -895,6 +895,13 @@
 		458AA79B18FF1F0E00333B67 /* TimeLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeLine.h; sourceTree = "<group>"; };
 		458AA79C18FF1F0E00333B67 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
 		458AA7A918FF1F3100333B67 /* TimerIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TimerIOS.mm; sourceTree = "<group>"; };
+		4590C5E91B08B0010099811D /* EGEAtomicPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAtomicPointer.h; path = ../../Sources/EGEAtomicPointer.h; sourceTree = "<group>"; };
+		4590C5EF1B08B01E0099811D /* AtomicPointer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtomicPointer.h; sourceTree = "<group>"; };
+		4590C5F01B08B03D0099811D /* ResourceManagerGroupLoadedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerGroupLoadedRequest.h; sourceTree = "<group>"; };
+		4590C5F11B08B03D0099811D /* ResourceManagerGroupUnloadedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerGroupUnloadedRequest.h; sourceTree = "<group>"; };
+		4590C5F21B08B03D0099811D /* ResourceManagerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerRequest.h; sourceTree = "<group>"; };
+		4590C5F31B08B03D0099811D /* ResourceManagerResourceLoadedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerResourceLoadedRequest.h; sourceTree = "<group>"; };
+		4590C5F41B08B03D0099811D /* ResourceManagerResourceUnloadedRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceManagerResourceUnloadedRequest.h; sourceTree = "<group>"; };
 		459972F119EDC798001B63C3 /* KeyEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyEvent.cpp; sourceTree = "<group>"; };
 		459972F219EDC798001B63C3 /* MouseEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MouseEvent.cpp; sourceTree = "<group>"; };
 		459972F319EDC798001B63C3 /* PointerEvent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PointerEvent.cpp; sourceTree = "<group>"; };
@@ -1057,6 +1064,7 @@
 		4506A9BE1A893D9A009393B3 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				4590C5EF1B08B01E0099811D /* AtomicPointer.h */,
 				4506A9BF1A893D9A009393B3 /* AtomicBool.h */,
 				4506A9C01A893D9A009393B3 /* AtomicInt.h */,
 				4506A9C11A893D9A009393B3 /* AtomicOperations.h */,
@@ -1116,6 +1124,7 @@
 				45146E7918C522EA00AAC617 /* EGEAtomic.h */,
 				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
 				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
+				4590C5E91B08B0010099811D /* EGEAtomicPointer.h */,
 				45146E7A18C522EA00AAC617 /* EGEAudio.h */,
 				4563A4D21971FB360002D632 /* EGEAudioHelper.h */,
 				45146E7B18C522EA00AAC617 /* EGEByteOrder.h */,
@@ -2620,6 +2629,11 @@
 		456CA23919F83B6500868FA1 /* MultiThread */ = {
 			isa = PBXGroup;
 			children = (
+				4590C5F01B08B03D0099811D /* ResourceManagerGroupLoadedRequest.h */,
+				4590C5F11B08B03D0099811D /* ResourceManagerGroupUnloadedRequest.h */,
+				4590C5F21B08B03D0099811D /* ResourceManagerRequest.h */,
+				4590C5F31B08B03D0099811D /* ResourceManagerResourceLoadedRequest.h */,
+				4590C5F41B08B03D0099811D /* ResourceManagerResourceUnloadedRequest.h */,
 				456CA23A19F83B6500868FA1 /* ResourceManagerMultiThread.cpp */,
 				456CA23B19F83B6500868FA1 /* ResourceManagerWorkThread.cpp */,
 				456CA23C19F83B6500868FA1 /* ResourceManagerWorkThread.h */,
