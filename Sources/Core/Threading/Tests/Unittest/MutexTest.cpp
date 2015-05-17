@@ -9,7 +9,7 @@ EGE_NAMESPACE
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const s32 KRepetitionsCount          = 100000;
 static const s32 KRecursiveRepetitionsCount = 1000;
-static const s32 KThreadCount               = 20;
+static const s32 KThreadCount               = 8;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void* (*threadMain)(void* userData);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -91,6 +91,7 @@ void* MutexTest::Increment(void* userData)
   while ( ! me->m_threadStartFlag)
   {
     // wait
+    Device::Sleep(1);
   }
 
   for (int i = 0; i < KRepetitionsCount; ++i)
@@ -114,6 +115,7 @@ void* MutexTest::RecursiveIncrement(void* userData)
   while ( ! me->m_threadStartFlag)
   {
     // wait
+    Device::Sleep(1);
   }
 
   // acquire lock

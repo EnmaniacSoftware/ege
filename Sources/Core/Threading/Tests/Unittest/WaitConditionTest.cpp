@@ -10,7 +10,7 @@ EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 static const s32 KRepetitionsCount = 100;
-static const s32 KThreadCount      = 20;
+static const s32 KThreadCount      = 8;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void* (*threadMain)(void* userData);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -103,6 +103,7 @@ void* WaitConditionTest::WaitAndIncrement(void* userData)
   while ( ! me->m_threadStartFlag)
   {
     // wait
+    Device::Sleep(1);
   }
 
   // lock mutex
@@ -185,6 +186,8 @@ void WaitConditionTest::waitUntilThreadFinishes()
         return;
       }
     }
+
+    Device::Sleep(1);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -231,6 +234,7 @@ TEST_F(WaitConditionTest, WakeOne)
   // wait until all threads are awaiting
   while (m_awaitingCounter != KThreadCount)
   {
+    Device::Sleep(1);
   }
 
   // wake up threads one by one
@@ -260,6 +264,7 @@ TEST_F(WaitConditionTest, WakeAll)
   // wait until all threads are awaiting
   while (m_awaitingCounter != KThreadCount)
   {
+    Device::Sleep(1);
   }
 
   // wake up all
