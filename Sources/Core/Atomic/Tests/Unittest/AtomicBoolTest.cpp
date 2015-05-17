@@ -1,30 +1,34 @@
 #include "TestFramework/Interface/TestBase.h"
 #include <EGEAtomicBool.h>
+#include <EGEAtomicInt.h>
+#include <EGEDevice.h>
 #include <pthread.h>
+#include <algorithm>
 #include <vector>
-#include <Windows.h>
 
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const s32 KRepetitionsCount = 100;
+static const s32 KRepetitionsCount = 100000;
 static const s32 KThreadCount      = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void* (*threadMain)(void* userData);
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class AtomicBoolTest;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+struct ThreadArgs
+{
+  AtomicBoolTest* test;
+  int index;
+  bool loadThread;
+};
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class AtomicBoolTest : public TestBase
 {
   protected:
 
-    /*! Thread main function for increments. */
-    static void* Increment(void* userData);
-    /*! Thread main function for decrements. */
-    static void* Decrement(void* userData);
-
-    /*! Methods sleeping for a given interval. 
-     *  @param  miliseconds Sleep interval.
-     */
-    static void OsSleep(u32 miliseconds);
+    /*! Thread main function for load/store testing. */
+    static void* LoadAndStore(void* userData);
 
   protected:
 
@@ -41,53 +45,74 @@ class AtomicBoolTest : public TestBase
     std::vector<pthread_t> m_thread;
     /*! Value to be modifed. */
     AtomicBool m_value;
+    /*! Counter. */
+    AtomicInt m_counter;
     /*! Global thread activation flag. */
     bool m_start;
+    /*! Global thread termination flag. */
+    bool m_done;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* AtomicBoolTest::Increment(void* userData)
+void* AtomicBoolTest::LoadAndStore(void* userData)
 {
-  AtomicBoolTest* me = reinterpret_cast<AtomicBoolTest*>(userData);
+  ThreadArgs* args = reinterpret_cast<ThreadArgs*>(userData);
 
-  while ( ! me->m_start)
+  while ( ! args->test->m_start)
   {
-    AtomicBoolTest::OsSleep(1);
+    Device::Sleep(1);
   }
 
-  for (s32 i = 0; i < KRepetitionsCount; ++i)
+  if (args->loadThread)
   {
-    //me->m_value.increment();
+    for (s32 i = 0; i < KRepetitionsCount; ++i)
+    {
+      // check if flag is set
+      while ( ! args->test->m_value.load())
+      {
+      }
+
+      // TRUE
+
+      // reset the flag
+      EXPECT_TRUE(args->test->m_value.store(false));
+    }
+
+    // signal end of work
+    args->test->m_done = true;
   }
+  else
+  {
+    while (true)
+    {
+      // try to set the flag
+      // NOTE: only one non-loading thread can do this at a time. Otherwise, we can expect the counter to be incremented too many times.
+      while (args->test->m_value.store(true))
+      {
+        if (args->test->m_done)
+        {
+          delete args;
+          pthread_exit(0);
+        }
+      }
+
+      // TRUE
+
+      // flag has been set, increase the counter
+      EXPECT_GE(KRepetitionsCount, args->test->m_counter.increment());
+    }
+  }
+
+  delete args;
 
   return NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void* AtomicBoolTest::Decrement(void* userData)
-{
-  AtomicBoolTest* me = reinterpret_cast<AtomicBoolTest*>(userData);
-
-  while ( ! me->m_start)
-  {
-    AtomicBoolTest::OsSleep(1);
-  }
-
-  for (s32 i = 0; i < KRepetitionsCount; ++i)
-  {
-   // me->m_value.decrement();
-  }
-
-  return NULL;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void AtomicBoolTest::OsSleep(u32 miliseconds)
-{
-  Sleep(miliseconds);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AtomicBoolTest::SetUp()
 {
-  m_value = AtomicBool(false);
+  m_value = AtomicBool(true);
   m_start = false;
+  m_done  = false;
+  m_counter = AtomicInt(0);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void AtomicBoolTest::TearDown()
@@ -100,7 +125,13 @@ void AtomicBoolTest::createThreads(s32 count, threadMain main)
   for (s32 i = 0; i < count; ++i)
   {
     pthread_t thread;
-    EXPECT_EQ(0, pthread_create(&thread, NULL, main, this));
+
+    ThreadArgs* args = new ThreadArgs();
+    args->test = this;
+    args->index = i;
+    args->loadThread = (i == 0);  // only 1 'load' thread
+
+    EXPECT_EQ(0, pthread_create(&thread, NULL, main, args));
   
     m_thread.push_back(thread);
   }
@@ -122,13 +153,12 @@ void AtomicBoolTest::waitUntilThreadsFinish()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(AtomicBoolTest, Load)
+TEST_F(AtomicBoolTest, LoadAndStore)
 {
-  // TAGE - not sure how to test it
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(AtomicBoolTest, Store)
-{
-  // TAGE - not sure how to test it
+  createThreads(KThreadCount, LoadAndStore);
+  startThreads();
+  waitUntilThreadsFinish();
+
+  EXPECT_EQ(KRepetitionsCount, m_counter.load());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
