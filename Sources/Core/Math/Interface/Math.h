@@ -2,10 +2,10 @@
 #define EGE_CORE_MATH_H
 
 #include "EGETypes.h"
+#include "EGEAssert.h"
 #include "EGEAlignment.h"
 #include "EGERandom.h"
 #include "EGEAngle.h"
-#include "EGEDebug.h"
 #include "Core/Math/Implementation/MatrixTypes.h"
 #include "Core/Math/Implementation/QuaternionTypes.h"
 #include "Core/Math/Implementation/Vector2Types.h"

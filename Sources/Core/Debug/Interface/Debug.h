@@ -52,8 +52,6 @@ class Debug
 
   public:
 
-    /*! Performs assertion. */
-    static void Assert(const char* assertion, const char* file, int line);
     /*! Prints given c-string to output. */
     static void Print(const char* string);
     /*! Prints given c-string to output. */

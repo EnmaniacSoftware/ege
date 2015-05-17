@@ -1,6 +1,6 @@
 #include "Core/Threading/PThread/WaitCondition_p.h"
 #include "Core/Threading/PThread/Mutex_p.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 #include "EGEMutex.h"
 #include "EGEThread.h"
 

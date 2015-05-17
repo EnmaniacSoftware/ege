@@ -478,6 +478,9 @@
     <Filter Include="Core\Crypto\Interface\Cipher">
       <UniqueIdentifier>{a2fa8305-250f-4e72-872a-99bd387bc61f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Win32\Debug\Implementation">
+      <UniqueIdentifier>{a2db7873-7113-4cc7-a579-269434ee92a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Sources\Core\Graphics\Frustum.cpp">
@@ -1181,6 +1184,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\String\Implementation\TextStream.cpp">
       <Filter>Core\String\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Assert.cpp">
+      <Filter>Core\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\AssertWin32.cpp">
+      <Filter>Win32\Debug\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2196,6 +2205,10 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerResourceUnloadedRequest.h">
       <Filter>Core\Resource\Implementation\Multi Thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\Assert.h">
+      <Filter>Core\Debug\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAssert.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

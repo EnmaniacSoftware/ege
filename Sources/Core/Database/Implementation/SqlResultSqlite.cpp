@@ -1,5 +1,6 @@
 #include "Core/Database/Implementation/SqlResultSqlite.h"
 #include "Core/ComplexTypes.h"
+#include "EGEAssert.h"
 #include "EGEDataBuffer.h"
 #include "EGETextStream.h"
 

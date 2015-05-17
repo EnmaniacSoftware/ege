@@ -1,39 +1,39 @@
-#include "Core/Math/Interface/Tweeners/BackTweener.h"
-#include "EGEAssert.h"
+#include "Core/Debug/Interface/Assert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-BackTweener::BackTweener() 
-: m_amplitude(1.0f)
+static egeAssertFunc  l_customAssertFunc = NULL;
+static egeAssertXFunc l_customAssertXFunc = NULL;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void Assert::InstallHandlers(egeAssertFunc assertFunc, egeAssertXFunc assertXFunc)
 {
+  l_customAssertFunc  = assertFunc;
+  l_customAssertXFunc = assertXFunc;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-BackTweener::~BackTweener()
+void Assert::HandleAssert(const char* fileName, s32 lineNo)
 {
+  if (NULL != l_customAssertFunc)
+  {
+    l_customAssertFunc(fileName, lineNo);
+  }
+  else
+  {
+    Assert::DefaultHandleAssert(fileName, lineNo);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void BackTweener::setAmplitude(float32 amplitude)
+void Assert::HandleAssertX(const char* reason, const char* fileName, s32 lineNo)
 {
-  m_amplitude = amplitude;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 BackTweener::easeIn(float32 time)
-{
-  EGE_ASSERT_X(false, "Implement");
-  return time;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 BackTweener::easeOut(float32 time)
-{
-  EGE_ASSERT_X(false, "Implement");
-  return time;
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
-float32 BackTweener::easeInOut(float32 time)
-{
-  EGE_ASSERT_X(false, "Implement");
-  return time;
+  if (NULL != l_customAssertXFunc)
+  {
+    l_customAssertXFunc(reason, fileName, lineNo);
+  }
+  else
+  {
+    Assert::DefaultHandleAssertX(reason, fileName, lineNo);
+  }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

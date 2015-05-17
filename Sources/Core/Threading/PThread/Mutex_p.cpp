@@ -1,5 +1,5 @@
 #include "Core/Threading/PThread/Mutex_p.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 

@@ -2,6 +2,7 @@
 #define EGE_CORE_MEMORY_H
 
 #include "EGETypes.h"
+#include "EGEAssert.h"
 #include "Core/Memory/Object.h"
 #include "Core/Memory/SmartPointer.h"
 #include "Core/Memory/MemoryManager.h"

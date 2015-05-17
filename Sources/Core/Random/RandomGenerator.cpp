@@ -1,5 +1,5 @@
 #include "Core/Random/RandomGenerator.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 #if EGE_RANDOM_STDC
   #include "Core/Random/StdC/RandomGeneratorStdC_p.h"
@@ -11,7 +11,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(RandomGenerator)
 EGE_DEFINE_DELETE_OPERATORS(RandomGenerator)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-RandomGenerator::RandomGenerator(u32 seed) : Object()
+RandomGenerator::RandomGenerator(u32 seed) 
+: Object()
 {
   m_p = ege_new RandomGeneratorPrivate();
   if (m_p && (0 < seed))

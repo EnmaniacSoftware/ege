@@ -1,5 +1,6 @@
 #include "Core/XML/Interface/XMLDocument.h"
 #include "Core/XML/Interface/XMLElement.h"
+#include "EGEAssert.h"
 #include "EGEDataBuffer.h"
 #include "EGEFileUtils.h"
 

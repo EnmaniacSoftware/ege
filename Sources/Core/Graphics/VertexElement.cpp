@@ -1,12 +1,13 @@
 #include "Core/Graphics/VertexElement.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexElement::VertexElement(NVertexBuffer::VertexElementSemantic semantic, u32 offset, u32 index) : m_semantic(semantic)
-                                                                                                   , m_offset(offset)
-                                                                                                   , m_index(index)
+VertexElement::VertexElement(NVertexBuffer::VertexElementSemantic semantic, u32 offset, u32 index) 
+: m_semantic(semantic)
+, m_offset(offset)
+, m_index(index)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

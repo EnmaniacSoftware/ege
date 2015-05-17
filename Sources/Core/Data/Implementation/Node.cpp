@@ -1,12 +1,13 @@
 #include "Core/Data/Interface/Node.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Node::Node(const String& name, Node* parent) : m_name(name)
-                                             , m_parent(parent)
-                                             , m_visible(true)
+Node::Node(const String& name, Node* parent) 
+: m_name(name)
+, m_parent(parent)
+, m_visible(true)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

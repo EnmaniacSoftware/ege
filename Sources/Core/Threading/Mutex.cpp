@@ -1,5 +1,5 @@
 #include "EGEMutex.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 #include "EGEThread.h"
 
 #ifdef EGE_THREAD_PTHREAD

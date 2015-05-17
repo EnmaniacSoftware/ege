@@ -1,6 +1,7 @@
 #include "Core/Database/Interface/DatabaseSqlite.h"
 #include "Core/Database/Implementation/SqlResultSqlite.h"
 #include "Core/ComplexTypes.h"
+#include "EGEAssert.h"
 #include "EGEDebug.h"
 #include <sqlite3.h>
 
@@ -12,10 +13,11 @@ static const char* KDatabaseSqliteDebugName = "EGEDatabaseSqlite";
 EGE_DEFINE_NEW_OPERATORS(DatabaseSqlite)
 EGE_DEFINE_DELETE_OPERATORS(DatabaseSqlite)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DatabaseSqlite::DatabaseSqlite() : Database()
-                                 , m_handle(NULL)
-                                 , m_inTransaction(false)
-                                 , m_result(NULL)
+DatabaseSqlite::DatabaseSqlite() 
+: Database()
+, m_handle(NULL)
+, m_inTransaction(false)
+, m_result(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

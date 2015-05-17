@@ -1,4 +1,5 @@
 #include "Core/Audio/Implementation/Codecs/AudioCodecMp3.h"
+#include "EGEAssert.h"
 #include "EGEAudio.h"
 #include "EGEMath.h"
 #include "EGEDebug.h"

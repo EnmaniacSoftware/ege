@@ -1,6 +1,6 @@
 #include "Core/Graphics/OpenGL/IndexBufferVAOGL.h"
+#include "EGEAssert.h"
 #include "EGEDataBuffer.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -8,7 +8,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(IndexBufferVA)
 EGE_DEFINE_DELETE_OPERATORS(IndexBufferVA)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IndexBufferVA::IndexBufferVA(const String& name) : IndexBuffer(name)
+IndexBufferVA::IndexBufferVA(const String& name) 
+: IndexBuffer(name)
 {
   m_buffer = ege_new DataBuffer();
 }

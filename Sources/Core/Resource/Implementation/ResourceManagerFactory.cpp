@@ -3,6 +3,7 @@
 #include "Core/Resource/Interface/Loader/ResourceLoaderXML.h"
 #include "Core/Resource/Interface/MultiThread/ResourceManagerMultiThread.h"
 #include "Core/Resource/Interface/SingleThread/ResourceManagerSingleThread.h"
+#include "EGEAssert.h"
 #include "EGEDebug.h"
 #include "EGEResourceLoader.h"
 

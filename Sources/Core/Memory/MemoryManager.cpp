@@ -1,4 +1,5 @@
 #include "Core/Memory/MemoryManager.h"
+#include "EGEAssert.h"
 #include "EGEDebug.h"
 #include "EGEMutex.h"
 #include <list>
@@ -11,7 +12,8 @@ EGE_NAMESPACE_BEGIN
 static MemoryManager* l_instance = NULL;
 static PMutex l_mutex;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-MemoryManager::MemoryManager() : m_bytesAllocated(0)
+MemoryManager::MemoryManager() 
+: m_bytesAllocated(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

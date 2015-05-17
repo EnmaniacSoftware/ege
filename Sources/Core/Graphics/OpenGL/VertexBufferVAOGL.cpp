@@ -1,7 +1,7 @@
 #include "Core/Graphics/OpenGL/VertexBufferVAOGL.h"
+#include "EGEAssert.h"
 #include "EGEDataBuffer.h"
 #include "EGEList.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 

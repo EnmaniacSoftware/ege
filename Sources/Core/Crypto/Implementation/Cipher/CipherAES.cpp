@@ -1,7 +1,7 @@
 #include "Core/Crypto/Interface/Cipher/CipherAES.h"
 #include "Core/Crypto/Interface/Cipher/CipherKey.h"
+#include "EGEAssert.h"
 #include "EGEDataStream.h"
-#include "EGEDebug.h"
 #include "EGERandom.h"
 #include <openssl/aes.h>
 

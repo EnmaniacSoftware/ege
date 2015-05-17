@@ -1,5 +1,5 @@
 #include "EGEThread.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 #ifdef EGE_THREAD_PTHREAD
   #include "Core/Threading/PThread/Thread_p.h"

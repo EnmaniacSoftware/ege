@@ -1,10 +1,11 @@
 #include "Core/Graphics/VertexDeclaration.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-VertexDeclaration::VertexDeclaration() : m_vertexSize(0)
+VertexDeclaration::VertexDeclaration() 
+: m_vertexSize(0)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

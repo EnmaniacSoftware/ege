@@ -1,6 +1,7 @@
 #include "EGEOpenGL.h"
 #include "Core/Graphics/OpenGL/ProgramOGL.h"
 #include "Core/Graphics/OpenGL/ShaderOGL.h"
+#include "EGEAssert.h"
 #include "EGEShader.h"
 #include "EGEDevice.h"
 #include "EGEDebug.h"
@@ -11,9 +12,10 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(ProgramOGL)
 EGE_DEFINE_DELETE_OPERATORS(ProgramOGL)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ProgramOGL::ProgramOGL(const String& name, IHardwareResourceProvider* provider) : Program(name, provider)
-                                                                                , m_id(0)
-                                                                                , m_linked(false)
+ProgramOGL::ProgramOGL(const String& name, IHardwareResourceProvider* provider) 
+: Program(name, provider)
+, m_id(0)
+, m_linked(false)
 {
   m_id = glCreateProgram();
   OGL_CHECK();

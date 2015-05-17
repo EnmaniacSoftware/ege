@@ -4,6 +4,7 @@
 #include "Core/Resource/Interface/ResourceProgram.h"
 #include "Core/Graphics/Material.h"
 #include "Core/Graphics/TextureImage.h"
+#include "EGEAssert.h"
 #include "EGEEngine.h"
 #include "EGEResources.h"
 #include "EGEResourceManager.h"

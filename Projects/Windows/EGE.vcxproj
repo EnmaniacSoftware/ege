@@ -63,6 +63,7 @@
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataBuffer.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\DataStream.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Implementation\Node.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Assert.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Console.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Debug.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Implementation\Logger.cpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlDocument.cpp" />
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Atomic\Implementation\AtomicOperationsWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\AssertWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
@@ -306,6 +308,7 @@
     <ClInclude Include="..\..\Sources\Core\Data\Interface\DataBuffer.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Interface\DataStream.h" />
     <ClInclude Include="..\..\Sources\Core\Data\Interface\Node.h" />
+    <ClInclude Include="..\..\Sources\Core\Debug\Interface\Assert.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Console.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Debug.h" />
     <ClInclude Include="..\..\Sources\Core\Debug\Interface\Logger.h" />
@@ -510,6 +513,7 @@
     <ClInclude Include="..\..\Sources\EGEAdNetwork.h" />
     <ClInclude Include="..\..\Sources\EGEAlignment.h" />
     <ClInclude Include="..\..\Sources\EGEAngle.h" />
+    <ClInclude Include="..\..\Sources\EGEAssert.h" />
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
     <ClInclude Include="..\..\Sources\EGEAtomicInt.h" />

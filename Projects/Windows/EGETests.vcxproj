@@ -104,6 +104,7 @@
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamNonIntegralOperatorsTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Data\Tests\Unittests\DataStreamTestBase.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\AssertTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\DebugTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Debug\Tests\Unittest\LoggerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\File\Tests\Unittest\FileReadOnlyModeTest.cpp" />

@@ -1,7 +1,7 @@
 #include "Core/XML/Implementation/TinyXml/XmlElementTinyXml_p.h"
 #include "Core/XML/Implementation/TinyXml/XmlAttributeTinyXml_p.h"
 #include "Core/XML/Interface/XmlAttribute.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -9,20 +9,23 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(XmlElementPrivate)
 EGE_DEFINE_DELETE_OPERATORS(XmlElementPrivate)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base) : m_base(base), 
-                                                         m_element(NULL), 
-                                                         m_deallocElement(false)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base) 
+: m_base(base) 
+, m_element(NULL) 
+, m_deallocElement(false)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) : m_base(base), 
-                                                                             m_deallocElement(true)
+XmlElementPrivate::XmlElementPrivate(XmlElement* base, const String& name) 
+: m_base(base)
+, m_deallocElement(true)
 {
   m_element = new TiXmlElement(name.toAscii());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) : m_base(base), 
-                                                                                m_deallocElement(false)
+XmlElementPrivate::XmlElementPrivate(TiXmlElement* element, XmlElement* base) 
+: m_base(base)
+, m_deallocElement(false)
 {
   m_element = element;
 }

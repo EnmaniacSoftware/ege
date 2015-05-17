@@ -1,19 +1,21 @@
 #include "Core/Math/Interface/AxisAlignedBox.h"
 #include "Core/Math/Interface/Vector4.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AxisAlignedBox::AxisAlignedBox() : m_minimum(Vector4f::ZERO)
-                                 , m_maximum(Vector4f::ZERO)
-                                 , m_extent(EXTENT_NULL)
+AxisAlignedBox::AxisAlignedBox() 
+: m_minimum(Vector4f::ZERO)
+, m_maximum(Vector4f::ZERO)
+, m_extent(EXTENT_NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-AxisAlignedBox::AxisAlignedBox(const AxisAlignedBox& other) : m_minimum(other.m_minimum)
-                                                            , m_maximum(other.m_maximum)
-                                                            , m_extent(other.m_extent)
+AxisAlignedBox::AxisAlignedBox(const AxisAlignedBox& other) 
+: m_minimum(other.m_minimum)
+, m_maximum(other.m_maximum)
+, m_extent(other.m_extent)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

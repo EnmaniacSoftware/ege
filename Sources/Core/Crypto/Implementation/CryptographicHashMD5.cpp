@@ -1,10 +1,11 @@
 #include "Core/Crypto/Interface/CryptographicHashMD5.h"
-#include "EGEDebug.h"
+#include "EGEAssert.h"
 
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-CryptographicHashMD5::CryptographicHashMD5() : CryptographicHash()
+CryptographicHashMD5::CryptographicHashMD5() 
+: CryptographicHash()
 {
   // set to proper size
   m_result.setSize(MD5_DIGEST_LENGTH);
