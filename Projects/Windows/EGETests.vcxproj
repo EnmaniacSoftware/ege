@@ -88,6 +88,7 @@
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicBoolTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicIntTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicOperationsTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicPointerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\DynamicArrayTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\ListTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Containers\Tests\Unittests\MapTest.cpp" />

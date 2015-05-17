@@ -39,6 +39,23 @@ s32 egeAtomicAdd(volatile s32& value, s32 addValue);
  *  @note This uses ordered memory model.
  */
 s32 egeAtomicCompareAndSet(volatile s32& value, s32 compareValue, s32 newValue);
+
+/*! Atomically sets new pointer value.
+ *  @param  value         Value to modify.
+ *  @param  newValue      New value to be set.
+ *  @return Initial value.
+ *  @note This uses ordered memory model.
+ */
+void* egeAtomicSet(void*& value, void* newValue);
+
+/*! Atomically compares and sets new pointer value depending on the outcome of comparison.
+ *  @param  value         Value to test and modify.
+ *  @param  compareValue  Value to compare to.
+ *  @param  newValue      New value to be set if previous two are equal.
+ *  @return Initial value.
+ *  @note This uses ordered memory model.
+ */
+void* egeAtomicCompareAndSet(void*& value, void* compareValue, void* newValue);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

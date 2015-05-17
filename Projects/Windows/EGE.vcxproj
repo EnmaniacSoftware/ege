@@ -259,6 +259,7 @@
     <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicBool.h" />
     <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicInt.h" />
     <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicOperations.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicPointer.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioManagerBase.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\AudioUtils.h" />
     <ClInclude Include="..\..\Sources\Core\Audio\Implementation\Codecs\AudioCodec.h" />
@@ -510,6 +511,7 @@
     <ClInclude Include="..\..\Sources\EGEAtomic.h" />
     <ClInclude Include="..\..\Sources\EGEAtomicBool.h" />
     <ClInclude Include="..\..\Sources\EGEAtomicInt.h" />
+    <ClInclude Include="..\..\Sources\EGEAtomicPointer.h" />
     <ClInclude Include="..\..\Sources\EGEAudio.h" />
     <ClInclude Include="..\..\Sources\EGEAudioHelper.h" />
     <ClInclude Include="..\..\Sources\EGEByteOrder.h" />

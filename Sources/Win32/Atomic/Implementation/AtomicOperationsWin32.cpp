@@ -24,5 +24,15 @@ s32 egeAtomicCompareAndSet(volatile s32& value, s32 compareValue, s32 newValue)
   return static_cast<s32>(InterlockedCompareExchange(reinterpret_cast<volatile LONG*>(&value), newValue, compareValue));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* egeAtomicSet(void*& value, void* newValue)
+{
+  return static_cast<void*>(InterlockedExchangePointer(reinterpret_cast<volatile PVOID*>(&value), newValue));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void* egeAtomicCompareAndSet(void*& value, void* compareValue, void* newValue)
+{
+  return static_cast<void*>(InterlockedCompareExchangePointer(reinterpret_cast<volatile PVOID*>(&value), newValue, compareValue));
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

@@ -2186,6 +2186,10 @@
       <Filter>Core\String\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGETextStream.h" />
+    <ClInclude Include="..\..\Sources\Core\Atomic\Interface\AtomicPointer.h">
+      <Filter>Core\Atomic\Interface</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\EGEAtomicPointer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">
