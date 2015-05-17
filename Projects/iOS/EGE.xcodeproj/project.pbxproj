@@ -237,6 +237,8 @@
 		45C3AD4218CDF4520009ABA3 /* PurchaseServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3918CDF4520009ABA3 /* PurchaseServicesIOS.mm */; };
 		45C3AD4318CDF4520009ABA3 /* SocialServicesIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C3AD3A18CDF4520009ABA3 /* SocialServicesIOS.mm */; };
 		45C858F41AD30EF3003A0635 /* FileIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45C858F31AD30EF3003A0635 /* FileIOS.mm */; };
+		45CB76E51B0932C70005C5BD /* Assert.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45CB76E41B0932C70005C5BD /* Assert.cpp */; };
+		45CB76EB1B0932FB0005C5BD /* AssertIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45CB76EA1B0932FB0005C5BD /* AssertIOS.mm */; };
 		45D039441AFBF7C600196704 /* TextStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45D039431AFBF7C600196704 /* TextStream.cpp */; };
 		45D6D0CE19B3C3EB00B3DA64 /* libChartboost.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CD19B3C3EB00B3DA64 /* libChartboost.a */; };
 		45D6D0D019B3C58200B3DA64 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0CF19B3C58200B3DA64 /* SystemConfiguration.framework */; };
@@ -949,6 +951,10 @@
 		45C6F7781AC4A1E600EE3E6B /* EGESet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGESet.h; path = ../../Sources/EGESet.h; sourceTree = "<group>"; };
 		45C858F31AD30EF3003A0635 /* FileIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = FileIOS.mm; sourceTree = "<group>"; };
 		45C858F51AD30EFA003A0635 /* FileIOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileIOS.h; sourceTree = "<group>"; };
+		45CB76DE1B0932700005C5BD /* EGEAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGEAssert.h; path = ../../Sources/EGEAssert.h; sourceTree = "<group>"; };
+		45CB76E41B0932C70005C5BD /* Assert.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Assert.cpp; sourceTree = "<group>"; };
+		45CB76E61B0932CD0005C5BD /* Assert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Assert.h; sourceTree = "<group>"; };
+		45CB76EA1B0932FB0005C5BD /* AssertIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AssertIOS.mm; sourceTree = "<group>"; };
 		45D0393D1AFBF7A900196704 /* EGETextStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGETextStream.h; path = ../../Sources/EGETextStream.h; sourceTree = "<group>"; };
 		45D039431AFBF7C600196704 /* TextStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextStream.cpp; sourceTree = "<group>"; };
 		45D039451AFBF7CF00196704 /* TextStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextStream.h; sourceTree = "<group>"; };
@@ -1121,6 +1127,7 @@
 				45146E7518C522EA00AAC617 /* EGEAlignment.h */,
 				45146E7618C522EA00AAC617 /* EGEAngle.h */,
 				45146E7818C522EA00AAC617 /* EGEApplication.h */,
+				45CB76DE1B0932700005C5BD /* EGEAssert.h */,
 				45146E7918C522EA00AAC617 /* EGEAtomic.h */,
 				4506A9B31A893D7B009393B3 /* EGEAtomicBool.h */,
 				4506A9B41A893D7B009393B3 /* EGEAtomicInt.h */,
@@ -1454,6 +1461,7 @@
 		45146F3618C5231800AAC617 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45CB76E41B0932C70005C5BD /* Assert.cpp */,
 				45146F3718C5231800AAC617 /* Console.cpp */,
 				45146F3818C5231800AAC617 /* Debug.cpp */,
 				45146F3A18C5231800AAC617 /* Logger.cpp */,
@@ -1464,6 +1472,7 @@
 		45146F3B18C5231800AAC617 /* Interface */ = {
 			isa = PBXGroup;
 			children = (
+				45CB76E61B0932CD0005C5BD /* Assert.h */,
 				45146F3C18C5231800AAC617 /* Console.h */,
 				45146F3D18C5231800AAC617 /* Debug.h */,
 				45146F3F18C5231800AAC617 /* Logger.h */,
@@ -2175,6 +2184,7 @@
 		451471F418C5236200AAC617 /* Debug */ = {
 			isa = PBXGroup;
 			children = (
+				45CB76E91B0932FB0005C5BD /* Implementation */,
 				451471F518C5236200AAC617 /* DebugIOS.mm */,
 			);
 			path = Debug;
@@ -2966,6 +2976,14 @@
 			path = Interface;
 			sourceTree = "<group>";
 		};
+		45CB76E91B0932FB0005C5BD /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				45CB76EA1B0932FB0005C5BD /* AssertIOS.mm */,
+			);
+			path = Implementation;
+			sourceTree = "<group>";
+		};
 		45E0F0C11909AFBC0003E15F /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
@@ -3309,6 +3327,7 @@
 				4514716B18C5231900AAC617 /* AxisAlignedBox.cpp in Sources */,
 				4514716C18C5231900AAC617 /* Math.cpp in Sources */,
 				4514716D18C5231900AAC617 /* CubicSpline.cpp in Sources */,
+				45CB76EB1B0932FB0005C5BD /* AssertIOS.mm in Sources */,
 				45E246C319ABDA4A00A538B0 /* AudioManagerFactory.cpp in Sources */,
 				45E4DC3B199C0395000FB4B8 /* SpecialURLs.cpp in Sources */,
 				45B91A9F19DB5C09009856BD /* EventManager.cpp in Sources */,
@@ -3455,6 +3474,7 @@
 				455A2FFA18F48D9D00CD9581 /* ShaderOGL.cpp in Sources */,
 				453C841F193E6BF000FBA4AA /* AudioManagerOpenALIOS.mm in Sources */,
 				456CA28219F83B6500868FA1 /* ResourceProgram.cpp in Sources */,
+				45CB76E51B0932C70005C5BD /* Assert.cpp in Sources */,
 				455A2FFB18F48D9D00CD9581 /* Texture2DOGL.cpp in Sources */,
 				455A2FFC18F48D9D00CD9581 /* VertexBufferVAOGL.cpp in Sources */,
 				455A2FFD18F48D9D00CD9581 /* VertexBufferVBOOGL.cpp in Sources */,

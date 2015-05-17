@@ -1,4 +1,5 @@
 #include "Core/Debug/Interface/Assert.h"
+#include "EGEDebug.h"
 #include <assert.h>
 #import <Foundation/Foundation.h>
 
