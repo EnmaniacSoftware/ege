@@ -294,6 +294,9 @@
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\StringBufferTest.cpp">
       <Filter>Tests\String\UnitTests</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\WaitConditionTest.cpp">
+      <Filter>Tests\Threading\UnitTests</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Atomic\Tests\Unittest\AtomicPointerTest.cpp">
       <Filter>Tests\Atomic\Unittests</Filter>
     </ClCompile>

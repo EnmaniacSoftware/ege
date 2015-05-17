@@ -1,5 +1,5 @@
-#ifndef EGE_CORE_WAITCONDITION_H
-#define EGE_CORE_WAITCONDITION_H
+#ifndef EGE_CORE_THREADING_WAITCONDITION_H
+#define EGE_CORE_THREADING_WAITCONDITION_H
 
 /*! This class provides a condition variable for synchronizing threads. */
 
@@ -8,8 +8,8 @@
 EGE_NAMESPACE_BEGIN
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+class Mutex;
 EGE_PREDECLARE_SMART_CLASS(WaitCondition, PWaitCondition)
-EGE_PREDECLARE_SMART_CLASS(Mutex, PMutex)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class WaitCondition : public Object
 {
@@ -48,4 +48,4 @@ class WaitCondition : public Object
 
 EGE_NAMESPACE_END
 
-#endif // EGE_CORE_WAITCONDITION_H
+#endif // EGE_CORE_THREADING_WAITCONDITION_H

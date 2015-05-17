@@ -2190,6 +2190,12 @@
       <Filter>Core\Atomic\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\EGEAtomicPointer.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerResourceLoadedRequest.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerResourceUnloadedRequest.h">
+      <Filter>Core\Resource\Implementation\Multi Thread</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Sources\Core\FeatureList.txt">

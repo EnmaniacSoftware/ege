@@ -4,7 +4,8 @@
 /*! This class provides access serialization between threads. */
 
 #include "EGE.h"
-#include "EGEAtomicBool.h"
+#include "EGEAtomicInt.h"
+#include "EGEAtomicPointer.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -28,6 +29,8 @@ class Mutex : public Object
 
     /*! Returns TRUE if object is valid. */
     bool isValid() const;
+    /*! Returns TRUE if mutex is recursive. */
+    bool isRecursive() const;
 
     /*! Locks mutex. */
     bool lock();
@@ -38,10 +41,12 @@ class Mutex : public Object
 
     EGE_DECLARE_PRIVATE_IMPLEMENTATION(Mutex);
 
-    /*! Flag indicating wheter mutex if locked. For debugging purposes. */
-    AtomicBool m_locked;
+    /*! Lock counter. */
+    s32 m_lockCount;
     /*! Type. */
     EGEMutex::EType m_type;
+    /*! Thread owning the mutex. NULL if mutex is not locked. */
+    AtomicPointer<void> m_owner;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 

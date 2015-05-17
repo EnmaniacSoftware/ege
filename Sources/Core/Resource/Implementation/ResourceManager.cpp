@@ -1,27 +1,6 @@
 #include "EGEResources.h"
 #include "Core/Resource/Implementation/ResourceManager.h"
-#include "Core/Resource/Interface/ResourceGroup.h"
-#include "Core/Resource/Interface/ResourceTexture.h"
-#include "Core/Resource/Interface/ResourceMaterial.h"
-#include "Core/Resource/Interface/ResourceData.h"
-#include "Core/Resource/Interface/ResourceFont.h"
-#include "Core/Resource/Interface/ResourceTextureImage.h"
-#include "Core/Resource/Interface/ResourceSpritesheet.h"
-#include "Core/Resource/Interface/ResourceSpriteAnimation.h"
-#include "Core/Resource/Interface/ResourceCurve.h"
-#include "Core/Resource/Interface/ResourceParticleEmitter.h"
-#include "Core/Resource/Interface/ResourceParticleAffector.h"
-#include "Core/Resource/Interface/ResourceText.h"
-#include "Core/Resource/Interface/ResourceSound.h"
-#include "Core/Resource/Interface/ResourceWidget.h"
-#include "Core/Resource/Interface/ResourceImagedAnimation.h"
-#include "Core/Resource/Interface/ResourceSequencer.h"
-#include "Core/Resource/Interface/ResourceShader.h"
-#include "Core/Resource/Interface/ResourceProgram.h"
 #include "Core/Resource/Implementation/DefaultGroup.h"
-#include "Core/Graphics/Graphics.h"
-#include "Core/Graphics/Render/RenderSystem.h"
-#include "Core/Graphics/Font.h"
 #include "EGEDirectory.h"
 #include "EGEEngine.h"
 #include "EGETimer.h"
@@ -387,11 +366,15 @@ void ResourceManager::processBatch()
     {
       result = loadResource(resource);
 
+      
       // check if not being processed
       if (EGE_WAIT != result)
       {
+        // update statistics
+        m_processedResourcesCount++;
+
         // notify
-        onResourceLoaded(resource, result);
+        handleResourceLoaded(resource, result, m_totalResourcesToProcess, m_processedResourcesCount);
       }
     }
     else
@@ -401,14 +384,19 @@ void ResourceManager::processBatch()
       // check if not being processed
       if (EGE_WAIT != result)
       {
+        // update statistics
+        m_processedResourcesCount++;
+
         // notify
-        onResourceUnloaded(resource, result);
+        handleResourceUnloaded(resource, result, m_totalResourcesToProcess, m_processedResourcesCount);
       }
     }
 
     // go to next resource if not being processed
     if (EGE_WAIT != result)
     {
+      egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
+
       ++batch.nextResourceIndex;
     }
   }
@@ -426,16 +414,53 @@ void ResourceManager::processBatch()
 
     PResourceGroup group = this->group(batch.groups.last(""));
     EGE_ASSERT(NULL != group);
+    EGE_ASSERT(group->name() == batch.groups.last(""));
+  
+    // caluclate batch processing time
+    const Time processingTime = Timer::GetMicroseconds() - batch.startTime;
 
-    if (batch.load)
+    // check if group is completely processed
+    const bool completelyProcessed = (group->name() == batch.groups.last(""));
+
+    // store load/unload flag
+    // NOTE: this is necessary due to the fact that m_processList can get emptied below removing the object
+    const bool wasLoading = batch.load;
+
+    // NOTE: DO NOT USE 'batch' object below this line!!!
+
+    // first remove it from internal queues
+    // NOTE: do it here immediately, to allow another requests to be added during the signaling operation
+    if (completelyProcessed)
     {
-      // notify
-      onGroupLoaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+      // remove from process list first
+      m_processList.removeFirst();
+
+      // check if not more batches to process
+      if (m_processList.isEmpty())
+      {
+        // clean up statistics
+        m_totalResourcesToProcess = 0;
+        m_processedResourcesCount = 0;
+      }
     }
-    else
+
+    // signal group completion if necessary
+    if (completelyProcessed)
     {
-      // notify
-      onGroupUnloaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+      if (wasLoading)
+      {
+        egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << processingTime.miliseconds() << "ms.";
+
+        // notify
+        onGroupLoaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+      }
+      else
+      {
+        egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << processingTime.miliseconds() << "ms.";
+
+        // notify
+        onGroupUnloaded(group, (NULL == resource) ? EGE_SUCCESS : result);
+      }
     }
   }
 }
@@ -466,84 +491,32 @@ u32 ResourceManager::uid() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupLoaded(const PResourceGroup& group, EGEResult result)
 {
-  ProcessingBatch& data = m_processList.first();
-
-  EGE_ASSERT(group->name() == data.groups.last(""));
-  
-  // check if expected group has been loaded
-  if (group->name() == data.groups.last(""))
-  {
-    egeDebug(KResourceManagerDebugName) << "Group loaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
-
-    // remove from process list first
-    m_processList.removeFirst();
-
-    // signal
-    emit signalGroupLoaded(group->name(), result);
-
-    // check if not more batches to process
-    if (m_processList.isEmpty())
-    {
-      // clean up statistics
-      m_totalResourcesToProcess = 0;
-      m_processedResourcesCount = 0;
-    }
-  }
+  // signal
+  emit signalGroupLoaded(group->name(), result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupUnloaded(const PResourceGroup& group, EGEResult result)
 {
-  ProcessingBatch& data = m_processList.first();
-
-  EGE_ASSERT(group->name() == data.groups.last(""));
-  
-  // check if expected group has been loaded
-  if (group->name() == data.groups.last(""))
-  {
-    egeDebug(KResourceManagerDebugName) << "Group unloaded:" << group->name() << "in" << (Timer::GetMicroseconds() - data.startTime).miliseconds() << "ms.";
-
-    // remove from process list first
-    m_processList.removeFirst();
-
-    // signal
-    emit signalGroupUnloaded(group->name(), result);
-
-    // check if not more batches to process
-    if (m_processList.isEmpty())
-    {
-      // clean up statistics
-      m_totalResourcesToProcess = 0;
-      m_processedResourcesCount = 0;
-    }
-  }
+  // signal
+  emit signalGroupUnloaded(group->name(), result);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onResourceLoaded(const PResource& resource, EGEResult result)
+void ResourceManager::handleResourceLoaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount)
 {
   EGE_UNUSED(resource)
   EGE_UNUSED(result)
 
-  // update statistics
-  m_processedResourcesCount++;
-
   // signal
-  emit signalProgress(m_processedResourcesCount, m_totalResourcesToProcess);
-
-  egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
+  emit signalProgress(processedResourceCount, totalResourceCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManager::onResourceUnloaded(const PResource& resource, EGEResult result)
+void ResourceManager::handleResourceUnloaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount)
 {
   EGE_UNUSED(resource)
   EGE_UNUSED(result)
 
-  // update statistics
-  m_processedResourcesCount++;
-
   // signal
-  emit signalProgress(m_processedResourcesCount, m_totalResourcesToProcess);
-
-  egeDebug(KResourceManagerDebugName) << "Progress" << m_processedResourcesCount << "/" << m_totalResourcesToProcess;
+  emit signalProgress(processedResourceCount, totalResourceCount);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManager::onGroupCreated(const PResourceGroup& group)

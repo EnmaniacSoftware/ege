@@ -1,7 +1,7 @@
 #include "Core/Resource/Interface/MultiThread/ResourceManagerMultiThread.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerWorkThread.h"
+#include "EGEDevice.h"
 #include "EGEGraphics.h"
-#include "EGEDebug.h"
 
 EGE_NAMESPACE_BEGIN
 
@@ -21,6 +21,9 @@ s32 ResourceManagerWorkThread::run()
   while ( ! isStopping())
   {
     m_manager->threadUpdate();
+
+    // allow other threads do some work
+    Device::Sleep(1);
   }
 
   return 0;

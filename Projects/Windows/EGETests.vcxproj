@@ -145,6 +145,7 @@
     <ClCompile Include="..\..\Sources\Core\String\Tests\Unittest\TextTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\MutexTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\ThreadTest.cpp" />
+    <ClCompile Include="..\..\Sources\Core\Threading\Tests\Unittest\WaitConditionTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeLineTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimerTest.cpp" />
     <ClCompile Include="..\..\Sources\Core\Time\Tests\Unittest\TimeTest.cpp" />

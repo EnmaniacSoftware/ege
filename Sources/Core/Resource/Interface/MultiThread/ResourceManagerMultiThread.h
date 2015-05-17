@@ -52,11 +52,6 @@ class ResourceManagerMultiThread : public ResourceManager
     /*! @see EngineModule::update. */
     void update(const Time& time) override;
 
-    /*! Adds progress requests for later emission. */
-    void addProgressRequest(u32 count, u32 total);
-    /*! Adds group loaded request for later emission. */
-    void addGroupLoadedRequest(const String& groupName);
-
     /*! @see ResourceManager::processBatch. */
     void processBatch() override;
 
@@ -69,11 +64,20 @@ class ResourceManagerMultiThread : public ResourceManager
      */
     void onGroupUnloaded(const PResourceGroup& group, EGEResult result) override;
 
+    /*! @see ResourceManager::handleResourceLoaded. 
+     *  @note This override simply schedules processing to main thread where base class implementation should be called from.
+     */
+    void handleResourceLoaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount) override;
+    /*! @see ResourceManager::handleResourceUnloaded. 
+     *  @note This override simply schedules processing to main thread where base class implementation should be called from.
+     */
+    void handleResourceUnloaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount) override;
+
   private slots:
 
     /*! Slot called when work thread terminated its work. */
     void onWorkThreadFinished(const PThread& thread);
-    
+
   private:
 
     typedef List<ResourceManagerRequest*> EmissionRequestList;

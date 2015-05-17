@@ -171,6 +171,26 @@ void ResourceManagerTestBase::onProgress(s32 processed, s32 total)
   m_currentProgress = processed;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onProgressLoadGroup3AfterFirstResource(s32 processed, s32 total)
+{
+  if (1 == processed)
+  {
+    EXPECT_EQ(EGE_SUCCESS, resourceManager()->loadGroup(KResourceGroup3));
+  }
+
+  onProgress(processed, total);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerTestBase::onProgressUnloadGroup1AfterFirstResource(s32 processed, s32 total)
+{
+  if (1 == processed)
+  {
+    resourceManager()->unloadGroup(KResourceGroup1);
+  }
+
+  onProgress(processed, total);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerTestBase::waitUntilGroupsAreLoaded(const StringList& groupNames, s64 timeoutMs)
 {
   IEngineModule* module = dynamic_cast<IEngineModule*>(resourceManager());
@@ -218,7 +238,7 @@ void ResourceManagerTestBase::waitUntilGroupsAreUnloaded(const StringList& group
     timeoutMs -= Timer::GetMiliseconds() - timestamp;
   }
 
-  EXPECT_TRUE(allLoaded) << "Not all requested groups could be loaded!";
+  EXPECT_TRUE(allLoaded) << "Not all requested groups could be unloaded!";
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 std::vector<ResourceMock*> ResourceManagerTestBase::setupResourceFactory()

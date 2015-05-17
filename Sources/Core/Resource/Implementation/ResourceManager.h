@@ -35,12 +35,12 @@ class ResourceManager : public EngineModule<IResourceManager>
     /*! Data struct containing information regarding resources to process. */
     struct ProcessingBatch
     {
-      bool load;                    /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
-      Time startTime;               /*!< Start time of batch processing. */
-      StringList groups;            /*!< List of groups to be processed. Last group is the main group. */
-      DynamicArray<PResource> resources;
-      s32 resourcesCount;           /*!< Total number of resource to be processed. */
-      s32 nextResourceIndex;        /*!< 0-based index of next resource to process for a current (front) group. */
+      bool load;                          /*!< Should resource be loaded. If FALSE resource is to be unloaded. */
+      Time startTime;                     /*!< Start time of batch processing. */
+      StringList groups;                  /*!< List of groups to be processed. Last group is the main group. */
+      DynamicArray<PResource> resources;  /*!< List of resources to process for a given batch. */
+      s32 resourcesCount;                 /*!< Total number of resource to be processed. */
+      s32 nextResourceIndex;              /*!< 0-based index of next resource to process for a current (front) group. */
     };
 
     typedef List<ProcessingBatch> ProcessingBatchList;
@@ -101,18 +101,20 @@ class ResourceManager : public EngineModule<IResourceManager>
      */
     virtual void onGroupUnloaded(const PResourceGroup& group, EGEResult result);
 
-  protected slots:
-
-    /*! Slot called when resource has been loaded. 
-     *  @param resource Resource which has been loaded.
-     *  @param result   Result of the operation.
+    /*! Called when resource has been loaded. 
+     *  @param resource                 Resource which has been loaded.
+     *  @param result                   Result of the operation.
+     *  @param  totalResourceCount      Total count of the resource to be processed.
+     *  @param  processedResourceCount  Number of processed resources so far.
      */
-    virtual void onResourceLoaded(const PResource& resource, EGEResult result);
-    /*! Slot called when resource has been unloaded. 
-     *  @param resource Resource which has been unloaded.
-     *  @param result   Result of the operation.
+    virtual void handleResourceLoaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount);
+    /*! Called when resource has been unloaded. 
+     *  @param resource                 Resource which has been unloaded.
+     *  @param result                   Result of the operation.
+     *  @param  totalResourceCount      Total count of the resource to be processed.
+     *  @param  processedResourceCount  Number of processed resources so far.
      */
-    virtual void onResourceUnloaded(const PResource& resource, EGEResult result);
+    virtual void handleResourceUnloaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount);
 
     /*! Slot called when new group has been created. 
      *  @param group Newly created group.

@@ -1,4 +1,5 @@
 #include "TestFramework/Interface/TestBase.h"
+#include <EGEDevice.h>
 #include <EGEMemory.h>
 #include <EGEMutex.h>
 #include <pthread.h>
@@ -6,8 +7,9 @@
 EGE_NAMESPACE
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-static const s32 KRepetitionsCount = 100;
-static const s32 KThreadCount      = 20;
+static const s32 KRepetitionsCount          = 100000;
+static const s32 KRecursiveRepetitionsCount = 1000;
+static const s32 KThreadCount               = 20;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef void* (*threadMain)(void* userData);
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -37,6 +39,8 @@ class MutexTest : public TestBase
 
     /*! Creates number of threads executing given function. */
     void createThreads(s32 count, threadMain main);
+    /*! Signals threads to start execution. */
+    void startThreads();
     /*! Waits until all threads are finished. */
     void waitUntilThreadsFinish();
 
@@ -48,12 +52,14 @@ class MutexTest : public TestBase
     PMutex m_mutex;
     /*! Counter. */
     s32 m_counter;
+    /*! Flag allowing threads to start execution. */
+    bool m_threadStartFlag;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MutexTest::SetUpTestCase()
 {
   EXPECT_TRUE(MemoryManager::Initialize());
-  }
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MutexTest::TearDownTestCase()
 {
@@ -63,6 +69,7 @@ void MutexTest::TearDownTestCase()
 void MutexTest::SetUp()
 {
   m_counter = 0;
+  m_threadStartFlag = false;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MutexTest::TearDown()
@@ -81,13 +88,18 @@ void* MutexTest::Increment(void* userData)
 {
   MutexTest* me = reinterpret_cast<MutexTest*>(userData);
 
+  while ( ! me->m_threadStartFlag)
+  {
+    // wait
+  }
+
   for (int i = 0; i < KRepetitionsCount; ++i)
   {
-    me->m_mutex->lock();
+    EXPECT_TRUE(me->m_mutex->lock());
 
     me->m_counter++;
 
-    me->m_mutex->unlock();
+    EXPECT_TRUE(me->m_mutex->unlock());
   }
 
   return 0;
@@ -97,17 +109,26 @@ void* MutexTest::RecursiveIncrement(void* userData)
 {
   MutexTest* me = reinterpret_cast<MutexTest*>(userData);
 
-  me->m_mutex->lock();
+  void* value = 0;
 
-  me->m_counter++;
-  if (KRepetitionsCount > me->m_counter)
+  while ( ! me->m_threadStartFlag)
   {
-    RecursiveIncrement(userData);
+    // wait
   }
 
-  me->m_mutex->unlock();
+  // acquire lock
+  EXPECT_TRUE(me->m_mutex->lock());
 
-  return 0;
+  me->m_counter++;
+  if (KRecursiveRepetitionsCount > me->m_counter)
+  {
+    value = RecursiveIncrement(userData);
+  }
+
+  // release lock
+  EXPECT_TRUE(me->m_mutex->unlock());
+
+  return value;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MutexTest::createThreads(s32 count, threadMain main)
@@ -121,6 +142,12 @@ void MutexTest::createThreads(s32 count, threadMain main)
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void MutexTest::startThreads()
+{
+  Device::Sleep(1000);
+  m_threadStartFlag = true;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void MutexTest::waitUntilThreadsFinish()
 {
   for (std::vector<pthread_t>::const_iterator it = m_thread.begin(); it != m_thread.end(); ++it)
@@ -129,34 +156,38 @@ void MutexTest::waitUntilThreadsFinish()
 
     void* status;
     EXPECT_EQ(0, pthread_join(thread, &status));
+    EXPECT_EQ(0, status);
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MutexTest, LockUnlock_)
+TEST_F(MutexTest, LockUnlock)
 {
   createMutex(EGEMutex::Normal);
   createThreads(KThreadCount, MutexTest::Increment);
+  startThreads();
   waitUntilThreadsFinish();
 
   EXPECT_EQ(KThreadCount * KRepetitionsCount, m_counter);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MutexTest, LockUnlockRecursiveSingleThread)
+TEST_F(MutexTest, LockUnlock_RecursiveSingleThread)
 {
   createMutex(EGEMutex::Recursive);
   createThreads(1, MutexTest::RecursiveIncrement);
+  startThreads();
   waitUntilThreadsFinish();
 
-  EXPECT_EQ(KRepetitionsCount, m_counter);
+  EXPECT_EQ(KRecursiveRepetitionsCount, m_counter);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-TEST_F(MutexTest, LockUnlockRecursiveMultiThread)
+TEST_F(MutexTest, LockUnlock_RecursiveMultiThread)
 {
   createMutex(EGEMutex::Recursive);
   createThreads(KThreadCount, MutexTest::RecursiveIncrement);
+  startThreads();
   waitUntilThreadsFinish();
 
   // NOTE: only the first thread will be able to process requested amount of times. Rest will simply increment once.
-  EXPECT_EQ(KRepetitionsCount + (KThreadCount - 1), m_counter);
+  EXPECT_EQ(KRecursiveRepetitionsCount + (KThreadCount - 1), m_counter);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

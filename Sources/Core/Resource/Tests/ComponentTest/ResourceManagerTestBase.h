@@ -49,6 +49,18 @@ class ResourceManagerTestBase : public TestBase
      *  @param total     Total number resources to process
      */
     void onProgress(s32 processed, s32 total);
+    /*! Slot called when resource has been loaded/unloaded.
+     *  @param processed Number of already processed resources
+     *  @param total     Total number resources to process
+     *  @note This schedules loading of the group 3 when called first time.
+     */
+    void onProgressLoadGroup3AfterFirstResource(s32 processed, s32 total);
+    /*! Slot called when resource has been loaded/unloaded.
+     *  @param processed Number of already processed resources
+     *  @param total     Total number resources to process
+     *  @note This schedules unloading of the group 1 when called first time.
+     */
+    void onProgressUnloadGroup1AfterFirstResource(s32 processed, s32 total);
 
     /*! Slot called when group is successfully loaded. Schedules loading of another group.
      *  @param  groupName Name of the loaded group. 

@@ -11,8 +11,10 @@ EGE_NAMESPACE_BEGIN
 /*! Available request types. */
 enum RequestType
 {
-  EGroupLoaded = 0,          /*!< Group has been loaded request. */
-  EGroupUnloaded            /*!< Group has been unloaded request. */
+  EGroupLoaded = 0,           /*!< Group has been loaded request. */
+  EGroupUnloaded,             /*!< Group has been unloaded request. */
+  EResourceLoaded,            /*!< Resource has been loaded request. */
+  EResourceUnloaded           /*!< Resource has been unloaded request. */
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 class ResourceManagerRequest

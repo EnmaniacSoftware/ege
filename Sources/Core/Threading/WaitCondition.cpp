@@ -12,7 +12,8 @@ EGE_NAMESPACE_BEGIN
 EGE_DEFINE_NEW_OPERATORS(WaitCondition)
 EGE_DEFINE_DELETE_OPERATORS(WaitCondition)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-WaitCondition::WaitCondition() : Object(EGE_OBJECT_UID_WAIT_CONDITION)
+WaitCondition::WaitCondition() 
+: Object(EGE_OBJECT_UID_WAIT_CONDITION)
 {
   m_p = ege_new WaitConditionPrivate(this);
 }

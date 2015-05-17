@@ -2,6 +2,8 @@
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerWorkThread.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerGroupLoadedRequest.h"
 #include "Core/Resource/Implementation/MultiThread/ResourceManagerGroupUnloadedRequest.h"
+#include "Core/Resource/Implementation/MultiThread/ResourceManagerResourceLoadedRequest.h"
+#include "Core/Resource/Implementation/MultiThread/ResourceManagerResourceUnloadedRequest.h"
 #include "Core/Resource/Interface/ResourceGroup.h"
 #include "EGEResources.h"
 #include "EGETimer.h"
@@ -22,7 +24,7 @@ ResourceManagerMultiThread::ResourceManagerMultiThread(Engine& engine, IResource
   m_workThread = ege_new ResourceManagerWorkThread(this);
 
   // create access mutex
-  m_mutex = ege_new Mutex(EGEMutex::Recursive);
+  m_mutex = ege_new Mutex(EGEMutex::Normal);
 
   // create group emit resource mutex
   m_emitRequstsMutex = ege_new Mutex();
@@ -59,8 +61,7 @@ void ResourceManagerMultiThread::update(const Time& time)
     // check if any signals are to be emitted
     if ( ! m_emissionRequests.isEmpty())
     {
-      MutexLocker lock(m_mutex);
-      MutexLocker lock2(m_emitRequstsMutex);
+      MutexLocker lock(m_emitRequstsMutex);
 
       // emit one by one
       for (EmissionRequestList::ConstIterator it = m_emissionRequests.begin(); it != m_emissionRequests.end(); ++it)
@@ -83,13 +84,24 @@ void ResourceManagerMultiThread::update(const Time& time)
                                              static_cast<const ResourceManagerGroupUnloadedRequest*>(request)->result());
             break;
 
-          /*case RT_PROGRESS:
+          case EResourceLoaded:
+      
+            // call base class implementation this time
+            ResourceManager::handleResourceLoaded(static_cast<const ResourceManagerResourceLoadedRequest*>(request)->resource(),
+                                                  static_cast<const ResourceManagerResourceLoadedRequest*>(request)->result(),
+                                                  static_cast<const ResourceManagerResourceLoadedRequest*>(request)->totalResourceCount(),
+                                                  static_cast<const ResourceManagerResourceLoadedRequest*>(request)->processedResourceCount());
+            break;
 
-            //egeCritical() << "Processed" << request.count << "out of" << request.total;
+          case EResourceUnloaded:
+      
+            // call base class implementation this time
+            ResourceManager::handleResourceUnloaded(static_cast<const ResourceManagerResourceUnloadedRequest*>(request)->resource(),
+                                                    static_cast<const ResourceManagerResourceUnloadedRequest*>(request)->result(),
+                                                    static_cast<const ResourceManagerResourceUnloadedRequest*>(request)->totalResourceCount(),
+                                                    static_cast<const ResourceManagerResourceUnloadedRequest*>(request)->processedResourceCount());
+            break;
 
-           // emit d_func()->processingStatusUpdated(request.count, request.total);
-          //  break;
-          */
           default:
 
             egeWarning(KResourceManagerDebugName) << "Unknown request type. Skipping.";
@@ -104,11 +116,15 @@ void ResourceManagerMultiThread::update(const Time& time)
     }
 
     // check if anything to process
+    m_mutex->lock();
+
     if ( ! m_processList.isEmpty())
     {
       // wake up worker thread
       m_commandsToProcess->wakeOne();
     }
+
+    m_mutex->unlock();
   }
   else if (EModuleStateShuttingDown == state())
   {
@@ -127,7 +143,9 @@ void ResourceManagerMultiThread::update(const Time& time)
     else
     {
       // wake it up
+      m_mutex->lock();
       m_commandsToProcess->wakeOne();
+      m_mutex->unlock();
     }
   }
 }
@@ -271,18 +289,6 @@ void ResourceManagerMultiThread::onWorkThreadFinished(const PThread& thread)
   EGE_UNUSED(thread);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-void ResourceManagerMultiThread::addProgressRequest(u32 count, u32 total)
-{
-  //EmissionRequest request;
-
-  //request.type  = RT_PROGRESS;
-  //request.count = count;
-  //request.total = total;
-
-  //MutexLocker lock(m_emitRequstsMutex);
-  //m_emissionRequests.push_back(request);
-}
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void ResourceManagerMultiThread::onGroupLoaded(const PResourceGroup& group, EGEResult result)
 {
   // NOTE: mutex is locked
@@ -298,6 +304,26 @@ void ResourceManagerMultiThread::onGroupUnloaded(const PResourceGroup& group, EG
   // NOTE: mutex is locked
 
   ResourceManagerGroupUnloadedRequest* request = ege_new ResourceManagerGroupUnloadedRequest(group, result);
+
+  MutexLocker lock(m_emitRequstsMutex);
+  m_emissionRequests.append(request);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerMultiThread::handleResourceLoaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount)
+{
+  // NOTE: mutex is locked
+
+  ResourceManagerResourceLoadedRequest* request = ege_new ResourceManagerResourceLoadedRequest(resource, result, processedResourceCount, totalResourceCount);
+
+  MutexLocker lock(m_emitRequstsMutex);
+  m_emissionRequests.append(request);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void ResourceManagerMultiThread::handleResourceUnloaded(const PResource& resource, EGEResult result, s32 totalResourceCount, s32 processedResourceCount)
+{
+  // NOTE: mutex is locked
+
+  ResourceManagerResourceUnloadedRequest* request = ege_new ResourceManagerResourceUnloadedRequest(resource, result, processedResourceCount, totalResourceCount);
 
   MutexLocker lock(m_emitRequstsMutex);
   m_emissionRequests.append(request);

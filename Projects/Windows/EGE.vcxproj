@@ -426,6 +426,8 @@
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupLoadedRequest.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerGroupUnloadedRequest.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerRequest.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerResourceLoadedRequest.h" />
+    <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerResourceUnloadedRequest.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\MultiThread\ResourceManagerWorkThread.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Implementation\ResourceManager.h" />
     <ClInclude Include="..\..\Sources\Core\Resource\Interface\IResourceManager.h" />
