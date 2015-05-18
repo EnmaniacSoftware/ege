@@ -43,13 +43,13 @@ class Assert
     static void DefaultHandleAssertX(const char* reason, const char* fileName, s32 lineNo);
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#ifdef EGE_FEATURE_DEBUG
+#if defined (EGE_FEATURE_DEBUG) || defined(EGE_FEATURE_ASSERT)
   #define EGE_ASSERT(cond) ((!(cond)) ? Assert::HandleAssert(__FILE__, __LINE__) : ege_noop())
   #define EGE_ASSERT_X(cond, reason) ((!(cond)) ? Assert::HandleAssertX(reason, __FILE__, __LINE__) : ege_noop())
 #else
   #define EGE_ASSERT(cond) ege_noop()
   #define EGE_ASSERT_X(cond, reason) ege_noop()
-#endif // EGE_FEATURE_DEBUG
+#endif // EGE_FEATURE_DEBUG || EGE_FEATURE_ASSERT
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 EGE_NAMESPACE_END

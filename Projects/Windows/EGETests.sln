@@ -53,10 +53,10 @@ Global
 		{4B9D0BDB-A41B-46EC-8906-17FE20AC5264}.Release|x64.ActiveCfg = Release|Win32
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.ActiveCfg = Debug - GLfixed|Win32
 		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|Win32.Build.0 = Debug - GLfixed|Win32
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|x64.ActiveCfg = Debug - OGL FPL ST|Win32
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.ActiveCfg = Release - GLfixed|Win32
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.Build.0 = Release - GLfixed|Win32
-		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|x64.ActiveCfg = Release - OGL FPL MT|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Debug|x64.ActiveCfg = Debug - GLfixed|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.ActiveCfg = Release - Assert, GLfixed|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|Win32.Build.0 = Release - Assert, GLfixed|Win32
+		{640BD281-71D7-4CC6-91DB-8381773CC8F4}.Release|x64.ActiveCfg = Release - Assert, GLfixed|Win32
 		{A3A84737-5017-4577-B8A2-79429A25B8B6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{A3A84737-5017-4577-B8A2-79429A25B8B6}.Debug|Win32.Build.0 = Debug|Win32
 		{A3A84737-5017-4577-B8A2-79429A25B8B6}.Debug|x64.ActiveCfg = Debug|Win32

@@ -1,9 +1,10 @@
 #ifndef EGE_CORE_TESTFRAMEWORK_TESTBASE_H
 #define EGE_CORE_TESTFRAMEWORK_TESTBASE_H
 
+#include <EGE.h>
 #include <gtest/gtest.h>
 #include <limits>
-#include <EGE.h>
+#include <vector>
 
 EGE_NAMESPACE
 
@@ -14,8 +15,21 @@ class TestBase : public ::testing::Test
 {
   protected:
 
+    /*! Assertion hit info struct. */
+    struct AssertHitInfo
+    {
+      const char* fileName;
+      const char* reason;
+      s32 lineNo;
+    };
+
+  protected:
+
     TestBase(float32 epsilon = std::numeric_limits<float32>::epsilon());
     virtual ~TestBase();
+
+    virtual void SetUp();
+    virtual void TearDown();
 
     /*! Returns random number. 
      *  @param  scale Scale of the returned value.
@@ -50,6 +64,21 @@ class TestBase : public ::testing::Test
      *  @note Last two parameters are used to better track where exactly the values under test came from.
      */
     void ExpectFloatEqual(float32 expected, float32 actual, float32 epsilon, const char* fileName, s32 lineNo);
+    
+    /*! Returns assert hits. */
+    const std::vector<AssertHitInfo>& assertHitInfo() const;
+
+  private:
+
+    /*! Custom simple assertion handler. */
+    static void HandleAssert(const char* fileName, s32 lineNo);
+    /*! Custom described assertion handler. */
+    static void HandleAssertX(const char* reason, const char* fileName, s32 lineNo);
+
+  private:
+
+    /*! List of triggered assertions. */
+    static std::vector<AssertHitInfo> m_hits;
 
   private:
 

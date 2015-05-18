@@ -220,9 +220,8 @@ void DynamicArray<T>::remove(const T object)
 template <typename T>
 void DynamicArray<T>::removeAt(s32 index)
 {
-// TAGE - uncomment once EGE #111 is done
-//  EGE_ASSERT(0 <= index);
-//  EGE_ASSERT(index < size());
+  EGE_ASSERT(0 <= index);
+  EGE_ASSERT(index < size());
 
   if ((0 <= index) && (index < size()))
   {

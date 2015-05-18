@@ -1,9 +1,12 @@
 #include "TestFramework/Interface/TestBase.h"
+#include <EGEAssert.h>
 #include <math.h>
 #include <stdlib.h>
 
 EGE_NAMESPACE
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+std::vector<TestBase::AssertHitInfo> TestBase::m_hits;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TestBase::TestBase(float32 epsilon) 
 : m_epsilon(epsilon)
@@ -13,6 +16,18 @@ TestBase::TestBase(float32 epsilon)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 TestBase::~TestBase()
 {
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::SetUp()
+{
+  Assert::InstallHandlers(TestBase::HandleAssert, TestBase::HandleAssertX);
+
+  m_hits.clear();
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::TearDown()
+{
+  Assert::InstallHandlers(NULL, NULL);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 float32 TestBase::random(float32 scale) const
@@ -57,5 +72,32 @@ void TestBase::ExpectFloatEqual(float32 expected, float32 actual, float32 epsilo
 
     ADD_FAILURE_AT(fileName, lineNo);
   }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+const std::vector<TestBase::AssertHitInfo>& TestBase::assertHitInfo() const
+{
+  return m_hits;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::HandleAssert(const char* fileName, s32 lineNo)
+{
+  AssertHitInfo info;
+
+  info.fileName = fileName;
+  info.lineNo   = lineNo;
+  info.reason   = NULL;
+
+  m_hits.push_back(info);
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------
+void TestBase::HandleAssertX(const char* reason, const char* fileName, s32 lineNo)
+{
+  AssertHitInfo info;
+
+  info.fileName = fileName;
+  info.lineNo   = lineNo;
+  info.reason   = reason;
+
+  m_hits.push_back(info);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------

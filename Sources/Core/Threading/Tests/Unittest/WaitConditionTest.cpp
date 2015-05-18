@@ -77,6 +77,8 @@ void WaitConditionTest::TearDownTestCase()
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void WaitConditionTest::SetUp()
 {
+  TestBase::SetUp();
+
   m_counter = 0;
   m_awaitingCounter = 0;
   m_threadStartFlag = false;
@@ -86,6 +88,8 @@ void WaitConditionTest::TearDown()
 {
   m_condition = NULL;
   m_mutex = NULL;
+
+  TestBase::TearDown();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void WaitConditionTest::createMutexAndCondition(EGEMutex::EType type)
@@ -191,8 +195,7 @@ void WaitConditionTest::waitUntilThreadFinishes()
   }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - Enable when EGE #111 is done
-TEST_F(WaitConditionTest, DISABLED_WaitOnUnlockedMutex)
+TEST_F(WaitConditionTest, WaitOnUnlockedMutex)
 {
   WaitCondition condition;
 
@@ -201,8 +204,7 @@ TEST_F(WaitConditionTest, DISABLED_WaitOnUnlockedMutex)
   EXPECT_FALSE(condition.wait(m_mutex));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - Enable when EGE #111 is done
-TEST_F(WaitConditionTest, DISABLED_WaitOnUnlockedRecursiveMutex)
+TEST_F(WaitConditionTest, WaitOnUnlockedRecursiveMutex)
 {
   WaitCondition condition;
 
@@ -211,8 +213,7 @@ TEST_F(WaitConditionTest, DISABLED_WaitOnUnlockedRecursiveMutex)
   EXPECT_FALSE(condition.wait(m_mutex));
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-// TAGE - Enable when EGE #111 is done
-TEST_F(WaitConditionTest, DISABLED_WaitOnNoMutex)
+TEST_F(WaitConditionTest, WaitOnNoMutex)
 {
   WaitCondition condition;
 
