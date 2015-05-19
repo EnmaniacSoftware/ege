@@ -134,7 +134,6 @@
 		451471E218C5231900AAC617 /* XmlElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 451470FF18C5231900AAC617 /* XmlElement.cpp */; };
 		4514722418C5236200AAC617 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471E718C5236200AAC617 /* AppDelegate.mm */; };
 		4514722618C5236200AAC617 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471EB18C5236200AAC617 /* ViewController.mm */; };
-		4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471F518C5236200AAC617 /* DebugIOS.mm */; };
 		4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 451471FA18C5236200AAC617 /* DirectoryIOS.mm */; };
 		4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4514720018C5236200AAC617 /* GraphicsIOS_p.mm */; };
 		4514722F18C5236200AAC617 /* ExtensionsOGLIOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4514720218C5236200AAC617 /* ExtensionsOGLIOS.cpp */; };
@@ -249,6 +248,7 @@
 		45D6D0DA19B3C5DC00B3DA64 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0D919B3C5DC00B3DA64 /* QuartzCore.framework */; };
 		45D6D0DC19B3C5F700B3DA64 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0DB19B3C5F700B3DA64 /* AVFoundation.framework */; };
 		45D6D0DE19B3C60B00B3DA64 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 45D6D0DD19B3C60B00B3DA64 /* CoreGraphics.framework */; };
+		45DB769B1B0BD18000E3C833 /* DebugIOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 45DB769A1B0BD18000E3C833 /* DebugIOS.mm */; };
 		45E0F0C81909AFBC0003E15F /* DataBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */; };
 		45E0F0C91909AFBC0003E15F /* Node.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0C31909AFBC0003E15F /* Node.cpp */; };
 		45E0F0CE1909B0DD0003E15F /* ImagedAnimation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45E0F0CB1909B0DD0003E15F /* ImagedAnimation.cpp */; };
@@ -705,7 +705,6 @@
 		451471E718C5236200AAC617 /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		451471EA18C5236200AAC617 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		451471EB18C5236200AAC617 /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
-		451471F518C5236200AAC617 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
 		451471FA18C5236200AAC617 /* DirectoryIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DirectoryIOS.mm; sourceTree = "<group>"; };
 		451471FF18C5236200AAC617 /* GraphicsIOS_p.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsIOS_p.h; sourceTree = "<group>"; };
 		4514720018C5236200AAC617 /* GraphicsIOS_p.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GraphicsIOS_p.mm; sourceTree = "<group>"; };
@@ -967,6 +966,7 @@
 		45D6D0D919B3C5DC00B3DA64 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		45D6D0DB19B3C5F700B3DA64 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		45D6D0DD19B3C60B00B3DA64 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		45DB769A1B0BD18000E3C833 /* DebugIOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DebugIOS.mm; sourceTree = "<group>"; };
 		45E0F0C21909AFBC0003E15F /* DataBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataBuffer.cpp; sourceTree = "<group>"; };
 		45E0F0C31909AFBC0003E15F /* Node.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Node.cpp; sourceTree = "<group>"; };
 		45E0F0C51909AFBC0003E15F /* DataBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataBuffer.h; sourceTree = "<group>"; };
@@ -2185,7 +2185,6 @@
 			isa = PBXGroup;
 			children = (
 				45CB76E91B0932FB0005C5BD /* Implementation */,
-				451471F518C5236200AAC617 /* DebugIOS.mm */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -2979,6 +2978,7 @@
 		45CB76E91B0932FB0005C5BD /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				45DB769A1B0BD18000E3C833 /* DebugIOS.mm */,
 				45CB76EA1B0932FB0005C5BD /* AssertIOS.mm */,
 			);
 			path = Implementation;
@@ -3419,6 +3419,7 @@
 				451471DC18C5231900AAC617 /* Version.cpp in Sources */,
 				4506A9D11A89614E009393B3 /* String.cpp in Sources */,
 				451471DD18C5231900AAC617 /* XmlAttributeTinyXml_p.cpp in Sources */,
+				45DB769B1B0BD18000E3C833 /* DebugIOS.mm in Sources */,
 				453C83F8193E6AD200FBA4AA /* AudioCodecMp3.cpp in Sources */,
 				451471DE18C5231900AAC617 /* XmlDocumentTinyXml_p.cpp in Sources */,
 				451471DF18C5231900AAC617 /* XmlElementTinyXml_p.cpp in Sources */,
@@ -3429,7 +3430,6 @@
 				451471E218C5231900AAC617 /* XmlElement.cpp in Sources */,
 				4514722418C5236200AAC617 /* AppDelegate.mm in Sources */,
 				4514722618C5236200AAC617 /* ViewController.mm in Sources */,
-				4514722A18C5236200AAC617 /* DebugIOS.mm in Sources */,
 				45660C2B19FEDC2A00E70859 /* ResourceFactory.cpp in Sources */,
 				4514722C18C5236200AAC617 /* DirectoryIOS.mm in Sources */,
 				4514722E18C5236200AAC617 /* GraphicsIOS_p.mm in Sources */,
