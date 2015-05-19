@@ -246,6 +246,7 @@
     <ClCompile Include="..\..\Sources\Core\XML\Implementation\XmlElement.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Atomic\Implementation\AtomicOperationsWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\AssertWin32.cpp" />
+    <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Device\Implementation\DeviceWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Directory\Implementation\DirectoryWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Engine\Implementation\EngineInstanceWin32.cpp" />
@@ -568,7 +569,6 @@
     <ClInclude Include="..\..\Sources\EGEResourceLoader.h" />
     <ClInclude Include="..\..\Sources\EGEResourceManager.h" />
     <ClInclude Include="..\..\Sources\EGEScreen.h" />
-    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Graphics\GraphicsWin32_p.cpp" />
     <ClCompile Include="..\..\Sources\Win32\Memory\MemoryWin32.cpp" />
   </ItemGroup>

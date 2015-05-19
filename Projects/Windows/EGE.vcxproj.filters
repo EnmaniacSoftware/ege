@@ -543,9 +543,6 @@
     <ClCompile Include="..\..\Sources\Core\Physics\Box2D\PhysicsJointDistanceBox2D_p.cpp">
       <Filter>Core\Physics\Box2D</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Sources\Win32\Debug\DebugWin32.cpp">
-      <Filter>Win32\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Graphics\Graphics.cpp">
       <Filter>Core\Graphics</Filter>
     </ClCompile>
@@ -1189,6 +1186,9 @@
       <Filter>Core\Debug\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\AssertWin32.cpp">
+      <Filter>Win32\Debug\Implementation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Sources\Win32\Debug\Implementation\DebugWin32.cpp">
       <Filter>Win32\Debug\Implementation</Filter>
     </ClCompile>
   </ItemGroup>
