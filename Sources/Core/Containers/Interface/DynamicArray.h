@@ -19,6 +19,7 @@
  */
 
 #include "EGETypes.h"
+#include "EGEAssert.h"
 #include <vector>
 #include <algorithm>
 
