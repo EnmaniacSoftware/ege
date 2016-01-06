@@ -38,6 +38,18 @@ ResourceManagerMultiThread::ResourceManagerMultiThread(Engine& engine, IResource
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 ResourceManagerMultiThread::~ResourceManagerMultiThread()
 {
+  // stop thread
+  m_workThread->stop();
+
+  // singal to wake up
+  m_commandsToProcess->wakeAll();
+
+  // wait until work thread is finished
+  m_workThread->wait();
+
+  // clean up
+  // NOTE: it is possible that in early shutdowns update methods is never called. Thus, a force clean up is done here.
+  unloadAll();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult ResourceManagerMultiThread::construct()
