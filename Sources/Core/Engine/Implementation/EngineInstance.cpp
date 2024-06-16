@@ -40,19 +40,19 @@ EGE_DEFINE_NEW_OPERATORS(EngineInstance)
 EGE_DEFINE_DELETE_OPERATORS(EngineInstance)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EngineInstance::EngineInstance()
-: m_socialServices(NULL)
-, m_state(EStateInvalid)
-, m_application(NULL)
-, m_debug(NULL)
-, m_deviceServices(NULL)
-, m_purchaseServices(NULL)
-, m_imageLoader(NULL)
-, m_adNetworkRegistry(NULL)
-, m_audioManagerFactory(NULL)
-, m_adNetwork(NULL)
-, m_lastUpdateTime(0LL)
-, m_updateAccumulator(0LL)
-, m_language("en")
+  : m_socialServices(NULL)
+  , m_state(EStateInvalid)
+  , m_application(NULL)
+  , m_debug(NULL)
+  , m_deviceServices(NULL)
+  , m_purchaseServices(NULL)
+  , m_imageLoader(NULL)
+  , m_adNetworkRegistry(NULL)
+  , m_audioManagerFactory(NULL)
+  , m_adNetwork(NULL)
+  , m_lastUpdateTime(0LL)
+  , m_updateAccumulator(0LL)
+  , m_language("en")
 {
   m_adNetworkRegistry = ege_new AdNetworkRegistry(*this);
   m_audioManagerFactory = ege_new AudioManagerFactory(*this);
@@ -103,7 +103,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
 
   // decompose param list
   const s32 updatesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_UPDATES_PER_SECOND, "60").toInt();
-  const s32 framesPerSecond  = m_configurationDictionary.value(EGE_ENGINE_PARAM_RENDERS_PER_SECOND, "0").toInt();
+  const s32 framesPerSecond = m_configurationDictionary.value(EGE_ENGINE_PARAM_RENDERS_PER_SECOND, "0").toInt();
 
   // check if update rate is given
   if (0 < updatesPerSecond)
@@ -116,7 +116,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   {
     m_renderInterval.fromMiliseconds(1000 / framesPerSecond);
   }
-  
+
   // load configuration
   loadConfig();
 
@@ -131,7 +131,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
   }
 
   // subscribe for event notifications
-  if ( ! eventManager()->registerListener(this))
+  if (!eventManager()->registerListener(this))
   {
     // error!
     return EGE_ERROR;
@@ -145,7 +145,7 @@ EGEResult EngineInstance::construct(const Dictionary& commandLineDictionary)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::update()
-{ 
+{
   // initialize update timer (to smooth out first update)
   if (0 == m_lastUpdateTime.microseconds())
   {
@@ -154,19 +154,19 @@ void EngineInstance::update()
 
   // get current time
   Time time(Timer::GetMicroseconds());
-    
+
   // calculate time passed
   Time timeInterval = time - m_lastUpdateTime;
-  
+
   // store frame current time
   m_lastUpdateTime = time;
-  
+
   // dont allow to long changes
   if (0.25f < timeInterval.seconds())
   {
     timeInterval = 0.25f;
   }
-  
+
   // update accumulator for updates
   m_updateAccumulator += timeInterval;
 
@@ -250,62 +250,62 @@ bool EngineInstance::isShutDown() const
   return (EStateClosed == state());
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IGraphics* EngineInstance::graphics() const 
-{ 
+IGraphics* EngineInstance::graphics() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_GRAPHICS_MODULE));
-  return static_cast<EngineModule<IGraphics>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_GRAPHICS_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IGraphics>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_GRAPHICS_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IEventManager* EngineInstance::eventManager() const 
-{ 
+IEventManager* EngineInstance::eventManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_EVENT_MANAGER_MODULE));
-  return static_cast<EngineModule<IEventManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_EVENT_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IEventManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_EVENT_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IPhysicsManager* EngineInstance::physicsManager() const 
-{ 
+IPhysicsManager* EngineInstance::physicsManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE));
-  return static_cast<EngineModule<IPhysicsManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IPhysicsManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_PHYSICS_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ISceneManager* EngineInstance::sceneManager() const 
-{ 
+ISceneManager* EngineInstance::sceneManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_SCENE_MANAGER_MODULE));
-  return static_cast<EngineModule<ISceneManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCENE_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<ISceneManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCENE_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IResourceManager* EngineInstance::resourceManager() const 
-{ 
+IResourceManager* EngineInstance::resourceManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE));
-  return static_cast<EngineModule<IResourceManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IResourceManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_RESOURCE_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IOverlayManager* EngineInstance::overlayManager() const 
-{ 
+IOverlayManager* EngineInstance::overlayManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_OVERLAY_MANAGER_MODULE));
-  return static_cast<EngineModule<IOverlayManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_OVERLAY_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IOverlayManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_OVERLAY_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IScreenManager* EngineInstance::screenManager() const 
-{ 
+IScreenManager* EngineInstance::screenManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_SCREEN_MANAGER_MODULE));
-  return static_cast<EngineModule<IScreenManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCREEN_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IScreenManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_SCREEN_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-IAudioManager* EngineInstance::audioManager() const 
-{ 
+IAudioManager* EngineInstance::audioManager() const
+{
   EGE_ASSERT(m_modulesUIDToObjects.contains(EGE_OBJECT_UID_AUDIO_MANAGER_MODULE));
-  return static_cast<EngineModule<IAudioManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_AUDIO_MANAGER_MODULE, NULL))->iface(); 
+  return static_cast<EngineModule<IAudioManager>*>(m_modulesUIDToObjects.value(EGE_OBJECT_UID_AUDIO_MANAGER_MODULE, NULL))->iface();
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-Debug* EngineInstance::debug() const 
-{ 
-  return m_debug; 
+Debug* EngineInstance::debug() const
+{
+  return m_debug;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServices* EngineInstance::deviceServices() const 
-{ 
-  return m_deviceServices; 
+DeviceServices* EngineInstance::deviceServices() const
+{
+  return m_deviceServices;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PurchaseServices* EngineInstance::purchaseServices() const
@@ -318,9 +318,9 @@ SocialServices* EngineInstance::socialServices() const
   return m_socialServices;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-ImageLoader* EngineInstance::imageLoader() const 
-{ 
-  return m_imageLoader; 
+ImageLoader* EngineInstance::imageLoader() const
+{
+  return m_imageLoader;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::setLanguage(const String& language)
@@ -373,7 +373,7 @@ void EngineInstance::onEventRecieved(PEvent event)
       egeDebug(KEngineDebugName) << "QUIT request received";
       shutdown();
       break;
-      
+
     case EGE_EVENT_ID_CORE_APP_PAUSE:
 
       if (EStateRunning == state())
@@ -428,10 +428,10 @@ AdNetwork* EngineInstance::adNetwork() const
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 void EngineInstance::loadConfig()
 {
-  const char* KConfigFileName     = "config.xml";
-  const char* KRootElement        = "config";
-  const char* KLogElement         = "log";
-  const char* KLogNameAttribute   = "name";
+  const char* KConfigFileName = "config.xml";
+  const char* KRootElement = "config";
+  const char* KLogElement = "log";
+  const char* KLogNameAttribute = "name";
   const char* KLogEnableAttribute = "enabled";
 
   StringList enabledDebugNames;
@@ -458,7 +458,7 @@ void EngineInstance::loadConfig()
         {
           // process data
           String sectionName = child->attribute(KLogNameAttribute, "");
-          bool enabled       = child->attribute(KLogEnableAttribute, false);
+          bool enabled = child->attribute(KLogEnableAttribute, false);
 
           // check if section is enabled
           if (enabled)
@@ -467,7 +467,7 @@ void EngineInstance::loadConfig()
             enabledDebugNames << sectionName;
           }
         }
-  
+
         // go to next child
         child = child->nextChild();
       }
@@ -482,14 +482,14 @@ void EngineInstance::createModules()
 {
   String typeName;
 
-  const u32 KModulePriorityEventManager     = 0;
-  const u32 KModulePriorityGraphics         = 5;
-  const u32 KModulePriorityResourceManager  = 10;
-  const u32 KModulePriorityPhysicsManager   = 15;
-  const u32 KModulePrioritySceneManager     = 20;
-  const u32 KModulePriorityOverlayManager   = 25;
-  const u32 KModulePriorityScreenManager    = 30;
-  const u32 KModulePriorityAudioManager     = 35;
+  const u32 KModulePriorityEventManager = 0;
+  const u32 KModulePriorityGraphics = 5;
+  const u32 KModulePriorityResourceManager = 10;
+  const u32 KModulePriorityPhysicsManager = 15;
+  const u32 KModulePrioritySceneManager = 20;
+  const u32 KModulePriorityOverlayManager = 25;
+  const u32 KModulePriorityScreenManager = 30;
+  const u32 KModulePriorityAudioManager = 35;
 
   // create device services
   m_deviceServices = ege_new PLATFORM_CLASSNAME(DeviceServices)(*this);
@@ -566,6 +566,10 @@ EGEResult EngineInstance::constructModules()
     IEngineModule* module = it->second;
 
     result = module->construct();
+    if (result != EGE_SUCCESS)
+    {
+      result = EGE_SUCCESS;
+    }
   }
 
   //if (EGE_SUCCESS != (result = m_adNetwork->construct()))

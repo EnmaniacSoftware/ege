@@ -454,15 +454,6 @@
     <Filter Include="Win32\Atomic\Implementation">
       <UniqueIdentifier>{81154b93-f590-4d76-8022-6cac30e08617}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Factory\Event">
-      <UniqueIdentifier>{4786fa0a-4e3e-4d5f-ad5c-de86d5a71413}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Factory\Event\Interface">
-      <UniqueIdentifier>{1ae9f42a-9645-4d13-942b-7a37eb74d492}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Factory\Event\Implementation">
-      <UniqueIdentifier>{e22632d0-2c82-4b5a-b80a-68d9a39d7d68}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core\Crypto">
       <UniqueIdentifier>{3abc6d54-baea-4a5a-a348-0d4e4f8df1b2}</UniqueIdentifier>
     </Filter>
@@ -480,6 +471,15 @@
     </Filter>
     <Filter Include="Win32\Debug\Implementation">
       <UniqueIdentifier>{a2db7873-7113-4cc7-a579-269434ee92a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event">
+      <UniqueIdentifier>{4786fa0a-4e3e-4d5f-ad5c-de86d5a71413}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event\Interface">
+      <UniqueIdentifier>{1ae9f42a-9645-4d13-942b-7a37eb74d492}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Event\Implementation">
+      <UniqueIdentifier>{e22632d0-2c82-4b5a-b80a-68d9a39d7d68}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1045,10 +1045,10 @@
       <Filter>Core\Audio\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\Event.cpp">
-      <Filter>Core\Factory\Event\Implementation</Filter>
+      <Filter>Core\Event\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Core\Event\Implementation\EventManager.cpp">
-      <Filter>Core\Factory\Event\Implementation</Filter>
+      <Filter>Core\Event\Implementation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Sources\Win32\File\Implementation\FileUtilsWin32.cpp">
       <Filter>Win32\File\Implementation</Filter>
@@ -1968,7 +1968,7 @@
       <Filter>Core\Engine\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Interface\IEventManager.h">
-      <Filter>Core\Factory\Event\Interface</Filter>
+      <Filter>Core\Event\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Engine\Interface\IEngineModule.h">
       <Filter>Core\Engine\Interface</Filter>
@@ -2001,16 +2001,16 @@
       <Filter>Core\Graphics\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Interface\Event.h">
-      <Filter>Core\Factory\Event\Interface</Filter>
+      <Filter>Core\Event\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Interface\EventIDs.h">
-      <Filter>Core\Factory\Event\Interface</Filter>
+      <Filter>Core\Event\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Interface\EventListener.h">
-      <Filter>Core\Factory\Event\Interface</Filter>
+      <Filter>Core\Event\Interface</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\Event\Implementation\EventManager.h">
-      <Filter>Core\Factory\Event\Implementation</Filter>
+      <Filter>Core\Event\Implementation</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Sources\Core\File\Interface\File.h">
       <Filter>Core\File\Interface</Filter>

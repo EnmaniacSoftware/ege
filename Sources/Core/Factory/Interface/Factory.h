@@ -32,7 +32,7 @@ class Factory
      *  @param  createFunction Function capable of creating of new instance of the given interface.
      *  @return EGE_SUCCESS if instance has been successfully registered. Otherwise, another available error code.
      */
-    EGEResult registerInterface(const String& typeName, egeFactoryCreateFunction createFunction)
+    virtual EGEResult registerInterface(const String& typeName, egeFactoryCreateFunction createFunction)
     {
       EGEResult result = EGE_SUCCESS;
 
@@ -55,7 +55,7 @@ class Factory
      *  @param  typeName    Type name of the registered instance.
      *  @return Created instance of the given interface. NULL if error occured.
      */
-    Type createInstance(const String& typeName) const
+    virtual Type createInstance(const String& typeName) const
     {
       Type object = NULL;
 
@@ -74,7 +74,7 @@ class Factory
      *  @param  typeName  Type name of the registered interface.
      *  @return TRUE if interface of a given type name has been already registered. Otherwise, FALSE.
      */
-    bool isInterfaceRegistered(const String& typeName) const
+    virtual bool isInterfaceRegistered(const String& typeName) const
     {
       return m_registry.contains(typeName);
     }
@@ -113,7 +113,7 @@ class Factory1
      *  @param  createFunction Function capable of creating of new instance of the given interface.
      *  @return EGE_SUCCESS if instance has been successfully registered. Otherwise, another available error code.
      */
-    EGEResult registerInterface(const String& typeName, egeFactoryCreateFunction createFunction)
+    virtual EGEResult registerInterface(const String& typeName, egeFactoryCreateFunction createFunction)
     {
       EGEResult result = EGE_SUCCESS;
 
@@ -137,7 +137,7 @@ class Factory1
      *  @param  param1      Extra parameter to be passed to created instance.
      *  @return Created instance of the given interface. NULL if error occured.
      */
-    Type createInstance(const String& typeName, P1 param1) const
+    virtual Type createInstance(const String& typeName, P1 param1) const
     {
       Type object = NULL;
 
@@ -156,7 +156,7 @@ class Factory1
      *  @param  typeName  Type name of the registered interface.
      *  @return TRUE if interface of a given type name has been already registered. Otherwise, FALSE.
      */
-    bool isInterfaceRegistered(const String& typeName) const
+    virtual bool isInterfaceRegistered(const String& typeName) const
     {
       return m_registry.contains(typeName);
     }

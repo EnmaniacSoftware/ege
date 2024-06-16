@@ -9,7 +9,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*! Available alignment values. */
-enum AlignmentFlags
+enum AlignmentFlags : int
 {
   ALIGN_LEFT    = 0x01,
   ALIGN_RIGHT   = 0x02,

@@ -6,7 +6,7 @@ App Store testing:
 
 Accounts:
 
-enmaniac@dummy.com - Apocalypse1_
+enmaniac@dummy.com - Ap***1_
 neverbuy@content.com - Greedybastard1
 
 Game Center testing:

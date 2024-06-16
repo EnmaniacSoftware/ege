@@ -6,6 +6,7 @@
 #include "Core/Memory/Object.h"
 #include "Core/Memory/SmartPointer.h"
 #include "Core/Memory/MemoryManager.h"
+#include <typeinfo>
 
 EGE_NAMESPACE_BEGIN
 

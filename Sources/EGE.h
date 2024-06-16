@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 /*! Available directions. */
-enum DirectionFlags
+enum DirectionFlags : int
 {
   DIRECTION_NONE        = 0x00,
   DIRECTION_VERTICAL    = 0x01,

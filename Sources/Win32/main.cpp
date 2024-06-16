@@ -12,12 +12,12 @@ void run(Engine& engine)
   EngineInternal& engineInternal = static_cast<EngineInternal&>(reinterpret_cast<EngineInstance&>(engine));
 
   // main loop
-  while ( ! engineInternal.isShutDown())
+  while (!engineInternal.isShutDown())
   {
     // process messages for all windows within our context
     MSG msg;
-    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) 
-    { 
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
       // process the message
       TranslateMessage(&msg);
       DispatchMessage(&msg);

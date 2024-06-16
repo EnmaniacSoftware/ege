@@ -16,7 +16,7 @@ EGE_NAMESPACE_BEGIN
 namespace NVertexBuffer
 {
   /*! Buffer available usages. */
-  enum UsageType
+  enum UsageType : int
   {
     UT_STATIC_WRITE   = 1,                  /*!< Created once, used many times. Data will be sent from application to GL. */
     UT_DYNAMIC_WRITE  = 2,                  /*!< Frequently changable. Data will be sent from application to GL. */

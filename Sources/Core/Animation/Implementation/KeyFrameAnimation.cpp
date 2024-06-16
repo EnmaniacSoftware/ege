@@ -10,15 +10,13 @@ EGE_DEFINE_NEW_OPERATORS(KeyFrameAnimation)
 EGE_DEFINE_DELETE_OPERATORS(KeyFrameAnimation)
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 KeyFrameAnimation::KeyFrameAnimation(Engine& engine, const String& name) : Object()
-                                                                         , m_engine(engine)
-                                                                         , m_name(name)
-                                                                         , m_state(EStateStopped)
-{
-}
+, m_engine(engine)
+, m_name(name)
+, m_state(EStateStopped)
+{}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 KeyFrameAnimation::~KeyFrameAnimation()
-{
-}
+{}
 //---------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult KeyFrameAnimation::addSequencer(const PSequencer& sequencer)
 {
@@ -56,9 +54,9 @@ PSequencer KeyFrameAnimation::sequencer(const String& name) const
   return NULL;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-KeyFrameAnimation::State KeyFrameAnimation::state() const 
-{ 
-  return m_state; 
+KeyFrameAnimation::State KeyFrameAnimation::state() const
+{
+  return m_state;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 EGEResult KeyFrameAnimation::play(const String& sequencerName)
@@ -80,9 +78,9 @@ EGEResult KeyFrameAnimation::play(const String& sequencerName)
       stop();
     }
   }
-  
+
   // check if still not playing
-  if ( ! isPlaying())
+  if (!isPlaying())
   {
     // get sequencer
     m_currentSequencer = this->sequencer(sequencerName);
@@ -210,8 +208,8 @@ void KeyFrameAnimation::setName(const String& name)
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 const String& KeyFrameAnimation::name() const
-{ 
-  return m_name; 
+{
+  return m_name;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
 PSequencer KeyFrameAnimation::currentSequencer() const

@@ -14,3 +14,25 @@ Ala::Ala()
 , ela(1)
 ...
 
+
+Struct vs Class
+
+If all methods and data members are public struct can be used. Otherwise, use class.
+
+Include order:
+
+- alphabetical
+- starting with local ones ""
+- first one which does not refer to any subfolder ie #include "ala.h" and later ones that goes into subfolders ie #include "ola/ola.h"
+- then external ones <>
+
+
+COMMENTS:
+
+Use C++ style:
+
+// Typical comment
+
+//! Doxygened comment
+
+use @-based doxygen syntax

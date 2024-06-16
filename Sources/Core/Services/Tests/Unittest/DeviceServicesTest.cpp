@@ -35,9 +35,10 @@ class DeviceServicesTest : public TestBase
     DeviceServices* m_services;
 };
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
-DeviceServicesTest::DeviceServicesTest() : TestBase()
-                                         , m_engine(NULL)
-                                         , m_services(NULL)
+DeviceServicesTest::DeviceServicesTest() 
+: TestBase()
+, m_engine(NULL)
+, m_services(NULL)
 {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------
